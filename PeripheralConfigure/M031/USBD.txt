@@ -1,0 +1,385 @@
+//USB
+
+<! clock: {"ALL" : "USBD" }; !>
+
+#define NUCODEGEN_CLASS_NONE    0
+#define NUCODEGEN_CLASS_HID     1
+#define NUCODEGEN_CLASS_MSC     2
+
+/* Define the vendor id and product id */
+#define USBD_VID   (<!id:usb_vid_input_hex; type:hextext; 
+                    label:VID(hex); 
+                    data:0x0416; 
+                    default:0x0416; 
+                    helper:Input VID in the hexadecimal format;
+                    minimum:0x0000;
+                    maximum:0xffff; 
+                    dependencies:none; dependenciesOption:none; 
+                    observable:none; listener:none; groupId:group_device; groupName:Device;!>)
+
+#define USBD_PID   (<!id:usb_pid_input_hex; type:hextext; 
+                    label:PID(hex); 
+                    data:0x0123; 
+                    default:0x0123; 
+                    helper:Input VID in the hexadecimal format;
+                    minimum:0x0000;
+                    maximum:0xffff;  
+                    dependencies:none; dependenciesOption:none; 
+                    observable:none; listener:none; groupId:group_device; groupName:none;!>)
+
+/* Define Descriptor information */
+#define USBD_SELF_POWERED      (<!id:usb_self_power_en; type:checkbox; 
+                                label:Self-Powered; 
+                                data:0; default:0; 
+                                helper:; 
+                                sort:false; enum:[1]; 
+                                optionLabels:[]; 
+                                dependencies:none; 
+                                dependenciesOption:none;
+                                groupId:group_configuration; 
+                                groupName:Configuration;!>)
+                                
+#define USBD_REMOTE_WAKEUP     (<!id:usb_remote_wakeup_en; type:checkbox; 
+                                label:Remote Wakeup; 
+                                data:0; default:0; 
+                                helper:; 
+                                sort:false; enum:[1]; 
+                                optionLabels:[]; 
+                                dependencies:none; 
+                                dependenciesOption:none;
+                                groupId:group_configuration;!>)
+
+#define USBD_MAX_POWER   (<!id:usb_device_max_power_integer; type:integer; 
+                         label:Maximum power consumption (mA); 
+                         data:50; default:50; 
+                         helper:The unit is in 2mA. ex: 50 * 2mA = 100mA; 
+                         minimum:0; maximum:50; 
+                         dependencies:none; dependenciesOption:none;
+                         groupId:group_configuration; !>)  
+                        
+
+/* Define Control Endpoint maximum packet size */
+#define EP0_MAX_PKT_SIZE    (<!id:usb_ep0_maxpacket_size_select;
+                                type:radio;
+                                label:Set maximum packet size for sontrol endpoint 0 ;
+                                data:8;
+                                default:8;
+                                enum:[8, 16, 32, 64];
+                                optionLabels:[8 Bytes, 16 Bytes, 32 Bytes, 64 Bytes];
+                                vertical:true;
+                                dependencies:none;
+                                dependenciesOption:none;
+                                groupId:group_control_endpoint; 
+                                groupName:Control Endpoint;
+                            !>)
+
+#define EP1_MAX_PKT_SIZE    EP0_MAX_PKT_SIZE
+
+#define NUCODEGEN_USB_INT_EN (<!id:usb_interrupt_en; type:checkbox; 
+                                label:Enable USB interrupt; 
+                                data:1; default:1; helper:; 
+                                sort:false; enum:[1]; 
+                                optionLabels:[]; 
+                                dependencies:none; 
+                                dependenciesOption:none;
+                                groupId:group_control_Interrupt;
+                                groupName:Interrupt Setting;!>)
+
+#define NUCODEGEN_CLASS_SEL (<!id:usb_class_select_radio;
+                            type:radio;
+                            label:Select USB sample class;
+                            data:NUCODEGEN_CLASS_NONE;
+                            default:NUCODEGEN_CLASS_NONE;
+                            enum:[NUCODEGEN_CLASS_NONE
+                                 ,NUCODEGEN_CLASS_HID
+                                 ,NUCODEGEN_CLASS_MSC
+                                 ];
+                            optionLabels:[None, HID, MSC];
+                            vertical:true;
+                            dependencies:usb_interrupt_en;
+                            dependenciesOption:1;
+                            groupId:group_class_select; 
+                            groupName:CLASS;
+                            !>)
+
+#if(NUCODEGEN_CLASS_SEL==NUCODEGEN_CLASS_HID)
+
+/* Define Descriptor information */
+#define HID_DEFAULT_INT_IN_INTERVAL     (<!id:usbd_hid_interrupt_interval; type:integer; 
+                                         label:HID IN interrupt interval; 
+                                         data:20; default:20; 
+                                         helper:Enter HID IN endpoint interval(ms); 
+                                         minimum:1; maximum:1000000; 
+                                         dependencies:usb_class_select_radio; 
+                                         dependenciesOption:NUCODEGEN_CLASS_HID;
+                                         groupId:group_class_select;!>)
+
+#define NUCODEGEN_HID_DEMO_EN (<!id:usb_hid_demo_en; type:checkbox; 
+                                label:USBD demo function(HID_Mouse); 
+                                data:1; default:1; helper:; 
+                                sort:false; enum:[1]; 
+                                optionLabels:[]; 
+                                dependencies:[usb_class_select_radio, usb_interrupt_en]; 
+                                dependenciesOption:{"usb_class_select_radio":"NUCODEGEN_CLASS_HID"
+                                                   ,"usb_interrupt_en":"1"
+                                                    };
+                                groupId:group_class_select;!>)
+
+#ifndef __USBD_HID_H__
+#define __USBD_HID_H__
+
+/*!<Define HID Class Specific Request */
+#define GET_REPORT          0x01
+#define GET_IDLE            0x02
+#define GET_PROTOCOL        0x03
+#define SET_REPORT          0x09
+#define SET_IDLE            0x0A
+#define SET_PROTOCOL        0x0B
+
+/*!<USB HID Interface Class protocol */
+#define HID_NONE            0x00
+#define HID_KEYBOARD        0x01
+#define HID_MOUSE           0x02
+
+/*!<USB HID Class Report Type */
+#define HID_RPT_TYPE_INPUT      0x01
+#define HID_RPT_TYPE_OUTPUT     0x02
+#define HID_RPT_TYPE_FEATURE    0x03
+
+/*-------------------------------------------------------------*/
+/* Define EP maximum packet size */
+#define EP2_MAX_PKT_SIZE    8
+
+#define SETUP_BUF_BASE  0
+#define SETUP_BUF_LEN   8
+#define EP0_BUF_BASE    (SETUP_BUF_BASE + SETUP_BUF_LEN)
+#define EP0_BUF_LEN     EP0_MAX_PKT_SIZE
+#define EP1_BUF_BASE    (SETUP_BUF_BASE + SETUP_BUF_LEN)
+#define EP1_BUF_LEN     EP1_MAX_PKT_SIZE
+#define EP2_BUF_BASE    (EP1_BUF_BASE + EP1_BUF_LEN)
+#define EP2_BUF_LEN     EP2_MAX_PKT_SIZE
+
+/* Define the interrupt In EP number */
+#define INT_IN_EP_NUM   0x01
+
+#define LEN_CONFIG_AND_SUBORDINATE      (LEN_CONFIG+LEN_INTERFACE+LEN_HID+LEN_ENDPOINT)
+
+/*-------------------------------------------------------------*/
+
+/*-------------------------------------------------------------*/
+void HID_Init(void);
+void HID_ClassRequest(void);
+
+void EP2_Handler(void);
+void HID_UpdateMouseData(void);
+
+extern int8_t g_i8MouseTable[];
+extern uint8_t g_u8MouseIdx;
+extern uint8_t g_u8MoveLen;
+extern uint8_t g_u8MouseMode;
+
+extern uint8_t volatile g_u8EP2Ready;
+
+#endif  /* __USBD_HID_H_ */
+
+#endif /*NUCODEGEN_CLASS_SEL==NUCODEGEN_CLASS_HID*/
+
+#if(NUCODEGEN_CLASS_SEL==NUCODEGEN_CLASS_MSC)
+
+/* Due to the SRAM size limitation. PC can not format the disk. */
+/* Windows will consume about 20KB for file system formatting.  */
+/* Configure the DATA storage size                              */
+#define DATA_STORAGE_SIZE    ((<!id:usb_msc_storage_media_size_integer; type:integer; 
+                         label:Storage media size in K bytes; 
+                         data:20; default:20; 
+                         helper:Configure the data storage size, 
+                                 windows will consume about 20KB for file system formatting.; 
+                         minimum:0; maximum:50; 
+                         dependencies:usb_class_select_radio; 
+                         dependenciesOption:NUCODEGEN_CLASS_MSC;
+                         groupId:group_class_select;!>)*1024) 
+
+#define NUCODEGEN_MSC_DEMO_EN (<!id:usb_msc_demo_en; type:checkbox; 
+                                label:USBD demo function(MSC_DataStorage using SRAM); 
+                                data:1; default:1; 
+                                helper:Enable MSC demo function. 
+                                       Windows OS need about 20KB for file system formatting.
+                                       PC cannot format the disk if allocated storage 
+                                       is less than 20 KB. Note: if many IPs is selected, 
+                                       user must make sure that the whole program has enough 
+                                       SRAM space for this demo.; 
+                                sort:false; enum:[1]; 
+                                optionLabels:[]; 
+                                dependencies:[usb_class_select_radio, usb_interrupt_en]; 
+                                dependenciesOption:{"usb_class_select_radio":"NUCODEGEN_CLASS_MSC"
+                                                   ,"usb_interrupt_en":"1"
+                                                    };
+                                groupId:group_class_select;!>)
+
+#ifndef __USBD_MASS_H__
+#define __USBD_MASS_H__
+
+#define EP2_MAX_PKT_SIZE    64
+#define EP3_MAX_PKT_SIZE    64
+
+#define SETUP_BUF_BASE      0
+#define SETUP_BUF_LEN       8
+#define EP0_BUF_BASE        (SETUP_BUF_BASE + SETUP_BUF_LEN)
+#define EP0_BUF_LEN         EP0_MAX_PKT_SIZE
+#define EP1_BUF_BASE        (SETUP_BUF_BASE + SETUP_BUF_LEN)
+#define EP1_BUF_LEN         EP1_MAX_PKT_SIZE
+#define EP2_BUF_BASE        (EP1_BUF_BASE + EP1_BUF_LEN)
+#define EP2_BUF_LEN         EP2_MAX_PKT_SIZE
+#define EP3_BUF_BASE        (EP2_BUF_BASE + EP2_BUF_LEN)
+#define EP3_BUF_LEN         EP3_MAX_PKT_SIZE
+
+/* Define the interrupt In EP number */
+#define BULK_IN_EP_NUM      0x02
+#define BULK_OUT_EP_NUM     0x03
+
+#define LEN_CONFIG_AND_SUBORDINATE      (LEN_CONFIG+LEN_INTERFACE+LEN_ENDPOINT*2)
+
+/*!<Define Mass Storage Class Specific Request */
+#define BULK_ONLY_MASS_STORAGE_RESET    0xFF
+#define GET_MAX_LUN                     0xFE
+
+/*!<Define Mass Storage Signature */
+#define CBW_SIGNATURE       0x43425355
+#define CSW_SIGNATURE       0x53425355
+
+/*!<Define Mass Storage UFI Command */
+#define UFI_TEST_UNIT_READY                     0x00
+#define UFI_REQUEST_SENSE                       0x03
+#define UFI_INQUIRY                             0x12
+#define UFI_MODE_SELECT_6                       0x15
+#define UFI_MODE_SENSE_6                        0x1A
+#define UFI_START_STOP                          0x1B
+#define UFI_PREVENT_ALLOW_MEDIUM_REMOVAL        0x1E
+#define UFI_READ_FORMAT_CAPACITY                0x23
+#define UFI_READ_CAPACITY                       0x25
+#define UFI_READ_10                             0x28
+#define UFI_READ_12                             0xA8
+#define UFI_READ_16                             0x9E
+#define UFI_WRITE_10                            0x2A
+#define UFI_WRITE_12                            0xAA
+#define UFI_VERIFY_10                           0x2F
+#define UFI_MODE_SELECT_10                      0x55
+#define UFI_MODE_SENSE_10                       0x5A
+
+/*-----------------------------------------*/
+#define BULK_CBW  0x00
+#define BULK_IN   0x01
+#define BULK_OUT  0x02
+#define BULK_CSW  0x04
+#define BULK_NORMAL 0xFF
+
+__STATIC_INLINE uint32_t get_be32(uint8_t *buf)
+{
+    return ((uint32_t) buf[0] << 24) | ((uint32_t) buf[1] << 16) |
+           ((uint32_t) buf[2] << 8) | ((uint32_t) buf[3]);
+}
+
+
+/****************************************************************************//**/
+/*                USBD Mass Storage Structure                                 */
+/****************************************************************************//**/
+/** @addtogroup M251_USBD_Mass_Exported_Struct M251 USBD Mass Exported Struct
+  M251 USBD Mass Specific Struct
+  @{
+*/
+
+/*!<USB Mass Storage Class - Command Block Wrapper Structure */
+struct CBW
+{
+    uint32_t  dCBWSignature;
+    uint32_t  dCBWTag;
+    uint32_t  dCBWDataTransferLength;
+    uint8_t   bmCBWFlags;
+    uint8_t   bCBWLUN;
+    uint8_t   bCBWCBLength;
+    uint8_t   u8OPCode;
+    uint8_t   u8LUN;
+    uint8_t   au8Data[14];
+};
+
+/*!<USB Mass Storage Class - Command Status Wrapper Structure */
+struct CSW
+{
+    uint32_t  dCSWSignature;
+    uint32_t  dCSWTag;
+    uint32_t  dCSWDataResidue;
+    uint8_t   bCSWStatus;
+};
+
+/*-------------------------------------------------------------*/
+
+#define MASS_STORAGE_OFFSET       0x20001000 /* To avoid the code to write R/W section on SRAM  */
+
+#define MASS_BUFFER_SIZE    256              /* Mass Storage command buffer size */
+#define STORAGE_BUFFER_SIZE 512              /* Data transfer buffer size in 512 bytes alignment */
+#define UDC_SECTOR_SIZE   512                /* logic sector size */
+
+extern uint32_t g_au32MassBlock[];
+extern uint32_t g_au32StorageBlock[];
+
+#define MassCMD_BUF        ((uint32_t)&g_au32MassBlock[0])
+#define STORAGE_DATA_BUF   ((uint32_t)&g_au32StorageBlock[0])
+
+/*-------------------------------------------------------------*/
+
+/*-------------------------------------------------------------*/
+void DataFlashWrite(uint32_t addr, uint32_t size, uint32_t buffer);
+void DataFlashRead(uint32_t addr, uint32_t size, uint32_t buffer);
+void MSC_Init(void);
+void MSC_RequestSense(void);
+void MSC_ReadFormatCapacity(void);
+void MSC_Read(void);
+void MSC_ReadCapacity(void);
+void MSC_Write(void);
+void MSC_ModeSense10(void);
+void MSC_ReadTrig(void);
+void MSC_ClassRequest(void);
+void MSC_SetConfig(void);
+
+void MSC_ReadMedia(uint32_t addr, uint32_t size, uint8_t *buffer);
+void MSC_WriteMedia(uint32_t addr, uint32_t size, uint8_t *buffer);
+
+/*-------------------------------------------------------------*/
+void MSC_AckCmd(void);
+void MSC_ProcessCmd(void);
+void EP2_Handler(void);
+void EP3_Handler(void);
+
+/* Global variables for Control Pipe */
+extern int32_t g_i32TotalSectors;
+
+extern uint8_t volatile g_u8EP2Ready;
+extern uint8_t volatile g_u8EP3Ready;
+extern uint8_t volatile g_u8Remove;
+
+/* USB flow control variables */
+extern uint8_t g_u8BulkState;
+extern uint8_t g_u8Prevent;
+extern uint8_t g_u8Size;
+
+extern uint8_t g_au8SenseKey[];
+
+extern uint32_t g_u32DataFlashStartAddr;
+extern uint32_t g_u32Address;
+extern uint32_t g_u32Length;
+extern uint32_t g_u32LbaAddress;
+extern uint32_t g_u32BytesInStorageBuf;
+
+extern uint32_t g_u32BulkBuf0, g_u32BulkBuf1;
+
+/* CBW/CSW variables */
+extern struct CBW g_sCBW;
+extern struct CSW g_sCSW;
+
+extern uint32_t g_au32MassBlock[];
+extern uint32_t g_au32StorageBlock[];
+
+extern uint8_t g_au8InquiryID[];
+
+#endif  /* __USBD_MASS_H_ */
+#endif /*NUCODEGEN_CLASS_SEL==NUCODEGEN_CLASS_MSC*/

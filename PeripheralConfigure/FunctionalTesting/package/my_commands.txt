@@ -1,0 +1,2 @@
+進入package資料夾再全選裡面的檔案，接著一般壓縮成為package.nw
+copy /b nw.exe+package.nw createHttpServer.exe

@@ -1,0 +1,257 @@
+<!clock: {"ALL" : "TMR2"};
+  pin:   {"TIMER2OutputPinRadio":{
+                "TIMER_TOUT_PIN_FROM_TMX":     "TM2",
+                "TIMER_TOUT_PIN_FROM_TMX_EXT": "TM2_EXT"},
+		  "TIMER2EventCountCheckbox":{
+                "1": "TM2"},
+		  "TIMER2CaptureSourceSelect":{
+                "TIMER_CAPTURE_FROM_EXTERNAL": "TM2_EXT"},
+                 "ALL": [""]};
+!>
+/*--------------------------------------------------------------------------*/
+/* TIMER2 Configuration                                                     */
+/*--------------------------------------------------------------------------*/
+
+#define TIMER2_MODE                     (<!id:TIMER2ModeRadio;
+                                        type:radio;
+                                        label:Select TIMER2 operation mode;
+                                        data:TIMER_ONESHOT_MODE;
+                                        default:TIMER_ONESHOT_MODE;
+                                        enum:[TIMER_ONESHOT_MODE, TIMER_PERIODIC_MODE, TIMER_TOGGLE_MODE, TIMER_CONTINUOUS_MODE];
+                                        optionLabels:[One-shot, Periodic, Toggle, Continuous counting];
+                                        dependencies:none;
+                                        dependenciesOption:none;
+                                        groupId:Group_CommonConfig;
+                                        groupName:Timer Common Configuration;!>)
+
+#define NUCODEGEN_TIMER2_TOUT_PIN       (<!id:TIMER2OutputPinRadio;
+                                        type:radio;
+                                        label:Select TIMER2 output pin;
+                                        data:TIMER_TOUT_PIN_FROM_TMX;
+                                        default:TIMER_TOUT_PIN_FROM_TMX;
+                                        enum:[TIMER_TOUT_PIN_FROM_TMX, TIMER_TOUT_PIN_FROM_TMX_EXT];
+                                        optionLabels:[Output pin from TM2, Output pin from TM2_EXT];
+                                        dependencies:TIMER2ModeRadio;
+                                        dependenciesOption:TIMER_TOGGLE_MODE;
+                                        groupId:Group_CommonConfig;!>)
+
+#define TIMER2_FREQ                     (<!id:TIMER2FreqInteger;
+                                        type:integer;
+                                        label:Set TIMER2 frequency;
+                                        data:1000000;
+                                        default:1000000;
+                                        helper:Enter your TIMER2 frequency, 1~ClkSrcFreq/2(Hz);
+                                        minimum:1;
+                                        maximum:24000000;
+                                        dependencies:none;
+                                        dependenciesOption:none;
+                                        groupId:Group_CommonConfig;!>)
+
+
+/* Configure Prescale and Compared Value */
+#define NUCODEGEN_TIMER2_VALUE          (<!id:TIMER2SetValueCheckbox;
+                                        type:checkbox;
+                                        label:Set TIMER2 prescale & compared value;
+                                        data:0;
+                                        default:0;
+                                        helper:Will change TIMER2 frequency;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:none;
+                                        dependenciesOption:none;
+                                        groupId:Group_CommonConfig;!>)
+#if NUCODEGEN_TIMER2_VALUE
+#define TIMER2_PRESCALE_VALUE           (<!id:TIMER2PrescaleInteger;
+                                        type:integer;
+                                        label:TIMER2 prescale value;
+                                        data:5;
+                                        default:5;
+                                        helper:Enter your TIMER2 prescale value(dec);
+                                        minimum:0;
+                                        maximum:255;
+                                        dependencies:TIMER2SetValueCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_CommonConfig;!>)
+                                    
+#define TIMER2_CMP_VALUE                (<!id:TIMER2CMPHexText;
+                                        type:hextext;
+                                        label:TIMER2 compared value;
+                                        data:0xFFFFFF;
+                                        default:0xFFFFFF;
+                                        helper:Enter your TIMER2 compared value(hex);
+                                        minimum:0x2;
+                                        maximum:0xFFFFFF;
+                                        dependencies:TIMER2SetValueCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_CommonConfig;!>)
+#endif //NUCODEGEN_TIMER2_VALUE
+
+#define NUCODEGEN_TIMER2_WAKEUP         (<!id:TIMER2WakeUpCheckbox;
+                                        type:checkbox;
+                                        label:Enable TIMER2 wake-up;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:none;
+                                        dependenciesOption:none;
+                                        groupId:Group_CommonConfig;!>)
+
+#define NUCODEGEN_TIMER2_INT            (<!id:TIMER2IntCheckbox;
+                                        type:checkbox;
+                                        label:Enable TIMER2 time-out interrupt;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:none;
+                                        dependenciesOption:none;
+                                        groupId:Group_CommonConfig;!>)
+
+
+/* Configure Event Count Function */
+#define NUCODEGEN_TIMER2_EVENT_CNT      (<!id:TIMER2EventCountCheckbox;
+                                        type:checkbox;
+                                        label:Enable TIMER2 event counting;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:TIMER2ModeRadio;
+                                        dependenciesOption:TIMER_ONESHOT_MODE|TIMER_PERIODIC_MODE|TIMER_CONTINUOUS_MODE;
+                                        groupId:Group_EventCountConfig;
+                                        groupName:Timer Event Count Configuration;
+                                        filterExp:PA_dot7==1 or PB_dot3==1 or PD_dot0==1 or PF_dot15==1;!>)
+#if NUCODEGEN_TIMER2_EVENT_CNT
+#define NUCODEGEN_TIMER2_COUNTER_PHASE  (<!id:TIMER2PhaseRadio;
+                                        type:radio;
+                                        label:Select TIMER2 external count phase;
+                                        data:TIMER_COUNTER_EVENT_FALLING;
+                                        default:TIMER_COUNTER_EVENT_FALLING;
+                                        enum:[TIMER_COUNTER_EVENT_FALLING, TIMER_COUNTER_EVENT_RISING];
+                                        optionLabels:[Event falling edge, Event rising edge];
+                                        dependencies:TIMER2EventCountCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_EventCountConfig;
+                                        filterExp:PA_dot7==1 or PB_dot3==1 or PD_dot0==1 or PF_dot15==1;!>)
+
+#define NUCODEGEN_TIMER2_EVENT_CNTDB    (<!id:TIMER2EventCountDebounceCheckbox;
+                                        type:checkbox;
+                                        label:Enable TIMER2 event counting de-bounce;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:TIMER2EventCountCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_EventCountConfig;
+                                        filterExp:PA_dot7==1 or PB_dot3==1 or PD_dot0==1 or PF_dot15==1;!>)
+#endif // NUCODEGEN_TIMER2_EVENT_CNT
+
+
+/* Configure Capture Function */
+#define NUCODEGEN_TIMER2_CAP            (<!id:TIMER2CaptureCheckbox;
+                                        type:checkbox;
+                                        label:Enable TIMER2 capture;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:TIMER2ModeRadio;
+                                        dependenciesOption:TIMER_ONESHOT_MODE|TIMER_PERIODIC_MODE|TIMER_CONTINUOUS_MODE;
+                                        groupId:Group_CaptureConfig;
+                                        groupName:Timer Capture Configuration;!>)
+#if NUCODEGEN_TIMER2_CAP
+#define NUCODEGEN_TIMER2_CAP_SRC        (<!id:TIMER2CaptureSourceSelect;
+                                        type:select;
+                                        label:Select TIMER2 capture trigger source;
+                                        data:TIMER_CAPTURE_FROM_EXTERNAL;
+                                        default:TIMER_CAPTURE_FROM_EXTERNAL;
+                                        enum:[TIMER_CAPTURE_FROM_EXTERNAL, TIMER_CAPTURE_FROM_LIRC];
+                                        optionLabels:[Capture source from TM2_EXT pin, Capture source from LIRC];
+                                        dependencies:TIMER2CaptureCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_CaptureConfig;!>)
+
+#define NUCODEGEN_TIMER2_CAP_EDGE       (<!id:TIMER2CaptureEdgeSelect;
+                                        type:select;
+                                        label:Select TIMER2 capture edge detect;
+                                        data:TIMER_CAPTURE_EVENT_FALLING;
+                                        default:TIMER_CAPTURE_EVENT_FALLING;
+                                        enum:[TIMER_CAPTURE_EVENT_FALLING, TIMER_CAPTURE_EVENT_RISING, TIMER_CAPTURE_EVENT_FALLING_RISING];
+                                        optionLabels:[Capture on falling edge, Capture on rising edge, Capture on falling or rising edges];
+                                        dependencies:TIMER2CaptureCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_CaptureConfig;!>)
+
+#define NUCODEGEN_TIMER2_CAP_MODE       (<!id:TIMER2CaptureModeRadio;
+                                        type:radio;
+                                        label:Select TIMER2 capture mode;
+                                        data:TIMER_CAPTURE_FREE_COUNTING_MODE;
+                                        default:TIMER_CAPTURE_FREE_COUNTING_MODE;
+                                        enum:[TIMER_CAPTURE_FREE_COUNTING_MODE, TIMER_CAPTURE_COUNTER_RESET_MODE];
+                                        optionLabels:[Free counting, Capture and reset counter];
+                                        dependencies:TIMER2CaptureCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_CaptureConfig;!>)
+
+#define NUCODEGEN_TIMER2_CAPDB	        (<!id:TIMER2CaptureDebounceCheckbox;
+                                        type:checkbox;
+                                        label:Enable TIMER2 capture de-bounce;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:TIMER2CaptureCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_CaptureConfig;!>)
+
+#define NUCODEGEN_TIMER2_CAP_INT        (<!id:TIMER2CaptureIntCheckbox;
+                                        type:checkbox;
+                                        label:Enable TIMER2 capture interrupt;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:TIMER2CaptureCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_CaptureConfig;!>)
+#endif // NUCODEGEN_TIMER2_CAP
+
+
+/* Configure Trigger Function */
+#define NUCODEGEN_TIMER2_TRG            (<!id:TIMER2TriggerCheckbox;
+                                        type:checkbox;
+                                        label:Enable TIMER2 trigger;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:none;
+                                        dependenciesOption:none;
+                                        groupId:Group_TriggerConfig;
+                                        groupName:Timer Trigger Configuration;!>)
+#if NUCODEGEN_TIMER2_TRG
+#define NUCODEGEN_TIMER2_TRG_SRC        (<!id:TIMER2TriggerConditionRadio;
+                                        type:radio;
+                                        label:TIMER2 trigger condition select;
+                                        data:TIMER_TRGSEL_TIMEOUT_EVENT;
+                                        default:TIMER_TRGSEL_TIMEOUT_EVENT;
+                                        enum:[TIMER_TRGSEL_TIMEOUT_EVENT, TIMER_TRGSEL_CAPTURE_EVENT];
+                                        optionLabels:[Time-out event, Capture event];
+                                        dependencies:TIMER2TriggerCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_TriggerConfig;!>)
+
+#define NUCODEGEN_TIMER2_TRG_TARGET     (<!id:TIMER2TriggerTargetCheckbox;
+                                        type:checkbox;
+                                        label:Select TIMER2 trigger target;
+                                        data:0;
+                                        default:0;
+                                        sort:false;
+                                        enum:[TIMER_TRG_TO_PDMA, TIMER_TRG_TO_ADC, TIMER_TRG_TO_BPWM01, TIMER_TRG_TO_BPWM23];
+                                        optionLabels:[TIMER2 trigger PDMA, TIMER2 trigger ADC, TIMER2 trigger BPWM01, TIMER2 trigger BPWM23;
+                                        dependencies:TIMER2TriggerCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:Group_TriggerConfig;!>)
+#endif // NUCODEGEN_TIMER2_TRG

@@ -1,0 +1,955 @@
+
+#define NUCODEGEN_CANFD_FUNCSEL_CAN             0
+#define NUCODEGEN_CANFD_FUNCSEL_CANFD           1
+
+#define NUCODEGEN_ID_FILTER_STD                 0
+#define NUCODEGEN_ID_FILTER_EXT                 1
+
+#define NUCODEGEN_CANFD0_FUNCSEL_SEL                             (<!id:CANFD0FunctionRadio;
+                                                                 type:radio;
+                                                                 label:CAN-FD function select;
+                                                                 data:NUCODEGEN_CANFD_FUNCSEL_CAN;
+                                                                 default:NUCODEGEN_CANFD_FUNCSEL_CAN;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_CANFD_FUNCSEL_CAN, NUCODEGEN_CANFD_FUNCSEL_CANFD];
+                                                                 optionLabels:[CAN Mode,CAN-FD Mode];
+                                                                 vertical:false;
+                                                                 dependencies:none;
+                                                                 dependenciesOption:none;
+                                                                 groupId:CANFD0Basic;
+                                                                 groupName:Basic Configuration;!>)
+
+#if (NUCODEGEN_CANFD0_FUNCSEL_SEL == NUCODEGEN_CANFD_FUNCSEL_CAN)
+
+#define NUCODEGEN_CANFD0_NOMINAL_BITRATE                         (<!id:CANNominalBitRateInteger;
+                                                                 type:integer;
+                                                                 label:CAN module bit rate (10000 bps ~ 1000000 bps);
+                                                                 data:500000;
+                                                                 default:500000;
+                                                                 helper:Enter your CAN module bit rate.;
+                                                                 sort:false;
+                                                                 minimum:10000;
+                                                                 maximum:1000000;
+                                                                 dependencies:CANFD0FunctionRadio;
+                                                                 dependenciesOption:NUCODEGEN_CANFD_FUNCSEL_CAN;
+                                                                 groupId:CANFD0Basic;
+                                                                 groupName:Basic Configuration;!>)
+                                                                 
+#elif (NUCODEGEN_CANFD0_FUNCSEL_SEL == NUCODEGEN_CANFD_FUNCSEL_CANFD)
+
+#define NUCODEGEN_CANFD0_NOMINAL_BITRATE                         (<!id:CANFDNominalBitRateInteger;
+                                                                 type:integer;
+                                                                 label:CAN-FD module nominal bit rate (10000 bps ~ 1000000 bps);
+                                                                 data:500000;
+                                                                 default:500000;
+                                                                 helper:Enter your CAN-FD module nominal bit rate.;
+                                                                 sort:false;
+                                                                 minimum:10000;
+                                                                 maximum:1000000;
+                                                                 dependencies:CANFD0FunctionRadio;
+                                                                 dependenciesOption:NUCODEGEN_CANFD_FUNCSEL_CANFD;
+                                                                 groupId:CANFD0Basic;
+                                                                 groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_CANFD0_DATA_BITRATE                           (<!id:CANFDDataBitRateInteger;
+                                                                 type:integer;
+                                                                 label:CAN-FD module data bit rate (1000000 bps ~ 4000000 bps);
+                                                                 data:2000000;
+                                                                 default:2000000;
+                                                                 helper:Enter your CAN-FD module data bit rate.;
+                                                                 sort:false;
+                                                                 minimum:1000000;
+                                                                 maximum:4000000;
+                                                                 dependencies:CANFD0FunctionRadio;
+                                                                 dependenciesOption:NUCODEGEN_CANFD_FUNCSEL_CANFD;
+                                                                 groupId:CANFD0Basic;
+                                                                 groupName:Basic Configuration;!>)
+
+#endif
+
+
+#define NUCODEGEN_CANFD0_RXBUF_ID_FILTER_ELEMS_EN                (<!id:CANFD0RxBufIdFilterElemEnCheckbox;
+                                                                 type:checkbox;
+                                                                 label:Set the Rx buffer ID filter element control;
+                                                                 data:0;
+                                                                 default:0;
+                                                                 sort:false;
+                                                                 enum:[1];
+                                                                 optionLabels:[Enable];
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_RXBUF_ID_FILTER_ELEMS_SIZE             (<!id:CANFD0RxBufIdFilterElemSelect;
+                                                                 type:select;
+                                                                 label:Set the Rx buffer ID filter element size;
+                                                                 data:1;
+                                                                 default:1;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[1,2,3];
+                                                                 optionLabels:[ID filter 1 element,ID filter 2 elements,ID filter 3 elements];
+                                                                 dependencies:CANFD0RxBufIdFilterElemEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_RXBUF_ID1_FILTER_TYPE_SEL               (<!id:CANFD0RxBufId1FilterTypeRadio;
+                                                                 type:radio;
+                                                                 label:Rx buffer ID 1 filter type select;
+                                                                 data:NUCODEGEN_ID_FILTER_STD;
+                                                                 default:NUCODEGEN_ID_FILTER_STD;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_ID_FILTER_STD, NUCODEGEN_ID_FILTER_EXT];
+                                                                 optionLabels:[Standard ID,Extended ID];
+                                                                 vertical:false;
+                                                                 dependencies:[CANFD0RxBufIdFilterElemEnCheckbox,CANFD0RxBufIdFilterElemSelect];
+                                                                 dependenciesOption:{"CANFD0RxBufIdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0RxBufIdFilterElemSelect" : ">0"};
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_RXBUF_ID1_STD_FILTER_NUM               (<!id:CANFD0RxBufId1STDFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx buffer Standard ID 1 filter hexadecimal number(0x1 ~ 0x7ff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Standard ID filter hexadecimal number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0RxBufIdFilterElemEnCheckbox,CANFD0RxBufIdFilterElemSelect,CANFD0RxBufId1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0RxBufIdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0RxBufIdFilterElemSelect" : ">0",
+                                                                                     "CANFD0RxBufId1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+
+#define NUCODEGEN_CANFD0_RXBUF_ID1_EXT_FILTER_NUM               (<!id:CANFD0RxBufId1EXTFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx buffer Extended ID 1 filter hexadecimal number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Extended ID filter hexadecimal number.(ex: 0x1fffff).;
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0RxBufIdFilterElemEnCheckbox,CANFD0RxBufIdFilterElemSelect,CANFD0RxBufId1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0RxBufIdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0RxBufIdFilterElemSelect" : ">0",
+                                                                                     "CANFD0RxBufId1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_RXBUF_ID2_FILTER_TYPE_SEL               (<!id:CANFD0RxBufId2FilterTypeRadio;
+                                                                 type:radio;
+                                                                 label:Rx buffer ID 2 filter type select;
+                                                                 data:NUCODEGEN_ID_FILTER_STD;
+                                                                 default:NUCODEGEN_ID_FILTER_STD;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_ID_FILTER_STD, NUCODEGEN_ID_FILTER_EXT];
+                                                                 optionLabels:[Standard ID,Extended ID];
+                                                                 vertical:false;
+                                                                 dependencies:[CANFD0RxBufIdFilterElemEnCheckbox,CANFD0RxBufIdFilterElemSelect];
+                                                                 dependenciesOption:{"CANFD0RxBufIdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0RxBufIdFilterElemSelect" : ">1"};
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_RXBUF_ID2_STD_FILTER_NUM               (<!id:CANFD0RxBufId2STDFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx buffer Standard ID 2 filter hexadecimal number(0x1 ~ 0x7ff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Standard ID filter hexadecimal number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0RxBufIdFilterElemEnCheckbox,CANFD0RxBufIdFilterElemSelect,CANFD0RxBufId2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0RxBufIdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0RxBufIdFilterElemSelect" : ">1",
+                                                                                     "CANFD0RxBufId2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+
+#define NUCODEGEN_CANFD0_RXBUF_ID2_EXT_FILTER_NUM               (<!id:CANFD0RxBufId2EXTFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx buffer Extended ID 2 filter hexadecimal number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Extended ID filter hexadecimal number.(ex: 0x1fffff).;
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0RxBufIdFilterElemEnCheckbox,CANFD0RxBufIdFilterElemSelect,CANFD0RxBufId2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0RxBufIdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0RxBufIdFilterElemSelect" : ">1",
+                                                                                     "CANFD0RxBufId2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_RXBUF_ID3_FILTER_TYPE_SEL               (<!id:CANFD0RxBufId3FilterTypeRadio;
+                                                                 type:radio;
+                                                                 label:Rx buffer ID 3 filter type select;
+                                                                 data:NUCODEGEN_ID_FILTER_STD;
+                                                                 default:NUCODEGEN_ID_FILTER_STD;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_ID_FILTER_STD, NUCODEGEN_ID_FILTER_EXT];
+                                                                 optionLabels:[Standard ID,Extended ID];
+                                                                 vertical:false;
+                                                                 dependencies:[CANFD0RxBufIdFilterElemEnCheckbox,CANFD0RxBufIdFilterElemSelect];
+                                                                 dependenciesOption:{"CANFD0RxBufIdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0RxBufIdFilterElemSelect" : ">2"};
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_RXBUF_ID3_STD_FILTER_NUM               (<!id:CANFD0RxBufId3STDFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx buffer Standard ID 3 filter hexadecimal number(0x1 ~ 0x7ff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Standard ID filter hexadecimal number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0RxBufIdFilterElemEnCheckbox,CANFD0RxBufIdFilterElemSelect,CANFD0RxBufId3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0RxBufIdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0RxBufIdFilterElemSelect" : ">2",
+                                                                                     "CANFD0RxBufId3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_RXBUF_ID3_EXT_FILTER_NUM               (<!id:CANFD0RxBufId3EXTFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx buffer Extended ID 3 filter hexadecimal number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Extended ID filter hexadecimal number.(ex: 0x1fffff).;
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0RxBufIdFilterElemEnCheckbox,CANFD0RxBufIdFilterElemSelect,CANFD0RxBufId3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0RxBufIdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0RxBufIdFilterElemSelect" : ">2",
+                                                                                     "CANFD0RxBufId3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_RXBUF_INT_EN                           (<!id:CANFD0RxBufINTSelect;
+                                                                 type:select;
+                                                                 label:Dedicated rx buffer receive interrupt control;
+                                                                 data:0;
+                                                                 default:0;
+                                                                 helper:Vector:CANFD0_IRQHandler;
+                                                                 enum:[0,1];
+                                                                 optionLabels:[Disable,Enable];
+                                                                 dependencies:CANFD0RxBufIdFilterElemEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:RxBufElemConfig;
+                                                                 groupName:Rx Buffer ID Filter Element Configuration;!>)
+
+
+#define NUCODEGEN_CANFD0_FIFO0_ID_FILTER_ELEMS_EN                (<!id:CANFD0Fifo0IdFilterElemEnCheckbox;
+                                                                 type:checkbox;
+                                                                 label:Set the Rx FIFO0 ID filter element control;
+                                                                 data:0;
+                                                                 default:0;
+                                                                 sort:false;
+                                                                 enum:[1];
+                                                                 optionLabels:[Enable];
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID_FILTER_ELEMS_SIZE             (<!id:CANFD0Fifo0IdFilterElemSelect;
+                                                                 type:select;
+                                                                 label:Set the Rx FIFO0 ID filter element size;
+                                                                 data:1;
+                                                                 default:1;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[1,2,3];
+                                                                 optionLabels:[ID filter 1 element,ID filter 2 elements,ID filter 3 elements];
+                                                                 dependencies:CANFD0Fifo0IdFilterElemEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID1_FILTER_TYPE_SEL               (<!id:CANFD0Fifo0Id1FilterTypeRadio;
+                                                                 type:radio;
+                                                                 label:Rx FIFO0 ID 1 filter type select;
+                                                                 data:NUCODEGEN_ID_FILTER_STD;
+                                                                 default:NUCODEGEN_ID_FILTER_STD;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_ID_FILTER_STD, NUCODEGEN_ID_FILTER_EXT];
+                                                                 optionLabels:[Standard ID,Extended ID];
+                                                                 vertical:false;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">0"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID1_STD_FILTER_NUM               (<!id:CANFD0Fifo0Id1STDFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Standard ID 1 filter hexadecimal number(0x1 ~ 0x7ff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Standard ID filter hexadecimal number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">0",
+                                                                                     "CANFD0Fifo0Id1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID1_STD_FILTER_MSAK               (<!id:CANFD0Fifo0Id1STDFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Standard ID 1 filter hexadecimal mask number(0x1 ~ 0x7ff);
+                                                                 data:0x7ff;
+                                                                 default:0x7ff;
+                                                                 helper:Enter your Standard ID filter hexadecimal mask number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">0",
+                                                                                     "CANFD0Fifo0Id1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID1_EXT_FILTER_NUM               (<!id:CANFD0Fifo0Id1EXTFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Extended ID 1 filter hexadecimal number(0x1 ~ 0x1fffffff));
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Extended ID filter hexadecimal number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">0",
+                                                                                     "CANFD0Fifo0Id1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID1_EXT_FILTER_MSAK               (<!id:CANFD0Fifo0Id1EXTFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Extended ID 1 filter hexadecimal mask number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1fffffff;
+                                                                 default:0x1fffffff;
+                                                                 helper:Enter your Extended ID filter hexadecimal mask number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">0",
+                                                                                     "CANFD0Fifo0Id1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID2_FILTER_TYPE_SEL               (<!id:CANFD0Fifo0Id2FilterTypeRadio;
+                                                                 type:radio;
+                                                                 label:Rx FIFO0 ID 2 filter type select;
+                                                                 data:NUCODEGEN_ID_FILTER_STD;
+                                                                 default:NUCODEGEN_ID_FILTER_STD;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_ID_FILTER_STD, NUCODEGEN_ID_FILTER_EXT];
+                                                                 optionLabels:[Standard ID,Extended ID];
+                                                                 vertical:false;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">1"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID2_STD_FILTER_NUM               (<!id:CANFD0Fifo0Id2STDFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Standard ID 2 filter hexadecimal number(0x1 ~ 0x7ff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Standard ID filter hexadecimal number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">1",
+                                                                                     "CANFD0Fifo0Id2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID2_STD_FILTER_MSAK               (<!id:CANFD0Fifo0Id2STDFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Standard ID 2 filter hexadecimal mask number(0x1 ~ 0x7ff);
+                                                                 data:0x7ff;
+                                                                 default:0x7ff;
+                                                                 helper:Enter your Standard ID filter hexadecimal mask number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">1",
+                                                                                     "CANFD0Fifo0Id2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID2_EXT_FILTER_NUM               (<!id:CANFD0Fifo0Id2EXTFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Extended ID 2 filter hexadecimal number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Extended ID filter hexadecimal number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">1",
+                                                                                     "CANFD0Fifo0Id2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID2_EXT_FILTER_MSAK               (<!id:CANFD0Fifo0Id2EXTFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Extended ID 2 filter hexadecimal mask number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1fffffff;
+                                                                 default:0x1fffffff;
+                                                                 helper:Enter your Extended ID filter hexadecimal mask number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">1",
+                                                                                     "CANFD0Fifo0Id2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID3_FILTER_TYPE_SEL               (<!id:CANFD0Fifo0Id3FilterTypeRadio;
+                                                                 type:radio;
+                                                                 label:Rx FIFO0 ID 3 filter type select;
+                                                                 data:NUCODEGEN_ID_FILTER_STD;
+                                                                 default:NUCODEGEN_ID_FILTER_STD;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_ID_FILTER_STD, NUCODEGEN_ID_FILTER_EXT];
+                                                                 optionLabels:[Standard ID,Extended ID];
+                                                                 vertical:false;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">2"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID3_STD_FILTER_NUM               (<!id:CANFD0Fifo0Id3STDFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Standard ID 3 filter hexadecimal number(0x1 ~ 0x7ff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Standard ID filter hexadecimal number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">2",
+                                                                                     "CANFD0Fifo0Id3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID3_STD_FILTER_MSAK               (<!id:CANFD0Fifo0Id3STDFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Standard ID 3 filter hexadecimal mask number(0x1 ~ 0x7ff);
+                                                                 data:0x7ff;
+                                                                 default:0x7ff;
+                                                                 helper:Enter your Standard ID filter hexadecimal mask number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">2",
+                                                                                     "CANFD0Fifo0Id3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID3_EXT_FILTER_NUM               (<!id:CANFD0Fifo0Id3EXTFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Extended ID 3 filter hexadecimal number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Extended ID filter hexadecimal number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">2",
+                                                                                     "CANFD0Fifo0Id3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_ID3_EXT_FILTER_MSAK              (<!id:CANFD0Fifo0Id3EXTFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO0 Extended ID 3 filter hexadecimal mask number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1fffffff;
+                                                                 default:0x1fffffff;
+                                                                 helper:Enter your Extended ID filter hexadecimal mask number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo0IdFilterElemEnCheckbox,CANFD0Fifo0IdFilterElemSelect,CANFD0Fifo0Id3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo0IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo0IdFilterElemSelect" : ">2",
+                                                                                     "CANFD0Fifo0Id3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO0_INT_EN                           (<!id:CANFD0Fifo0INTSelect;
+                                                                 type:select;
+                                                                 label:Rx FIFO0 receive interrupt control;
+                                                                 data:0;
+                                                                 default:0;
+                                                                 helper:Vector:CANFD0_IRQHandler;
+                                                                 enum:[0,1];
+                                                                 optionLabels:[Disable,Enable];
+                                                                 dependencies:CANFD0Fifo0IdFilterElemEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:Fifo0ElemConfig;
+                                                                 groupName:Rx FIFO0 ID Filter Element Configuration;!>)
+
+
+#define NUCODEGEN_CANFD0_FIFO1_ID_FILTER_ELEMS_EN                (<!id:CANFD0Fifo1IdFilterElemEnCheckbox;
+                                                                 type:checkbox;
+                                                                 label:Set the Rx FIFO1 ID filter element control;
+                                                                 data:0;
+                                                                 default:0;
+                                                                 sort:false;
+                                                                 enum:[1];
+                                                                 optionLabels:[Enable];
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID_FILTER_ELEMS_SIZE             (<!id:CANFD0Fifo1IdFilterElemSelect;
+                                                                 type:select;
+                                                                 label:Set the Rx FIFO1 ID filter element size;
+                                                                 data:1;
+                                                                 default:1;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[1,2,3];
+                                                                 optionLabels:[ID filter 1 element,ID filter 2 elements,ID filter 3 elements];
+                                                                 dependencies:CANFD0Fifo1IdFilterElemEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID1_FILTER_TYPE_SEL               (<!id:CANFD0Fifo1Id1FilterTypeRadio;
+                                                                 type:radio;
+                                                                 label:Rx FIFO1 ID 1 filter type select;
+                                                                 data:NUCODEGEN_ID_FILTER_STD;
+                                                                 default:NUCODEGEN_ID_FILTER_STD;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_ID_FILTER_STD, NUCODEGEN_ID_FILTER_EXT];
+                                                                 optionLabels:[Standard ID,Extended ID];
+                                                                 vertical:false;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">0"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID1_STD_FILTER_NUM               (<!id:CANFD0Fifo1Id1STDFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Standard ID 1 filter hexadecimal number(0x1 ~ 0x7ff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Standard ID filter hexadecimal number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">0",
+                                                                                     "CANFD0Fifo1Id1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID1_STD_FILTER_MSAK               (<!id:CANFD0Fifo1Id1STDFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Standard ID 1 filter hexadecimal mask number(0x1 ~ 0x7ff);
+                                                                 data:0x7ff;
+                                                                 default:0x7ff;
+                                                                 helper:Enter your Standard ID filter hexadecimal mask number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">0",
+                                                                                     "CANFD0Fifo1Id1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID1_EXT_FILTER_NUM               (<!id:CANFD0Fifo1Id1EXTFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Extended ID 1 filter hexadecimal number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Extended ID filter hexadecimal number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">0",
+                                                                                     "CANFD0Fifo1Id1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID1_EXT_FILTER_MSAK               (<!id:CANFD0Fifo1Id1EXTFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Extended ID 1 filter hexadecimal mask number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1fffffff;
+                                                                 default:0x1fffffff;
+                                                                 helper:Enter your Extended ID filter hexadecimal mask number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id1FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">0",
+                                                                                     "CANFD0Fifo1Id1FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID2_FILTER_TYPE_SEL               (<!id:CANFD0Fifo1Id2FilterTypeRadio;
+                                                                 type:radio;
+                                                                 label:Rx FIFO1 ID 2 filter type select;
+                                                                 data:NUCODEGEN_ID_FILTER_STD;
+                                                                 default:NUCODEGEN_ID_FILTER_STD;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_ID_FILTER_STD, NUCODEGEN_ID_FILTER_EXT];
+                                                                 optionLabels:[Standard ID,Extended ID];
+                                                                 vertical:false;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">1"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID2_STD_FILTER_NUM               (<!id:CANFD0Fifo1Id2STDFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Standard ID 2 filter hexadecimal number(0x1 ~ 0x7ff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Standard ID filter hexadecimal number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">1",
+                                                                                     "CANFD0Fifo1Id2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID2_STD_FILTER_MSAK               (<!id:CANFD0Fifo1Id2STDFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Standard ID 2 filter hexadecimal mask number(0x1 ~ 0x7ff);
+                                                                 data:0x7ff;
+                                                                 default:0x7ff;
+                                                                 helper:Enter your Standard ID filter hexadecimal mask number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">1",
+                                                                                     "CANFD0Fifo1Id2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID2_EXT_FILTER_NUM               (<!id:CANFD0Fifo1Id2EXTFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Extended ID 2 filter hexadecimal number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Extended ID filter hexadecimal number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">1",
+                                                                                     "CANFD0Fifo1Id2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID2_EXT_FILTER_MSAK               (<!id:CANFD0Fifo1Id2EXTFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Extended ID 2 filter hexadecimal mask number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1fffffff;
+                                                                 default:0x1fffffff;
+                                                                 helper:Enter your Extended ID filter hexadecimal mask number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id2FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">1",
+                                                                                     "CANFD0Fifo1Id2FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID3_FILTER_TYPE_SEL               (<!id:CANFD0Fifo1Id3FilterTypeRadio;
+                                                                 type:radio;
+                                                                 label:Rx FIFO1 ID 3 filter type select;
+                                                                 data:NUCODEGEN_ID_FILTER_STD;
+                                                                 default:NUCODEGEN_ID_FILTER_STD;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[NUCODEGEN_ID_FILTER_STD, NUCODEGEN_ID_FILTER_EXT];
+                                                                 optionLabels:[Standard ID,Extended ID];
+                                                                 vertical:false;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">2"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID3_STD_FILTER_NUM               (<!id:CANFD0Fifo1Id3STDFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Standard ID 3 filter hexadecimal number(0x1 ~ 0x7ff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Standard ID filter hexadecimal number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">2",
+                                                                                     "CANFD0Fifo1Id3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID3_STD_FILTER_MSAK               (<!id:CANFD0Fifo1Id3STDFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Standard ID 3 filter hexadecimal mask number(0x1 ~ 0x7ff);
+                                                                 data:0x7ff;
+                                                                 default:0x7ff;
+                                                                 helper:Enter your Standard ID filter hexadecimal mask number.(ex: 0x1ff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x7ff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">2",
+                                                                                     "CANFD0Fifo1Id3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_STD"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID3_EXT_FILTER_NUM               (<!id:CANFD0Fifo1Id3EXTFilterInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Extended ID 3 filter hexadecimal number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1;
+                                                                 default:0x1;
+                                                                 helper:Enter your Extended ID filter hexadecimal number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">2",
+                                                                                     "CANFD0Fifo1Id3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_ID3_EXT_FILTER_MSAK              (<!id:CANFD0Fifo1Id3EXTFilterMaskInteger;
+                                                                 type:hextext;
+                                                                 label:Rx FIFO1 Extended ID 3 filter hexadecimal mask number(0x1 ~ 0x1fffffff);
+                                                                 data:0x1fffffff;
+                                                                 default:0x1fffffff;
+                                                                 helper:Enter your Extended ID filter hexadecimal mask number.(ex: 0x1fffff);
+                                                                 sort:false;
+                                                                 minimum:0x1;
+                                                                 maximum:0x1fffffff;
+                                                                 dependencies:[CANFD0Fifo1IdFilterElemEnCheckbox,CANFD0Fifo1IdFilterElemSelect,CANFD0Fifo1Id3FilterTypeRadio];
+                                                                 dependenciesOption:{"CANFD0Fifo1IdFilterElemEnCheckbox" : "1",
+                                                                                     "CANFD0Fifo1IdFilterElemSelect" : ">2",
+                                                                                     "CANFD0Fifo1Id3FilterTypeRadio" : "NUCODEGEN_ID_FILTER_EXT"};
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_FIFO1_INT_EN                           (<!id:CANFD0Fifo1INTSelect;
+                                                                 type:select;
+                                                                 label:Rx FIFO1 receive interrupt control;
+                                                                 data:0;
+                                                                 default:0;
+                                                                 helper:Vector:CANFD0_IRQHandler;
+                                                                 enum:[0,1];
+                                                                 optionLabels:[Disable,Enable];
+                                                                 dependencies:CANFD0Fifo1IdFilterElemEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:Fifo1ElemConfig;
+                                                                 groupName:Rx FIFO1 ID Filter Element Configuration;!>)
+
+#define NUCODEGEN_CANFD0_GLOBAL_FILTER_EN                       (<!id:CANFD0GlobalFilterEnCheckbox;
+                                                                 type:checkbox;
+                                                                 label:Set the global filter configuration control;
+                                                                 data:0;
+                                                                 default:0;
+                                                                 sort:false;
+                                                                 enum:[1];
+                                                                 optionLabels:[Enable];
+                                                                 groupId:GlobalFilterConfig;
+                                                                 groupName:Global Filter Configuration;!>)
+
+#define NUCODEGEN_CANFD0_GLOBAL_FILTER_ANFS_SEL                (<!id:CANFD0GlobalFilterANFSSelect;
+                                                                 type:select;
+                                                                 label:Accept Non-matching Frames Standard ID control;
+                                                                 data:eCANFD_REJ_NON_MATCH_FRM;
+                                                                 default:eCANFD_REJ_NON_MATCH_FRM;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[eCANFD_ACC_NON_MATCH_FRM_RX_FIFO0,eCANFD_ACC_NON_MATCH_FRM_RX_FIFO1,eCANFD_REJ_NON_MATCH_FRM];
+                                                                 optionLabels:[Accept in Rx FIFO0,Accept in Rx FIFO1,Reject];
+                                                                 dependencies:CANFD0GlobalFilterEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:GlobalFilterConfig;
+                                                                 groupName:Global Filter Configuration;!>)
+
+
+#define NUCODEGEN_CANFD0_GLOBAL_FILTER_ANFE_SEL                (<!id:CANFD0GlobalFilterANFESelect;
+                                                                 type:select;
+                                                                 label:Accept Non-matching Frames Extended ID control;
+                                                                 data:eCANFD_REJ_NON_MATCH_FRM;
+                                                                 default:eCANFD_REJ_NON_MATCH_FRM;
+                                                                 helper:;
+                                                                 sort:false;
+                                                                 enum:[eCANFD_ACC_NON_MATCH_FRM_RX_FIFO0,eCANFD_ACC_NON_MATCH_FRM_RX_FIFO1,eCANFD_REJ_NON_MATCH_FRM];
+                                                                 optionLabels:[Accept in Rx FIFO0,Accept in Rx FIFO1,Reject];
+                                                                 dependencies:CANFD0GlobalFilterEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:GlobalFilterConfig;
+                                                                 groupName:Global Filter Configuration;!>)
+
+#define NUCODEGEN_CANFD0_GLOBAL_FILTER_RRFS_SEL                (<!id:CANFD0GlobalFilterRRFSSelect;
+                                                                 type:select;
+                                                                 label:Reject Remote Frames Standard ID control;
+                                                                 data:1;
+                                                                 default:1;
+                                                                 helper:With 11-bit standard IDs;
+                                                                 sort:false;
+                                                                 enum:[0,1];
+                                                                 optionLabels:[Filter remote frames,Reject all remote frames];
+                                                                 dependencies:CANFD0GlobalFilterEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:GlobalFilterConfig;
+                                                                 groupName:Global Filter Configuration;!>)
+
+#define NUCODEGEN_CANFD0_GLOBAL_FILTER_RRFE_SEL                (<!id:CANFD0GlobalFilterRRFESelect;
+                                                                 type:select;
+                                                                 label:Reject Remote Frames Extended ID control;
+                                                                 data:1;
+                                                                 default:1;
+                                                                 helper:With 29-bit extended IDs;
+                                                                 sort:false;
+                                                                 enum:[0,1];
+                                                                 optionLabels:[Filter remote frames,Reject all remote frames];
+                                                                 dependencies:CANFD0GlobalFilterEnCheckbox;
+                                                                 dependenciesOption:1;
+                                                                 groupId:GlobalFilterConfig;
+                                                                 groupName:Global Filter Configuration;!>)
+
+#define NUCODEGEN_CANFD0_INT_EN         (<!id:CANFD0IntCheckbox;
+                                        type:checkbox;
+                                        label:CANFD0 Interrupt Control ;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[Enable CANFD0 Interrupt];
+                                        groupId:CANFD0Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_CANFD0_INT_MASK       (<!id:CANFD0INTMASKMultipleSelect;
+                                        type:multipleselect;
+                                        label:Select Interrupts;
+                                        size:5;
+                                        data:0;
+                                        default:0;
+                                        helper:Vector:CANFD0_IRQHandler;
+                                        sort:false;
+                                        enum:[CANFD_IE_PEDE_Msk,CANFD_IE_PEAE_Msk,CANFD_IE_BOE_Msk,CANFD_IE_TOOE_Msk,CANFD_IE_MRAFE_Msk];
+                                        optionLabels:[Protocol Error in Data Phase,Protocol Error in Arbitration Phase,Bus Off Status interrupt,Timeout Occurred Interrupt,Message RAM Access Failure Interrupt];
+                                        dependencies:CANFD0IntCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:CANFD0Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+#if(NUCODEGEN_CANFD0_INT_EN == 1)
+
+#if (NUCODEGEN_CANFD0_RXBUF_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO0_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO1_INT_EN == 1)
+  #define NUCODEGEN_CANFD0_INT_CONFIG_MASK  NUCODEGEN_CANFD0_INT_MASK | CANFD_IE_DRXE_Msk | CANFD_IE_RF0NE_Msk | CANFD_IE_RF1NE_Msk 
+#elif(NUCODEGEN_CANFD0_RXBUF_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO0_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO1_INT_EN == 0  )
+  #define NUCODEGEN_UART0_INT_CONFIG_MASK  NUCODEGEN_CANFD0_INT_MASK | CANFD_IE_DRXE_Msk | CANFD_IE_RF0NE_Msk 
+#elif(NUCODEGEN_CANFD0_RXBUF_INT_EN == 0 && NUCODEGEN_CANFD0_FIFO0_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO1_INT_EN == 1  )
+  #define NUCODEGEN_UART0_INT_CONFIG_MASK   NUCODEGEN_CANFD0_INT_MASK | CANFD_IE_RF0NE_Msk | CANFD_IE_RF1NE_Msk 
+#elif(NUCODEGEN_CANFD0_RXBUF_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO0_INT_EN == 0 && NUCODEGEN_CANFD0_FIFO1_INT_EN == 1  )
+  #define NUCODEGEN_UART0_INT_CONFIG_MASK   NUCODEGEN_CANFD0_INT_MASK | CANFD_IE_DRXE_Msk | CANFD_IE_RF1NE_Msk 
+#else
+ #if(NUCODEGEN_CANFD0_RXBUF_INT_EN == 1)
+   #define  NUCODEGEN_CANFD0_INT_CONFIG_MASK   NUCODEGEN_CANFD0_INT_MASK | CANFD_IE_DRXE_Msk
+ #elif (NUCODEGEN_CANFD0_FIFO0_INT_EN == 1)
+   #define  NUCODEGEN_CANFD0_INT_CONFIG_MASK   NUCODEGEN_CANFD0_INT_MASK | CANFD_IE_RF0NE_Msk
+ #elif ( NUCODEGEN_CANFD0_FIFO1_INT_EN == 1)
+   #define  NUCODEGEN_CANFD0_INT_CONFIG_MASK   NUCODEGEN_CANFD0_INT_MASK | CANFD_IE_RF1NE_Msk
+ #else
+   #define  NUCODEGEN_CANFD0_INT_CONFIG_MASK   NUCODEGEN_CANFD0_INT_MASK
+ #endif
+#endif
+
+#else
+
+#if (NUCODEGEN_CANFD0_RXBUF_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO0_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO1_INT_EN == 1)
+  #define NUCODEGEN_CANFD0_INT_CONFIG_MASK  CANFD_IE_DRXE_Msk | CANFD_IE_RF0NE_Msk | CANFD_IE_RF1NE_Msk 
+#elif(NUCODEGEN_CANFD0_RXBUF_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO0_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO1_INT_EN == 0  )
+  #define NUCODEGEN_UART0_INT_CONFIG_MASK   CANFD_IE_DRXE_Msk | CANFD_IE_RF0NE_Msk 
+#elif(NUCODEGEN_CANFD0_RXBUF_INT_EN == 0 && NUCODEGEN_CANFD0_FIFO0_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO1_INT_EN == 1  )
+  #define NUCODEGEN_UART0_INT_CONFIG_MASK   CANFD_IE_RF0NE_Msk | CANFD_IE_RF1NE_Msk 
+#elif(NUCODEGEN_CANFD0_RXBUF_INT_EN == 1 && NUCODEGEN_CANFD0_FIFO0_INT_EN == 0 && NUCODEGEN_CANFD0_FIFO1_INT_EN == 1  )
+  #define NUCODEGEN_UART0_INT_CONFIG_MASK   CANFD_IE_DRXE_Msk | CANFD_IE_RF1NE_Msk 
+#else
+ #if(NUCODEGEN_CANFD0_RXBUF_INT_EN == 1)
+   #define  NUCODEGEN_CANFD0_INT_CONFIG_MASK  CANFD_IE_DRXE_Msk
+ #elif (NUCODEGEN_CANFD0_FIFO0_INT_EN == 1)
+   #define  NUCODEGEN_CANFD0_INT_CONFIG_MASK  CANFD_IE_RF0NE_Msk
+ #else ( NUCODEGEN_CANFD0_FIFO1_INT_EN == 1)
+   #define  NUCODEGEN_CANFD0_INT_CONFIG_MASK  CANFD_IE_RF1NE_Msk
+ #endif
+#endif
+
+#endif
+
+<! clock:  {"ALL" : "CANFD0" }; !>
+
+<! pin:   {"CANFD0FunctionRadio":{ "NUCODEGEN_CANFD_FUNCSEL_CAN":    ["CAN0_TXD","CAN0_RXD"],
+                                  "NUCODEGEN_CANFD_FUNCSEL_CANFD":  ["CAN0_TXD","CAN0_RXD"]
+                                 }
+        }; !>

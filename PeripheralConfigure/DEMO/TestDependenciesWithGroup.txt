@@ -1,0 +1,489 @@
+//////////Select//////////
+<!id:UART0BaudrateSelect;
+type:select;
+label:UART0 Baud Rate;
+data:9600;
+helper:Select your UART0 baud rate;
+enum:[4800, 9600, 19200];
+optionLabels:[4800, 9600, 19200];
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+<!id:UART1BaudrateInteger;
+type:integer;
+label:UART1 Baud Rate;
+data:115200;
+helper:Enter your UART1 baud rate;
+minimum:4800;
+maximum:921600;
+dependencies:UART0BaudrateSelect;
+dependenciesOption:4800;
+groupId:group1;
+groupName:Test;!>
+<!id:TIMER0ModeSelect;
+type:select;
+label:Select TIMER0 Operation Mode;
+data:TIMER_ONESHOT_MODE;
+default:TIMER_ONESHOT_MODE;
+enum:[TIMER_ONESHOT_MODE, TIMER_PERIODIC_MODE, TIMER_TOGGLE_MODE, TIMER_CONTINUOUS_MODE];
+optionLabels:[One-shot Mode, Periodic Mode, Toggle Mode, Continuous Counting Mode];
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+<!id:TIMER0OutputPinSelect;
+type:select;
+label:Select TIMER0 Output Pin;
+data:TIMER_TOUT_PIN_FROM_TX;
+default:TIMER_TOUT_PIN_FROM_TX;
+enum:[TIMER_TOUT_PIN_FROM_TX, TIMER_TOUT_PIN_FROM_TX_EXT];
+optionLabels:[Output Pin from TX, Output Pin from TX_EXT];
+dependencies:TIMER0ModeSelect;
+dependenciesOption:TIMER_PERIODIC_MODE|TIMER_TOGGLE_MODE;
+groupId:group1;
+groupName:Test;!>
+<!id:PDMACH2Source;
+type:select;
+label:PDMA CH2 Source;
+data:PDMA_MEM;
+default:PDMA_MEM;
+enum:[	PDMA_MEM,		PDMA_UART0_RX,	PDMA_UART1_RX,	PDMA_UART2_RX,	PDMA_USCI0_RX,	PDMA_USCI1_RX,
+PDMA_QSPI0_RX,	PDMA_SPI0_RX,	PDMA_PWM0_P1_RX,PDMA_PWM0_P2_RX,PDMA_PWM0_P3_RX,
+PDMA_PWM1_P1_RX,PDMA_PWM1_P2_RX,PDMA_PWM1_P3_RX,PDMA_I2C0_RX,	PDMA_I2C1_RX,
+PDMA_TMR0,		PDMA_TMR1,		PDMA_TMR2,		PDMA_TMR3,		PDMA_ADC_RX,
+PDMA_PSIO_RX,	PDMA_USCI2_RX	];
+optionLabels:[	Memory,		UART0_RX,	UART1_RX,	UART2_RX,	USCI0_RX, USCI1_RX,
+QSPI0_RX,	SPI0_RX,		PWM0_P1_RX,		PWM0_P2_RX,		PWM0_P3_RX,
+PWM1_P1_RX, PWM1_P2_RX,		PWM1_P3_RX,		I2C0_RX,		I2C1_RX,
+TMR0,		TMR1,			TMR2,			TMR3,			ADC_RX,
+PSIO_RX, USCI2_RX];
+vertical:false;
+sort:false;
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+<!id:PDMACH2Destination1;
+type:select;
+label:PDMA CH2 Destination;
+data:;
+default:;
+enum:[PDMA_MEM];
+optionLabels:[Memory];
+vertical:false;
+sort:false;
+dependencies:PDMACH2Source;
+dependenciesOption:{"PDMACH2Source":["PDMA_UART0_RX",	"PDMA_UART1_RX",	"PDMA_UART2_RX",	"PDMA_USCI0_RX",	"PDMA_USCI1_RX",
+"PDMA_QSPI0_RX",	"PDMA_SPI0_RX",	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX",
+"PDMA_PWM1_P1_RX","PDMA_PWM1_P2_RX","PDMA_PWM1_P3_RX","PDMA_I2C0_RX",	"PDMA_I2C1_RX",
+"PDMA_TMR0",		"PDMA_TMR1",		"PDMA_TMR2",		"PDMA_TMR3",		"PDMA_ADC_RX",
+"PDMA_PSIO_RX", "PDMA_USCI2_RX"]};
+groupId:group1;
+groupName:Test;!>
+
+//////////Radio//////////
+<!id:UART0BaudrateRadio;
+type:radio;
+label:UART0 Baud Rate;
+data:115200;
+default:115200;
+helper:Select your UART0 baud rate;
+enum:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+optionLabels:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+vertical:true;
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+<!id:UART1EnableINTCheckbox;
+type:checkbox;
+label:Enable Interrupts We Want for UART1;
+data:[UART_INTEN_RXTOIEN_Msk, UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk];
+default:[UART_INTEN_RXTOIEN_Msk, UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk];
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out];
+dependencies:UART0BaudrateRadio;
+dependenciesOption:115200;
+groupId:group1;
+groupName:Test;!>
+<!id:CLK_PowerDownModeRadio;
+type:radio;
+label:Select Power Down Mode;
+data:CLK_PMUCTL_PDMSEL_PD;
+default:CLK_PMUCTL_PDMSEL_PD;
+helper:;
+sort:false;
+enum:[CLK_PMUCTL_PDMSEL_PD, CLK_PMUCTL_PDMSEL_FWPD, CLK_PMUCTL_PDMSEL_DPD];
+optionLabels:[Normal power down mode, Fast wake-up power down mode, Deep power down mode] ;
+vertical:true;
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+<!id:CLK_DPDWKPIN0Checkbox;
+type:checkbox;
+label:Enable the wake-up source of deep power-down (DPD) mode;
+data:0;
+default:0;
+enum:[1];
+optionLabels:[DPD wake-up pin0 (PC.00)];
+dependencies:CLK_PowerDownModeRadio;
+dependenciesOption:CLK_PMUCTL_PDMSEL_FWPD|CLK_PMUCTL_PDMSEL_DPD;
+groupId:group1;
+groupName:Test;!>
+
+//////////Checkbox//////////
+<!id:UART2EnableINTCheckbox;
+type:checkbox;
+label:Enable Interrupts We Want for UART2;
+data:UART_INTEN_RLSIEN_Msk;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status];
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+<!id:UART1BaudrateRadio;
+type:radio;
+label:UART1 Baud Rate;
+data:38400;
+helper:Select your UART0 baud rate;
+enum:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+optionLabels:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+vertical:false;
+dependencies:UART2EnableINTCheckbox;
+dependenciesOption:[UART_INTEN_RDAIEN_Msk,UART_INTEN_THREIEN_Msk];
+groupId:group1;
+groupName:Test;!>
+<!id:i2c0_wakeup_en; type:checkbox;
+label:Enable I2C0 wakeup function;
+data:0; default:0; helper:Enable I2C0 wake-up function;
+sort:false; enum:[1];
+optionLabels:[Enable I2C0 wakeup function];
+dependencies:UART2EnableINTCheckbox;
+dependenciesOption:UART_INTEN_RDAIEN_Msk|UART_INTEN_THREIEN_Msk;
+groupId:group1;
+groupName:Test;!>
+<!id:i2c_submode_select;
+type:radio;
+label:Select I2C0 FunctionMode;
+data:I2C0_SUBMODE_NORMAL;
+default:I2C0_SUBMODE_NORMAL;
+enum:[I2C0_SUBMODE_NORMAL, I2C0_SUBMODE_SMBUS];
+optionLabels:[Normal, SMBUS];
+dependencies:UART2EnableINTCheckbox;
+dependenciesOption:(UART_INTEN_RDAIEN_Msk|UART_INTEN_THREIEN_Msk)&UART_INTEN_RLSIEN_Msk;
+groupId:group1;
+groupName:Test;!>
+
+//////////CheckboxBoolean//////////
+<!id:A1Checkbox;
+type:checkboxBoolean;
+label:Enable shows Dep B. Disable shows Dep C.;
+data:true;
+default:true;
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+<!id:DepB1Radio;
+type:radio;
+label:Dep B;
+data:1;
+default:1;
+enum:[1,2,3,4];
+optionLabels:[1,2,3,4];
+dependencies:A1Checkbox;
+dependenciesOption:true;
+groupId:group1;
+groupName:Test;!>
+<!id:DepC1Radio;
+type:radio;
+label:Dep C;
+data:5;
+default:5;
+enum:[5,6,7,8];
+optionLabels:[5,6,7,8];
+dependencies:A1Checkbox;
+dependenciesOption:false;
+groupId:group1;
+groupName:Test;!>
+
+/////////MultipleSelect/////////
+<!id:UART1DisableINTMultipleSelect;
+type:multipleselect;
+label:Disable Interrupts We Want for UART1;
+size:5;
+data:[UART_INTEN_THREIEN_Msk];
+default:[UART_INTEN_THREIEN_Msk];
+helper:Select which interrupt to disable.;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status];
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:none;
+listener:none;
+groupId:none;
+groupName:none;
+filterExp:none;
+groupId:group1;
+groupName:Test;!>
+<!id:CLK_LxtFailDetectorIntCheckbox;
+type:checkbox;
+label:;
+data:0;
+default:0;
+helper:;
+sort:false;
+enum:[1];
+optionLabels:[Enable Lxt Fail Detector Interrupt];
+vertical:true;
+dependencies:UART1DisableINTMultipleSelect;
+dependenciesOption:UART_INTEN_RDAIEN_Msk;
+groupId:group1;
+groupName:Test;!>
+
+//////////Integer//////////
+<!id:CLK_HxtFrequencyUpperBoundInteger;
+type:integer;
+label:HXT Range Detector Upper Bound;
+data:512;
+default:512;
+helper:;
+minimum:0;
+maximum:1023;
+vertical:true;
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+<!id:CLK_HxtFrequencyDetectorIntCheckbox;
+type:checkbox;
+label:;
+data:0;
+default:0;
+helper:;
+sort:false;
+enum:[1];
+optionLabels:[Enable Hxt Frequency Detector Interrupt];
+vertical:true;
+dependencies:CLK_HxtFrequencyUpperBoundInteger;
+dependenciesOption:>512;
+groupId:group1;
+groupName:Test;!>
+<!id:ADCCmp1ChannelSelect;
+type:select;
+label:ADC Comparator 1 Channel Select;
+data:5;
+helper:Select your ADC Comparator 0 channel;
+enum:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+optionLabels:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12(band-gap), 13(temperature sensor)];
+dependencies:UseADCCMP0Boolean;
+dependencies:CLK_HxtFrequencyUpperBoundInteger;
+dependenciesOption:==512;
+groupId:group1;
+groupName:Test;!>
+<!id:ADCCmp0ConditionSelect;
+type:select;
+label:ADC Compare Condition 0;
+data:ADC_CMP_GREATER_OR_EQUAL_TO;
+helper:Select your ADC compare condition 0;
+enum:[ADC_CMP_LESS_THAN, ADC_CMP_GREATER_OR_EQUAL_TO];
+optionLabels:[less than, greater or equal to];
+dependencies:UseADCCMP0Boolean;
+dependencies:CLK_HxtFrequencyUpperBoundInteger;
+dependenciesOption:<512;
+groupId:group1;
+groupName:Test;!>
+
+/////////HexText/////////
+<!id:Timer0InputHexText;
+type:hextext;
+label:Timer0 Prescale Value;
+data:0x1289abEF;
+default:0x1289abEF;
+helper:Input text in the hexadecimal format;
+minimum:4800;
+maximum:921600;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:none;
+listener:none;
+groupId:none;
+groupName:none;
+filterExp:none;
+groupId:group1;
+groupName:Test;!>
+<!id:CLK_PowerDownCheckbox;
+type:checkbox;
+label:;
+data:0;
+default:0;
+enum:[1];
+optionLabels:[Enable PowerDown];
+dependencies:Timer0InputHexText;
+dependenciesOption:4800;
+groupId:group1;
+groupName:Test;!>
+
+//////////TwoToOne//////////
+<!id:UseADCCMP0Boolean;
+type:checkbox;
+label:Use ADC Comparator 0;
+data:1;enum:[1];
+optionLabels:[Use ADC Comparator 0];
+dependencies:none;
+groupId:group1;
+groupName:Test;!>
+<!id:ADCOperationModeSelect;
+type:select;
+label:ADC Operation Mode;
+data:ADC_OPERATION_MODE_SINGLE_CYCLE;
+helper:Select your ADC operation mode;
+enum:[ADC_OPERATION_MODE_SINGLE, ADC_OPERATION_MODE_SINGLE_CYCLE, ADC_OPERATION_MODE_CONTINUOUS];
+optionLabels:[Single, Single-Cycle, Continuous];
+dependencies:none;
+groupId:group1;
+groupName:Test;!>
+<!id:BPWM0SSRCRadio;
+type:radio;
+label:Select BPWM0 Synchronous start source;
+data:0;
+default:0;
+helper:;
+sort:false;
+enum:[BPWM_SSCTL_SSRC_PWM0, BPWM_SSCTL_SSRC_PWM1, BPWM_SSCTL_SSRC_BPWM0, BPWM_SSCTL_SSRC_BPWM1];
+optionLabels:[PWM0, PWM1, BPWM0, BPWM1];
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+<!id:ADCCmp0ChannelSelect;
+type:select;
+label:ADC Comparator 0 Channel Select;data:0;
+helper:Select your ADC Comparator 0 channel;
+enum:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+optionLabels:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12(band-gap), 13(temperature sensor)];
+dependencies:[UseADCCMP0Boolean, ADCOperationModeSelect];
+dependenciesOption:{"UseADCCMP0Boolean": "1", "ADCOperationModeSelect": "ADC_OPERATION_MODE_SINGLE_CYCLE|ADC_OPERATION_MODE_CONTINUOUS"};
+groupId:group1;
+groupName:Test;!>
+<!id:BPWM0CLKSRCSelect;
+type:select;
+label:Select BPWM0 clock source;
+data:BPWM_CLKSRC_BPWM_CLK;
+default:BPWM_CLKSRC_BPWM_CLK;
+helper:;
+sort:false;
+enum:[BPWM_CLKSRC_BPWM_CLK, BPWM_CLKSRC_TIMER0, BPWM_CLKSRC_TIMER1, BPWM_CLKSRC_TIMER2, BPWM_CLKSRC_TIMER3];
+optionLabels:[BPWM0 CLK, TIMER0, TIMER1, TIMER2, TIMER3];
+dependencies:UseADCCMP0Boolean|ADCOperationModeSelect;
+dependenciesOption:{"UseADCCMP0Boolean": "0", "ADCOperationModeSelect": "ADC_OPERATION_MODE_SINGLE"};
+groupId:group1;
+groupName:Test;!>
+<!id:BPWM0CH0UNITTIMEInteger;
+type:integer;
+label:The BPWM0 CH0 unit time of counter(nano sec);
+data:80;
+default:80;
+helper:Enter unit time of counter(MAX is).;
+sort:false;
+minimum:0;
+maximum:20000;
+dependencies:(UseADCCMP0Boolean|ADCOperationModeSelect)&BPWM0SSRCRadio;
+dependenciesOption:{
+	"UseADCCMP0Boolean": "1",
+	"ADCOperationModeSelect": "ADC_OPERATION_MODE_SINGLE",
+	"BPWM0SSRCRadio":"BPWM_SSCTL_SSRC_PWM0"};
+groupId:group1;
+groupName:Test;!>
+
+//////////Chain//////////
+<!id:usci0_mode_select;
+type:radio;
+label:USCI0 mode;
+data:0;
+default:0;
+helper:Select USCI0 protocol;
+sort:false;
+enum:[NUCODEGEN_USCI_MODE_I2C, NUCODEGEN_USCI_MODE_UART, NUCODEGEN_USCI_MODE_SPI];
+optionLabels:[I2C, UART, SPI];
+vertical:false;
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+
+<!id:CLK_HxtFrequencyUpperBoundInteger1;
+type:integer;
+label:HXT Range Detector Upper Bound;
+data:512;
+default:512;
+helper:;
+minimum:0;
+maximum:1023;
+vertical:true;
+dependencies:UART0BaudrateSelect;
+dependenciesOption:9600;
+groupId:group1;
+groupName:Test;!>
+
+<!id:UART0BaudrateSelect;
+type:select;
+label:UART0 Baud Rate;
+data:9600;
+helper:Select your UART0 baud rate;
+enum:[4800, 9600, 19200];
+optionLabels:[4800, 9600, 19200];
+dependencies:usci0_mode_select;
+dependenciesOption:NUCODEGEN_USCI_MODE_I2C;
+groupId:group1;
+groupName:Test;!>
+
+//////////Complicated Chain//////////
+<!id:UseADCCMP0Boolean;
+type:checkbox;
+label:Use ADC Comparator 0;
+data:1;enum:[1];
+optionLabels:[Use ADC Comparator 0];
+dependencies:none;
+groupId:group1;
+groupName:Test;!>
+
+<!id:ADCCmp0ChannelSelect1;
+type:select;
+label:ADC Comparator 0 Channel Select;data:5;
+helper:Select your ADC Comparator 0 channel;
+enum:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+optionLabels:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12(band-gap), 13(temperature sensor)];
+dependencies:[UseADCCMP0Boolean, ADCOperationModeSelect1];
+dependenciesOption:{"UseADCCMP0Boolean": "1", "ADCOperationModeSelect1": "ADC_OPERATION_MODE_SINGLE"};
+groupId:group1;
+groupName:Test;!>
+
+<!id:ADCOperationModeSelect1;
+type:select;
+label:ADC Operation Mode;
+data:ADC_OPERATION_MODE_CONTINUOUS;
+helper:Select your ADC operation mode;
+enum:[ADC_OPERATION_MODE_SINGLE, ADC_OPERATION_MODE_SINGLE_CYCLE, ADC_OPERATION_MODE_CONTINUOUS];
+optionLabels:[Single, Single-Cycle, Continuous];
+dependencies:ui2c0_timeout_cnt;
+dependenciesOption:512;
+groupId:group1;
+groupName:Test;!>
+
+<!id:ui2c0_timeout_cnt; type:integer;
+label:; data:;
+default:;
+helper:imeout counter. Valid values are between 0 ~ 1023;
+minimum:0x0;
+maximum:1023;
+dependencies:none;
+dependenciesOption:1;
+groupId:group1;
+groupName:Test;!>

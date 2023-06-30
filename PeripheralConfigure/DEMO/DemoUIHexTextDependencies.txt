@@ -1,0 +1,26 @@
+/////////HexText/////////
+<!id:Timer0InputHexText;
+type:hextext;
+label:Timer0 Prescale Value;
+data:0x1289abEF;
+default:0x1289abEF;
+helper:Input text in the hexadecimal format;
+minimum:4800;
+maximum:921600;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:none;
+listener:none;
+groupId:none;
+groupName:none;
+filterExp:none;!>
+<!id:CLK_PowerDownCheckbox;
+type:checkbox;
+label:;
+data:0;
+default:0;
+enum:[1];
+optionLabels:[Enable PowerDown];
+dependencies:Timer0InputHexText;
+dependenciesOption:4800;!>

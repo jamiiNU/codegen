@@ -1,0 +1,29 @@
+/* --------------------------------------------------------------------
+ *  FMC
+ * ---------------------------------------------------------------------*/
+
+#define NUCODEGEN_FMC_UI                    0
+#if (NUCODEGEN_FMC_UI)
+ /* --------------------------------------------------------------------
+ * IP UI configuration
+ * ---------------------------------------------------------------------*/
+#endif /* NUCODEGEN_FMC_UI */
+ <!
+ filter:{
+         "M253": {
+		              "APROM_SUPPORT":  "1",  "LDROM_SUPPORT":  "1",  "SPROM_SUPPORT":  "0",  "KPROM_SUPPORT":  "0",  "CONFIG_SUPPORT": "1"
+				   }
+
+        };!>
+
+#if (NUCODEGEN_FMC_UI)
+/* --------------------------------------------------------------------
+ * FMC ISP & Flash update regions
+ * ---------------------------------------------------------------------*/
+#endif
+#define NUCODEGEN_FMC_ISPEN                   <!id:NUCODEGENFMCIspEnBoolean;      type:checkbox;    label:FMC ISP enable.;                   data:0;         default:0;           enum:[1];    optionLabels:[<br>];        dependencies:none;     dependenciesOption:;     groupId:FMC;   groupName:FMC configuration;!>
+#define NUCODEGEN_FMC_APROMEN                 <!id:NUCODEGENFMCApromMEnBoolean;   type:checkbox;    label:APROM update enable.;              data:0;         default:0;           enum:[1];    optionLabels:[<br>];        dependencies:none;     dependenciesOption:1;    groupId:FMC;   groupName:FMC configuration;    filterExp:APROM_SUPPORT>0;!>
+#define NUCODEGEN_FMC_LDROMEN                 <!id:NUCODEGENFMCLdromEnBoolean;    type:checkbox;    label:LDROM update enable.;              data:0;         default:0;           enum:[1];    optionLabels:[<br>];        dependencies:none;     dependenciesOption:1;    groupId:FMC;   groupName:FMC configuration;    filterExp:LDROM_SUPPORT>0;!>
+#define NUCODEGEN_FMC_SPROMEN                 <!id:NUCODEGENFMCSpromEnBoolean;    type:checkbox;    label:SPROM update enable.;              data:0;         default:0;           enum:[1];    optionLabels:[<br>];        dependencies:none;     dependenciesOption:1;    groupId:FMC;   groupName:FMC configuration;    filterExp:SPROM_SUPPORT>0;!>
+#define NUCODEGEN_FMC_KPROMEN                 <!id:NUCODEGENFMCKpromEnBoolean;    type:checkbox;    label:KPROM update enable.;              data:0;         default:0;           enum:[1];    optionLabels:[<br>];        dependencies:none;     dependenciesOption:1;    groupId:FMC;   groupName:FMC configuration;    filterExp:KPROM_SUPPORT>0;!>
+#define NUCODEGEN_FMC_CONFIGEN                <!id:NUCODEGENFMCConfigEnBoolean;   type:checkbox;    label:CONFIG update enable.;             data:0;         default:0;           enum:[1];    optionLabels:[<br>];        dependencies:none;     dependenciesOption:1;    groupId:FMC;   groupName:FMC configuration;    filterExp:CONFIG_SUPPORT>0;!>

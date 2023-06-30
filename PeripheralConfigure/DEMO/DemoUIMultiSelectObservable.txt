@@ -1,0 +1,50 @@
+<1!id:UART1DisableINTMultipleSelect;
+type:multipleselect;
+label:Disable Interrupts We Want for UART1;
+size:5;
+data:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk];
+default:[UART_INTEN_THREIEN_Msk];
+helper:Select which interrupt to disable.;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status];
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:none;
+listener:none;
+groupId:none;
+groupName:none;
+filterExp:none;!1>
+#define HIDDEN_EX <1!id:MultipleSelectHidden;
+type:hidden;
+data:100U;
+default:1U;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': '0U',
+'UART_INTEN_THREIEN_Msk': '1U',
+'UART_INTEN_RLSIEN_Msk': '2U',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk': '10U',
+'UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk': '11U',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk': '100U'};!1>
+
+<!id:TIMER0TriggerTargetMultipleSelect;
+type:multipleselect;
+label:Select TIMER0 Trigger Target;
+size:4;
+data:TIMER_TRGCTL_TRGPDMA_Msk;
+default:TIMER_TRGCTL_TRGPDMA_Msk;
+sort:false;
+enum:[TIMER_TRGCTL_TRGPDMA_Msk, TIMER_TRGCTL_TRGDAC_Msk, TIMER_TRGCTL_TRGEADC_Msk, TIMER_TRGCTL_TRGPWM_Msk];
+optionLabels:[TIMER0 Trigger PDMA, TIMER0 Trigger DAC, TIMER0 Trigger EADC, TIMER0 Trigger PWM];
+dependencies:none;
+dependenciesOption:1;!>
+#define HIDDEN_EX1 <!id:MultipleSelectHidden;
+type:hidden;
+data:1U;
+default:1U;
+observable:TIMER0TriggerTargetMultipleSelect;
+listener:{
+'NUC_ANY': '1U',
+'NUC_NONE': '0U'};!>

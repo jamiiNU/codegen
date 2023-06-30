@@ -1,0 +1,68 @@
+<!id:UART1EnableINTCheckbox;
+type:checkbox;
+label:Enable Interrupts We Want for UART1;
+data:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+default:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+helper:Enable Interrupt We Want for UART1;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out];
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Group 1;!>
+
+<!id:i2c0_wakeup_en; type:checkbox;
+label:Enable I2C0 wakeup function;
+data:0; default:0; helper:Enable I2C0 wake-up function;
+sort:false; enum:[1];
+optionLabels:[Enable I2C0 wakeup function];
+dependencies:UART1EnableINTCheckbox;
+dependenciesOption:UART_INTEN_RDAIEN_Msk;
+groupId:group2;
+groupName:Group 2;!>
+
+<!id:CRCModeSelect;
+type:select;
+label:Select CRC Operation Polynomial Mode;
+data:CRC_CCITT;
+default:CRC_CCITT;
+enum:[CRC_CCITT, CRC_8, CRC_16, CRC_32];
+optionLabels:[CRC-CCITT, CRC-8, CRC-16, CRC-32];
+dependencies:none;
+dependenciesOption:none;
+observable:UART1EnableINTCheckbox;
+listener:{
+'UART_INTEN_RDAIEN_Msk': 'CRC_CCITT',
+'UART_INTEN_THREIEN_Msk': 'CRC_8',
+'UART_INTEN_RLSIEN_Msk': 'CRC_16',
+'UART_INTEN_MODEMIEN_Msk': 'CRC_32'};
+groupId:group2;
+groupName:Group 1;!>
+
+<!id:BPWM0CapUnitTimeInterger;
+type:integer;
+label:The unit time of counter(ns). ;
+data:1000;
+default:1000;
+helper: It is limited by clock source.;
+minimum:10;
+maximum:1000000000;
+dependencies:UseBPWM0CH0ENCapBoolean;
+dependenciesOption:{"UseBPWM0CH0ENCapBoolean":"true","UseBPWM0CH1ENCapBoolean":"true",
+"UseBPWM0CH2ENCapBoolean":"true","UseBPWM0CH3ENCapBoolean":"true",
+"UseBPWM0CH4ENCapBoolean":"true","UseBPWM0CH5ENCapBoolean":"true"};
+groupId:GroupBPWM0Cap;
+groupName:BPWM0 Capture Configuration;
+!>
+
+<!id:UseBPWM0CH0ENCapBoolean;
+type:checkbox;
+label:Enable BPWM0 CH0;
+data:false;
+default:false;
+dependencies:none;
+dependenciesOption:1;
+groupId:GroupBPWM0Cap0;
+groupName:BPWM0 CH0 Capture Configuration;
+!>

@@ -1,0 +1,128 @@
+int main(void)
+{
+    /* Init System, IP clock and multi-function I/O */
+    SYS_Init();
+    /* Init UART0 for printf */
+    UART0_Init();
+
+    /* Init UART1 */
+    UART1_Init();
+
+    /*---------------------------------------------------------------------------------------------------------*/
+    /* SAMPLE CODE                                                                                             */
+    /*---------------------------------------------------------------------------------------------------------*/
+
+    printf("\n\nCPU @ %dHz\n", SystemCoreClock);
+
+    printf("+---------------------+\n");
+    printf("| UART function test  |\n");
+    printf("+---------------------+\n");
+
+    UART_FunctionTest();
+
+    while(1);
+}
+
+void UART0_Init()
+{
+    /*---------------------------------------------------------------------------------------------------------*/
+    /* Init UART                                                                                               */
+    /*---------------------------------------------------------------------------------------------------------*/
+    UART_Open(UART0, <!id:UART0BaudrateSelect;type:select;label:UART0 Baud Rate;data:9600;helper:Select your UART0 baud rate.;enum:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];optionLabels:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];!>);
+}
+
+void UART1_Init()
+{
+    /*---------------------------------------------------------------------------------------------------------*/
+    /* Init UART                                                                                               */
+    /*---------------------------------------------------------------------------------------------------------*/
+    UART_Open(UART1, <!id:UART1BaudrateInteger;type:integer;label:UART1 Baud Rate;data:4800;helper:Enter your UART1 baud rate;minimum:4800;maximum:921600;!>);
+}
+
+/*---------------------------------------------------------------------------------------------------------*/
+/*  UART Function Test                                                                                     */
+/*---------------------------------------------------------------------------------------------------------*/
+void UART_FunctionTest()
+{
+    printf("+-----------------------------------------------------------+\n");
+    printf("|  UART Function Test                                       |\n");
+    printf("+-----------------------------------------------------------+\n");
+    printf("|  Description :                                            |\n");
+    printf("|    The sample code will print input char on terminal      |\n");
+    printf("|    Please enter any to start     (Press '0' to exit)      |\n");
+    printf("+-----------------------------------------------------------+\n");
+
+    /*
+        Using a RS232 cable to connect UAR1 and PC.
+        UART0 is set to debug port. UART1 is enable RDA and RLS interrupt.
+        When inputting char to terminal screen, RDA interrupt will happen and
+        UART0 will print the received char on screen.
+    */
+
+    /* Enable Interrupt and install the call back function */
+    UART_ENABLE_INT(UART1, (<!id:UART1EnableINTCheckbox;type:checkbox;label:Enable Interrupts We Want for UART1;data:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk];enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKCTSIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, UART Wake-Up Function, LIN RX Break Field Detected, Time-Out Counter, RTS Auto Flow Control, CTS Auto Flow Control, TX DMA, RX DMA];!>));
+    NVIC_EnableIRQ(UART1_IRQn);
+    while(g_bWait);
+
+    /* Disable Interrupt */
+    UART_DISABLE_INT(UART1, (<!id:UART1DisableINTMultipleSelect;type:multipleselect;label:Disable Interrupts We Want for UART1;size:5;data:[UART_INTEN_RDAIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKCTSIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, UART Wake-Up Function, LIN RX Break Field Detected, Time-Out Counter, RTS Auto Flow Control, CTS Auto Flow Control, TX DMA, RX DMA];!>));
+    NVIC_DisableIRQ(UART1_IRQn);
+    g_bWait =TRUE;
+    printf("\nUART Sample Demo End.\n");
+}
+
+/*---------------------------------------------------------------------------------------------------------*/
+/* ISR to handle UART Channel 0 interrupt event                                                            */
+/*---------------------------------------------------------------------------------------------------------*/
+void UART1_IRQHandler(void)
+{
+    UART_TEST_HANDLE();
+}
+
+/*---------------------------------------------------------------------------------------------------------*/
+/* UART Callback function                                                                                  */
+/*---------------------------------------------------------------------------------------------------------*/
+void UART_TEST_HANDLE()
+{
+    uint8_t u8InChar=0xFF;
+    uint32_t u32IntSts= UART1->INTSTS;
+
+    <#id:UART1EnableINTCheckbox;data:UART_INTEN_RDAIEN_Msk;#>
+    if(u32IntSts & UART_INTSTS_RDAINT_Msk) {
+        printf("\nInput:");
+
+        /* Get all the input characters */
+        while(UART_IS_RX_READY(UART1)) {
+            /* Get the character from UART Buffer */
+            u8InChar = UART_READ(UART1);           /* Rx trigger level is 1 byte*/
+
+            printf("%c ", u8InChar);
+
+            if(u8InChar == '0') {
+                g_bWait = FALSE;
+            }
+
+            /* Check if buffer full */
+            if(g_u32comRbytes < RXBUFSIZE) {
+                /* En-queue the character */
+                g_u8RecData[g_u32comRtail] = u8InChar;
+                g_u32comRtail = (g_u32comRtail == (RXBUFSIZE-1)) ? 0 : (g_u32comRtail+1);
+                g_u32comRbytes++;
+            }
+        }
+        printf("\nTransmission Test:");
+    }
+    <##id:UART1EnableINTCheckbox;##>
+    <#id:UART1EnableINTCheckbox;data:UART_INTEN_THREIEN_Msk;#>
+    if(u32IntSts & UART_INTSTS_THREINT_Msk) {
+        uint16_t tmp;
+        tmp = g_u32comRtail;
+        if(g_u32comRhead != tmp) {
+            u8InChar = g_u8RecData[g_u32comRhead];
+            UART_WRITE(UART1,u8InChar);
+            g_u32comRhead = (g_u32comRhead == (RXBUFSIZE-1)) ? 0 : (g_u32comRhead+1);
+            g_u32comRbytes--;
+        }
+    }
+    <##id:UART1EnableINTCheckbox;##>
+}

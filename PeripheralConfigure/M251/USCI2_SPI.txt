@@ -1,0 +1,302 @@
+/*--------------------------------------------------------------------------*/
+/* USCI2_SPI Configuration                                                  */
+/*--------------------------------------------------------------------------*/
+
+ <!
+ filter:{
+          "M252_C": {
+                       "USPI2_WAKEUP_FUNC":           "0",
+                       "USPI2_SS_EN":                 "0",
+                       "USPI2_AUTOSS_EN":             "0",
+                       "USPI2_SS_LEVEL_SET":          "0",
+                       "USPI2_3WIRE_FUNC":            "0",
+                       "USPI2_INT_SEL":               "0"                       
+                    },
+          "M252_D": {
+                       "USPI2_WAKEUP_FUNC":           "1",
+                       "USPI2_SS_EN":                 "1",
+                       "USPI2_AUTOSS_EN":             "1",
+                       "USPI2_SS_LEVEL_SET":          "1",
+                       "USPI2_3WIRE_FUNC":            "1",
+                       "USPI2_INT_SEL":               "1"
+                    },
+          "M252_G": {
+                       "USPI2_WAKEUP_FUNC":           "1",
+                       "USPI2_SS_EN":                 "1",
+                       "USPI2_AUTOSS_EN":             "1",
+                       "USPI2_SS_LEVEL_SET":          "1",
+                       "USPI2_3WIRE_FUNC":            "1",
+                       "USPI2_INT_SEL":               "1"
+                    },  
+          "M252_E": {
+                       "USPI2_WAKEUP_FUNC":           "1",
+                       "USPI2_SS_EN":                 "1",
+                       "USPI2_AUTOSS_EN":             "1",
+                       "USPI2_SS_LEVEL_SET":          "1",
+                       "USPI2_3WIRE_FUNC":            "1",
+                       "USPI2_INT_SEL":               "1"
+                    }                       
+        };!>
+		
+<! clock: {"ALL" : "USCI2" }; !>
+<! pin:   {"USPI2_NormalPinConfigHidden":{"NUCODEGEN_USPI2_PIN_NORMAL":["USCI2_DAT0", "USCI2_DAT1", "USCI2_CTL0","USCI2_CLK"]},
+           "USPI2_3WIREPinConfigHidden":{"NUCODEGEN_USPI2_PIN_3WIRE":["USCI2_DAT0", "USCI2_DAT1","USCI2_CLK"]},
+           "USPI2_HalfduplexPinConfigHidden":{"NUCODEGEN_USPI2_PIN_HALFDUPLEX":["USCI2_DAT0", "USCI2_CTL0","USCI2_CLK"]}};
+!>
+
+#define NUCODEGEN_USPI2_MASTER_SLAVE     (<!id:USPI2MasterSlave;
+                                            type:radio;
+                                            label:Select master/slave mode;
+                                            data:USPI_MASTER;
+                                            default:USPI_MASTER;
+                                            enum:[USPI_MASTER, USPI_SLAVE];
+                                            optionLabels:[Master, Slave];
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                        !>)
+#define NUCODEGEN_USPI2_TIME_MODE        (<!id:USPI2Mode;
+                                            type:radio;
+                                            label:Select transfer timing;
+                                            data:USPI_MODE_0;
+                                            default:USPI_MODE_0;
+                                            enum:[  USPI_MODE_0, USPI_MODE_1, USPI_MODE_2, USPI_MODE_3];
+                                            optionLabels:[  Mode 0, Mode 1, Mode 2, Mode 3];
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                        !>)                                                             
+#define NUCODEGEN_USPI2_DATAWIDTH        (<!id:USPI2DataWidth;
+                                            type:select;
+                                            label:Select data width;
+                                            data:16;
+                                            default:16;
+                                            enum:[4, 5 ,6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+                                            optionLabels:[4-bits, 5-bits, 6-bits, 7-bits, 8-bits, 9-bits, 10-bits, 11-bits, 12-bits, 13-bits, 14-bits, 15-bits, 16-bits];
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                        !>)
+#define NUCODEGEN_USPI2_BUSCLOCK         (<!id:USPI2BusClock;
+                                            type:integer;
+                                            label:Set bus clock;
+                                            data:2000000;
+                                            default:2000000;
+                                            helper:Enter bus clock 2,000,000~24,000,000 Hz;
+                                            minimum:23438;
+                                            maximum:24000000;
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                        !>)     
+#define NUCODEGEN_USPI2_3WIRE_EN         (<!id:USPI23WireModeEn;
+                                            type:radio;
+                                            label:Enable 3 wire mode;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[ Disable, Enable];
+                                            dependencies:USPI2MasterSlave;
+                                            dependenciesOption:USPI_SLAVE;
+                                            filterExp:USPI2_3WIRE_FUNC>0;
+                                        !>)                                     
+
+#define NUCODEGEN_USPI2_HALF_DUPLEX_EN       (<!id:USPI2HalfDuplexEn;
+                                            type:radio;
+                                            label:Enable half duplex function;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[ Disable, Enable];
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                        !>)
+#define NUCODEGEN_USPI2_DATA_DIR         (<!id:USPI2DataDirection;
+                                            type:radio;
+                                            label:Select data direction;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[ Input Mode, Output Mode];
+                                            dependencies:USPI2HalfDuplexEn;
+                                            dependenciesOption:1;
+                                        !>)         
+
+#define NUCODEGEN_USPI2_MASTER_SS_LEVEL         (<!id:USPI2MasterSSLevel;
+                                            type:radio;
+                                            label:Select SS active level;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[Active High, Active Low];
+                                            vertical:false;
+                                            sort:false;
+                                            dependencies:USPI2MasterSlave;
+                                            dependenciesOption:USPI_MASTER;
+                                            filterExp:USPI2_SS_LEVEL_SET>0;
+                                        !>)
+
+#define NUCODEGEN_USPI2_SLAVE_SS_LEVEL         (<!id:USPI2SlaveSSLevel;
+                                            type:radio;
+                                            label:Select SS active level;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[Active High, Active Low];
+                                            vertical:false;
+                                            sort:false;
+                                            dependencies:USPI2MasterSlave;
+                                            dependenciesOption:USPI_SLAVE;
+                                            filterExp:USPI2_SS_LEVEL_SET>0;
+                                        !>)											
+										
+#define NUCODEGEN_USPI2_AUTOSS_EN        (<!id:USPI2AutoSSEn;
+                                            type:radio;
+                                            label:Enable auto SS;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[Disable, Enable];
+                                            vertical:false;
+                                            sort:false;
+                                            dependencies:USPI2MasterSlave;
+                                            dependenciesOption:USPI_MASTER;
+                                            filterExp:USPI2_AUTOSS_EN>0;
+                                        !>)
+#define NUCODEGEN_USPI2_SS_EN                (<!id:USPI2SSEn;
+                                            type:radio;
+                                            label:Enable SS function;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[Disable, Enable];
+                                            vertical:false;
+                                            sort:false;
+                                            dependencies:USPI2AutoSSEn;
+                                            dependenciesOption:0;
+                                            filterExp:USPI2_SS_EN>0;
+                                        !>)                                         
+                                        
+#define NUCODEGEN_USPI2_ORDER            (<!id:USPI2Order;
+                                            type:radio;
+                                            label:Select transfer sequence with MSB/LSB;
+                                            data:1;
+                                            default:1;
+                                            enum:[1, 0];
+                                            optionLabels:[MSB, LSB];
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                        !>) 
+#define NUCODEGEN_USPI2_TX_PDMA_EN       (<!id:USPI2TxPDMAEn;
+                                            type:radio;
+                                            label:Enable Tx PDMA function;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[Disable, Enable];
+                                            vertical:false;
+                                            sort:false;
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                        !>)
+#define NUCODEGEN_USPI2_RX_PDMA_EN       (<!id:USPI2RxPDMAEn;
+                                            type:radio;
+                                            label:Enable Rx PDMA function;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[Disable, Enable];
+                                            vertical:false;
+                                            sort:false;
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                        !>)
+#define NUCODEGEN_USPI2_WAKE_UP_EN       (<!id:USPI2WAKEUPEn;
+                                            type:radio;
+                                            label:Enable wake up function;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[Disable, Enable];
+                                            vertical:false;
+                                            sort:false;
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                            filterExp:USPI2_WAKEUP_FUNC>0;
+                                        !>)                                         
+#define NUCODEGEN_USPI2_INT_EN           (<!id:USPI2INTEn;
+                                            type:radio;
+                                            label:Enable interrupt function;
+                                            data:0;
+                                            default:0;
+                                            enum:[0, 1];
+                                            optionLabels:[Disable, Enable];
+                                            vertical:false;
+                                            sort:false;
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                        !>) 
+#define NUCODEGEN_USPI2_INT_SEL         <!id:USPI2INTSel;
+                                            type:multipleselect;
+                                            label:Select interrupts;
+                                            data:0;
+                                            default:;
+											helper:USPI_SLVTO_INT only act in Slave mode.;
+                                            enum:[USPI_SLVTO_INT_MASK, 
+                                                    USPI_TXUDR_INT_MASK, USPI_RXOV_INT_MASK, USPI_TXST_INT_MASK, USPI_TXEND_INT_MASK,
+                                                    USPI_RXST_INT_MASK, USPI_RXEND_INT_MASK];
+                                            optionLabels:[USPI_SLVTO_INT,
+                                                    USPI_TXUDR_INT, USPI_RXOV_INT, USPI_TXST_INT, USPI_TXEND_INT,
+                                                    USPI_RXST_INT, USPI_RXEND_INT];
+                                            dependencies:USPI2INTEn;
+                                            dependenciesOption:1;
+                                            filterExp:USPI2_INT_SEL==0;
+                                        !><!id:USPI2INTSel;
+                                            type:multipleselect;
+                                            label:Select interrupts;
+                                            data:0;
+                                            default:;
+											helper:USPI_SSINACT_INT, USPI_SSACT_INT, USPI_SLVTO_INT, USPI_SLVBE_INT only act in Slave mode.;
+                                            enum:[USPI_SSINACT_INT_MASK, USPI_SSACT_INT_MASK, USPI_SLVTO_INT_MASK, USPI_SLVBE_INT_MASK,
+                                                    USPI_TXUDR_INT_MASK, USPI_RXOV_INT_MASK, USPI_TXST_INT_MASK, USPI_TXEND_INT_MASK,
+                                                    USPI_RXST_INT_MASK, USPI_RXEND_INT_MASK];
+                                            optionLabels:[USPI_SSINACT_INT, USPI_SSACT_INT, USPI_SLVTO_INT, USPI_SLVBE_INT,
+                                                    USPI_TXUDR_INT, USPI_RXOV_INT, USPI_TXST_INT, USPI_TXEND_INT,
+                                                    USPI_RXST_INT, USPI_RXEND_INT];
+                                            dependencies:USPI2INTEn;
+                                            dependenciesOption:1;
+                                            filterExp:USPI2_INT_SEL==1;
+                                        !> 
+
+#define NUCODEGEN_USPI2_PIN_NORMAL                    0
+#define NUCODEGEN_USPI2_PIN_HALFDUPLEX                1                                     
+#define NUCODEGEN_USPI2_PIN_3WIRE                     2
+
+
+
+#define NUCODEGEN_USPI2_PIN_CONFIG               <!id:USPI2_NormalPinConfigHidden; 
+                                                    type:hidden;
+                                                    data:NUCODEGEN_USPI2_PIN_NORMAL;
+                                                    default:NUCODEGEN_USPI2_PIN_NORMAL; 
+                                                    observable:USPI2MasterSlave;
+                                                    listener:{"USPI_MASTER"  : "NUCODEGEN_USPI2_PIN_NORMAL",
+                                                              "USPI_SLAVE"  : "NUCODEGEN_USPI2_PIN_NORMAL"};
+                                                    dependencies:[USPI23WireModeEn, USPI2HalfDuplexEn];
+                                                    dependenciesOption:{"USPI23WireModeEn":"0",
+                                                                        "USPI2HalfDuplexEn":"0"};
+                                                    dependenciesDefault:false;
+                                                !><!id:USPI2_3WIREPinConfigHidden; 
+                                                    type:hidden;
+                                                    data:NUCODEGEN_USPI2_PIN_3WIRE;
+                                                    default:NUCODEGEN_USPI2_PIN_3WIRE; 
+                                                    observable:USPI23WireModeEn;
+                                                    listener:{"1"  : "NUCODEGEN_USPI2_PIN_3WIRE"};
+                                                    dependencies:[USPI23WireModeEn];
+                                                    dependenciesOption:{"USPI23WireModeEn":"1"};
+                                                    dependenciesDefault:false;
+                                                !><!id:USPI2_HalfduplexPinConfigHidden; 
+                                                    type:hidden;
+                                                    data:NUCODEGEN_USPI2_PIN_HALFDUPLEX;
+                                                    default:NUCODEGEN_USPI2_PIN_HALFDUPLEX; 
+                                                    observable:USPI2HalfDuplexEn;
+                                                    listener:{"1"  : "NUCODEGEN_USPI2_PIN_HALFDUPLEX"};
+                                                    dependencies:[USPI2HalfDuplexEn];
+                                                    dependenciesOption:{"USPI2HalfDuplexEn":"1"};
+                                                    dependenciesDefault:false;
+                                                    !>

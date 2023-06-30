@@ -1,0 +1,187 @@
+<!id:UART1DisableINTMultipleSelect;
+type:multipleselect;
+label:Disable Interrupts We Want for UART1;
+size:5;
+data:0;
+default:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk];
+helper:Select which interrupt to disable.;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status];
+dependencies:none;
+dependenciesOption:none;!>
+
+#define HIDDEN_EX1 <!id:Uart2Hidden;
+type:hidden;
+data:0;
+default:1;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': '123',
+'UART_INTEN_THREIEN_Msk': '456',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk': '123456',
+'NUC_ANY': '1',
+'NUC_NONE': '0'};!>
+
+<!id:UART0BaudrateSelect;
+type:select;
+label:UART0 Baud Rate;
+data:4800;
+default:57600;
+helper:Select your UART0 baud rate;
+sort:false;
+enum:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+optionLabels:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': '4800',
+'UART_INTEN_THREIEN_Msk': '9600',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk': '19200',
+'NUC_ANY': '57600',
+'NUC_NONE': '115200'};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>
+
+<!id:UART0BaudrateRadio;
+type:radio;
+label:UART0 Baud Rate;
+data:4800;
+default:57600;
+helper:Select your UART0 baud rate;
+sort:false;
+enum:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+optionLabels:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+vertical:true;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': '4800',
+'UART_INTEN_THREIEN_Msk': '9600',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk': '19200',
+'NUC_ANY': '57600',
+'NUC_NONE': '115200'};
+groupId:group1;
+groupName:Group 1;
+filterExp:none;
+filterDefault:true;!>
+
+<!id:UART1EnableINTCheckbox;
+type:checkbox;
+label:Enable Interrupts We Want for UART1;
+data:0;
+default:UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk;
+helper:Enable Interrupt We Want for UART1;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKCTSIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, UART Wake-Up Function, LIN RX Break Field Detected, Time-Out Counter, RTS Auto Flow Control, CTS Auto Flow Control, TX DMA, RX DMA];
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': 'UART_INTEN_RDAIEN_Msk',
+'UART_INTEN_THREIEN_Msk': 'UART_INTEN_THREIEN_Msk',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk': 'UART_INTEN_RLSIEN_Msk',
+'NUC_ANY': 'UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk',
+'NUC_NONE': 'UART_INTEN_RDAIEN_Msk,UART_INTEN_THREIEN_Msk'};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>
+
+<!id:UART1EnableINTCheckboxBoolean;
+type:checkboxBoolean;
+label:Enable Interrupts We Want for UART1;
+data:false;
+default:true;
+helper:Enable Interrupt We Want for UART1;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': 'true',
+'UART_INTEN_THREIEN_Msk': 'false',
+'NUC_ANY': 'true',
+'NUC_NONE': 'false'};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>
+
+<!id:UART1DisableINTMultipleSelect111;
+type:multipleselect;
+label:Disable Interrupts We Want for UART1;
+size:5;
+data:0;
+default:UART_INTEN_RLSIEN_Msk;
+helper:Select which interrupt to disable.;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKCTSIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, UART Wake-Up Function, LIN RX Break Field Detected, Time-Out Counter, RTS Auto Flow Control, CTS Auto Flow Control, TX DMA, RX DMA];
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': 'UART_INTEN_RDAIEN_Msk',
+'UART_INTEN_THREIEN_Msk': 'UART_INTEN_THREIEN_Msk',
+'NUC_ANY': 'UART_INTEN_RLSIEN_Msk',
+'NUC_NONE': ''};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>
+
+<!id:UART1BaudrateInteger;
+type:integer;
+label:UART1 Baud Rate;
+data:4800;
+default:921600;
+helper:Enter your UART1 baud rate;
+minimum:4800;
+maximum:921600;
+validate:true;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': '11520',
+'UART_INTEN_THREIEN_Msk': '115200',
+'NUC_ANY': '921600',
+'NUC_NONE': '4800'};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>
+
+<!id:Timer0InputHexText;
+type:hextext;
+label:Timer0 Prescale Value;
+data:0x4800;
+default:0x921600;
+helper:Input text in the hexadecimal format;
+minimum:4800;
+maximum:921600;
+validate:true;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': '0x11520',
+'UART_INTEN_THREIEN_Msk': '0x115200',
+'NUC_ANY': '0x921600',
+'NUC_NONE': '0x4800'};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>

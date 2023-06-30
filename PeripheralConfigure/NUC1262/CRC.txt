@@ -1,0 +1,53 @@
+<!clock: {"ALL" : "CRC"};
+  pin:   {"ALL" : [""]};
+!>
+/*--------------------------------------------------------------------------*/
+/* CRC Configuration                                                        */
+/*--------------------------------------------------------------------------*/
+
+/* Select CRC Polynomial Mode */
+#define NUCODEGEN_CRC_MODE              (<!id:CRCModeRadio;
+                                        type:radio;
+                                        label:Select CRC polynomial mode;
+                                        data:CRC_CCITT;
+                                        default:CRC_CCITT;
+                                        enum:[CRC_CCITT, CRC_8, CRC_16, CRC_32];
+                                        optionLabels:[CRC-CCITT, CRC-8, CRC-16, CRC-32];
+                                        dependencies:none;
+                                        dependenciesOption:none;!>)
+
+/* Configure CRC Write Data Attribute */
+#define NUCODEGEN_CRC_ATTRIBUTE	        (<!id:CRCDataAttributeCheckbox;
+                                        type:checkbox;
+                                        label:Select CRC data attribute;
+                                        data:0;
+                                        default:0;
+                                        sort:false;
+                                        enum:[CRC_CHECKSUM_COM, CRC_CHECKSUM_RVS, CRC_WDATA_COM, CRC_WDATA_RVS];
+                                        optionLabels:[Checksum 1's complement, Checksum bit order reverse, Data 1's complement, Data bit order reverse (per byte)];
+                                        dependencies:none;
+                                        dependenciesOption:none;!>)
+
+/* Select CRC Write Data Length */
+#define NUCODEGEN_CRC_DATALEN	        (<!id:CRCDataLenRadio;
+                                        type:radio;
+                                        label:Select CRC data length;
+                                        data:CRC_CPU_WDATA_16;
+                                        default:CRC_CPU_WDATA_16;
+                                        enum:[CRC_CPU_WDATA_8, CRC_CPU_WDATA_16, CRC_CPU_WDATA_32];
+                                        optionLabels:[8-bit, 16-bit, 32-bit];
+                                        dependencies:none;
+                                        dependenciesOption:none;!>)
+                                
+/* Initial CRC Seed Value */
+#define CRC_SEED                        (<!id:CRCSEEDHexText;
+                                        type:hextext;
+                                        label:Set initial CRC seed value;
+                                        data:0x13579BDF;
+                                        default:0x13579BDF;
+                                        helper:Input text in the hexadecimal format.;
+                                        minimum:0x0;
+                                        maximum:0xFFFFFFFF;
+                                        dependencies:none;
+                                        dependenciesOption:none;!>)
+                                        

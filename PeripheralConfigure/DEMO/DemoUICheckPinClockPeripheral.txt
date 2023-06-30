@@ -1,0 +1,49 @@
+<!
+pin:{"TIMER0FUNCSelect":{
+		"NUCODEGEN_TIMER0_FUNC_TIMER": ["TM1", "TM2"],
+		"NUCODEGEN_TIMER0_FUNC_PWM": "TM1"},
+	 "ALL": ["PA.10", "PA.11"],
+	 "typeA": {
+		"TIMER0FUNCSelect":{
+				"NUCODEGEN_TIMER0_FUNC_TIMER": "TXD1",
+				"NUCODEGEN_TIMER0_FUNC_PWM": "RXD1"},
+			 "ALL": ["PC.0"]},
+	 "NUC122ZC1AN": {
+		"TIMER0FUNCSelect":{
+				"NUCODEGEN_TIMER0_FUNC_TIMER": "PB.5",
+				"NUCODEGEN_TIMER0_FUNC_PWM": "INT0"},
+			 "ALL": ["PB.4"]}
+	 };
+clock:{"TIMER0FUNCSelect":{
+		"NUCODEGEN_TIMER0_FUNC_TIMER": "SPI0",
+		"NUCODEGEN_TIMER0_FUNC_PWM": "PWM01"},
+	 "ALL": ["UART0", "UART1"],
+	 "typeA": {
+		"TIMER0FUNCSelect":{
+				"NUCODEGEN_TIMER0_FUNC_TIMER": "I2C1",
+				"NUCODEGEN_TIMER0_FUNC_PWM": "PWM23"},
+			 "ALL": ["UART0"]},
+	 "NUC122ZC1AN": {
+		"TIMER0FUNCSelect":{
+				"NUCODEGEN_TIMER0_FUNC_TIMER": "TMR2",
+				"NUCODEGEN_TIMER0_FUNC_PWM": "TMR1"},
+			 "ALL": ["TMR0"]}
+	 };
+peripheral: {"ALL" :["DemoUICheckboxDependencies"]};
+!>
+
+/*--------------------------------------------------------------------------*/
+/* TIMER0 Configuration                                                     */
+/*--------------------------------------------------------------------------*/
+#define NUCODEGEN_TIMER0_FUNC_TIMER		0
+#define NUCODEGEN_TIMER0_FUNC_PWM		1
+
+#define NUCODEGEN_TIMER0_FUNC			<!id:TIMER0FUNCSelect;
+										type:select;
+										label:Select TIMER0 Function;
+										data:NUCODEGEN_TIMER0_FUNC_TIMER;
+										default:NUCODEGEN_TIMER0_FUNC_TIMER;
+										enum:[NUCODEGEN_TIMER0_FUNC_TIMER, NUCODEGEN_TIMER0_FUNC_PWM];
+										optionLabels:[Timer Function, PWM Function];
+										dependencies:none;
+										dependenciesOption:none;!>

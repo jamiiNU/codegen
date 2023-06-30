@@ -1,0 +1,1895 @@
+<!clock: {"ALL" : "" };
+  pin:   {"GPIOPGPIN0Checkbox" : {"1" : "PG.0"} ,
+		  "GPIOPGPIN1Checkbox" : {"1" : "PG.1"} ,
+		  "GPIOPGPIN2Checkbox" : {"1" : "PG.2"} ,
+		  "GPIOPGPIN3Checkbox" : {"1" : "PG.3"} ,
+		  "GPIOPGPIN4Checkbox" : {"1" : "PG.4"} ,
+		  "GPIOPGPIN5Checkbox" : {"1" : "PG.5"} ,
+		  "GPIOPGPIN6Checkbox" : {"1" : "PG.6"} ,
+		  "GPIOPGPIN7Checkbox" : {"1" : "PG.7"} ,
+		  "GPIOPGPIN8Checkbox" : {"1" : "PG.8"} ,
+		  "GPIOPGPIN9Checkbox" : {"1" : "PG.9"} ,
+		  "GPIOPGPIN10Checkbox" : {"1" : "PG.10"} ,
+		  "GPIOPGPIN11Checkbox" : {"1" : "PG.11"} ,
+		  "GPIOPGPIN12Checkbox" : {"1" : "PG.12"} ,
+		  "GPIOPGPIN13Checkbox" : {"1" : "PG.13"} ,
+		  "GPIOPGPIN14Checkbox" : {"1" : "PG.14"} ,
+		  "GPIOPGPIN15Checkbox" : {"1" : "PG.15"} ,
+		  "ALL" : [""]};
+!>
+/*--------------------------------------------------------------------------*/
+/* GPIO PG Configuration                                                      */
+/*--------------------------------------------------------------------------*/
+#define NUCODEGEN_GPIO_PG_MODE_INPUT              0x0UL                  /*!< Input Mode */
+#define NUCODEGEN_GPIO_PG_MODE_OUTPUT             0x1UL                  /*!< Output Mode */
+#define NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN         0x2UL                  /*!< Open-Drain Mode */
+#define NUCODEGEN_GPIO_PG_MODE_QUASI              0x3UL                  /*!< Quasi-bidirectional Mode */
+
+#define NUCODEGEN_GPIO_PG_PIN0_EN				<!id:GPIOPGPIN0Checkbox;
+												type:checkbox;
+												label:Enable pin 0 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group0;
+                                                groupName:GPIO_PG pin 0 configuration;
+                                                filterExp:PG_dot0==1;!>
+#if NUCODEGEN_GPIO_PG_PIN0_EN
+#define NUCODEGEN_GPIO_PG_PIN0_MODE				<!id:GPIOPGPIN0MODERadio;
+												type:radio;
+												label:Select pin 0 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN0Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group0;
+                                                filterExp:PG_dot0==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN0_DINOFF			<!id:GPIOPGPIN0DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 0 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN0Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group0;
+                                                filterExp:PG_dot0==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN0_DOUT				<!id:GPIOPGPIN0DOUTRadio;
+												type:radio;
+												label:Set pin 0 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN0MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group0;
+                                                filterExp:PG_dot0==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN0_DATMSK			<!id:GPIOPGPIN0DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 0 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN0MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group0;
+                                                filterExp:PG_dot0==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN0_DBEN				<!id:GPIOPGPIN0DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 0 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN0MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group0;
+                                                filterExp:PG_dot0==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN0_INTTYPE			<!id:GPIOPGPIN0INTTYPERadio;
+												type:radio;
+												label:Select pin 0 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN0MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group0;
+                                                filterExp:PG_dot0==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN0_FLIEN			<!id:GPIOPGPIN0FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN0MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group0;
+                                                filterExp:PG_dot0==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN0_RHIEN			<!id:GPIOPGPIN0RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN0MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group0;
+                                                filterExp:PG_dot0==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN0_EN
+
+#define NUCODEGEN_GPIO_PG_PIN1_EN				<!id:GPIOPGPIN1Checkbox;
+												type:checkbox;
+												label:Enable pin 1 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group1;
+                                                groupName:GPIO_PG pin 1 configuration;
+                                                filterExp:PG_dot1==1;!>
+#if NUCODEGEN_GPIO_PG_PIN1_EN
+#define NUCODEGEN_GPIO_PG_PIN1_MODE				<!id:GPIOPGPIN1MODERadio;
+												type:radio;
+												label:Select pin 1 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN1Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group1;
+                                                filterExp:PG_dot1==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN1_DINOFF			<!id:GPIOPGPIN1DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 1 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN1Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group1;
+                                                filterExp:PG_dot1==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN1_DOUT				<!id:GPIOPGPIN1DOUTRadio;
+												type:radio;
+												label:Set pin 1 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN1MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group1;
+                                                filterExp:PG_dot1==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN1_DATMSK			<!id:GPIOPGPIN1DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 1 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN1MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group1;
+                                                filterExp:PG_dot1==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN1_DBEN				<!id:GPIOPGPIN1DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 1 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN1MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group1;
+                                                filterExp:PG_dot1==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN1_INTTYPE			<!id:GPIOPGPIN1INTTYPERadio;
+												type:radio;
+												label:Select pin 1 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN1MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group1;
+                                                filterExp:PG_dot1==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN1_FLIEN			<!id:GPIOPGPIN1FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN1MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group1;
+                                                filterExp:PG_dot1==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN1_RHIEN			<!id:GPIOPGPIN1RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN1MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group1;
+                                                filterExp:PG_dot1==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN1_EN
+
+#define NUCODEGEN_GPIO_PG_PIN2_EN				<!id:GPIOPGPIN2Checkbox;
+												type:checkbox;
+												label:Enable pin 2 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group2;
+                                                groupName:GPIO_PG pin 2 configuration;
+                                                filterExp:PG_dot2==1;!>
+#if NUCODEGEN_GPIO_PG_PIN2_EN
+#define NUCODEGEN_GPIO_PG_PIN2_MODE				<!id:GPIOPGPIN2MODERadio;
+												type:radio;
+												label:Select pin 2 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN2Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group2;
+                                                filterExp:PG_dot2==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN2_DINOFF			<!id:GPIOPGPIN2DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 2 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN2Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group2;
+                                                filterExp:PG_dot2==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN2_DOUT				<!id:GPIOPGPIN2DOUTRadio;
+												type:radio;
+												label:Set pin 2 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN2MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group2;
+                                                filterExp:PG_dot2==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN2_DATMSK			<!id:GPIOPGPIN2DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 2 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN2MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group2;
+                                                filterExp:PG_dot2==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN2_DBEN				<!id:GPIOPGPIN2DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 2 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN2MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group2;
+                                                filterExp:PG_dot2==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN2_INTTYPE			<!id:GPIOPGPIN2INTTYPERadio;
+												type:radio;
+												label:Select pin 2 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN2MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group2;
+                                                filterExp:PG_dot2==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN2_FLIEN			<!id:GPIOPGPIN2FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN2MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group2;
+                                                filterExp:PG_dot2==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN2_RHIEN			<!id:GPIOPGPIN2RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN2MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group2;
+                                                filterExp:PG_dot2==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN2_EN
+
+#define NUCODEGEN_GPIO_PG_PIN3_EN				<!id:GPIOPGPIN3Checkbox;
+												type:checkbox;
+												label:Enable pin 3 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group3;
+                                                groupName:GPIO_PG pin 3 configuration;
+                                                filterExp:PG_dot3==1;!>
+#if NUCODEGEN_GPIO_PG_PIN3_EN
+#define NUCODEGEN_GPIO_PG_PIN3_MODE				<!id:GPIOPGPIN3MODERadio;
+												type:radio;
+												label:Select pin 3 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN3Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group3;
+                                                filterExp:PG_dot3==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN3_DINOFF			<!id:GPIOPGPIN3DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 3 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN3Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group3;
+                                                filterExp:PG_dot3==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN3_DOUT				<!id:GPIOPGPIN3DOUTRadio;
+												type:radio;
+												label:Set pin 3 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN3MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group3;
+                                                filterExp:PG_dot3==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN3_DATMSK			<!id:GPIOPGPIN3DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 3 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN3MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group3;
+                                                filterExp:PG_dot3==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN3_DBEN				<!id:GPIOPGPIN3DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 3 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN3MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group3;
+                                                filterExp:PG_dot3==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN3_INTTYPE			<!id:GPIOPGPIN3INTTYPERadio;
+												type:radio;
+												label:Select pin 3 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN3MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group3;
+                                                filterExp:PG_dot3==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN3_FLIEN			<!id:GPIOPGPIN3FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN3MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group3;
+                                                filterExp:PG_dot3==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN3_RHIEN			<!id:GPIOPGPIN3RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN3MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group3;
+                                                filterExp:PG_dot3==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN3_EN
+
+#define NUCODEGEN_GPIO_PG_PIN4_EN				<!id:GPIOPGPIN4Checkbox;
+												type:checkbox;
+												label:Enable pin 4 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group4;
+                                                groupName:GPIO_PG pin 4 configuration;
+                                                filterExp:PG_dot4==1;!>
+#if NUCODEGEN_GPIO_PG_PIN4_EN
+#define NUCODEGEN_GPIO_PG_PIN4_MODE				<!id:GPIOPGPIN4MODERadio;
+												type:radio;
+												label:Select pin 4 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN4Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group4;
+                                                filterExp:PG_dot4==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN4_DINOFF			<!id:GPIOPGPIN4DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 4 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN4Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group4;
+                                                filterExp:PG_dot4==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN4_DOUT				<!id:GPIOPGPIN4DOUTRadio;
+												type:radio;
+												label:Set pin 4 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN4MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group4;
+                                                filterExp:PG_dot4==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN4_DATMSK			<!id:GPIOPGPIN4DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 4 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN4MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group4;
+                                                filterExp:PG_dot4==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN4_DBEN				<!id:GPIOPGPIN4DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 4 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN4MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group4;
+                                                filterExp:PG_dot4==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN4_INTTYPE			<!id:GPIOPGPIN4INTTYPERadio;
+												type:radio;
+												label:Select pin 4 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN4MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group4;
+                                                filterExp:PG_dot4==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN4_FLIEN			<!id:GPIOPGPIN4FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN4MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group4;
+                                                filterExp:PG_dot4==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN4_RHIEN			<!id:GPIOPGPIN4RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN4MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group4;
+                                                filterExp:PG_dot4==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN4_EN
+
+#define NUCODEGEN_GPIO_PG_PIN5_EN				<!id:GPIOPGPIN5Checkbox;
+												type:checkbox;
+												label:Enable pin 5 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group5;
+                                                groupName:GPIO_PG pin 5 configuration;
+                                                filterExp:PG_dot5==1;!>
+#if NUCODEGEN_GPIO_PG_PIN5_EN
+#define NUCODEGEN_GPIO_PG_PIN5_MODE				<!id:GPIOPGPIN5MODERadio;
+												type:radio;
+												label:Select pin 5 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN5Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group5;
+                                                filterExp:PG_dot5==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN5_DINOFF			<!id:GPIOPGPIN5DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 5 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN5Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group5;
+                                                filterExp:PG_dot5==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN5_DOUT				<!id:GPIOPGPIN5DOUTRadio;
+												type:radio;
+												label:Set pin 5 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN5MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group5;
+                                                filterExp:PG_dot5==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN5_DATMSK			<!id:GPIOPGPIN5DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 5 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN5MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group5;
+                                                filterExp:PG_dot5==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN5_DBEN				<!id:GPIOPGPIN5DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 5 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN5MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group5;
+                                                filterExp:PG_dot5==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN5_INTTYPE			<!id:GPIOPGPIN5INTTYPERadio;
+												type:radio;
+												label:Select pin 5 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN5MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group5;
+                                                filterExp:PG_dot5==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN5_FLIEN			<!id:GPIOPGPIN5FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN5MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group5;
+                                                filterExp:PG_dot5==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN5_RHIEN			<!id:GPIOPGPIN5RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN5MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group5;
+                                                filterExp:PG_dot5==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN5_EN
+
+#define NUCODEGEN_GPIO_PG_PIN6_EN				<!id:GPIOPGPIN6Checkbox;
+												type:checkbox;
+												label:Enable pin 6 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group6;
+                                                groupName:GPIO_PG pin 6 configuration;
+                                                filterExp:PG_dot6==1;!>
+#if NUCODEGEN_GPIO_PG_PIN6_EN
+#define NUCODEGEN_GPIO_PG_PIN6_MODE				<!id:GPIOPGPIN6MODERadio;
+												type:radio;
+												label:Select pin 6 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN6Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group6;
+                                                filterExp:PG_dot6==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN6_DINOFF			<!id:GPIOPGPIN6DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 6 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN6Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group6;
+                                                filterExp:PG_dot6==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN6_DOUT				<!id:GPIOPGPIN6DOUTRadio;
+												type:radio;
+												label:Set pin 6 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN6MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group6;
+                                                filterExp:PG_dot6==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN6_DATMSK			<!id:GPIOPGPIN6DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 6 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN6MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group6;
+                                                filterExp:PG_dot6==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN6_DBEN				<!id:GPIOPGPIN6DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 6 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN6MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group6;
+                                                filterExp:PG_dot6==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN6_INTTYPE			<!id:GPIOPGPIN6INTTYPERadio;
+												type:radio;
+												label:Select pin 6 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN6MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group6;
+                                                filterExp:PG_dot6==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN6_FLIEN			<!id:GPIOPGPIN6FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN6MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group6;
+                                                filterExp:PG_dot6==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN6_RHIEN			<!id:GPIOPGPIN6RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN6MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group6;
+                                                filterExp:PG_dot6==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN6_EN
+
+#define NUCODEGEN_GPIO_PG_PIN7_EN				<!id:GPIOPGPIN7Checkbox;
+												type:checkbox;
+												label:Enable pin 7 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group7;
+                                                groupName:GPIO_PG pin 7 configuration;
+                                                filterExp:PG_dot7==1;!>
+#if NUCODEGEN_GPIO_PG_PIN7_EN
+#define NUCODEGEN_GPIO_PG_PIN7_MODE				<!id:GPIOPGPIN7MODERadio;
+												type:radio;
+												label:Select pin 7 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN7Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group7;
+                                                filterExp:PG_dot7==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN7_DINOFF			<!id:GPIOPGPIN7DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 7 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN7Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group7;
+                                                filterExp:PG_dot7==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN7_DOUT				<!id:GPIOPGPIN7DOUTRadio;
+												type:radio;
+												label:Set pin 7 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN7MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group7;
+                                                filterExp:PG_dot7==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN7_DATMSK			<!id:GPIOPGPIN7DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 7 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN7MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group7;
+                                                filterExp:PG_dot7==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN7_DBEN				<!id:GPIOPGPIN7DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 7 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN7MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group7;
+                                                filterExp:PG_dot7==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN7_INTTYPE			<!id:GPIOPGPIN7INTTYPERadio;
+												type:radio;
+												label:Select pin 7 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN7MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group7;
+                                                filterExp:PG_dot7==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN7_FLIEN			<!id:GPIOPGPIN7FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN7MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group7;
+                                                filterExp:PG_dot7==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN7_RHIEN			<!id:GPIOPGPIN7RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN7MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group7;
+                                                filterExp:PG_dot7==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN7_EN
+
+#define NUCODEGEN_GPIO_PG_PIN8_EN				<!id:GPIOPGPIN8Checkbox;
+												type:checkbox;
+												label:Enable pin 8 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group8;
+                                                groupName:GPIO_PG pin 8 configuration;
+                                                filterExp:PG_dot8==1;!>
+#if NUCODEGEN_GPIO_PG_PIN8_EN
+#define NUCODEGEN_GPIO_PG_PIN8_MODE				<!id:GPIOPGPIN8MODERadio;
+												type:radio;
+												label:Select pin 8 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN8Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group8;
+                                                filterExp:PG_dot8==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN8_DINOFF			<!id:GPIOPGPIN8DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 8 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN8Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group8;
+                                                filterExp:PG_dot8==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN8_DOUT				<!id:GPIOPGPIN8DOUTRadio;
+												type:radio;
+												label:Set pin 8 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN8MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group8;
+                                                filterExp:PG_dot8==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN8_DATMSK			<!id:GPIOPGPIN8DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 8 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN8MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group8;
+                                                filterExp:PG_dot8==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN8_DBEN				<!id:GPIOPGPIN8DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 8 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN8MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group8;
+                                                filterExp:PG_dot8==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN8_INTTYPE			<!id:GPIOPGPIN8INTTYPERadio;
+												type:radio;
+												label:Select pin 8 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN8MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group8;
+                                                filterExp:PG_dot8==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN8_FLIEN			<!id:GPIOPGPIN8FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN8MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group8;
+                                                filterExp:PG_dot8==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN8_RHIEN			<!id:GPIOPGPIN8RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN8MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group8;
+                                                filterExp:PG_dot8==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN8_EN
+
+#define NUCODEGEN_GPIO_PG_PIN9_EN				<!id:GPIOPGPIN9Checkbox;
+												type:checkbox;
+												label:Enable pin 9 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group9;
+                                                groupName:GPIO_PG pin 9 configuration;
+                                                filterExp:PG_dot9==1;!>
+#if NUCODEGEN_GPIO_PG_PIN9_EN
+#define NUCODEGEN_GPIO_PG_PIN9_MODE				<!id:GPIOPGPIN9MODERadio;
+												type:radio;
+												label:Select pin 9 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN9Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group9;
+                                                filterExp:PG_dot9==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN9_DINOFF			<!id:GPIOPGPIN9DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 9 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN9Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group9;
+                                                filterExp:PG_dot9==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN9_DOUT				<!id:GPIOPGPIN9DOUTRadio;
+												type:radio;
+												label:Set pin 9 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN9MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group9;
+                                                filterExp:PG_dot9==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN9_DATMSK			<!id:GPIOPGPIN9DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 9 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN9MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group9;
+                                                filterExp:PG_dot9==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN9_DBEN				<!id:GPIOPGPIN9DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 9 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN9MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group9;
+                                                filterExp:PG_dot9==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN9_INTTYPE			<!id:GPIOPGPIN9INTTYPERadio;
+												type:radio;
+												label:Select pin 9 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN9MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group9;
+                                                filterExp:PG_dot9==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN9_FLIEN			<!id:GPIOPGPIN9FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN9MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group9;
+                                                filterExp:PG_dot9==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN9_RHIEN			<!id:GPIOPGPIN9RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN9MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group9;
+                                                filterExp:PG_dot9==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN9_EN
+
+#define NUCODEGEN_GPIO_PG_PIN10_EN				<!id:GPIOPGPIN10Checkbox;
+												type:checkbox;
+												label:Enable pin 10 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group10;
+                                                groupName:GPIO_PG pin 10 configuration;
+                                                filterExp:PG_dot10==1;!>
+#if NUCODEGEN_GPIO_PG_PIN10_EN
+#define NUCODEGEN_GPIO_PG_PIN10_MODE			<!id:GPIOPGPIN10MODERadio;
+												type:radio;
+												label:Select pin 10 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN10Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group10;
+                                                filterExp:PG_dot10==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN10_DINOFF			<!id:GPIOPGPIN10DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 10 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN10Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group10;
+                                                filterExp:PG_dot10==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN10_DOUT			<!id:GPIOPGPIN10DOUTRadio;
+												type:radio;
+												label:Set pin 10 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN10MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group10;
+                                                filterExp:PG_dot10==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN10_DATMSK			<!id:GPIOPGPIN10DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 10 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN10MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group10;
+                                                filterExp:PG_dot10==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN10_DBEN			<!id:GPIOPGPIN10DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 10 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN10MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group10;
+                                                filterExp:PG_dot10==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN10_INTTYPE			<!id:GPIOPGPIN10INTTYPERadio;
+												type:radio;
+												label:Select pin 10 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN10MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group10;
+                                                filterExp:PG_dot10==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN10_FLIEN			<!id:GPIOPGPIN10FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN10MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group10;
+                                                filterExp:PG_dot10==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN10_RHIEN			<!id:GPIOPGPIN10RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN10MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group10;
+                                                filterExp:PG_dot10==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN10_EN
+
+#define NUCODEGEN_GPIO_PG_PIN11_EN				<!id:GPIOPGPIN11Checkbox;
+												type:checkbox;
+												label:Enable pin 11 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group11;
+                                                groupName:GPIO_PG pin 11 configuration;
+                                                filterExp:PG_dot11==1;!>
+#if NUCODEGEN_GPIO_PG_PIN11_EN
+#define NUCODEGEN_GPIO_PG_PIN11_MODE			<!id:GPIOPGPIN11MODERadio;
+												type:radio;
+												label:Select pin 11 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN11Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group11;
+                                                filterExp:PG_dot11==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN11_DINOFF			<!id:GPIOPGPIN11DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 11 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN11Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group11;
+                                                filterExp:PG_dot11==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN11_DOUT			<!id:GPIOPGPIN11DOUTRadio;
+												type:radio;
+												label:Set pin 11 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN11MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group11;
+                                                filterExp:PG_dot11==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN11_DATMSK			<!id:GPIOPGPIN11DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 11 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN11MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group11;
+                                                filterExp:PG_dot11==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN11_DBEN			<!id:GPIOPGPIN11DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 11 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN11MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group11;
+                                                filterExp:PG_dot11==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN11_INTTYPE			<!id:GPIOPGPIN11INTTYPERadio;
+												type:radio;
+												label:Select pin 11 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN11MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group11;
+                                                filterExp:PG_dot11==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN11_FLIEN			<!id:GPIOPGPIN11FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN11MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group11;
+                                                filterExp:PG_dot11==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN11_RHIEN			<!id:GPIOPGPIN11RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN11MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group11;
+                                                filterExp:PG_dot11==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN11_EN
+
+#define NUCODEGEN_GPIO_PG_PIN12_EN				<!id:GPIOPGPIN12Checkbox;
+												type:checkbox;
+												label:Enable pin 12 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group12;
+                                                groupName:GPIO_PG pin 12 configuration;
+                                                filterExp:PG_dot12==1;!>
+#if NUCODEGEN_GPIO_PG_PIN12_EN
+#define NUCODEGEN_GPIO_PG_PIN12_MODE			<!id:GPIOPGPIN12MODERadio;
+												type:radio;
+												label:Select pin 12 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN12Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group12;
+                                                filterExp:PG_dot12==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN12_DINOFF			<!id:GPIOPGPIN12DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 12 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN12Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group12;
+                                                filterExp:PG_dot12==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN12_DOUT			<!id:GPIOPGPIN12DOUTRadio;
+												type:radio;
+												label:Set pin 12 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN12MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group12;
+                                                filterExp:PG_dot12==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN12_DATMSK			<!id:GPIOPGPIN12DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 12 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN12MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group12;
+                                                filterExp:PG_dot12==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN12_DBEN			<!id:GPIOPGPIN12DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 12 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN12MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group12;
+                                                filterExp:PG_dot12==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN12_INTTYPE			<!id:GPIOPGPIN12INTTYPERadio;
+												type:radio;
+												label:Select pin 12 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN12MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group12;
+                                                filterExp:PG_dot12==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN12_FLIEN			<!id:GPIOPGPIN12FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN12MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group12;
+                                                filterExp:PG_dot12==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN12_RHIEN			<!id:GPIOPGPIN12RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN12MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group12;
+                                                filterExp:PG_dot12==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN12_EN
+
+#define NUCODEGEN_GPIO_PG_PIN13_EN				<!id:GPIOPGPIN13Checkbox;
+												type:checkbox;
+												label:Enable pin 13 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group13;
+                                                groupName:GPIO_PG pin 13 configuration;
+                                                filterExp:PG_dot13==1;!>
+#if NUCODEGEN_GPIO_PG_PIN13_EN
+#define NUCODEGEN_GPIO_PG_PIN13_MODE			<!id:GPIOPGPIN13MODERadio;
+												type:radio;
+												label:Select pin 13 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN13Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group13;
+                                                filterExp:PG_dot13==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN13_DINOFF			<!id:GPIOPGPIN13DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 13 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN13Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group13;
+                                                filterExp:PG_dot13==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN13_DOUT			<!id:GPIOPGPIN13DOUTRadio;
+												type:radio;
+												label:Set pin 13 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN13MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group13;
+                                                filterExp:PG_dot13==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN13_DATMSK			<!id:GPIOPGPIN13DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 13 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN13MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group13;
+                                                filterExp:PG_dot13==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN13_DBEN			<!id:GPIOPGPIN13DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 13 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN13MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group13;
+                                                filterExp:PG_dot13==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN13_INTTYPE			<!id:GPIOPGPIN13INTTYPERadio;
+												type:radio;
+												label:Select pin 13 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN13MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group13;
+                                                filterExp:PG_dot13==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN13_FLIEN			<!id:GPIOPGPIN13FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN13MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group13;
+                                                filterExp:PG_dot13==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN13_RHIEN			<!id:GPIOPGPIN13RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN13MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group13;
+                                                filterExp:PG_dot13==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN13_EN
+
+#define NUCODEGEN_GPIO_PG_PIN14_EN				<!id:GPIOPGPIN14Checkbox;
+												type:checkbox;
+												label:Enable pin 14 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group14;
+                                                groupName:GPIO_PG pin 14 configuration;
+                                                filterExp:PG_dot14==1;!>
+#if NUCODEGEN_GPIO_PG_PIN14_EN
+#define NUCODEGEN_GPIO_PG_PIN14_MODE			<!id:GPIOPGPIN14MODERadio;
+												type:radio;
+												label:Select pin 14 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN14Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group14;
+                                                filterExp:PG_dot14==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN14_DINOFF			<!id:GPIOPGPIN14DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 14 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN14Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group14;
+                                                filterExp:PG_dot14==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN14_DOUT			<!id:GPIOPGPIN14DOUTRadio;
+												type:radio;
+												label:Set pin 14 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN14MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group14;
+                                                filterExp:PG_dot14==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN14_DATMSK			<!id:GPIOPGPIN14DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 14 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN14MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group14;
+                                                filterExp:PG_dot14==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN14_DBEN			<!id:GPIOPGPIN14DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 14 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN14MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group14;
+                                                filterExp:PG_dot14==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN14_INTTYPE			<!id:GPIOPGPIN14INTTYPERadio;
+												type:radio;
+												label:Select pin 14 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN14MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group14;
+                                                filterExp:PG_dot14==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN14_FLIEN			<!id:GPIOPGPIN14FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN14MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group14;
+                                                filterExp:PG_dot14==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN14_RHIEN			<!id:GPIOPGPIN14RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN14MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group14;
+                                                filterExp:PG_dot14==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN14_EN
+
+#define NUCODEGEN_GPIO_PG_PIN15_EN				<!id:GPIOPGPIN15Checkbox;
+												type:checkbox;
+												label:Enable pin 15 setting;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group15;
+                                                groupName:GPIO_PG pin 15 configuration;
+                                                filterExp:PG_dot15==1;!>
+#if NUCODEGEN_GPIO_PG_PIN15_EN
+#define NUCODEGEN_GPIO_PG_PIN15_MODE			<!id:GPIOPGPIN15MODERadio;
+												type:radio;
+												label:Select pin 15 mode;
+												data:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												default:NUCODEGEN_GPIO_PG_MODE_INPUT;
+												sort:false;
+												enum:[NUCODEGEN_GPIO_PG_MODE_INPUT, NUCODEGEN_GPIO_PG_MODE_OUTPUT, NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN, NUCODEGEN_GPIO_PG_MODE_QUASI];
+												optionLabels:[Input, Output, Open drain, Quasi];
+												vertical:false;
+												dependencies:GPIOPGPIN15Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group15;
+                                                filterExp:PG_dot15==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN15_DINOFF			<!id:GPIOPGPIN15DINOFFCheckbox;
+												type:checkbox;
+												label:Disable pin 15 digital input path;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN15Checkbox;
+                                                dependenciesOption:1;
+												groupId:Group15;
+                                                filterExp:PG_dot15==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN15_DOUT			<!id:GPIOPGPIN15DOUTRadio;
+												type:radio;
+												label:Set pin 15 out data;
+												data:1;
+												default:1;
+												sort:false;
+												enum:[0, 1];
+												optionLabels:[Low, High];
+												vertical:false;
+												dependencies:GPIOPGPIN15MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group15;
+                                                filterExp:PG_dot15==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN15_DATMSK			<!id:GPIOPGPIN15DATMSKCheckbox;
+												type:checkbox;
+												label:Enable pin 15 DOUT mask;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN15MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_OUTPUT|NUCODEGEN_GPIO_PG_MODE_OPEN_DRAIN|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group15;
+                                                filterExp:PG_dot15==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN15_DBEN			<!id:GPIOPGPIN15DBENCheckbox;
+												type:checkbox;
+												label:Enable pin 15 de-bounce;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN15MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group15;
+                                                filterExp:PG_dot15==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN15_INTTYPE			<!id:GPIOPGPIN15INTTYPERadio;
+												type:radio;
+												label:Select pin 15 edge or level interrupt;
+												data:GPIO_INTTYPE_EDGE;
+												default:GPIO_INTTYPE_EDGE;
+												sort:false;
+												enum:[GPIO_INTTYPE_EDGE, GPIO_INTTYPE_LEVEL];
+												optionLabels:[Edge, Level];
+												vertical:false;
+												dependencies:GPIOPGPIN15MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group15;
+                                                filterExp:PG_dot15==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN15_FLIEN			<!id:GPIOPGPIN15FLIENCheckbox;
+												type:checkbox;
+												label:Enable falling or low interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN15MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group15;
+                                                filterExp:PG_dot15==1;!>
+
+#define NUCODEGEN_GPIO_PG_PIN15_RHIEN			<!id:GPIOPGPIN15RHIENCheckbox;
+												type:checkbox;
+												label:Enable rising or high interrupt;
+												data:0;
+												default:0;
+												enum:[1];
+												optionLabels:[<br>];
+												dependencies:GPIOPGPIN15MODERadio;
+                                                dependenciesOption:NUCODEGEN_GPIO_PG_MODE_INPUT|NUCODEGEN_GPIO_PG_MODE_QUASI;
+												groupId:Group15;
+                                                filterExp:PG_dot15==1;!>
+#endif //NUCODEGEN_GPIO_PG_PIN15_EN
+
+
+#define NUCODEGEN_GPIO_PG_INT					<!id:GPIOPGINTCheckboxBoolean;
+												type:checkboxBoolean;
+												label:Enable GPIO_PG interrupt handler;
+												data:false;
+												default:false;
+												enum:[true];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group;
+                                                groupName:GPIO_PG common configuration;!>

@@ -1,0 +1,4347 @@
+<!
+pin:{"PIN0En":{"1": ["PSIO0_CH0"]},
+		"PIN1En":{"1": ["PSIO0_CH1"]},
+		"PIN2En":{"1": ["PSIO0_CH2"]},
+		"PIN3En":{"1": ["PSIO0_CH3"]},
+		"PIN4En":{"1": ["PSIO0_CH4"]},
+		"PIN5En":{"1": ["PSIO0_CH5"]},
+		"PIN6En":{"1": ["PSIO0_CH6"]},
+		"PIN7En":{"1": ["PSIO0_CH7"]}};
+clock:{"ALL": ["PSIO"]};
+!>
+
+#define NUCODEGEN_PSIO_SLOTCTL0_EN		(<!id:SlotCtl0En;
+											type:checkbox;
+											label:PSIO slot controller 0 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;											
+										!>)
+#if (NUCODEGEN_PSIO_SLOTCTL0_EN)										
+#define NUCODEGEN_PSIO_SLOTCTL0_INIT_SLOT			(<!id:SlotCtl0InitSlot;
+											type:select;
+											label:Select start slot of loop function;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot0, Slot1, Slot2, Slot3, 
+															Slot4, Slot5, Slot6, Slot7];
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL0_END_SLOT			(<!id:SlotCtl0EndSlot;
+											type:select;
+											label:Select end slot of loop function;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot0, Slot1, Slot2, Slot3, 
+															Slot4, Slot5, Slot6, Slot7];
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL0_LOOP_CNT			(<!id:SlotCtl0LoopCount;
+											type:integer;
+											label:Set loop count;
+											data:0;
+											default:0;
+											helper:Enter your loop count 0 ~ 63, 0 = Disable, 63 = loop until stop PSIO;
+											minimum:0;
+											maximum:63;																						
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL0_TRIGGER_TYPE		(<!id:SlotCtl0TriggerType;
+											type:select;
+											label:Select trigger type;
+											data:PSIO_SW_TRIGGER;
+											default:PSIO_SW_TRIGGER;
+											enum:[PSIO_SW_TRIGGER, PSIO_FALLING_TRIGGER, PSIO_RISING_TRIGGER, PSIO_BOTH_EDGE_TRIGGER];
+											optionLabels:[Software trigger, Falling edge trigger, Rising edge trigger, Both edge trigger];
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL0_REPEAT			(<!id:SlotCtl0RepeatMode;
+											type:checkbox;
+											label:PSIO slot controller 0 repeat mode;
+											data:0;
+											enum:[PSIO_REPEAT_ENABLE];
+											optionLabels:[<br>];
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL0_SLOT0_COUNT		(<!id:SlotCtl0Slot0Count;
+											type:integer;
+											label:Set slot 0 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL0_SLOT1_COUNT		(<!id:SlotCtl0Slot1Count;
+											type:integer;
+											label:Set slot 1 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL0_SLOT2_COUNT		(<!id:SlotCtl0Slot2Count;
+											type:integer;
+											label:Set slot 2 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL0_SLOT3_COUNT		(<!id:SlotCtl0Slot3Count;
+											type:integer;
+											label:Set slot 3 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)		
+#define NUCODEGEN_PSIO_SLOTCTL0_SLOT4_COUNT		(<!id:SlotCtl0Slot4Count;
+											type:integer;
+											label:Set slot 4 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL0_SLOT5_COUNT		(<!id:SlotCtl0Slot5Count;
+											type:integer;
+											label:Set slot 5 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL0_SLOT6_COUNT		(<!id:SlotCtl0Slot6Count;
+											type:integer;
+											label:Set slot 6 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL0_SLOT7_COUNT		(<!id:SlotCtl0Slot7Count;
+											type:integer;
+											label:Set slot 7 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl0En;
+											dependenciesOption:1;
+											groupId:SlotCtl0Setting; 
+											groupName:Slot controller 0 setting;
+										!>)
+#endif
+
+
+#define NUCODEGEN_PSIO_SLOTCTL1_EN		(<!id:SlotCtl1En;
+											type:checkbox;
+											label:PSIO slot controller 1 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#if (NUCODEGEN_PSIO_SLOTCTL1_EN)										
+#define NUCODEGEN_PSIO_SLOTCTL1_INIT_SLOT			(<!id:SlotCtl1InitSlot;
+											type:select;
+											label:Select start slot of loop function;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot0, Slot1, Slot2, Slot3, 
+															Slot4, Slot5, Slot6, Slot7];
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL1_END_SLOT			(<!id:SlotCtl1EndSlot;
+											type:select;
+											label:Select end slot of loop function;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot0, Slot1, Slot2, Slot3, 
+															Slot4, Slot5, Slot6, Slot7];
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL1_LOOP_CNT			(<!id:SlotCtl1LoopCount;
+											type:integer;
+											label:Set loop count;
+											data:0;
+											default:0;
+											helper:Enter your loop count 0 ~ 63, 0 = Disable, 63 = loop until stop PSIO;
+											minimum:0;
+											maximum:63;																						
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL1_TRIGGER_TYPE		(<!id:SlotCtl1TriggerType;
+											type:select;
+											label:Select trigger type;
+											data:PSIO_SW_TRIGGER;
+											default:PSIO_SW_TRIGGER;
+											enum:[PSIO_SW_TRIGGER, PSIO_FALLING_TRIGGER, PSIO_RISING_TRIGGER, PSIO_BOTH_EDGE_TRIGGER];
+											optionLabels:[Software trigger, Falling edge trigger, Rising edge trigger, Both edge trigger];
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL1_REPEAT			(<!id:SlotCtl1RepeatMode;
+											type:checkbox;
+											label:PSIO slot controller 1 repeat mode;
+											data:0;
+											enum:[PSIO_REPEAT_ENABLE];
+											optionLabels:[Enable repeat mode];
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL1_SLOT0_COUNT		(<!id:SlotCtl1Slot0Count;
+											type:integer;
+											label:Set slot 0 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL1_SLOT1_COUNT		(<!id:SlotCtl1Slot1Count;
+											type:integer;
+											label:Set slot 1 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL1_SLOT2_COUNT		(<!id:SlotCtl1Slot2Count;
+											type:integer;
+											label:Set slot 2 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL1_SLOT3_COUNT		(<!id:SlotCtl1Slot3Count;
+											type:integer;
+											label:Set slot 3 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)		
+#define NUCODEGEN_PSIO_SLOTCTL1_SLOT4_COUNT		(<!id:SlotCtl1Slot4Count;
+											type:integer;
+											label:Set slot 4 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL1_SLOT5_COUNT		(<!id:SlotCtl1Slot5Count;
+											type:integer;
+											label:Set slot 5 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL1_SLOT6_COUNT		(<!id:SlotCtl1Slot6Count;
+											type:integer;
+											label:Set slot 6 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL1_SLOT7_COUNT		(<!id:SlotCtl1Slot7Count;
+											type:integer;
+											label:Set slot 7 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl1En;
+											dependenciesOption:1;
+											groupId:SlotCtl1Setting; 
+											groupName:Slot controller 1 setting;
+										!>)
+#endif
+
+
+#define NUCODEGEN_PSIO_SLOTCTL2_EN		(<!id:SlotCtl2En;
+											type:checkbox;
+											label:PSIO slot controller 2 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										!>)
+#if (NUCODEGEN_PSIO_SLOTCTL2_EN)										
+#define NUCODEGEN_PSIO_SLOTCTL2_INIT_SLOT			(<!id:SlotCtl2InitSlot;
+											type:select;
+											label:Select start slot of loop function;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot0, Slot1, Slot2, Slot3, 
+															Slot4, Slot5, Slot6, Slot7];
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL2_END_SLOT			(<!id:SlotCtl2EndSlot;
+											type:select;
+											label:Select end slot of loop function;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot0, Slot1, Slot2, Slot3, 
+															Slot4, Slot5, Slot6, Slot7];
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL2_LOOP_CNT			(<!id:SlotCtl2LoopCount;
+											type:integer;
+											label:Set loop count;
+											data:0;
+											default:0;
+											helper:Enter your loop count 0 ~ 63, 0 = Disable, 63 = loop until stop PSIO;
+											minimum:0;
+											maximum:63;																						
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL2_TRIGGER_TYPE		(<!id:SlotCtl2TriggerType;
+											type:select;
+											label:Select trigger type;
+											data:PSIO_SW_TRIGGER;
+											default:PSIO_SW_TRIGGER;
+											enum:[PSIO_SW_TRIGGER, PSIO_FALLING_TRIGGER, PSIO_RISING_TRIGGER, PSIO_BOTH_EDGE_TRIGGER];
+											optionLabels:[Software trigger, Falling edge trigger, Rising edge trigger, Both edge trigger];
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL2_REPEAT			(<!id:SlotCtl2RepeatMode;
+											type:checkbox;
+											label:PSIO slot controller 2 repeat mode;
+											data:0;
+											enum:[PSIO_REPEAT_ENABLE];
+											optionLabels:[<br>];
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL2_SLOT0_COUNT		(<!id:SlotCtl2Slot0Count;
+											type:integer;
+											label:Set slot 0 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL2_SLOT1_COUNT		(<!id:SlotCtl2Slot1Count;
+											type:integer;
+											label:Set slot 1 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL2_SLOT2_COUNT		(<!id:SlotCtl2Slot2Count;
+											type:integer;
+											label:Set slot 2 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL2_SLOT3_COUNT		(<!id:SlotCtl2Slot3Count;
+											type:integer;
+											label:Set slot 3 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)		
+#define NUCODEGEN_PSIO_SLOTCTL2_SLOT4_COUNT		(<!id:SlotCtl2Slot4Count;
+											type:integer;
+											label:Set slot 4 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL2_SLOT5_COUNT		(<!id:SlotCtl2Slot5Count;
+											type:integer;
+											label:Set slot 5 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL2_SLOT6_COUNT		(<!id:SlotCtl2Slot6Count;
+											type:integer;
+											label:Set slot 6 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL2_SLOT7_COUNT		(<!id:SlotCtl2Slot7Count;
+											type:integer;
+											label:Set slot 7 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl2En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl2Setting; 
+											groupName:Slot controller 2 setting;
+										!>)
+#endif
+
+
+#define NUCODEGEN_PSIO_SLOTCTL3_EN		(<!id:SlotCtl3En;
+											type:checkbox;
+											label:PSIO slot controller 3 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										!>)
+#if (NUCODEGEN_PSIO_SLOTCTL3_EN)										
+#define NUCODEGEN_PSIO_SLOTCTL3_INIT_SLOT			(<!id:SlotCtl3InitSlot;
+											type:select;
+											label:Select start slot of loop function;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot0, Slot1, Slot2, Slot3, 
+															Slot4, Slot5, Slot6, Slot7];
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL3_END_SLOT			(<!id:SlotCtl3EndSlot;
+											type:select;
+											label:Select end slot of loop function;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot0, Slot1, Slot2, Slot3, 
+															Slot4, Slot5, Slot6, Slot7];
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL3_LOOP_CNT			(<!id:SlotCtl3LoopCount;
+											type:integer;
+											label:Set loop count;
+											data:0;
+											default:0;
+											helper:Enter your loop count 0 ~ 63, 0 = Disable, 63 = loop until stop PSIO;
+											minimum:0;
+											maximum:63;																						
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL3_TRIGGER_TYPE		(<!id:SlotCtl3TriggerType;
+											type:select;
+											label:Select trigger type;
+											data:PSIO_SW_TRIGGER;
+											default:PSIO_SW_TRIGGER;
+											enum:[PSIO_SW_TRIGGER, PSIO_FALLING_TRIGGER, PSIO_RISING_TRIGGER, PSIO_BOTH_EDGE_TRIGGER];
+											optionLabels:[Software trigger, Falling edge trigger, Rising edge trigger, Both edge trigger];
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL3_REPEAT			(<!id:SlotCtl3RepeatMode;
+											type:checkbox;
+											label:PSIO slot controller 3 repeat mode;
+											data:0;
+											enum:[PSIO_REPEAT_ENABLE];
+											optionLabels:[<br>];
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL3_SLOT0_COUNT		(<!id:SlotCtl3Slot0Count;
+											type:integer;
+											label:Set slot 0 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL3_SLOT1_COUNT		(<!id:SlotCtl3Slot1Count;
+											type:integer;
+											label:Set slot 1 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL3_SLOT2_COUNT		(<!id:SlotCtl3Slot2Count;
+											type:integer;
+											label:Set slot 2 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL3_SLOT3_COUNT		(<!id:SlotCtl3Slot3Count;
+											type:integer;
+											label:Set slot 3 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)		
+#define NUCODEGEN_PSIO_SLOTCTL3_SLOT4_COUNT		(<!id:SlotCtl3Slot4Count;
+											type:integer;
+											label:Set slot 4 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL3_SLOT5_COUNT		(<!id:SlotCtl3Slot5Count;
+											type:integer;
+											label:Set slot 5 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_SLOTCTL3_SLOT6_COUNT		(<!id:SlotCtl3Slot6Count;
+											type:integer;
+											label:Set slot 6 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)
+#define NUCODEGEN_PSIO_SLOTCTL3_SLOT7_COUNT		(<!id:SlotCtl3Slot7Count;
+											type:integer;
+											label:Set slot 7 count;
+											data:0;
+											default:0;
+											helper:Enter your count 0 ~ 15, 0 = Disable;
+											minimum:0;
+											maximum:15;																						
+											dependencies:SlotCtl3En; filterExp:type=="M252_G" or type=="M252_E";
+											dependenciesOption:1;
+											groupId:SlotCtl3Setting; 
+											groupName:Slot controller 3 setting;
+										!>)
+#endif
+
+
+#define NUCODEGEN_PSIO_INT_EN			(<!id:INTEn;
+											type:checkbox;
+											label:PSIO interrupt enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:none;
+											dependenciesOption:;
+											groupId:INTSetting; 
+											groupName:PSIO interrupt setting;
+										!>)	
+#if (NUCODEGEN_PSIO_INT_EN)
+#define NUCODEGEN_PSIO_INT_TYPE					(<!id:INTType;
+											type:multipleselect;
+											label:Interrupt type select;
+											data:0;
+											size:8; 
+											data:; 
+											default:0; 
+											helper:Select which interrupt to enable for PSIO; 
+											sort:false; 
+											enum:[PSIO_INTEN_CON0IE_Msk, PSIO_INTEN_CON1IE_Msk, PSIO_INTEN_MISMATIE_Msk, PSIO_INTEN_TERRIE_Msk,
+													PSIO_INTEN_SC0IE_Msk, PSIO_INTEN_SC1IE_Msk, PSIO_INTEN_SC2IE_Msk, PSIO_INTEN_SC3IE_Msk]; 
+											optionLabels:[INT 0 enable, INT 1 enable, Mismatch Interrupt enable, Transfer Error Interrupt enable, 
+															Slot controller 0 Finish Interrupt enable, slot controller 1 Finish Interrupt enable, 
+															Slot controller 2 Finish Interrupt enable, slot controller 3 Finish Interrupt enable]; 
+											dependencies:INTEn; 
+											dependenciesOption:1; 
+											observable:none; 
+											listener:none; 
+											groupId:INTSetting; 
+											groupName:PSIO interrupt setting;
+										!>)
+#define NUCODEGEN_PSIO_INT0_EN			(<!id:INT0En;
+											type:checkbox;
+											label:PSIO INT0 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:INTEn;
+											dependenciesOption:1;
+											groupId:INTSetting; 
+											groupName:PSIO interrupt setting;
+										!>)	
+#define NUCODEGEN_PSIO_INT0_SC					(<!id:INT0SlotController;
+											type:select;
+											label:Select slot controller for INT0;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, slot controller 1, slot controller 2, slot controller 3];
+											dependencies:INT0En;
+											dependenciesOption:1;
+											groupId:INTSetting; 
+											groupName:PSIO interrupt setting;
+										!>)		
+#define NUCODEGEN_PSIO_INT0_SLOT					(<!id:INT0Slot;
+											type:select;
+											label:Select slot for INT0;
+											data:PSIO_SLOT0;
+											default:PSIO_SLOT0;
+											enum:[PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:INT0En;
+											dependenciesOption:1;
+											groupId:INTSetting; 
+											groupName:PSIO interrupt setting;
+										!>)											
+#define NUCODEGEN_PSIO_INT1_EN			(<!id:INT1En;
+											type:checkbox;
+											label:PSIO INT1 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:INTEn;
+											dependenciesOption:1;
+											groupId:INTSetting; 
+											groupName:PSIO interrupt setting;
+										!>)		
+#define NUCODEGEN_PSIO_INT1_SC					(<!id:INT1SlotController;
+											type:select;
+											label:Select slot controller for INT1;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, slot controller 1, slot controller 2, slot controller 3];
+											dependencies:INT1En;
+											dependenciesOption:1;
+											groupId:INTSetting; 
+											groupName:PSIO interrupt setting;
+										!>)		
+#define NUCODEGEN_PSIO_INT1_SLOT					(<!id:INT1Slot;
+											type:select;
+											label:Select slot for INT1;
+											data:PSIO_SLOT0;
+											default:PSIO_SLOT0;
+											enum:[PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2, PSIO_SLOT3, 
+													PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:INT1En;
+											dependenciesOption:1;
+											groupId:INTSetting; 
+											groupName:PSIO interrupt setting;
+										!>)										
+#endif
+
+
+#define NUCODEGEN_PSIO_PIN0_EN			(<!id:PIN0En;
+											type:checkbox;
+											label:PSIO Pin0 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:;
+											dependenciesOption:;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#if (NUCODEGEN_PSIO_PIN0_EN)
+#define NUCODEGEN_PSIO_PIN0_SLOT_CNT	(<!id:PIN0SlotControllerSelect0;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, Slot controller 1, Slot controller 2, Slot controller 3];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										!>)(<!id:PIN0SlotControllerSelect1;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1];
+											optionLabels:[Slot controller 0, Slot controller 1];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+											filterExp:type=="M252_D";
+										!>)
+#define NUCODEGEN_PSIO_PIN0_IOMODE				(<!id:PIN0IOMode;
+											type:select;
+											label:Select I/O mode for PIN0;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Input mode, Output mode, Open-drain mode, Quasi mode];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_INIT_STATE			(<!id:PIN0InitState;
+											type:select;
+											label:Select PIN0 status when slot controller stop and IDLE=1;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN0En;
+											dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN0_INTERVAL_STATE		(<!id:PIN0IntervalState;
+											type:select;
+											label:Select PIN0 status when slot controller stop and IDLE=0;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN0En;
+											dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP0_SLT				(<!id:PIN0CP0SLT;
+											type:select;
+											label:Link check point 0 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP0_ACT				(<!id:PIN0CP0ACT;
+											type:select;
+											label:Select check point 0 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP1_SLT				(<!id:PIN0CP1SLT;
+											type:select;
+											label:Link check point 1 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP1_ACT				(<!id:PIN0CP1ACT;
+											type:select;
+											label:Select check point 1 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN0_CP2_SLT				(<!id:PIN0CP2SLT;
+											type:select;
+											label:Link check point 2 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP2_ACT				(<!id:PIN0CP2ACT;
+											type:select;
+											label:Select check point 2 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN0_CP3_SLT				(<!id:PIN0CP3SLT;
+											type:select;
+											label:Link check point 3 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP3_ACT				(<!id:PIN0CP3ACT;
+											type:select;
+											label:Select check point 3 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN0_CP4_SLT				(<!id:PIN0CP4SLT;
+											type:select;
+											label:Link check point 4 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP4_ACT				(<!id:PIN0CP4ACT;
+											type:select;
+											label:Select check point 4 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)				
+#define NUCODEGEN_PSIO_PIN0_CP5_SLT				(<!id:PIN0CP5SLT;
+											type:select;
+											label:Link check point 5 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP5_ACT				(<!id:PIN0CP5ACT;
+											type:select;
+											label:Select check point 5 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN0_CP6_SLT				(<!id:PIN0CP6SLT;
+											type:select;
+											label:Link check point 6 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP6_ACT				(<!id:PIN0CP6ACT;
+											type:select;
+											label:Select check point 6 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP7_SLT				(<!id:PIN0CP7SLT;
+											type:select;
+											label:Link check point 7 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_CP7_ACT				(<!id:PIN0CP7ACT;
+											type:select;
+											label:Select check point 7 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_DATA_ORDER			(<!id:PIN0DataOrder;
+											type:radio;
+											label:Select data order;
+											data:PSIO_LSB;
+											default:PSIO_LSB;
+											enum:[PSIO_LSB, PSIO_MSB];
+											optionLabels:[LSB, MSB];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN0_DATA_RX_DEPTH			(<!id:PIN0DataRxDepth;
+											type:select;
+											label:Select Rx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN0_DATA_RX_WIDTH			(<!id:PIN0DataRxWidth;
+											type:integer;
+											label:Set Rx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN0En;
+											dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN0_DATA_TX_DEPTH			(<!id:PIN0DataTxDepth;
+											type:select;
+											label:Select Tx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN0_DATA_TX_WIDTH			(<!id:PIN0DataTxWidth;
+											type:integer;
+											label:Set Tx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN0En;
+											dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)
+#define	NUCODEGEN_PSIO_PIN0_SWITCH_POINT0_EN (<!id:PIN0SwitchPoint0En;
+											type:radio;
+											label:Enable switch point0;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)
+#if (NUCODEGEN_PSIO_PIN0_SWITCH_POINT0_EN)										
+#define NUCODEGEN_PSIO_PIN0_SWITCH_POINT0 (<!id:PIN0SwitchPoint0;
+											type:select;
+											label:Select switch point0;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN0En, PIN0SwitchPoint0En];
+							 				dependenciesOption:{"PIN0En":"1", "PIN0SwitchPoint0En":"1"};
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)										
+#define NUCODEGEN_PSIO_PIN0_MODE_SWITCH0			(<!id:PIN0ModeSwitch0;
+											type:select;
+											label:Select switch mode point0;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN0En, PIN0SwitchPoint0En];
+							 				dependenciesOption:{"PIN0En":"1", "PIN0SwitchPoint0En":"1"};
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)
+#endif	
+#define	NUCODEGEN_PSIO_PIN0_SWITCH_POINT1_EN (<!id:PIN0SwitchPoint1En;
+											type:radio;
+											label:Enable switch point1;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN0En;
+							 				dependenciesOption:1;
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)
+#if (NUCODEGEN_PSIO_PIN0_SWITCH_POINT1_EN)									
+#define NUCODEGEN_PSIO_PIN0_SWITCH_POINT1			(<!id:PIN0SwitchPoint1;
+											type:select;
+											label:Select switch point1;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN0En, PIN0SwitchPoint1En];
+							 				dependenciesOption:{"PIN0En":"1", "PIN0SwitchPoint1En":"1"};
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN0_MODE_SWITCH1			(<!id:PIN0ModeSwitch1;
+											type:select;
+											label:Select switch mode point1;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN0En, PIN0SwitchPoint1En];
+							 				dependenciesOption:{"PIN0En":"1", "PIN0SwitchPoint1En":"1"};
+											groupId:PIN0Setting; 
+											groupName:PSIO PIN0 setting;
+										!>)		
+#endif										
+#endif	
+
+
+#define NUCODEGEN_PSIO_PIN1_EN			(<!id:PIN1En;
+											type:checkbox;
+											label:PSIO Pin1 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:;
+											dependenciesOption:;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#if (NUCODEGEN_PSIO_PIN1_EN)
+#define NUCODEGEN_PSIO_PIN1_SLOT_CNT	(<!id:PIN1SlotControllerSelect0;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, Slot controller 1, Slot controller 2, Slot controller 3];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										!>)(<!id:PIN1SlotControllerSelect1;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1];
+											optionLabels:[Slot controller 0, Slot controller 1];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+											filterExp:type=="M252_D";
+										!>)
+#define NUCODEGEN_PSIO_PIN1_IOMODE				(<!id:PIN1IOMode;
+											type:select;
+											label:Select I/O mode for PIN1;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Input mode, Output mode, Open-drain mode, Quasi mode];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_INIT_STATE			(<!id:PIN1InitState;
+											type:select;
+											label:Select PIN1 status when slot controller stop and IDLE=1;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN1En;
+											dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN1_INTERVAL_STATE		(<!id:PIN1IntervalState;
+											type:select;
+											label:Select PIN1 status when slot controller stop and IDLE=0;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN1En;
+											dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP0_SLT				(<!id:PIN1CP0SLT;
+											type:select;
+											label:Link check point 0 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP0_ACT				(<!id:PIN1CP0ACT;
+											type:select;
+											label:Select check point 0 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP1_SLT				(<!id:PIN1CP1SLT;
+											type:select;
+											label:Link check point 1 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP1_ACT				(<!id:PIN1CP1ACT;
+											type:select;
+											label:Select check point 1 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN1_CP2_SLT				(<!id:PIN1CP2SLT;
+											type:select;
+											label:Link check point 2 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP2_ACT				(<!id:PIN1CP2ACT;
+											type:select;
+											label:Select check point 2 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN1_CP3_SLT				(<!id:PIN1CP3SLT;
+											type:select;
+											label:Link check point 3 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP3_ACT				(<!id:PIN1CP3ACT;
+											type:select;
+											label:Select check point 3 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN1_CP4_SLT				(<!id:PIN1CP4SLT;
+											type:select;
+											label:Link check point 4 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP4_ACT				(<!id:PIN1CP4ACT;
+											type:select;
+											label:Select check point 4 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)				
+#define NUCODEGEN_PSIO_PIN1_CP5_SLT				(<!id:PIN1CP5SLT;
+											type:select;
+											label:Link check point 5 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP5_ACT				(<!id:PIN1CP5ACT;
+											type:select;
+											label:Select check point 5 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN1_CP6_SLT				(<!id:PIN1CP6SLT;
+											type:select;
+											label:Link check point 6 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP6_ACT				(<!id:PIN1CP6ACT;
+											type:select;
+											label:Select check point 6 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP7_SLT				(<!id:PIN1CP7SLT;
+											type:select;
+											label:Link check point 7 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_CP7_ACT				(<!id:PIN1CP7ACT;
+											type:select;
+											label:Select check point 7 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_DATA_ORDER			(<!id:PIN1DataOrder;
+											type:radio;
+											label:Select data order;
+											data:PSIO_LSB;
+											default:PSIO_LSB;
+											enum:[PSIO_LSB, PSIO_MSB];
+											optionLabels:[LSB, MSB];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN1_DATA_RX_DEPTH			(<!id:PIN1DataRxDepth;
+											type:select;
+											label:Select Rx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN1_DATA_RX_WIDTH			(<!id:PIN1DataRxWidth;
+											type:integer;
+											label:Set Rx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN1En;
+											dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN1_DATA_TX_DEPTH			(<!id:PIN1DataTxDepth;
+											type:select;
+											label:Select Tx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN1_DATA_TX_WIDTH			(<!id:PIN1DataTxWidth;
+											type:integer;
+											label:Set Tx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN1En;
+											dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)
+#define	NUCODEGEN_PSIO_PIN1_SWITCH_POINT0_EN (<!id:PIN1SwitchPoint0En;
+											type:radio;
+											label:Enable switch point0;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)
+#if (NUCODEGEN_PSIO_PIN1_SWITCH_POINT0_EN)										
+#define NUCODEGEN_PSIO_PIN1_SWITCH_POINT0 (<!id:PIN1SwitchPoint0;
+											type:select;
+											label:Select switch point0;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN1En, PIN1SwitchPoint0En];
+							 				dependenciesOption:{"PIN1En":"1", "PIN1SwitchPoint0En":"1"};
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)										
+#define NUCODEGEN_PSIO_PIN1_MODE_SWITCH0			(<!id:PIN1ModeSwitch0;
+											type:select;
+											label:Select switch mode point0;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN1En, PIN1SwitchPoint0En];
+							 				dependenciesOption:{"PIN1En":"1", "PIN1SwitchPoint0En":"1"};
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)
+#endif	
+#define	NUCODEGEN_PSIO_PIN1_SWITCH_POINT1_EN (<!id:PIN1SwitchPoint1En;
+											type:radio;
+											label:Enable switch point1;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN1En;
+							 				dependenciesOption:1;
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)
+#if (NUCODEGEN_PSIO_PIN1_SWITCH_POINT1_EN)									
+#define NUCODEGEN_PSIO_PIN1_SWITCH_POINT1			(<!id:PIN1SwitchPoint1;
+											type:select;
+											label:Select switch point1;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN1En, PIN1SwitchPoint1En];
+							 				dependenciesOption:{"PIN1En":"1", "PIN1SwitchPoint1En":"1"};
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN1_MODE_SWITCH1			(<!id:PIN1ModeSwitch1;
+											type:select;
+											label:Select switch mode point1;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN1En, PIN1SwitchPoint1En];
+							 				dependenciesOption:{"PIN1En":"1", "PIN1SwitchPoint1En":"1"};
+											groupId:PIN1Setting; 
+											groupName:PSIO PIN1 setting;
+										!>)		
+#endif									
+#endif
+
+
+#define NUCODEGEN_PSIO_PIN2_EN			(<!id:PIN2En;
+											type:checkbox;
+											label:PSIO Pin2 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:;
+											dependenciesOption:;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#if (NUCODEGEN_PSIO_PIN2_EN)
+#define NUCODEGEN_PSIO_PIN2_SLOT_CNT	<!id:PIN2SlotControllerSelect0;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, Slot controller 1, Slot controller 2, Slot controller 3];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										!>)(<!id:PIN2SlotControllerSelect1;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1];
+											optionLabels:[Slot controller 0, Slot controller 1];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+											filterExp:type=="M252_D";
+										!>)
+#define NUCODEGEN_PSIO_PIN2_IOMODE				(<!id:PIN2IOMode;
+											type:select;
+											label:Select I/O mode for PIN2;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Input mode, Output mode, Open-drain mode, Quasi mode];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_INIT_STATE			(<!id:PIN2InitState;
+											type:select;
+											label:Select PIN2 status when slot controller stop and IDLE=1;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN2En;
+											dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN2_INTERVAL_STATE		(<!id:PIN2IntervalState;
+											type:select;
+											label:Select PIN2 status when slot controller stop and IDLE=0;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN2En;
+											dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP0_SLT				(<!id:PIN2CP0SLT;
+											type:select;
+											label:Link check point 0 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP0_ACT				(<!id:PIN2CP0ACT;
+											type:select;
+											label:Select check point 0 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP1_SLT				(<!id:PIN2CP1SLT;
+											type:select;
+											label:Link check point 1 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP1_ACT				(<!id:PIN2CP1ACT;
+											type:select;
+											label:Select check point 1 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN2_CP2_SLT				(<!id:PIN2CP2SLT;
+											type:select;
+											label:Link check point 2 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP2_ACT				(<!id:PIN2CP2ACT;
+											type:select;
+											label:Select check point 2 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN2_CP3_SLT				(<!id:PIN2CP3SLT;
+											type:select;
+											label:Link check point 3 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP3_ACT				(<!id:PIN2CP3ACT;
+											type:select;
+											label:Select check point 3 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN2_CP4_SLT				(<!id:PIN2CP4SLT;
+											type:select;
+											label:Link check point 4 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP4_ACT				(<!id:PIN2CP4ACT;
+											type:select;
+											label:Select check point 4 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)				
+#define NUCODEGEN_PSIO_PIN2_CP5_SLT				(<!id:PIN2CP5SLT;
+											type:select;
+											label:Link check point 5 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP5_ACT				(<!id:PIN2CP5ACT;
+											type:select;
+											label:Select check point 5 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN2_CP6_SLT				(<!id:PIN2CP6SLT;
+											type:select;
+											label:Link check point 6 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP6_ACT				(<!id:PIN2CP6ACT;
+											type:select;
+											label:Select check point 6 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP7_SLT				(<!id:PIN2CP7SLT;
+											type:select;
+											label:Link check point 7 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_CP7_ACT				(<!id:PIN2CP7ACT;
+											type:select;
+											label:Select check point 7 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_DATA_ORDER			(<!id:PIN2DataOrder;
+											type:radio;
+											label:Select data order;
+											data:PSIO_LSB;
+											default:PSIO_LSB;
+											enum:[PSIO_LSB, PSIO_MSB];
+											optionLabels:[LSB, MSB];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN2_DATA_RX_DEPTH			(<!id:PIN2DataRxDepth;
+											type:select;
+											label:Select Rx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN2_DATA_RX_WIDTH			(<!id:PIN2DataRxWidth;
+											type:integer;
+											label:Set Rx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN2En;
+											dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN2_DATA_TX_DEPTH			(<!id:PIN2DataTxDepth;
+											type:select;
+											label:Select Tx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN2_DATA_TX_WIDTH			(<!id:PIN2DataTxWidth;
+											type:integer;
+											label:Set Tx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN2En;
+											dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)
+#define	NUCODEGEN_PSIO_PIN2_SWITCH_POINT0_EN (<!id:PIN2SwitchPoint0En;
+											type:radio;
+											label:Enable switch point0;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)
+#if (NUCODEGEN_PSIO_PIN2_SWITCH_POINT0_EN)										
+#define NUCODEGEN_PSIO_PIN2_SWITCH_POINT0 (<!id:PIN2SwitchPoint0;
+											type:select;
+											label:Select switch point0;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN2En, PIN2SwitchPoint0En];
+							 				dependenciesOption:{"PIN2En":"1", "PIN2SwitchPoint0En":"1"};
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)										
+#define NUCODEGEN_PSIO_PIN2_MODE_SWITCH0			(<!id:PIN2ModeSwitch0;
+											type:select;
+											label:Select switch mode point0;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN2En, PIN2SwitchPoint0En];
+							 				dependenciesOption:{"PIN2En":"1", "PIN2SwitchPoint0En":"1"};
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)
+#endif	
+#define	NUCODEGEN_PSIO_PIN2_SWITCH_POINT1_EN (<!id:PIN2SwitchPoint1En;
+											type:radio;
+											label:Enable switch point1;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN2En;
+							 				dependenciesOption:1;
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)
+#if (NUCODEGEN_PSIO_PIN2_SWITCH_POINT1_EN)									
+#define NUCODEGEN_PSIO_PIN2_SWITCH_POINT1			(<!id:PIN2SwitchPoint1;
+											type:select;
+											label:Select switch point1;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN2En, PIN2SwitchPoint1En];
+							 				dependenciesOption:{"PIN2En":"1", "PIN2SwitchPoint1En":"1"};
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN2_MODE_SWITCH1			(<!id:PIN2ModeSwitch1;
+											type:select;
+											label:Select switch mode point1;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN2En, PIN2SwitchPoint1En];
+							 				dependenciesOption:{"PIN2En":"1", "PIN2SwitchPoint1En":"1"};
+											groupId:PIN2Setting; 
+											groupName:PSIO PIN2 setting;
+										!>)		
+#endif									
+#endif	
+
+
+#define NUCODEGEN_PSIO_PIN3_EN			(<!id:PIN3En;
+											type:checkbox;
+											label:PSIO Pin3 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:;
+											dependenciesOption:;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#if (NUCODEGEN_PSIO_PIN3_EN)
+#define NUCODEGEN_PSIO_PIN3_SLOT_CNT	(<!id:PIN3SlotControllerSelect0;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, Slot controller 1, Slot controller 2, Slot controller 3];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										!>)(<!id:PIN3SlotControllerSelect1;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1];
+											optionLabels:[Slot controller 0, Slot controller 1];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+											filterExp:type=="M252_D";
+										!>)										
+#define NUCODEGEN_PSIO_PIN3_IOMODE				(<!id:PIN3IOMode;
+											type:select;
+											label:Select I/O mode for PIN3;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Input mode, Output mode, Open-drain mode, Quasi mode];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_INIT_STATE			(<!id:PIN3InitState;
+											type:select;
+											label:Select PIN3 status when slot controller stop and IDLE=1;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN3En;
+											dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN3_INTERVAL_STATE		(<!id:PIN3IntervalState;
+											type:select;
+											label:Select PIN3 status when slot controller stop and IDLE=0;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN3En;
+											dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP0_SLT				(<!id:PIN3CP0SLT;
+											type:select;
+											label:Link check point 0 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP0_ACT				(<!id:PIN3CP0ACT;
+											type:select;
+											label:Select check point 0 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP1_SLT				(<!id:PIN3CP1SLT;
+											type:select;
+											label:Link check point 1 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP1_ACT				(<!id:PIN3CP1ACT;
+											type:select;
+											label:Select check point 1 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN3_CP2_SLT				(<!id:PIN3CP2SLT;
+											type:select;
+											label:Link check point 2 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP2_ACT				(<!id:PIN3CP2ACT;
+											type:select;
+											label:Select check point 2 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN3_CP3_SLT				(<!id:PIN3CP3SLT;
+											type:select;
+											label:Link check point 3 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP3_ACT				(<!id:PIN3CP3ACT;
+											type:select;
+											label:Select check point 3 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN3_CP4_SLT				(<!id:PIN3CP4SLT;
+											type:select;
+											label:Link check point 4 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP4_ACT				(<!id:PIN3CP4ACT;
+											type:select;
+											label:Select check point 4 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)				
+#define NUCODEGEN_PSIO_PIN3_CP5_SLT				(<!id:PIN3CP5SLT;
+											type:select;
+											label:Link check point 5 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP5_ACT				(<!id:PIN3CP5ACT;
+											type:select;
+											label:Select check point 5 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN3_CP6_SLT				(<!id:PIN3CP6SLT;
+											type:select;
+											label:Link check point 6 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP6_ACT				(<!id:PIN3CP6ACT;
+											type:select;
+											label:Select check point 6 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP7_SLT				(<!id:PIN3CP7SLT;
+											type:select;
+											label:Link check point 7 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_CP7_ACT				(<!id:PIN3CP7ACT;
+											type:select;
+											label:Select check point 7 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_DATA_ORDER			(<!id:PIN3DataOrder;
+											type:radio;
+											label:Select data order;
+											data:PSIO_LSB;
+											default:PSIO_LSB;
+											enum:[PSIO_LSB, PSIO_MSB];
+											optionLabels:[LSB, MSB];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN3_DATA_RX_DEPTH			(<!id:PIN3DataRxDepth;
+											type:select;
+											label:Select Rx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN3_DATA_RX_WIDTH			(<!id:PIN3DataRxWidth;
+											type:integer;
+											label:Set Rx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN3En;
+											dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)		
+#define NUCODEGEN_PSIO_PIN3_DATA_TX_DEPTH			(<!id:PIN3DataTxDepth;
+											type:select;
+											label:Select Tx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)
+#define NUCODEGEN_PSIO_PIN3_DATA_TX_WIDTH			(<!id:PIN3DataTxWidth;
+											type:integer;
+											label:Set Tx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN3En;
+											dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)
+#define	NUCODEGEN_PSIO_PIN3_SWITCH_POINT0_EN (<!id:PIN3SwitchPoint0En;
+											type:radio;
+											label:Enable switch point0;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)
+#if (NUCODEGEN_PSIO_PIN3_SWITCH_POINT0_EN)										
+#define NUCODEGEN_PSIO_PIN3_SWITCH_POINT0 (<!id:PIN3SwitchPoint0;
+											type:select;
+											label:Select switch point0;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN3En, PIN3SwitchPoint0En];
+							 				dependenciesOption:{"PIN3En":"1", "PIN3SwitchPoint0En":"1"};
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)										
+#define NUCODEGEN_PSIO_PIN3_MODE_SWITCH0			(<!id:PIN3ModeSwitch0;
+											type:select;
+											label:Select switch mode point0;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN3En, PIN3SwitchPoint0En];
+							 				dependenciesOption:{"PIN3En":"1", "PIN3SwitchPoint0En":"1"};
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)
+#endif	
+#define	NUCODEGEN_PSIO_PIN3_SWITCH_POINT1_EN (<!id:PIN3SwitchPoint1En;
+											type:radio;
+											label:Enable switch point1;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN3En;
+							 				dependenciesOption:1;
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)
+#if (NUCODEGEN_PSIO_PIN3_SWITCH_POINT1_EN)									
+#define NUCODEGEN_PSIO_PIN3_SWITCH_POINT1			(<!id:PIN3SwitchPoint1;
+											type:select;
+											label:Select switch point1;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN3En, PIN3SwitchPoint1En];
+							 				dependenciesOption:{"PIN3En":"1", "PIN3SwitchPoint1En":"1"};
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)	
+#define NUCODEGEN_PSIO_PIN3_MODE_SWITCH1			(<!id:PIN3ModeSwitch1;
+											type:select;
+											label:Select switch mode point1;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN3En, PIN3SwitchPoint1En];
+							 				dependenciesOption:{"PIN3En":"1", "PIN3SwitchPoint1En":"1"};
+											groupId:PIN3Setting; 
+											groupName:PSIO PIN3 setting;
+										!>)		
+#endif										
+#endif
+
+#define NUCODEGEN_PSIO_PIN4_EN			(<!id:PIN4En;
+											type:checkbox;
+											label:PSIO Pin4 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:;
+											dependenciesOption:;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										!>)	
+#if (NUCODEGEN_PSIO_PIN4_EN)
+#define NUCODEGEN_PSIO_PIN4_SLOT_CNT				(<!id:PIN4SlotControllerSelect;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, Slot controller 1, Slot controller 2, Slot controller 3];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN4_IOMODE				(<!id:PIN4IOMode;
+											type:select;
+											label:Select I/O mode for PIN4;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Input mode, Output mode, Open-drain mode, Quasi mode];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_INIT_STATE			(<!id:PIN4InitState;
+											type:select;
+											label:Select PIN4 status when slot controller stop and IDLE=1;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN4En;
+											dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN4_INTERVAL_STATE		(<!id:PIN4IntervalState;
+											type:select;
+											label:Select PIN4 status when slot controller stop and IDLE=0;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN4En;
+											dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP0_SLT				(<!id:PIN4CP0SLT;
+											type:select;
+											label:Link check point 0 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP0_ACT				(<!id:PIN4CP0ACT;
+											type:select;
+											label:Select check point 0 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP1_SLT				(<!id:PIN4CP1SLT;
+											type:select;
+											label:Link check point 1 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP1_ACT				(<!id:PIN4CP1ACT;
+											type:select;
+											label:Select check point 1 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN4_CP2_SLT				(<!id:PIN4CP2SLT;
+											type:select;
+											label:Link check point 2 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP2_ACT				(<!id:PIN4CP2ACT;
+											type:select;
+											label:Select check point 2 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN4_CP3_SLT				(<!id:PIN4CP3SLT;
+											type:select;
+											label:Link check point 3 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP3_ACT				(<!id:PIN4CP3ACT;
+											type:select;
+											label:Select check point 3 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN4_CP4_SLT				(<!id:PIN4CP4SLT;
+											type:select;
+											label:Link check point 4 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP4_ACT				(<!id:PIN4CP4ACT;
+											type:select;
+											label:Select check point 4 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)				
+#define NUCODEGEN_PSIO_PIN4_CP5_SLT				(<!id:PIN4CP5SLT;
+											type:select;
+											label:Link check point 5 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP5_ACT				(<!id:PIN4CP5ACT;
+											type:select;
+											label:Select check point 5 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN4_CP6_SLT				(<!id:PIN4CP6SLT;
+											type:select;
+											label:Link check point 6 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP6_ACT				(<!id:PIN4CP6ACT;
+											type:select;
+											label:Select check point 6 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP7_SLT				(<!id:PIN4CP7SLT;
+											type:select;
+											label:Link check point 7 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_CP7_ACT				(<!id:PIN4CP7ACT;
+											type:select;
+											label:Select check point 7 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_DATA_ORDER			(<!id:PIN4DataOrder;
+											type:radio;
+											label:Select data order;
+											data:PSIO_LSB;
+											default:PSIO_LSB;
+											enum:[PSIO_LSB, PSIO_MSB];
+											optionLabels:[LSB, MSB];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN4_DATA_RX_DEPTH			(<!id:PIN4DataRxDepth;
+											type:select;
+											label:Select Rx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN4_DATA_RX_WIDTH			(<!id:PIN4DataRxWidth;
+											type:integer;
+											label:Set Rx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN4En;
+											dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN4_DATA_TX_DEPTH			(<!id:PIN4DataTxDepth;
+											type:select;
+											label:Select Tx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN4_DATA_TX_WIDTH			(<!id:PIN4DataTxWidth;
+											type:integer;
+											label:Set Tx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN4En;
+											dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define	NUCODEGEN_PSIO_PIN4_SWITCH_POINT0_EN (<!id:PIN4SwitchPoint0En;
+											type:radio;
+											label:Enable switch point0;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#if (NUCODEGEN_PSIO_PIN4_SWITCH_POINT0_EN)										
+#define NUCODEGEN_PSIO_PIN4_SWITCH_POINT0 (<!id:PIN4SwitchPoint0;
+											type:select;
+											label:Select switch point0;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN4En, PIN4SwitchPoint0En];
+							 				dependenciesOption:{"PIN4En":"1", "PIN4SwitchPoint0En":"1"};
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)										
+#define NUCODEGEN_PSIO_PIN4_MODE_SWITCH0			(<!id:PIN4ModeSwitch0;
+											type:select;
+											label:Select switch mode point0;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN4En, PIN4SwitchPoint0En];
+							 				dependenciesOption:{"PIN4En":"1", "PIN4SwitchPoint0En":"1"};
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#endif	
+#define	NUCODEGEN_PSIO_PIN4_SWITCH_POINT1_EN (<!id:PIN4SwitchPoint1En;
+											type:radio;
+											label:Enable switch point1;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN4En;
+							 				dependenciesOption:1;
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#if (NUCODEGEN_PSIO_PIN4_SWITCH_POINT1_EN)									
+#define NUCODEGEN_PSIO_PIN4_SWITCH_POINT1			(<!id:PIN4SwitchPoint1;
+											type:select;
+											label:Select switch point1;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN4En, PIN4SwitchPoint1En];
+							 				dependenciesOption:{"PIN4En":"1", "PIN4SwitchPoint1En":"1"};
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN4_MODE_SWITCH1			(<!id:PIN4ModeSwitch1;
+											type:select;
+											label:Select switch mode point1;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN4En, PIN4SwitchPoint1En];
+							 				dependenciesOption:{"PIN4En":"1", "PIN4SwitchPoint1En":"1"};
+											groupId:PIN4Setting; 
+											groupName:PSIO PIN4 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#endif										
+#endif
+
+#define NUCODEGEN_PSIO_PIN5_EN			(<!id:PIN5En;
+											type:checkbox;
+											label:PSIO Pin5 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:;
+											dependenciesOption:;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										!>)	
+#if (NUCODEGEN_PSIO_PIN5_EN)
+#define NUCODEGEN_PSIO_PIN5_SLOT_CNT				(<!id:PIN5SlotControllerSelect;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, Slot controller 1, Slot controller 2, Slot controller 3];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN5_IOMODE				(<!id:PIN5IOMode;
+											type:select;
+											label:Select I/O mode for PIN5;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Input mode, Output mode, Open-drain mode, Quasi mode];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_INIT_STATE			(<!id:PIN5InitState;
+											type:select;
+											label:Select PIN5 status when slot controller stop and IDLE=1;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN5En;
+											dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN5_INTERVAL_STATE		(<!id:PIN5IntervalState;
+											type:select;
+											label:Select PIN5 status when slot controller stop and IDLE=0;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN5En;
+											dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP0_SLT				(<!id:PIN5CP0SLT;
+											type:select;
+											label:Link check point 0 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP0_ACT				(<!id:PIN5CP0ACT;
+											type:select;
+											label:Select check point 0 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP1_SLT				(<!id:PIN5CP1SLT;
+											type:select;
+											label:Link check point 1 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP1_ACT				(<!id:PIN5CP1ACT;
+											type:select;
+											label:Select check point 1 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN5_CP2_SLT				(<!id:PIN5CP2SLT;
+											type:select;
+											label:Link check point 2 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP2_ACT				(<!id:PIN5CP2ACT;
+											type:select;
+											label:Select check point 2 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN5_CP3_SLT				(<!id:PIN5CP3SLT;
+											type:select;
+											label:Link check point 3 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP3_ACT				(<!id:PIN5CP3ACT;
+											type:select;
+											label:Select check point 3 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN5_CP4_SLT				(<!id:PIN5CP4SLT;
+											type:select;
+											label:Link check point 4 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP4_ACT				(<!id:PIN5CP4ACT;
+											type:select;
+											label:Select check point 4 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)				
+#define NUCODEGEN_PSIO_PIN5_CP5_SLT				(<!id:PIN5CP5SLT;
+											type:select;
+											label:Link check point 5 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP5_ACT				(<!id:PIN5CP5ACT;
+											type:select;
+											label:Select check point 5 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN5_CP6_SLT				(<!id:PIN5CP6SLT;
+											type:select;
+											label:Link check point 6 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP6_ACT				(<!id:PIN5CP6ACT;
+											type:select;
+											label:Select check point 6 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP7_SLT				(<!id:PIN5CP7SLT;
+											type:select;
+											label:Link check point 7 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_CP7_ACT				(<!id:PIN5CP7ACT;
+											type:select;
+											label:Select check point 7 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_DATA_ORDER			(<!id:PIN5DataOrder;
+											type:radio;
+											label:Select data order;
+											data:PSIO_LSB;
+											default:PSIO_LSB;
+											enum:[PSIO_LSB, PSIO_MSB];
+											optionLabels:[LSB, MSB];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN5_DATA_RX_DEPTH			(<!id:PIN5DataRxDepth;
+											type:select;
+											label:Select Rx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN5_DATA_RX_WIDTH			(<!id:PIN5DataRxWidth;
+											type:integer;
+											label:Set Rx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN5En;
+											dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN5_DATA_TX_DEPTH			(<!id:PIN5DataTxDepth;
+											type:select;
+											label:Select Tx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN5_DATA_TX_WIDTH			(<!id:PIN5DataTxWidth;
+											type:integer;
+											label:Set Tx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN5En;
+											dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define	NUCODEGEN_PSIO_PIN5_SWITCH_POINT0_EN (<!id:PIN5SwitchPoint0En;
+											type:radio;
+											label:Enable switch point0;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#if (NUCODEGEN_PSIO_PIN5_SWITCH_POINT0_EN)										
+#define NUCODEGEN_PSIO_PIN5_SWITCH_POINT0 (<!id:PIN5SwitchPoint0;
+											type:select;
+											label:Select switch point0;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN5En, PIN5SwitchPoint0En];
+							 				dependenciesOption:{"PIN5En":"1", "PIN5SwitchPoint0En":"1"};
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)										
+#define NUCODEGEN_PSIO_PIN5_MODE_SWITCH0			(<!id:PIN5ModeSwitch0;
+											type:select;
+											label:Select switch mode point0;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN5En, PIN5SwitchPoint0En];
+							 				dependenciesOption:{"PIN5En":"1", "PIN5SwitchPoint0En":"1"};
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#endif	
+#define	NUCODEGEN_PSIO_PIN5_SWITCH_POINT1_EN (<!id:PIN5SwitchPoint1En;
+											type:radio;
+											label:Enable switch point1;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN5En;
+							 				dependenciesOption:1;
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#if (NUCODEGEN_PSIO_PIN5_SWITCH_POINT1_EN)									
+#define NUCODEGEN_PSIO_PIN5_SWITCH_POINT1			(<!id:PIN5SwitchPoint1;
+											type:select;
+											label:Select switch point1;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN5En, PIN5SwitchPoint1En];
+							 				dependenciesOption:{"PIN5En":"1", "PIN5SwitchPoint1En":"1"};
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN5_MODE_SWITCH1			(<!id:PIN5ModeSwitch1;
+											type:select;
+											label:Select switch mode point1;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN5En, PIN5SwitchPoint1En];
+							 				dependenciesOption:{"PIN5En":"1", "PIN5SwitchPoint1En":"1"};
+											groupId:PIN5Setting; 
+											groupName:PSIO PIN5 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#endif										
+#endif
+
+
+#define NUCODEGEN_PSIO_PIN6_EN			(<!id:PIN6En;
+											type:checkbox;
+											label:PSIO Pin6 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:;
+											dependenciesOption:;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#if (NUCODEGEN_PSIO_PIN6_EN)
+#define NUCODEGEN_PSIO_PIN6_SLOT_CNT				(<!id:PIN6SlotControllerSelect;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, Slot controller 1, Slot controller 2, Slot controller 3];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN6_IOMODE				(<!id:PIN6IOMode;
+											type:select;
+											label:Select I/O mode for PIN6;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Input mode, Output mode, Open-drain mode, Quasi mode];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_INIT_STATE			(<!id:PIN6InitState;
+											type:select;
+											label:Select PIN6 status when slot controller stop and IDLE=1;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN6En;
+											dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN6_INTERVAL_STATE		(<!id:PIN6IntervalState;
+											type:select;
+											label:Select PIN6 status when slot controller stop and IDLE=0;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN6En;
+											dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP0_SLT				(<!id:PIN6CP0SLT;
+											type:select;
+											label:Link check point 0 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP0_ACT				(<!id:PIN6CP0ACT;
+											type:select;
+											label:Select check point 0 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP1_SLT				(<!id:PIN6CP1SLT;
+											type:select;
+											label:Link check point 1 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP1_ACT				(<!id:PIN6CP1ACT;
+											type:select;
+											label:Select check point 1 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN6_CP2_SLT				(<!id:PIN6CP2SLT;
+											type:select;
+											label:Link check point 2 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP2_ACT				(<!id:PIN6CP2ACT;
+											type:select;
+											label:Select check point 2 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN6_CP3_SLT				(<!id:PIN6CP3SLT;
+											type:select;
+											label:Link check point 3 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP3_ACT				(<!id:PIN6CP3ACT;
+											type:select;
+											label:Select check point 3 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN6_CP4_SLT				(<!id:PIN6CP4SLT;
+											type:select;
+											label:Link check point 4 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP4_ACT				(<!id:PIN6CP4ACT;
+											type:select;
+											label:Select check point 4 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)				
+#define NUCODEGEN_PSIO_PIN6_CP5_SLT				(<!id:PIN6CP5SLT;
+											type:select;
+											label:Link check point 5 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP5_ACT				(<!id:PIN6CP5ACT;
+											type:select;
+											label:Select check point 5 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN6_CP6_SLT				(<!id:PIN6CP6SLT;
+											type:select;
+											label:Link check point 6 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP6_ACT				(<!id:PIN6CP6ACT;
+											type:select;
+											label:Select check point 6 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP7_SLT				(<!id:PIN6CP7SLT;
+											type:select;
+											label:Link check point 7 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_CP7_ACT				(<!id:PIN6CP7ACT;
+											type:select;
+											label:Select check point 7 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_DATA_ORDER			(<!id:PIN6DataOrder;
+											type:radio;
+											label:Select data order;
+											data:PSIO_LSB;
+											default:PSIO_LSB;
+											enum:[PSIO_LSB, PSIO_MSB];
+											optionLabels:[LSB, MSB];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN6_DATA_RX_DEPTH			(<!id:PIN6DataRxDepth;
+											type:select;
+											label:Select Rx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN6_DATA_RX_WIDTH			(<!id:PIN6DataRxWidth;
+											type:integer;
+											label:Set Rx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN6En;
+											dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN6_DATA_TX_DEPTH			(<!id:PIN6DataTxDepth;
+											type:select;
+											label:Select Tx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN6_DATA_TX_WIDTH			(<!id:PIN6DataTxWidth;
+											type:integer;
+											label:Set Tx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN6En;
+											dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define	NUCODEGEN_PSIO_PIN6_SWITCH_POINT0_EN (<!id:PIN6SwitchPoint0En;
+											type:radio;
+											label:Enable switch point0;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#if (NUCODEGEN_PSIO_PIN6_SWITCH_POINT0_EN)										
+#define NUCODEGEN_PSIO_PIN6_SWITCH_POINT0 (<!id:PIN6SwitchPoint0;
+											type:select;
+											label:Select switch point0;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN6En, PIN6SwitchPoint0En];
+							 				dependenciesOption:{"PIN6En":"1", "PIN6SwitchPoint0En":"1"};
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)										
+#define NUCODEGEN_PSIO_PIN6_MODE_SWITCH0			(<!id:PIN6ModeSwitch0;
+											type:select;
+											label:Select switch mode point0;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN6En, PIN6SwitchPoint0En];
+							 				dependenciesOption:{"PIN6En":"1", "PIN6SwitchPoint0En":"1"};
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#endif	
+#define	NUCODEGEN_PSIO_PIN6_SWITCH_POINT1_EN (<!id:PIN6SwitchPoint1En;
+											type:radio;
+											label:Enable switch point1;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN6En;
+							 				dependenciesOption:1;
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#if (NUCODEGEN_PSIO_PIN6_SWITCH_POINT1_EN)									
+#define NUCODEGEN_PSIO_PIN6_SWITCH_POINT1			(<!id:PIN6SwitchPoint1;
+											type:select;
+											label:Select switch point1;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN6En, PIN6SwitchPoint1En];
+							 				dependenciesOption:{"PIN6En":"1", "PIN6SwitchPoint1En":"1"};
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN6_MODE_SWITCH1			(<!id:PIN6ModeSwitch1;
+											type:select;
+											label:Select switch mode point1;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN6En, PIN6SwitchPoint1En];
+							 				dependenciesOption:{"PIN6En":"1", "PIN6SwitchPoint1En":"1"};
+											groupId:PIN6Setting; 
+											groupName:PSIO PIN6 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#endif										
+#endif
+
+
+#define NUCODEGEN_PSIO_PIN7_EN			(<!id:PIN7En;
+											type:checkbox;
+											label:PSIO Pin7 enable;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:;
+											dependenciesOption:;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+											filterExp:type=="M252_G" or type=="M252_E";
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#if (NUCODEGEN_PSIO_PIN7_EN)
+#define NUCODEGEN_PSIO_PIN7_SLOT_CNT				(<!id:PIN7SlotControllerSelect;
+											type:select;
+											label:Select slot controller;
+											data:PSIO_SC0;
+											default:PSIO_SC0;
+											enum:[PSIO_SC0, PSIO_SC1, PSIO_SC2, PSIO_SC3];
+											optionLabels:[Slot controller 0, Slot controller 1, Slot controller 2, Slot controller 3];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN7_IOMODE				(<!id:PIN7IOMode;
+											type:select;
+											label:Select I/O mode for PIN7;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Input mode, Output mode, Open-drain mode, Quasi mode];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_INIT_STATE			(<!id:PIN7InitState;
+											type:select;
+											label:Select PIN7 status when slot controller stop and IDLE=1;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN7En;
+											dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN7_INTERVAL_STATE		(<!id:PIN7IntervalState;
+											type:select;
+											label:Select PIN7 status when slot controller stop and IDLE=0;
+											data:PSIO_LOW_LEVEL;
+											default:PSIO_LOW_LEVEL;
+											enum:[PSIO_LOW_LEVEL, PSIO_HIGH_LEVEL, PSIO_LAST_OUTPUT, PSIO_Toggle];
+											optionLabels:[Low level, High level, Last level, Toggle];
+											dependencies:PIN7En;
+											dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP0_SLT				(<!id:PIN7CP0SLT;
+											type:select;
+											label:Link check point 0 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP0_ACT				(<!id:PIN7CP0ACT;
+											type:select;
+											label:Select check point 0 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP1_SLT				(<!id:PIN7CP1SLT;
+											type:select;
+											label:Link check point 1 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP1_ACT				(<!id:PIN7CP1ACT;
+											type:select;
+											label:Select check point 1 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN7_CP2_SLT				(<!id:PIN7CP2SLT;
+											type:select;
+											label:Link check point 2 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP2_ACT				(<!id:PIN7CP2ACT;
+											type:select;
+											label:Select check point 2 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN7_CP3_SLT				(<!id:PIN7CP3SLT;
+											type:select;
+											label:Link check point 3 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP3_ACT				(<!id:PIN7CP3ACT;
+											type:select;
+											label:Select check point 3 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN7_CP4_SLT				(<!id:PIN7CP4SLT;
+											type:select;
+											label:Link check point 4 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP4_ACT				(<!id:PIN7CP4ACT;
+											type:select;
+											label:Select check point 4 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)				
+#define NUCODEGEN_PSIO_PIN7_CP5_SLT				(<!id:PIN7CP5SLT;
+											type:select;
+											label:Link check point 5 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP5_ACT				(<!id:PIN7CP5ACT;
+											type:select;
+											label:Select check point 5 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN7_CP6_SLT				(<!id:PIN7CP6SLT;
+											type:select;
+											label:Link check point 6 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP6_ACT				(<!id:PIN7CP6ACT;
+											type:select;
+											label:Select check point 6 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP7_SLT				(<!id:PIN7CP7SLT;
+											type:select;
+											label:Link check point 7 to slot;
+											data:PSIO_SLOT_DISABLE;
+											default:PSIO_SLOT_DISABLE;
+											enum:[PSIO_SLOT_DISABLE, PSIO_SLOT0, PSIO_SLOT1, PSIO_SLOT2,
+													PSIO_SLOT3, PSIO_SLOT4, PSIO_SLOT5, PSIO_SLOT6, PSIO_SLOT7];
+											optionLabels:[Disable, Slot 0, Slot 1, Slot 2, Slot 3,
+															Slot 4, Slot 5, Slot 6, Slot 7];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_CP7_ACT				(<!id:PIN7CP7ACT;
+											type:select;
+											label:Select check point 7 action;
+											data:PSIO_NO_ACTION;
+											default:PSIO_NO_ACTION;
+											enum:[PSIO_NO_ACTION, PSIO_OUT_LOW, PSIO_OUT_HIGH, PSIO_OUT_BUFFER,
+													PSIO_OUT_TOGGLE, PSIO_IN_BUFFER, PSIO_IN_STATUS, PSIO_IN_STATUS_UPDATE];
+											optionLabels:[No action,Output low, Output high, Output from buffer, Output toggle,
+															Input to buffer, Input to status buffer, Input to status buffer and update];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_DATA_ORDER			(<!id:PIN7DataOrder;
+											type:radio;
+											label:Select data order;
+											data:PSIO_LSB;
+											default:PSIO_LSB;
+											enum:[PSIO_LSB, PSIO_MSB];
+											optionLabels:[LSB, MSB];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN7_DATA_RX_DEPTH			(<!id:PIN7DataRxDepth;
+											type:select;
+											label:Select Rx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN7_DATA_RX_WIDTH			(<!id:PIN7DataRxWidth;
+											type:integer;
+											label:Set Rx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN7En;
+											dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)		
+#define NUCODEGEN_PSIO_PIN7_DATA_TX_DEPTH			(<!id:PIN7DataTxDepth;
+											type:select;
+											label:Select Tx data depth;
+											data:PSIO_DEPTH1;
+											default:PSIO_DEPTH1;
+											enum:[PSIO_DEPTH1, PSIO_DEPTH2, PSIO_DEPTH3, PSIO_DEPTH4];
+											optionLabels:[Depth 1, Depth 2, Depth 3, Depth 4];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define NUCODEGEN_PSIO_PIN7_DATA_TX_WIDTH			(<!id:PIN7DataTxWidth;
+											type:integer;
+											label:Set Tx data width;
+											data:0;
+											default:0;
+											helper:Enter your count 1 ~ 32;
+											minimum:1;
+											maximum:32;																						
+											dependencies:PIN7En;
+											dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#define	NUCODEGEN_PSIO_PIN7_SWITCH_POINT0_EN (<!id:PIN7SwitchPoint0En;
+											type:radio;
+											label:Enable switch point0;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#if (NUCODEGEN_PSIO_PIN7_SWITCH_POINT0_EN)										
+#define NUCODEGEN_PSIO_PIN7_SWITCH_POINT0 (<!id:PIN7SwitchPoint0;
+											type:select;
+											label:Select switch point0;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN7En, PIN7SwitchPoint0En];
+							 				dependenciesOption:{"PIN7En":"1", "PIN7SwitchPoint0En":"1"};
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)										
+#define NUCODEGEN_PSIO_PIN7_MODE_SWITCH0			(<!id:PIN7ModeSwitch0;
+											type:select;
+											label:Select switch mode point0;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN7En, PIN7SwitchPoint0En];
+							 				dependenciesOption:{"PIN7En":"1", "PIN7SwitchPoint0En":"1"};
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#endif	
+#define	NUCODEGEN_PSIO_PIN7_SWITCH_POINT1_EN (<!id:PIN7SwitchPoint1En;
+											type:radio;
+											label:Enable switch point1;
+											data:0;
+											default:0;
+											enum:[0, 1];
+											optionLabels:[Disable, Enable];
+											dependencies:PIN7En;
+							 				dependenciesOption:1;
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)
+#if (NUCODEGEN_PSIO_PIN7_SWITCH_POINT1_EN)									
+#define NUCODEGEN_PSIO_PIN7_SWITCH_POINT1			(<!id:PIN7SwitchPoint1;
+											type:select;
+											label:Select switch point1;
+											data:PSIO_CP0;
+											default:PSIO_CP0;
+											enum:[PSIO_CP0, PSIO_CP1, PSIO_CP2, PSIO_CP3, 
+													PSIO_CP4, PSIO_CP5, PSIO_CP6, PSIO_CP7];
+											optionLabels:[Check point 0, Check point 1, Check point 2, Check point 3, 
+															Check point 4, Check point 5, Check point 6, Check point 7];
+											dependencies:[PIN7En, PIN7SwitchPoint1En];
+							 				dependenciesOption:{"PIN7En":"1", "PIN7SwitchPoint1En":"1"};
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#define NUCODEGEN_PSIO_PIN7_MODE_SWITCH1			(<!id:PIN7ModeSwitch1;
+											type:select;
+											label:Select switch mode point1;
+											data:PSIO_INPUT_MODE;
+											default:PSIO_INPUT_MODE;
+											enum:[PSIO_INPUT_MODE, PSIO_OUTPUT_MODE, PSIO_OPENDRAIN_MODE, PSIO_QUASI_MODE];
+											optionLabels:[Switch to input mode, Switch to output mode, Switch to open-drain mode, Switch to quasi mode];
+											dependencies:[PIN7En, PIN7SwitchPoint1En];
+							 				dependenciesOption:{"PIN7En":"1", "PIN7SwitchPoint1En":"1"};
+											groupId:PIN7Setting; 
+											groupName:PSIO PIN7 setting;
+										filterExp:type=="M252_G" or type=="M252_E"; !>)	
+#endif										
+#endif

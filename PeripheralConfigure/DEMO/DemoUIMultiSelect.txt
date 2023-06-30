@@ -1,0 +1,12 @@
+<!id:UART1DisableINTMultipleSelect;
+type:multipleselect;
+label:Disable Interrupts We Want for UART1;
+size:5;
+data:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+default:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+helper:Select which interrupt to disable.;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKCTSIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, UART Wake-Up Function, LIN RX Break Field Detected, Time-Out Counter, RTS Auto Flow Control, CTS Auto Flow Control, TX DMA, RX DMA];
+dependencies:none;
+dependenciesOption:none;!>

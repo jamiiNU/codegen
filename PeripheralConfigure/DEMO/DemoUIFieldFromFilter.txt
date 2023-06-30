@@ -1,0 +1,66 @@
+<!filter:{"CHANNEL_NUMBER_SUPPORT": "1"};!>
+
+#define NUCODEGEN_ADC_COMPAER0_CHANNEL (<!id:ADCCompare0Channel;
+                                type:select;
+                                label:"Compare 0 channel.";
+                                data:12;
+                                default: {
+                                    "NUC_OR":{"PA_dot1==1": [1], "PA_dot2==1": [2], "PA_dot5==1": [5]},
+                                    "NUC_AND":{"PA_dot1==1": [1], "PA_dot2==1": [2]},
+                                    "PA_dot4==1": [4],
+                                    "PA_dot12==1": [12],
+                                    "NUC_ANY": [0]
+                                };
+                                helper:"Select a channel from A/D converter channels";
+                                sort:false;
+                                enum: {
+                                    "NUC_OR":{"PA_dot1==1": [1], "PA_dot2==1": [2], "PA_dot5==1": [5]},
+                                    "NUC_AND":{"PA_dot1==1": [1], "PA_dot2==1": [2]},
+                                    "PA_dot4==1": [4],
+                                    "PA_dot12==1": [12],
+                                    "NUC_ANY": [0]
+                                };
+                                optionLabels: {
+                                    "NUC_OR":{"PA_dot1==1": [1], "PA_dot2==1": [2], "PA_dot5==1": [5]},
+                                    "NUC_AND":{"PA_dot1==1": [1], "PA_dot2==1": [2]},
+                                    "PA_dot4==1": [4],
+                                    "PA_dot12==1": [12],
+                                    "NUC_ANY": [0]
+                                };
+                                dependencies:none;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare0Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+#define NUCODEDEF_EADCSM0CH (<!id:UseEADCSM0ChSelect;
+                                type:select;
+                                label:Sample module channel.;
+                                data:1;
+                                default: {
+                                    "CHANNEL_NUMBER_SUPPORT==1": [1],
+                                    "CHANNEL_NUMBER_SUPPORT==2": [1, 2],
+                                    "NUC_ANY": [0]
+                                };
+                                helper:;
+                                sort:false;
+                                enum: {
+                                    "CHANNEL_NUMBER_SUPPORT==1": [1, 2, 3],
+                                    "CHANNEL_NUMBER_SUPPORT==2": [1, 2],
+                                    "NUC_ANY": [0]
+                                };
+                                optionLabels: {
+                                    "CHANNEL_NUMBER_SUPPORT==1": ["Channel 1", "Channel 2", "Channel 3"],
+                                    "CHANNEL_NUMBER_SUPPORT==2": ["Channel 1", "Channel 2"],
+                                    "NUC_ANY": ["Channel 0"]
+                                };
+                                dependencies:none;
+                                dependenciesOption:1;
+                                groupId:EADC_SampleModule0;
+                                groupName:EADC - Sample module 0 configuration;
+                                filterExp:none;
+                                filterDefault: false;!>)

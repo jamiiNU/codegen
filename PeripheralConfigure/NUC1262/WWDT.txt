@@ -1,0 +1,95 @@
+<!clock: {"ALL" : "WWDT"};
+  pin:   {"ALL" : [""]};
+!>
+/*--------------------------------------------------------------------------*/
+/* WWDT Configuration                                                       */
+/*--------------------------------------------------------------------------*/
+
+/* Configure WWDT Prescale value */
+#define WWDT_PRESCALER_CONFIG               (<!id:WWDT_PrescalerSelect;
+                                            type:select;
+                                            label:Select Counter Prescaler;
+                                            data:WWDT_PRESCALER_192;
+                                            default:WWDT_PRESCALER_192;
+                                            helper:WWDT will generate reset signal once the internal down-counter counts from 63 to 0.<br>The maximum timeout period is: prescaler * 64 * WWDT_CLK.;
+                                            sort:false;
+                                            enum:[  WWDT_PRESCALER_1,   WWDT_PRESCALER_2,   WWDT_PRESCALER_4,   WWDT_PRESCALER_8,    WWDT_PRESCALER_16,
+                                                    WWDT_PRESCALER_32,  WWDT_PRESCALER_64,  WWDT_PRESCALER_128, WWDT_PRESCALER_192,  WWDT_PRESCALER_256,
+                                                    WWDT_PRESCALER_384, WWDT_PRESCALER_512, WWDT_PRESCALER_768, WWDT_PRESCALER_1024, WWDT_PRESCALER_1536, WWDT_PRESCALER_2048];
+                                            optionLabels:[Prescaler 1,   Prescaler 2,   Prescaler 4,   Prescaler 8,             Prescaler 16,
+                                                          Prescaler 32,  Prescaler 64,  Prescaler 128, Prescaler 192 (Default), Prescaler 256,
+                                                          Prescaler 384, Prescaler 512, Prescaler 768, Prescaler 1024,          Prescaler 1536, Prescaler 2048];
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                            groupId:Group_BasicConfig;
+                                            groupName:Basic Configuration;!>)
+                                                    
+/* Configure WWDT Compare Data Value */
+#define WWDT_CMPDAT_CONFIG                  (<!id:WWDT_CMPDAT1Integer;
+                                            type:integer;
+                                            label:Enter Compare Data Value;
+                                            data:62;
+                                            default:62;
+                                            helper:When WWDT counter reach this value, an interrupt signal will be generated.<br>Maximum:62. Minimum:3.;
+                                            minimum:3;
+                                            maximum:62;
+                                            validate:true;
+                                            dependencies:WWDT_PrescalerSelect;
+                                            dependenciesOption:WWDT_PRESCALER_1;
+                                            dependenciesDefault:false;
+                                            groupId:Group_BasicConfig;
+                                            groupName:Basic Configuration;
+                                            !><!id:WWDT_CMPDAT2Integer;
+                                            type:integer;
+                                            label:Enter Compare Data Value;
+                                            data:62;
+                                            default:62;
+                                            helper:When WWDT counter reach this value, an interrupt signal will be generated.<br>Maximum:62. Minimum:2.;
+                                            minimum:2;
+                                            maximum:62;
+                                            validate:true;
+                                            dependencies:WWDT_PrescalerSelect;
+                                            dependenciesOption:WWDT_PRESCALER_2;
+                                            dependenciesDefault:false;
+                                            groupId:Group_BasicConfig;
+                                            groupName:Basic Configuration;
+                                            !><!id:WWDT_CMPDAT3Integer;
+                                            type:integer;
+                                            label:Enter Compare Data Value;
+                                            data:62;
+                                            default:62;
+                                            helper:When WWDT counter reach this value, an interrupt signal will be generated.<br>Maximum:62. Minimum:1.;
+                                            minimum:1;
+                                            maximum:62;
+                                            validate:true;
+                                            dependencies:WWDT_PrescalerSelect;
+                                            dependenciesOption:{
+                                                "WWDT_PrescalerSelect":
+                                                ["WWDT_PRESCALER_4",    "WWDT_PRESCALER_8",   "WWDT_PRESCALER_16",  "WWDT_PRESCALER_32",
+                                                 "WWDT_PRESCALER_64",   "WWDT_PRESCALER_128", "WWDT_PRESCALER_192", "WWDT_PRESCALER_256",
+                                                 "WWDT_PRESCALER_384",  "WWDT_PRESCALER_512", "WWDT_PRESCALER_768", "WWDT_PRESCALER_1024",
+                                                 "WWDT_PRESCALER_1536", "WWDT_PRESCALER_2048"]};
+                                            dependenciesDefault:false;
+                                            groupId:Group_BasicConfig;
+                                            groupName:Basic Configuration;!>)
+                             
+                             
+/* Enable or Disable WWDT Interrupt Function */
+#define NUCODEGEN_WWDT_INT_ENABLE           (<!id:WWDT_IntEnableCheckbox;
+                                            type:checkbox;
+                                            label:Enable WWDT Interrupt;
+                                            data:1;
+                                            default:1;
+                                            helper:;
+                                            sort:false;
+                                            enum:[1];
+                                            optionLabels:[Enable Interrupt];
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                            groupId:Group_IntConfig;
+                                            groupName:Interrupt Configuration;!>)
+#if NUCODEGEN_WWDT_INT_ENABLE
+#define WWDT_INTEN_CONFIG                   (1)
+#else
+#define WWDT_INTEN_CONFIG                   (0)
+#endif // NUCODEGEN_WWDT_INT_ENABLE

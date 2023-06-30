@@ -1,0 +1,1481 @@
+<!filter:{ "M252_G":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"1",
+						"CHIP_SERIES":"M252_G"
+					},
+			"M252_E":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"1",
+						"CHIP_SERIES":"M252_E"
+					},
+			"M252_C":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"1",
+						"CHIP_SERIES":"M252_C"
+					},
+			"M252_D":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"1",
+						"CHIP_SERIES":"M252_D"
+					},
+			"M254_E":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"1",
+						"CHIP_SERIES":"M258_E"
+					},
+			"M256_E":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"1",
+						"CHIP_SERIES":"M258_E"
+					},
+			"M258_E":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"1",
+						"CHIP_SERIES":"M258_E"
+					},
+			"M254_D":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"0",
+						"CHIP_SERIES":"M256_D"
+					},
+			"M256_D":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"0",
+						"CHIP_SERIES":"M256_D"
+					},
+			"M254_G":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"0",
+						"CHIP_SERIES":"M258_G"
+					},
+			"M256_G":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"0",
+						"CHIP_SERIES":"M258_G"
+					},
+			"M258_G":{
+						"SUPPORT_TIMEOUT":"0",
+						"SUPPORT_STRIDE":"0",
+						"CHIP_SERIES":"M258_G"
+					}
+		};!>
+<!clock:  {"ALL" : "PDMA" }; !>
+
+#define NUCODEGEN_PDMA_OP_BASIC 0
+#define NUCODEGEN_PDMA_OP_SCATTER 1
+
+#if(NUCODEGEN_PDMA_CH4==1)
+#define NUCODEGEN_PDMA_CH4_SRC_DES_SEL	<!id:PDMACH4SrcDesSel;
+											type:select;
+											label:CH4 basic mode source and destination select;
+											data:PDMA_MEM;
+											default:PDMA_MEM;
+											enum:[PDMA_MEM,	PDMA_UART0_TX, PDMA_UART0_RX, PDMA_UART1_TX, PDMA_UART1_RX, PDMA_UART2_TX, PDMA_UART2_RX,
+												PDMA_USCI0_TX, PDMA_USCI0_RX, PDMA_USCI1_TX, PDMA_USCI1_RX,
+												PDMA_QSPI0_TX, PDMA_QSPI0_RX, PDMA_SPI0_TX, PDMA_SPI0_RX,
+												PDMA_PWM0_P1_RX,PDMA_PWM0_P2_RX,PDMA_PWM0_P3_RX, PDMA_PWM1_P1_RX,PDMA_PWM1_P2_RX,PDMA_PWM1_P3_RX,
+												PDMA_I2C0_TX, PDMA_I2C0_RX, PDMA_I2C1_TX, PDMA_I2C1_RX,
+												PDMA_TMR0, PDMA_TMR1, PDMA_TMR2, PDMA_TMR3,
+												PDMA_EADC_RX, PDMA_DAC0_TX,
+												PDMA_PSIO_TX, PDMA_PSIO_RX, 
+												PDMA_USCI2_TX, PDMA_USCI2_RX ];														
+											optionLabels:[Memory to memory, 
+												Memory to UART0_TX, UART0_RX to memory,	Memory to UART1_TX, UART1_RX to memory,	Memory to UART2_TX, UART2_RX to memory,
+												Memory to USCI0_TX, USCI0_RX to memory, Memory to USCI1_TX, USCI1_RX to memory,
+												Memory to QSPI0_TX, QSPI0_RX to memory,	Memory to SPI0_TX, SPI0_RX to memory,
+												PWM0_P1_RX to memory, PWM0_P2_RX to memory, PWM0_P3_RX to memory, PWM1_P1_RX, PWM1_P2_RX, PWM1_P3_RX,
+												Memory to I2C0_TX, I2C0_RX to memory, Memory to I2C1_TX, I2C1_RX to memory,
+												TMR0 to memory, TMR1 to memory,	TMR2 to memory,	TMR3 to memory,	
+												EADC_CURDAT to memory, Memory to DAC0_DATOUT,
+												Memory to PSIO_TX, PSIO_RX to memory, 
+												Memory to USCI2_TX, USCI2_RX to memory];
+											filterExp:CHIP_SERIES=="M252_G";   
+											filterDefault: false;											
+											helper:Assign the memory address to g_pu32CH4SrcArray/g_pu32CH4DesArray in periph_conf.c, when Src/Des selected as PDMA_MEM.;
+										!>
+										<!id:PDMACH4SrcDesSel;
+											type:select;
+											label:CH4 basic mode source and destination select;
+											data:PDMA_MEM;
+											default:PDMA_MEM;
+											enum:[PDMA_MEM,	PDMA_UART0_TX, PDMA_UART0_RX, PDMA_UART1_TX, PDMA_UART1_RX, PDMA_UART2_TX, PDMA_UART2_RX,
+												PDMA_USCI0_TX, PDMA_USCI0_RX, PDMA_USCI1_TX, PDMA_USCI1_RX,
+												PDMA_QSPI0_TX, PDMA_QSPI0_RX, PDMA_SPI0_TX, PDMA_SPI0_RX,
+												PDMA_PWM0_P1_RX,PDMA_PWM0_P2_RX,PDMA_PWM0_P3_RX, PDMA_PWM1_P1_RX,PDMA_PWM1_P2_RX,PDMA_PWM1_P3_RX,
+												PDMA_I2C0_TX, PDMA_I2C0_RX, PDMA_I2C1_TX, PDMA_I2C1_RX,
+												PDMA_TMR0, PDMA_TMR1, PDMA_TMR2, PDMA_TMR3,
+												PDMA_EADC_RX,
+												PDMA_PSIO_TX, PDMA_PSIO_RX, 
+												PDMA_USCI2_TX, PDMA_USCI2_RX ];														
+											optionLabels:[Memory to memory, 
+												Memory to UART0_TX, UART0_RX to memory,	Memory to UART1_TX, UART1_RX to memory,	Memory to UART2_TX, UART2_RX to memory,
+												Memory to USCI0_TX, USCI0_RX to memory, Memory to USCI1_TX, USCI1_RX to memory,
+												Memory to QSPI0_TX, QSPI0_RX to memory,	Memory to SPI0_TX, SPI0_RX to memory,
+												PWM0_P1_RX to memory, PWM0_P2_RX to memory, PWM0_P3_RX to memory, PWM1_P1_RX, PWM1_P2_RX, PWM1_P3_RX,
+												Memory to I2C0_TX, I2C0_RX to memory, Memory to I2C1_TX, I2C1_RX to memory,
+												TMR0 to memory, TMR1 to memory,	TMR2 to memory,	TMR3 to memory,	
+												EADC_CURDAT to memory,
+												Memory to PSIO_TX, PSIO_RX to memory, 
+												Memory to USCI2_TX, USCI2_RX to memory];
+											filterExp:CHIP_SERIES=="M252_E";          
+											filterDefault: false;
+											helper:Assign the memory address to g_pu32CH4SrcArray/g_pu32CH4DesArray in periph_conf.c, when Src/Des selected as PDMA_MEM.;
+										!>
+										<!id:PDMACH4SrcDesSel;
+											type:select;
+											label:CH4 basic mode source and destination select;
+											data:PDMA_MEM;
+											default:PDMA_MEM;
+											enum:[PDMA_MEM,	PDMA_UART0_TX, PDMA_UART0_RX, PDMA_UART1_TX, PDMA_UART1_RX, PDMA_UART2_TX, PDMA_UART2_RX,
+												PDMA_USCI0_TX, PDMA_USCI0_RX, PDMA_USCI1_TX, PDMA_USCI1_RX,
+												PDMA_QSPI0_TX, PDMA_QSPI0_RX, PDMA_SPI0_TX, PDMA_SPI0_RX,
+												PDMA_PWM0_P1_RX,PDMA_PWM0_P2_RX,PDMA_PWM0_P3_RX, PDMA_PWM1_P1_RX,PDMA_PWM1_P2_RX,PDMA_PWM1_P3_RX,
+												PDMA_I2C0_TX, PDMA_I2C0_RX, PDMA_I2C1_TX, PDMA_I2C1_RX,
+												PDMA_TMR0, PDMA_TMR1, PDMA_TMR2, PDMA_TMR3,
+												PDMA_EADC_RX,
+												PDMA_PSIO_TX, PDMA_PSIO_RX];														
+											optionLabels:[Memory to memory, 
+												Memory to UART0_TX, UART0_RX to memory,	Memory to UART1_TX, UART1_RX to memory,	Memory to UART2_TX, UART2_RX to memory,
+												Memory to USCI0_TX, USCI0_RX to memory, Memory to USCI1_TX, USCI1_RX to memory,
+												Memory to QSPI0_TX, QSPI0_RX to memory,	Memory to SPI0_TX, SPI0_RX to memory,
+												PWM0_P1_RX to memory, PWM0_P2_RX to memory, PWM0_P3_RX to memory, PWM1_P1_RX, PWM1_P2_RX, PWM1_P3_RX,
+												Memory to I2C0_TX, I2C0_RX to memory, Memory to I2C1_TX, I2C1_RX to memory,
+												TMR0 to memory, TMR1 to memory,	TMR2 to memory,	TMR3 to memory,	
+												EADC_CURDAT to memory,
+												Memory to PSIO_TX, PSIO_RX to memory];
+											filterExp:CHIP_SERIES=="M252_D";          
+											filterDefault: false;
+											helper:Assign the memory address to g_pu32CH4SrcArray/g_pu32CH4DesArray in periph_conf.c, when Src/Des selected as PDMA_MEM.;
+										!>
+										<!id:PDMACH4SrcDesSel;
+											type:select;
+											label:CH4 basic mode source and destination select;
+											data:PDMA_MEM;
+											default:PDMA_MEM;
+											enum:[PDMA_MEM,	PDMA_UART0_TX, PDMA_UART0_RX, PDMA_UART1_TX, PDMA_UART1_RX,
+												PDMA_USCI0_TX, PDMA_USCI0_RX,
+												PDMA_QSPI0_TX, PDMA_QSPI0_RX, PDMA_SPI0_TX, PDMA_SPI0_RX,
+												PDMA_PWM0_P1_RX,PDMA_PWM0_P2_RX,PDMA_PWM0_P3_RX, PDMA_PWM1_P1_RX,PDMA_PWM1_P2_RX,PDMA_PWM1_P3_RX,
+												PDMA_I2C0_TX, PDMA_I2C0_RX, PDMA_I2C1_TX, PDMA_I2C1_RX,
+												PDMA_TMR0, PDMA_TMR1, PDMA_TMR2, PDMA_TMR3,
+												PDMA_EADC_RX];														
+											optionLabels:[Memory to memory, 
+												Memory to UART0_TX, UART0_RX to memory,	Memory to UART1_TX, UART1_RX to memory,
+												Memory to USCI0_TX, USCI0_RX to memory,
+												Memory to QSPI0_TX, QSPI0_RX to memory,	Memory to SPI0_TX, SPI0_RX to memory,
+												PWM0_P1_RX to memory, PWM0_P2_RX to memory, PWM0_P3_RX to memory, PWM1_P1_RX, PWM1_P2_RX, PWM1_P3_RX,
+												Memory to I2C0_TX, I2C0_RX to memory, Memory to I2C1_TX, I2C1_RX to memory,
+												TMR0 to memory, TMR1 to memory,	TMR2 to memory,	TMR3 to memory,	
+												EADC_CURDAT to memory];
+											filterExp:CHIP_SERIES=="M252_C";          
+											filterDefault: false;
+											helper:Assign the memory address to g_pu32CH4SrcArray/g_pu32CH4DesArray in periph_conf.c, when Src/Des selected as PDMA_MEM.;
+										!>
+										<!id:PDMACH4SrcDesSel;
+											type:select;
+											label:CH4 basic mode source and destination select;
+											data:PDMA_MEM;
+											default:PDMA_MEM;
+											enum:[PDMA_MEM,	PDMA_UART0_TX, PDMA_UART0_RX, PDMA_UART1_TX, PDMA_UART1_RX, PDMA_UART2_TX, PDMA_UART2_RX,
+												PDMA_USCI0_TX, PDMA_USCI0_RX,
+												PDMA_SPI0_TX, PDMA_SPI0_RX,
+												PDMA_I2C0_TX, PDMA_I2C0_RX,
+												PDMA_TMR0, PDMA_TMR1, PDMA_TMR2, PDMA_TMR3, 
+												PDMA_EADC_RX];														
+											optionLabels:[Memory to memory, 
+												Memory to UART0_TX, UART0_RX to memory,	Memory to UART1_TX, UART1_RX to memory,	Memory to UART2_TX, UART2_RX to memory,
+												Memory to USCI0_TX, USCI0_RX to memory,
+												Memory to SPI0_TX, SPI0_RX to memory,
+												Memory to I2C0_TX, I2C0_RX to memory,
+												TMR0 to memory, TMR1 to memory,	TMR2 to memory,	TMR3 to memory,	
+												EADC_CURDAT to memory];
+											filterExp:CHIP_SERIES=="M258_E";          
+											filterDefault: false;
+											helper:Assign the memory address to g_pu32CH4SrcArray/g_pu32CH4DesArray in periph_conf.c, when Src/Des selected as PDMA_MEM.;
+										!>
+										<!id:PDMACH4SrcDesSel;
+											type:select;
+											label:CH4 basic mode source and destination select;
+											data:PDMA_MEM;
+											default:PDMA_MEM;
+											enum:[PDMA_MEM,	PDMA_UART0_TX, PDMA_UART0_RX, PDMA_UART1_TX, PDMA_UART1_RX, PDMA_UART2_TX, PDMA_UART2_RX, PDMA_UART3_TX, PDMA_UART3_RX,
+												PDMA_USCI0_TX, PDMA_USCI0_RX, PDMA_USCI1_TX, PDMA_USCI1_RX,
+												PDMA_SPI0_TX, PDMA_SPI0_RX, PDMA_SPI1_TX, PDMA_SPI1_RX,
+												PDMA_I2C0_TX, PDMA_I2C0_RX, PDMA_I2C1_TX, PDMA_I2C1_RX,
+												PDMA_TMR0, PDMA_TMR1, PDMA_TMR2, PDMA_TMR3, 
+												PDMA_EADC_RX, PDMA_DAC0_TX, PDMA_DAC1_TX];														
+											optionLabels:[Memory to memory, 
+												Memory to UART0_TX, UART0_RX to memory,	Memory to UART1_TX, UART1_RX to memory,	Memory to UART2_TX, UART2_RX to memory,	Memory to UART3_TX, UART3_RX to memory,
+												Memory to USCI0_TX, USCI0_RX to memory, Memory to USCI1_TX, USCI1_RX to memory,
+												Memory to SPI0_TX, SPI0_RX to memory, Memory to SPI1_TX, SPI1_RX to memory,
+												Memory to I2C0_TX, I2C0_RX to memory, Memory to I2C1_TX, I2C1_RX to memory,
+												TMR0 to memory, TMR1 to memory,	TMR2 to memory,	TMR3 to memory,	
+												EADC_CURDAT to memory, Memory to DAC0_DATOUT, Memory to DAC1_DATOUT];
+											filterExp:CHIP_SERIES=="M258_G";          
+											filterDefault: false;
+											helper:Assign the memory address to g_pu32CH4SrcArray/g_pu32CH4DesArray in periph_conf.c, when Src/Des selected as PDMA_MEM.;
+										!>
+										<!id:PDMACH4SrcDesSel;
+											type:select;
+											label:CH4 basic mode source and destination select;
+											data:PDMA_MEM;
+											default:PDMA_MEM;
+											enum:[PDMA_MEM,	PDMA_UART0_TX, PDMA_UART0_RX, PDMA_UART1_TX, PDMA_UART1_RX, PDMA_UART2_TX, PDMA_UART2_RX,
+												PDMA_USCI0_TX, PDMA_USCI0_RX,
+												PDMA_SPI0_TX, PDMA_SPI0_RX,
+												PDMA_I2C0_TX, PDMA_I2C0_RX,
+												PDMA_TMR0, PDMA_TMR1, PDMA_TMR2, PDMA_TMR3, 
+												PDMA_EADC_RX];														
+											optionLabels:[Memory to memory, 
+												Memory to UART0_TX, UART0_RX to memory,	Memory to UART1_TX, UART1_RX to memory,	Memory to UART2_TX, UART2_RX to memory,
+												Memory to USCI0_TX, USCI0_RX to memory,
+												Memory to SPI0_TX, SPI0_RX to memory,
+												Memory to I2C0_TX, I2C0_RX to memory,
+												TMR0 to memory, TMR1 to memory,	TMR2 to memory,	TMR3 to memory,	
+												EADC_CURDAT to memory];
+											filterExp:CHIP_SERIES=="M256_D";          
+											filterDefault: false;
+											helper:Assign the memory address to g_pu32CH4SrcArray/g_pu32CH4DesArray in periph_conf.c, when Src/Des selected as PDMA_MEM.;
+										!>
+#define NUCODEGEN_PDMA_CH4_OPMODE		<!id:PDMACH4OpMode;
+											type:select;
+											label:CH4 basic mode operation mode select;
+											data:PDMA_OP_BASIC;
+											default:PDMA_OP_BASIC;
+											enum:[PDMA_OP_BASIC, PDMA_OP_SCATTER];														
+											optionLabels:[Basic mode, Scatter gather mode];
+										!>
+#define NUCODEGEN_PDMA_CH4_OPMODE_S		(<!id:PDMACH4OpMode_S;
+											type:hidden;
+											data:NUCODEGEN_PDMA_OP_BASIC;
+											default:NUCODEGEN_PDMA_OP_BASIC;
+											observable:PDMACH4OpMode;
+											listener:{'PDMA_OP_BASIC': 'NUCODEGEN_PDMA_OP_BASIC', 'PDMA_OP_SCATTER': 'NUCODEGEN_PDMA_OP_SCATTER'};
+										!>)										
+#define NUCODEGEN_PDMA_CH4_WIDTH		(<!id:PDMACH4Width;	
+											type:select;	
+											label:Select basic mode data width;	
+											data:PDMA_WIDTH_8;	
+											default:PDMA_WIDTH_8;
+											enum:[PDMA_WIDTH_8, PDMA_WIDTH_16, PDMA_WIDTH_32];	
+											optionLabels:[8, 16, 32];
+											dependencies:[PDMACH4OpMode];	dependenciesOption:{"PDMACH4OpMode":"PDMA_OP_BASIC"};
+										!>)
+#define PDMA_CH4_DATA_LENGTH			(<!id:PDMACH4TXCNTInteger;	
+											type:integer;	
+											label:Set basic mode transfer count;
+											data:1;	
+											default:1;	
+											helper:Enter your transfer count 1~65535;
+											minimum:1;	maximum:65535;
+											dependencies:[PDMACH4OpMode];	dependenciesOption:{"PDMACH4OpMode":"PDMA_OP_BASIC"};
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_ADDR		(<!id:PDMACH4SRCAddress;
+											type:hidden;
+											data:g_pu32CH4SrcArray;
+											default:g_pu32CH4SrcArray;
+											observable:PDMACH4SrcDesSel;
+											listener:{'PDMA_MEM': 'g_pu32CH4SrcArray' ,'PDMA_UART0_RX': '&UART0->DAT' ,'PDMA_UART1_RX': '&UART1->DAT' ,'PDMA_UART2_RX': '&UART2->DAT', 'PDMA_UART3_RX': '&UART3->DAT'
+												,'PDMA_USCI0_RX': '0x400D0034' ,'PDMA_USCI1_RX': '0x400D1034' ,'PDMA_QSPI0_RX': '&QSPI0->RX' ,'PDMA_SPI0_RX': '&SPI0->RX','PDMA_SPI1_RX': '&SPI1->RX'
+												,'PDMA_PWM0_P1_RX': '&PWM0->PDMACAP[0]' ,'PDMA_PWM0_P2_RX': '&PWM0->PDMACAP[1]' ,'PDMA_PWM0_P3_RX': '&PWM0->PDMACAP[2]'
+												,'PDMA_PWM1_P1_RX': '&PWM1->PDMACAP[0]' ,'PDMA_PWM1_P2_RX': '&PWM1->PDMACAP[1]' ,'PDMA_PWM1_P3_RX': '&PWM1->PDMACAP[2]'
+												,'PDMA_I2C0_RX': '&I2C0->DAT' ,'PDMA_I2C1_RX': '&I2C1->DAT'
+												,'PDMA_TMR0': '&TIMER0->CAP' ,'PDMA_TMR1': '&TIMER1->CAP' ,'PDMA_TMR2': '&TIMER2->CAP' ,'PDMA_TMR3': '&TIMER3->CAP'
+												,'PDMA_EADC_RX': '&EADC->CURDAT' ,'PDMA_PSIO_RX': '&PSIO->PIDAT' ,'PDMA_USCI2_RX': '0x400D2034'
+												,'PDMA_UART0_TX': 'g_pu32CH4SrcArray' ,'PDMA_UART1_TX': 'g_pu32CH4SrcArray' ,'PDMA_UART2_TX': 'g_pu32CH4SrcArray' ,'PDMA_UART3_TX': 'g_pu32CH4SrcArray'
+												,'PDMA_USCI0_TX': 'g_pu32CH4SrcArray' ,'PDMA_USCI1_TX': 'g_pu32CH4SrcArray' ,'PDMA_QSPI0_TX': 'g_pu32CH4SrcArray' ,'PDMA_SPI0_TX': 'g_pu32CH4SrcArray' ,'PDMA_SPI1_TX': 'g_pu32CH4SrcArray'
+												,'PDMA_I2C0_TX': 'g_pu32CH4SrcArray' ,'PDMA_I2C1_TX': 'g_pu32CH4SrcArray' ,'PDMA_DAC0_TX': 'g_pu32CH4SrcArray' ,'PDMA_DAC1_TX': 'g_pu32CH4SrcArray'
+												,'PDMA_PSIO_TX': 'g_pu32CH4SrcArray' ,'PDMA_USCI2_TX': 'g_pu32CH4SrcArray'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_ADDR_S	(<!id:PDMACH4SRCAddress_S;
+											type:hidden;
+											data:1;
+											default:1;
+											observable:PDMACH4SrcDesSel;
+											listener:{'PDMA_MEM': '1'   ,'PDMA_UART0_RX': '0' 	,'PDMA_UART1_RX': '0' 	,'PDMA_UART2_RX': '0' ,'PDMA_UART3_RX': '0'
+												,'PDMA_USCI0_RX': '0'   ,'PDMA_USCI1_RX': '0' 	,'PDMA_QSPI0_RX': '0' 	,'PDMA_SPI0_RX': '0' ,'PDMA_SPI1_RX': '0'
+												,'PDMA_PWM0_P1_RX': '0' ,'PDMA_PWM0_P2_RX': '0' ,'PDMA_PWM0_P3_RX': '0'
+												,'PDMA_PWM1_P1_RX': '0' ,'PDMA_PWM1_P2_RX': '0' ,'PDMA_PWM1_P3_RX': '0'
+												,'PDMA_I2C0_RX': '0'    ,'PDMA_I2C1_RX': '0'
+												,'PDMA_TMR0': '0' 		,'PDMA_TMR1': '0' 		,'PDMA_TMR2': '0' 		,'PDMA_TMR3': '0'
+												,'PDMA_EADC_RX': '0' 	,'PDMA_PSIO_RX': '0' 	,'PDMA_USCI2_RX': '0'
+												,'PDMA_UART0_TX': '1' 	,'PDMA_UART1_TX': '1' 	,'PDMA_UART2_TX': '1' ,'PDMA_UART3_TX': '1'
+												,'PDMA_USCI0_TX': '1' 	,'PDMA_USCI1_TX': '1' 	,'PDMA_QSPI0_TX': '1' ,'PDMA_SPI0_TX': '1', 'PDMA_SPI1_TX': '1'
+												,'PDMA_I2C0_TX': '1' 	,'PDMA_I2C1_TX': '1' 	,'PDMA_DAC0_TX': '1' ,'PDMA_DAC1_TX': '1'
+												,'PDMA_PSIO_TX': '1' 	,'PDMA_USCI2_TX': '1'};
+										!>)										
+#define NUCODEGEN_PDMA_CH4_DES_ADDR		(<!id:PDMACH4DESAddress;
+											type:hidden;
+											data:g_pu32CH4DesArray;
+											default:g_pu32CH4DesArray;
+											observable:PDMACH4SrcDesSel;
+											listener:
+											{'PDMA_MEM': 'g_pu32CH4DesArray' ,'PDMA_UART0_TX': '&UART0->DAT' ,'PDMA_UART1_TX': '&UART1->DAT' ,'PDMA_UART2_TX': '&UART2->DAT' ,'PDMA_UART3_TX': '&UART3->DAT'
+												,'PDMA_USCI0_TX': '0x400D0030' ,'PDMA_USCI1_TX': '0x400D1030' ,'PDMA_QSPI0_TX': '&QSPI0->TX' ,'PDMA_SPI0_TX': '&SPI0->TX' ,'PDMA_SPI1_TX': '&SPI1->TX'
+												,'PDMA_I2C0_TX': '&I2C0->DAT' ,'PDMA_I2C1_TX': '&I2C1->DAT' ,'PDMA_DAC0_TX': '&DAC0->DATOUT' ,'PDMA_DAC1_TX': '&DAC1->DATOUT' ,'PDMA_PSIO_TX': '&PSIO->PODAT' ,'PDMA_USCI2_TX': '0x400D2030'
+												,'PDMA_UART0_RX': 'g_pu32CH4DesArray' ,'PDMA_UART1_RX': 'g_pu32CH4DesArray' ,'PDMA_UART2_RX': 'g_pu32CH4DesArray' ,'PDMA_UART3_RX': 'g_pu32CH4DesArray'
+												,'PDMA_USCI0_RX': 'g_pu32CH4DesArray' ,'PDMA_USCI1_RX': 'g_pu32CH4DesArray' ,'PDMA_QSPI0_RX': 'g_pu32CH4DesArray' ,'PDMA_SPI0_RX': 'g_pu32CH4DesArray','PDMA_SPI1_RX': 'g_pu32CH4DesArray'
+												,'PDMA_PWM0_P1_RX': 'g_pu32CH4DesArray' ,'PDMA_PWM0_P2_RX': 'g_pu32CH4DesArray' ,'PDMA_PWM0_P3_RX': 'g_pu32CH4DesArray'
+												,'PDMA_PWM1_P1_RX': 'g_pu32CH4DesArray' ,'PDMA_PWM1_P2_RX': 'g_pu32CH4DesArray' ,'PDMA_PWM1_P3_RX': 'g_pu32CH4DesArray'
+												,'PDMA_I2C0_RX': 'g_pu32CH4DesArray' ,'PDMA_I2C1_RX': 'g_pu32CH4DesArray'
+												,'PDMA_TMR0': 'g_pu32CH4DesArray' ,'PDMA_TMR1': 'g_pu32CH4DesArray' ,'PDMA_TMR2': 'g_pu32CH4DesArray' ,'PDMA_TMR3': 'g_pu32CH4DesArray'
+												,'PDMA_EADC_RX': 'g_pu32CH4DesArray' ,'PDMA_PSIO_RX': 'g_pu32CH4DesArray' ,'PDMA_USCI2_RX': 'g_pu32CH4DesArray'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_DES_ADDR_S	(<!id:PDMACH4DESAddress_S;
+											type:hidden;
+											data:1;
+											default:1;
+											observable:PDMACH4SrcDesSel;
+											listener:
+											{'PDMA_MEM': '1' ,'PDMA_UART0_TX': '0' ,'PDMA_UART1_TX': '0' ,'PDMA_UART2_TX': '0' ,'PDMA_UART3_TX': '0'
+												,'PDMA_USCI0_TX': '0' ,'PDMA_USCI1_TX': '0' ,'PDMA_QSPI0_TX': '0' ,'PDMA_SPI0_TX': '0' ,'PDMA_SPI1_TX': '0'
+												,'PDMA_I2C0_TX': '0' ,'PDMA_I2C1_TX': '0' ,'PDMA_DAC0_TX': '0' ,'PDMA_DAC1_TX': '0' ,'PDMA_PSIO_TX': '0' ,'PDMA_USCI2_TX': '0'
+												,'PDMA_UART0_RX': '1' ,'PDMA_UART1_RX': '1' ,'PDMA_UART2_RX': '1' ,'PDMA_UART3_RX': '1'
+												,'PDMA_USCI0_RX': '1' ,'PDMA_USCI1_RX': '1' ,'PDMA_QSPI0_RX': '1' ,'PDMA_SPI0_RX': '1' ,'PDMA_SPI1_RX': '1'
+												,'PDMA_PWM0_P1_RX': '1' ,'PDMA_PWM0_P2_RX': '1' ,'PDMA_PWM0_P3_RX': '1'
+												,'PDMA_PWM1_P1_RX': '1' ,'PDMA_PWM1_P2_RX': '1' ,'PDMA_PWM1_P3_RX': '1'
+												,'PDMA_I2C0_RX': '1' ,'PDMA_I2C1_RX': '1'
+												,'PDMA_TMR0': '1' ,'PDMA_TMR1': '1' ,'PDMA_TMR2': '1' ,'PDMA_TMR3': '1'
+												,'PDMA_EADC_RX': '1' ,'PDMA_PSIO_RX': '1' ,'PDMA_USCI2_RX': '1'};
+										!>)										
+#define NUCODEGEN_PDMA_CH4_SRC_TYPE		<!id:PDMACH4SourceType0;
+											type:select;
+											label:CH4 basic mode source address control;
+											data:PDMA_SAR_FIX;
+											default:PDMA_SAR_FIX;
+											enum:[PDMA_SAR_FIX];
+											optionLabels:[Address fix];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX",	"PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], 
+																"PDMACH4OpMode":"PDMA_OP_BASIC"};
+											dependenciesDefault:false;
+										!><!id:PDMACH4SourceType1;
+											type:select;
+											label:CH4 basic mode source address control;
+											data:PDMA_SAR_INC;
+											default:PDMA_SAR_INC;
+											enum:[PDMA_SAR_INC, PDMA_SAR_FIX];
+											optionLabels:[Address increase, Address fix];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_SPI1_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], 
+																"PDMACH4OpMode":"PDMA_OP_BASIC"};
+											dependenciesDefault:false;
+										!>	
+
+								
+#define NUCODEGEN_PDMA_CH4_DES_TYPE		<!id:PDMACH4DestinationType0;
+											type:select;
+											label:CH4 basic mode destination address control;
+											data:PDMA_DAR_FIX;
+											default:PDMA_DAR_FIX;
+											enum:[PDMA_DAR_FIX];	optionLabels:[Address fix];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_SPI1_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"],
+																"PDMACH4OpMode":"PDMA_OP_BASIC"};
+											dependenciesDefault:false;
+										!><!id:PDMACH4DestinationType1;
+											type:select;
+											label:CH4 basic mode destination address control;
+											data:PDMA_DAR_INC;
+											default:PDMA_DAR_INC;
+											enum:[PDMA_DAR_INC, PDMA_DAR_FIX];	optionLabels:[Address increase, Address fix];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX",	"PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"],
+																"PDMACH4OpMode":"PDMA_OP_BASIC"};
+											dependenciesDefault:false;					
+										!>
+#define NUCODEGEN_PDMA_CH4_MODE		<!id:PDMACH4Mode0;
+											type:radio;
+											label:CH4 basic mode transfer mode;
+											data:PDMA_REQ_BURST;
+											default:PDMA_REQ_BURST;
+											enum:[PDMA_REQ_SINGLE, PDMA_REQ_BURST];	optionLabels:[Single mode, Burst mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	dependenciesOption:{"PDMACH4SrcDesSel":"PDMA_MEM", "PDMACH4OpMode":"PDMA_OP_BASIC"};
+											dependenciesDefault:false;			
+										!><!id:PDMACH4Mode1;
+											type:radio;
+											label:CH4 basic mode transfer mode;
+											data:PDMA_REQ_SINGLE;
+											default:PDMA_REQ_SINGLE;
+											enum:[PDMA_REQ_SINGLE];	optionLabels:[Single mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART0_RX", "PDMA_UART1_TX", "PDMA_UART1_RX", "PDMA_UART2_TX", "PDMA_UART2_RX", "PDMA_UART3_TX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI0_RX", "PDMA_USCI1_TX", "PDMA_USCI1_RX",
+																	"PDMA_QSPI0_TX", "PDMA_QSPI0_RX", "PDMA_SPI0_TX", "PDMA_SPI0_RX",	"PDMA_SPI1_TX", "PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_TX", "PDMA_I2C0_RX", "PDMA_I2C1_TX", "PDMA_I2C1_RX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_DAC0_TX", "PDMA_DAC1_TX", 
+																	"PDMA_PSIO_TX", "PDMA_PSIO_RX", 
+																	"PDMA_USCI2_TX", "PDMA_USCI2_RX"],
+																"PDMACH4OpMode":"PDMA_OP_BASIC"};
+											dependenciesDefault:false;			
+										!>
+#define NUCODEGEN_PDMA_CH4_BURST_SIZE	(<!id:PDMACH4BurstSize;
+											type:radio;
+											label:CH4 basic mode burst size;
+											data:PDMA_BURST_1;
+											default:PDMA_BURST_1;
+											enum:[PDMA_BURST_1, PDMA_BURST_2, PDMA_BURST_4, PDMA_BURST_8, PDMA_BURST_16, PDMA_BURST_32, PDMA_BURST_64, PDMA_BURST_128];
+											optionLabels:[1, 2, 4, 8, 16, 32, 64, 128];
+											dependencies:[PDMACH4Mode0, PDMACH4OpMode];	dependenciesOption:{"PDMACH4Mode0":"PDMA_REQ_BURST", "PDMACH4OpMode":"PDMA_OP_BASIC"};
+										!>)	
+										
+#if(NUCODEGEN_PDMA_CH4_OPMODE==PDMA_OP_SCATTER)
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB0	<!id:PDMACH4OpModeTB0;
+											type:select;
+											label:CH4 table 0 operation mode select;
+											helper:Please selected 'Scatter gather mode' if you have next scatter-gather table;
+											data:PDMA_OP_BASIC;
+											default:PDMA_OP_BASIC;
+											enum:[PDMA_OP_BASIC, PDMA_OP_SCATTER];														
+											optionLabels:[Basic mode, Scatter gather mode];
+											dependencies:[PDMACH4OpMode];	dependenciesOption:{"PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!>
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB0_S		(<!id:PDMACH4OpModeTB0_S;
+											type:hidden;
+											data:NUCODEGEN_PDMA_OP_BASIC;
+											default:NUCODEGEN_PDMA_OP_BASIC;
+											observable:PDMACH4OpModeTB0;
+											listener:{'PDMA_OP_BASIC': 'NUCODEGEN_PDMA_OP_BASIC', 'PDMA_OP_SCATTER': 'NUCODEGEN_PDMA_OP_SCATTER'};;
+										!>)											
+#define NUCODEGEN_PDMA_CH4_WIDTH_TB0	(<!id:PDMACH4WidthTB0;	
+											type:select;	
+											label:Select table 0 data width;	
+											data:PDMA_WIDTH_8;	
+											default:PDMA_WIDTH_8;
+											enum:[PDMA_WIDTH_8, PDMA_WIDTH_16, PDMA_WIDTH_32];	
+											optionLabels:[8, 16, 32];
+											dependencies:[PDMACH4OpMode];	dependenciesOption:{"PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!>)
+#define PDMA_CH4_DATA_LENGTH_TB0		(<!id:PDMACH4TXCNTIntegerTB0;	
+											type:integer;	
+											label:Set table 0 transfer count;
+											data:1;	
+											default:1;	
+											helper:Enter your transfer count 1~65535;
+											minimum:1;	maximum:65535;
+											dependencies:[PDMACH4OpMode];	dependenciesOption:{"PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_ADDR_TB0	(<!id:PDMACH4SRCAddressTB0;
+											type:hidden;
+											data:g_pu32CH4SrcArrayTB0;
+											default:g_pu32CH4SrcArrayTB0;
+											observable:PDMACH4SrcDesSel;
+											listener:{'PDMA_MEM': 'g_pu32CH4SrcArrayTB0' ,'PDMA_UART0_RX': '&UART0->DAT' ,'PDMA_UART1_RX': '&UART1->DAT' ,'PDMA_UART2_RX': '&UART2->DAT' ,'PDMA_UART3_RX': '&UART3->DAT'
+												,'PDMA_USCI0_RX': '0x400D0034' ,'PDMA_USCI1_RX': '0x400D1034' ,'PDMA_QSPI0_RX': '&QSPI0->RX' ,'PDMA_SPI0_RX': '&SPI0->RX','PDMA_SPI1_RX': '&SPI1->RX'
+												,'PDMA_PWM0_P1_RX': '&PWM0->PDMACAP[0]' ,'PDMA_PWM0_P2_RX': '&PWM0->PDMACAP[1]' ,'PDMA_PWM0_P3_RX': '&PWM0->PDMACAP[2]'
+												,'PDMA_PWM1_P1_RX': '&PWM1->PDMACAP[0]' ,'PDMA_PWM1_P2_RX': '&PWM1->PDMACAP[1]' ,'PDMA_PWM1_P3_RX': '&PWM1->PDMACAP[2]'
+												,'PDMA_I2C0_RX': '&I2C0->DAT' ,'PDMA_I2C1_RX': '&I2C1->DAT'
+												,'PDMA_TMR0': '&TIMER0->CAP' ,'PDMA_TMR1': '&TIMER1->CAP' ,'PDMA_TMR2': '&TIMER2->CAP' ,'PDMA_TMR3': '&TIMER3->CAP'
+												,'PDMA_EADC_RX': '&EADC->CURDAT' ,'PDMA_PSIO_RX': '&PSIO->PDMAIN' ,'PDMA_USCI2_RX': '0x400D2034'
+												,'PDMA_UART0_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_UART1_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_UART2_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_UART3_TX': 'g_pu32CH4SrcArrayTB0'
+												,'PDMA_USCI0_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_USCI1_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_QSPI0_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_SPI0_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_SPI1_TX': 'g_pu32CH4SrcArrayTB0'
+												,'PDMA_I2C0_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_I2C1_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_DAC0_TX': 'g_pu32CH4SrcArrayTB0', 'PDMA_DAC1_TX': 'g_pu32CH4SrcArrayTB0'
+												,'PDMA_PSIO_TX': 'g_pu32CH4SrcArrayTB0' ,'PDMA_USCI2_TX': 'g_pu32CH4SrcArrayTB0'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_DES_ADDR_TB0	(<!id:PDMACH4DESAddressTB0;
+											type:hidden;
+											data:g_pu32CH4DesArrayTB0;
+											default:g_pu32CH4DesArrayTB0;
+											observable:PDMACH4SrcDesSel;
+											listener:
+											{'PDMA_MEM': 'g_pu32CH4DesArrayTB0' ,'PDMA_UART0_TX': '&UART0->DAT' ,'PDMA_UART1_TX': '&UART1->DAT' ,'PDMA_UART2_TX': '&UART2->DAT' ,'PDMA_UART3_TX': '&UART3->DAT'
+												,'PDMA_USCI0_TX': '0x400D0030' ,'PDMA_USCI1_TX': '0x400D1030' ,'PDMA_QSPI0_TX': '&QSPI0->TX' ,'PDMA_SPI0_TX': '&SPI0->TX' ,'PDMA_SPI1_TX': '&SPI1->TX'
+												,'PDMA_I2C0_TX': '&I2C0->DAT' ,'PDMA_I2C1_TX': '&I2C1->DAT' ,'PDMA_DAC0_TX': '&DAC0->DATOUT' ,'PDMA_DAC1_TX': '&DAC1->DATOUT' ,'PDMA_PSIO_TX': '&PSIO->PDMAOUT' ,'PDMA_USCI2_TX': '0x400D2030'
+												,'PDMA_UART0_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_UART1_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_UART2_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_UART3_RX': 'g_pu32CH4DesArrayTB0'
+												,'PDMA_USCI0_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_USCI1_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_QSPI0_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_SPI0_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_SPI1_RX': 'g_pu32CH4DesArrayTB0'
+												,'PDMA_PWM0_P1_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_PWM0_P2_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_PWM0_P3_RX': 'g_pu32CH4DesArrayTB0'
+												,'PDMA_PWM1_P1_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_PWM1_P2_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_PWM1_P3_RX': 'g_pu32CH4DesArrayTB0'
+												,'PDMA_I2C0_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_I2C1_RX': 'g_pu32CH4DesArrayTB0'
+												,'PDMA_TMR0': 'g_pu32CH4DesArrayTB0' ,'PDMA_TMR1': 'g_pu32CH4DesArrayTB0' ,'PDMA_TMR2': 'g_pu32CH4DesArrayTB0' ,'PDMA_TMR3': 'g_pu32CH4DesArrayTB0'
+												,'PDMA_EADC_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_PSIO_RX': 'g_pu32CH4DesArrayTB0' ,'PDMA_USCI2_RX': 'g_pu32CH4DesArrayTB0'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_TYPE_TB0	<!id:PDMACH4SourceType0TB0;
+											type:select;
+											label:CH4 table 0 source address control;
+											data:PDMA_SAR_FIX;
+											default:PDMA_SAR_FIX;
+											enum:[PDMA_SAR_FIX];
+											optionLabels:[Address fix];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!><!id:PDMACH4SourceType1TB0;
+											type:select;
+											label:CH4 table 0 source address control;
+											data:PDMA_SAR_INC;
+											default:PDMA_SAR_INC;
+											enum:[PDMA_SAR_INC, PDMA_SAR_FIX];
+											optionLabels:[Address increase, Address fix];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_SPI1_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!>									
+#define NUCODEGEN_PDMA_CH4_DES_TYPE_TB0	<!id:PDMACH4DestinationType0TB0;
+											type:select;
+											label:CH4 table 0 destination address control;
+											data:PDMA_DAR_FIX;
+											default:PDMA_DAR_FIX;
+											enum:[PDMA_DAR_FIX];	optionLabels:[Address fix];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_SPI1_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!><!id:PDMACH4DestinationType1TB0;
+											type:select;
+											label:CH4 table 0 destination address control;
+											data:PDMA_DAR_INC;
+											default:PDMA_DAR_INC;
+											enum:[PDMA_DAR_INC, PDMA_DAR_FIX];	optionLabels:[Address increase, Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{ 
+																"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX",	"PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!>
+#define NUCODEGEN_PDMA_CH4_MODE_TB0		<!id:PDMACH4OpMode0TB0;
+											type:radio;
+											label:CH4 table 0 transfer mode;
+											data:PDMA_REQ_BURST;
+											default:PDMA_REQ_BURST;
+											enum:[PDMA_REQ_SINGLE, PDMA_REQ_BURST];	optionLabels:[Single mode, Burst mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	dependenciesOption:{"PDMACH4SrcDesSel":"PDMA_MEM", "PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!><!id:PDMACH4OpMode1TB0;
+											type:radio;
+											label:CH4 table 0 transfer mode;
+											data:PDMA_REQ_SINGLE;
+											default:PDMA_REQ_SINGLE;
+											enum:[PDMA_REQ_SINGLE];	optionLabels:[Single mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpMode];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART0_RX", "PDMA_UART1_TX", "PDMA_UART1_RX", "PDMA_UART2_TX", "PDMA_UART2_RX", "PDMA_UART3_TX", "PDMA_UART3_RX",	
+												"PDMA_USCI0_TX", "PDMA_USCI0_RX", "PDMA_USCI1_TX", "PDMA_USCI1_RX",
+												"PDMA_QSPI0_TX", "PDMA_QSPI0_RX", "PDMA_SPI0_TX", "PDMA_SPI0_RX",	"PDMA_SPI1_TX", "PDMA_SPI1_RX",
+												"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+												"PDMA_I2C0_TX", "PDMA_I2C0_RX", "PDMA_I2C1_TX", "PDMA_I2C1_RX",
+												"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+												"PDMA_EADC_RX", "PDMA_DAC0_TX", "PDMA_DAC1_TX", 
+												"PDMA_PSIO_TX", "PDMA_PSIO_RX", 
+												"PDMA_USCI2_TX", "PDMA_USCI2_RX"], "PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!>
+#define NUCODEGEN_PDMA_CH4_BURST_SIZE_TB0	(<!id:PDMACH4BurstSizeTB0;
+											type:radio;
+											label:CH4 table 0 burst size;
+											data:PDMA_BURST_1;
+											default:PDMA_BURST_1;
+											enum:[PDMA_BURST_1, PDMA_BURST_2, PDMA_BURST_4, PDMA_BURST_8, PDMA_BURST_16, PDMA_BURST_32, PDMA_BURST_64, PDMA_BURST_128];
+											optionLabels:[1, 2, 4, 8, 16, 32, 64, 128];
+											dependencies:PDMACH4OpMode0TB0;	dependenciesOption:PDMA_REQ_BURST;
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!>)
+#define NUCODEGEN_PDMA_CH4_TB0_INT_EN	(<!id:PDMACH4TableDoneINTEnTB0;
+											type:radio;
+											label:CH4 table 0 table done interrupt;
+											data:PDMA_TBINTDIS_DISABLE;
+											default:PDMA_TBINTDIS_DISABLE;
+											enum:[PDMA_TBINTDIS_DISABLE, PDMA_TBINTDIS_ENABLE];
+											optionLabels:[Disable, Enable];
+											dependencies:[ PDMACH4OpMode];	dependenciesOption:{ "PDMACH4OpMode":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB0;
+											groupName:Scatter gather table 0;
+										!>)										
+#endif										
+	
+#if(NUCODEGEN_PDMA_CH4_OPMODE_TB0==PDMA_OP_SCATTER)
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB1	<!id:PDMACH4OpModeTB1;
+											type:select;
+											label:CH4 table 1 operation mode select;
+											helper:Please selected 'Scatter gather mode' if you have next scatter-gather table;
+											data:PDMA_OP_BASIC;
+											default:PDMA_OP_BASIC;
+											enum:[PDMA_OP_BASIC, PDMA_OP_SCATTER];														
+											optionLabels:[Basic mode, Scatter gather mode];
+											dependencies:[ PDMACH4OpModeTB0];	dependenciesOption:{ "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!>
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB1_S		(<!id:PDMACH4OpModeTB1_S;
+											type:hidden;
+											data:NUCODEGEN_PDMA_OP_BASIC;
+											default:NUCODEGEN_PDMA_OP_BASIC;
+											observable:PDMACH4OpModeTB1;
+											listener:{'PDMA_OP_BASIC': 'NUCODEGEN_PDMA_OP_BASIC', 'PDMA_OP_SCATTER': 'NUCODEGEN_PDMA_OP_SCATTER'};;
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!>)										
+#define NUCODEGEN_PDMA_CH4_WIDTH_TB1	(<!id:PDMACH4WidthTB1;	
+											type:select;	
+											label:Select table 1 data width;	
+											data:PDMA_WIDTH_8;	
+											default:PDMA_WIDTH_8;
+											enum:[PDMA_WIDTH_8, PDMA_WIDTH_16, PDMA_WIDTH_32];	
+											optionLabels:[8, 16, 32];
+											dependencies:[ PDMACH4OpModeTB0];	dependenciesOption:{ "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!>)
+#define PDMA_CH4_DATA_LENGTH_TB1		(<!id:PDMACH4TXCNTIntegerTB1;	
+											type:integer;	
+											label:Set table 1 transfer count;
+											data:1;	
+											default:1;	
+											helper:Enter your transfer count 1~65535;
+											minimum:1;	maximum:65535;
+											dependencies:[ PDMACH4OpModeTB0];	dependenciesOption:{ "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_ADDR_TB1	(<!id:PDMACH4SRCAddressTB1;
+											type:hidden;
+											data:g_pu32CH4SrcArrayTB1;
+											default:g_pu32CH4SrcArrayTB1;
+											observable:PDMACH4SrcDesSel;
+											listener:{'PDMA_MEM': 'g_pu32CH4SrcArrayTB1' ,'PDMA_UART0_RX': '&UART0->DAT' ,'PDMA_UART1_RX': '&UART1->DAT' ,'PDMA_UART2_RX': '&UART2->DAT' ,'PDMA_UART3_RX': '&UART3->DAT'
+												,'PDMA_USCI0_RX': '0x400D0034' ,'PDMA_USCI1_RX': '0x400D1034' ,'PDMA_QSPI0_RX': '&QSPI0->RX' ,'PDMA_SPI0_RX': '&SPI0->RX','PDMA_SPI1_RX': '&SPI1->RX'
+												,'PDMA_PWM0_P1_RX': '&PWM0->PDMACAP[0]' ,'PDMA_PWM0_P2_RX': '&PWM0->PDMACAP[1]' ,'PDMA_PWM0_P3_RX': '&PWM0->PDMACAP[2]'
+												,'PDMA_PWM1_P1_RX': '&PWM1->PDMACAP[0]' ,'PDMA_PWM1_P2_RX': '&PWM1->PDMACAP[1]' ,'PDMA_PWM1_P3_RX': '&PWM1->PDMACAP[2]'
+												,'PDMA_I2C0_RX': '&I2C0->DAT' ,'PDMA_I2C1_RX': '&I2C1->DAT'
+												,'PDMA_TMR0': '&TIMER0->CAP' ,'PDMA_TMR1': '&TIMER1->CAP' ,'PDMA_TMR2': '&TIMER2->CAP' ,'PDMA_TMR3': '&TIMER3->CAP'
+												,'PDMA_EADC_RX': '&EADC->CURDAT' ,'PDMA_PSIO_RX': '&PSIO->PDMAIN' ,'PDMA_USCI2_RX': '0x400D2034'
+												,'PDMA_UART0_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_UART1_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_UART2_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_UART3_TX': 'g_pu32CH4SrcArrayTB1'
+												,'PDMA_USCI0_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_USCI1_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_QSPI0_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_SPI0_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_SPI1_TX': 'g_pu32CH4SrcArrayTB1'
+												,'PDMA_I2C0_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_I2C1_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_DAC0_TX': 'g_pu32CH4SrcArrayTB1', 'PDMA_DAC1_TX': 'g_pu32CH4SrcArrayTB1'
+												,'PDMA_PSIO_TX': 'g_pu32CH4SrcArrayTB1' ,'PDMA_USCI2_TX': 'g_pu32CH4SrcArrayTB1'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_DES_ADDR_TB1	(<!id:PDMACH4DESAddressTB1;
+											type:hidden;
+											data:g_pu32CH4DesArrayTB1;
+											default:g_pu32CH4DesArrayTB1;
+											observable:PDMACH4SrcDesSel;
+											listener:
+											{'PDMA_MEM': 'g_pu32CH4DesArrayTB1' ,'PDMA_UART0_TX': '&UART0->DAT' ,'PDMA_UART1_TX': '&UART1->DAT' ,'PDMA_UART2_TX': '&UART2->DAT' ,'PDMA_UART3_TX': '&UART3->DAT'
+												,'PDMA_USCI0_TX': '0x400D0030' ,'PDMA_USCI1_TX': '0x400D1030' ,'PDMA_QSPI0_TX': '&QSPI0->TX' ,'PDMA_SPI0_TX': '&SPI0->TX' ,'PDMA_SPI1_TX': '&SPI1->TX'
+												,'PDMA_I2C0_TX': '&I2C0->DAT' ,'PDMA_I2C1_TX': '&I2C1->DAT' ,'PDMA_DAC0_TX': '&DAC0->DATOUT' ,'PDMA_DAC1_TX': '&DAC1->DATOUT' ,'PDMA_PSIO_TX': '&PSIO->PDMAOUT' ,'PDMA_USCI2_TX': '0x400D2030'
+												,'PDMA_UART0_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_UART1_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_UART2_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_UART3_RX': 'g_pu32CH4DesArrayTB1'
+												,'PDMA_USCI0_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_USCI1_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_QSPI0_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_SPI0_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_SPI1_RX': 'g_pu32CH4DesArrayTB1'
+												,'PDMA_PWM0_P1_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_PWM0_P2_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_PWM0_P3_RX': 'g_pu32CH4DesArrayTB1'
+												,'PDMA_PWM1_P1_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_PWM1_P2_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_PWM1_P3_RX': 'g_pu32CH4DesArrayTB1'
+												,'PDMA_I2C0_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_I2C1_RX': 'g_pu32CH4DesArrayTB1'
+												,'PDMA_TMR0': 'g_pu32CH4DesArrayTB1' ,'PDMA_TMR1': 'g_pu32CH4DesArrayTB1' ,'PDMA_TMR2': 'g_pu32CH4DesArrayTB1' ,'PDMA_TMR3': 'g_pu32CH4DesArrayTB1'
+												,'PDMA_EADC_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_PSIO_RX': 'g_pu32CH4DesArrayTB1' ,'PDMA_USCI2_RX': 'g_pu32CH4DesArrayTB1'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_TYPE_TB1	<!id:PDMACH4SourceType0TB1;
+											type:select;
+											label:CH4 table 1 source address control;
+											data:PDMA_SAR_FIX;
+											default:PDMA_SAR_FIX;
+											enum:[PDMA_SAR_FIX];
+											optionLabels:[Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB0];	
+											dependenciesOption:{ "PDMACH4SrcDesSel":["PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!><!id:PDMACH4SourceType1TB1;
+											type:select;
+											label:CH4 table 1 source address control;
+											data:PDMA_SAR_INC;
+											default:PDMA_SAR_INC;
+											enum:[PDMA_SAR_INC, PDMA_SAR_FIX];
+											optionLabels:[Address increase, Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB0];	
+											dependenciesOption:{ 
+																"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!>									
+#define NUCODEGEN_PDMA_CH4_DES_TYPE_TB1	<!id:PDMACH4DestinationType0TB1;
+											type:select;
+											label:CH4 table 1 destination address control;
+											data:PDMA_DAR_FIX;
+											default:PDMA_DAR_FIX;
+											enum:[PDMA_DAR_FIX];	optionLabels:[Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB0];	
+											dependenciesOption:{ "PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!><!id:PDMACH4DestinationType1TB1;
+											type:select;
+											label:CH4 table 1 destination address control;
+											data:PDMA_DAR_INC;
+											default:PDMA_DAR_INC;
+											enum:[PDMA_DAR_INC, PDMA_DAR_FIX];	optionLabels:[Address increase, Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB0];	
+											dependenciesOption:{ 
+																"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!>
+#define NUCODEGEN_PDMA_CH4_MODE_TB1			<!id:PDMACH4OpMode0TB1;
+											type:radio;
+											label:CH4 table 1 transfer mode;
+											data:PDMA_REQ_BURST;
+											default:PDMA_REQ_BURST;
+											enum:[PDMA_REQ_SINGLE, PDMA_REQ_BURST];	optionLabels:[Single mode, Burst mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpModeTB0];	dependenciesOption:{"PDMACH4SrcDesSel":"PDMA_MEM", "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!><!id:PDMACH4OpMode1TB1;
+											type:radio;
+											label:CH4 table 1 transfer mode;
+											data:PDMA_REQ_SINGLE;
+											default:PDMA_REQ_SINGLE;
+											enum:[PDMA_REQ_SINGLE];	optionLabels:[Single mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpModeTB0];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART0_RX", "PDMA_UART1_TX", "PDMA_UART1_RX", "PDMA_UART2_TX", "PDMA_UART2_RX", "PDMA_UART3_TX", "PDMA_UART3_RX",	
+												"PDMA_USCI0_TX", "PDMA_USCI0_RX", "PDMA_USCI1_TX", "PDMA_USCI1_RX",
+												"PDMA_QSPI0_TX", "PDMA_QSPI0_RX", "PDMA_SPI0_TX", "PDMA_SPI0_RX", "PDMA_SPI1_TX", "PDMA_SPI1_RX",	
+												"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+												"PDMA_I2C0_TX", "PDMA_I2C0_RX", "PDMA_I2C1_TX", "PDMA_I2C1_RX",
+												"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+												"PDMA_EADC_RX", "PDMA_DAC0_TX", "PDMA_DAC1_TX", 
+												"PDMA_PSIO_TX", "PDMA_PSIO_RX", 
+												"PDMA_USCI2_TX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;	
+										!>
+#define NUCODEGEN_PDMA_CH4_BURST_SIZE_TB1	(<!id:PDMACH4BurstSizeTB1;
+											type:radio;
+											label:CH4 table 1 burst size;
+											data:PDMA_BURST_1;
+											default:PDMA_BURST_1;
+											enum:[PDMA_BURST_1, PDMA_BURST_2, PDMA_BURST_4, PDMA_BURST_8, PDMA_BURST_16, PDMA_BURST_32, PDMA_BURST_64, PDMA_BURST_128];
+											optionLabels:[1, 2, 4, 8, 16, 32, 64, 128];
+											dependencies:PDMACH4OpMode0TB1;	dependenciesOption:PDMA_REQ_BURST;
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!>)
+#define NUCODEGEN_PDMA_CH4_TB1_INT_EN	(<!id:PDMACH4TableDoneINTEnTB1;
+											type:radio;
+											label:CH4 table 1 table done interrupt;
+											data:PDMA_TBINTDIS_DISABLE;
+											default:PDMA_TBINTDIS_DISABLE;
+											enum:[PDMA_TBINTDIS_DISABLE, PDMA_TBINTDIS_ENABLE];
+											optionLabels:[Disable, Enable];
+											dependencies:[ PDMACH4OpModeTB0];	dependenciesOption:{ "PDMACH4OpModeTB0":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB1;
+											groupName:Scatter gather table 1;
+										!>)										
+#endif	
+
+#if(NUCODEGEN_PDMA_CH4_OPMODE_TB1==PDMA_OP_SCATTER)
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB2	<!id:PDMACH4OpModeTB2;
+											type:select;
+											label:CH4 table 2 operation mode select;
+											helper:Please selected 'Scatter gather mode' if you have next scatter-gather table;
+											data:PDMA_OP_BASIC;
+											default:PDMA_OP_BASIC;
+											enum:[PDMA_OP_BASIC, PDMA_OP_SCATTER];														
+											optionLabels:[Basic mode, Scatter gather mode];
+											dependencies:[ PDMACH4OpModeTB1];	dependenciesOption:{ "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!>
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB2_S		(<!id:PDMACH4OpModeTB2_S;
+											type:hidden;
+											data:NUCODEGEN_PDMA_OP_BASIC;
+											default:NUCODEGEN_PDMA_OP_BASIC;
+											observable:PDMACH4OpModeTB2;
+											listener:{'PDMA_OP_BASIC': 'NUCODEGEN_PDMA_OP_BASIC', 'PDMA_OP_SCATTER': 'NUCODEGEN_PDMA_OP_SCATTER'};;
+										!>)										
+#define NUCODEGEN_PDMA_CH4_WIDTH_TB2	(<!id:PDMACH4WidthTB2;	
+											type:select;	
+											label:Select table 2 data width;	
+											data:PDMA_WIDTH_8;	
+											default:PDMA_WIDTH_8;
+											enum:[PDMA_WIDTH_8, PDMA_WIDTH_16, PDMA_WIDTH_32];	
+											optionLabels:[8, 16, 32];
+											dependencies:[ PDMACH4OpModeTB1];	dependenciesOption:{ "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!>)
+#define PDMA_CH4_DATA_LENGTH_TB2		(<!id:PDMACH4TXCNTIntegerTB2;	
+											type:integer;	
+											label:Set table 2 transfer count;
+											data:1;	
+											default:1;	
+											helper:Enter your transfer count 1~65535;
+											minimum:1;	maximum:65535;
+											dependencies:[ PDMACH4OpModeTB1];	dependenciesOption:{ "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_ADDR_TB2	(<!id:PDMACH4SRCAddressTB2;
+											type:hidden;
+											data:g_pu32CH4SrcArrayTB2;
+											default:g_pu32CH4SrcArrayTB2;
+											observable:PDMACH4SrcDesSel;
+											listener:{'PDMA_MEM': 'g_pu32CH4SrcArrayTB2' ,'PDMA_UART0_RX': '&UART0->DAT' ,'PDMA_UART1_RX': '&UART1->DAT' ,'PDMA_UART2_RX': '&UART2->DAT' ,'PDMA_UART3_RX': '&UART3->DAT'
+												,'PDMA_USCI0_RX': '0x400D0034' ,'PDMA_USCI1_RX': '0x400D1034' ,'PDMA_QSPI0_RX': '&QSPI0->RX' ,'PDMA_SPI0_RX': '&SPI0->RX','PDMA_SPI1_RX': '&SPI1->RX'
+												,'PDMA_PWM0_P1_RX': '&PWM0->PDMACAP[0]' ,'PDMA_PWM0_P2_RX': '&PWM0->PDMACAP[1]' ,'PDMA_PWM0_P3_RX': '&PWM0->PDMACAP[2]'
+												,'PDMA_PWM1_P1_RX': '&PWM1->PDMACAP[0]' ,'PDMA_PWM1_P2_RX': '&PWM1->PDMACAP[1]' ,'PDMA_PWM1_P3_RX': '&PWM1->PDMACAP[2]'
+												,'PDMA_I2C0_RX': '&I2C0->DAT' ,'PDMA_I2C1_RX': '&I2C1->DAT'
+												,'PDMA_TMR0': '&TIMER0->CAP' ,'PDMA_TMR1': '&TIMER1->CAP' ,'PDMA_TMR2': '&TIMER2->CAP' ,'PDMA_TMR3': '&TIMER3->CAP'
+												,'PDMA_EADC_RX': '&EADC->CURDAT' ,'PDMA_PSIO_RX': '&PSIO->PDMAIN' ,'PDMA_USCI2_RX': '0x400D2034'
+												,'PDMA_UART0_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_UART1_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_UART2_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_UART3_TX': 'g_pu32CH4SrcArrayTB2'
+												,'PDMA_USCI0_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_USCI1_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_QSPI0_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_SPI0_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_SPI1_TX': 'g_pu32CH4SrcArrayTB2'
+												,'PDMA_I2C0_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_I2C1_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_DAC0_TX': 'g_pu32CH4SrcArrayTB2', 'PDMA_DAC1_TX': 'g_pu32CH4SrcArrayTB2'
+												,'PDMA_PSIO_TX': 'g_pu32CH4SrcArrayTB2' ,'PDMA_USCI2_TX': 'g_pu32CH4SrcArrayTB2'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_DES_ADDR_TB2	(<!id:PDMACH4DESAddressTB2;
+											type:hidden;
+											data:g_pu32CH4DesArrayTB2;
+											default:g_pu32CH4DesArrayTB2;
+											observable:PDMACH4SrcDesSel;
+											listener:
+											{'PDMA_MEM': 'g_pu32CH4DesArrayTB2' ,'PDMA_UART0_TX': '&UART0->DAT' ,'PDMA_UART1_TX': '&UART1->DAT' ,'PDMA_UART2_TX': '&UART2->DAT' ,'PDMA_UART3_TX': '&UART3->DAT'
+												,'PDMA_USCI0_TX': '0x400D0030' ,'PDMA_USCI1_TX': '0x400D1030' ,'PDMA_QSPI0_TX': '&QSPI0->TX' ,'PDMA_SPI0_TX': '&SPI0->TX' ,'PDMA_SPI1_TX': '&SPI1->TX'
+												,'PDMA_I2C0_TX': '&I2C0->DAT' ,'PDMA_I2C1_TX': '&I2C1->DAT' ,'PDMA_DAC0_TX': '&DAC0->DATOUT' ,'PDMA_DAC1_TX': '&DAC1->DATOUT' ,'PDMA_PSIO_TX': '&PSIO->PDMAOUT' ,'PDMA_USCI2_TX': '0x400D2030'
+												,'PDMA_UART0_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_UART1_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_UART2_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_UART3_RX': 'g_pu32CH4DesArrayTB2'
+												,'PDMA_USCI0_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_USCI1_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_QSPI0_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_SPI0_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_SPI1_RX': 'g_pu32CH4DesArrayTB2'
+												,'PDMA_PWM0_P1_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_PWM0_P2_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_PWM0_P3_RX': 'g_pu32CH4DesArrayTB2'
+												,'PDMA_PWM1_P1_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_PWM1_P2_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_PWM1_P3_RX': 'g_pu32CH4DesArrayTB2'
+												,'PDMA_I2C0_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_I2C1_RX': 'g_pu32CH4DesArrayTB2'
+												,'PDMA_TMR0': 'g_pu32CH4DesArrayTB2' ,'PDMA_TMR1': 'g_pu32CH4DesArrayTB2' ,'PDMA_TMR2': 'g_pu32CH4DesArrayTB2' ,'PDMA_TMR3': 'g_pu32CH4DesArrayTB2'
+												,'PDMA_EADC_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_PSIO_RX': 'g_pu32CH4DesArrayTB2' ,'PDMA_USCI2_RX': 'g_pu32CH4DesArrayTB2'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_TYPE_TB2	<!id:PDMACH4SourceType0TB2;
+											type:select;
+											label:CH4 table 2 source address control;
+											data:PDMA_SAR_FIX;
+											default:PDMA_SAR_FIX;
+											enum:[PDMA_SAR_FIX];
+											optionLabels:[Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB1];	
+											dependenciesOption:{ "PDMACH4SrcDesSel":["PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!><!id:PDMACH4SourceType1TB2;
+											type:select;
+											label:CH4 table 2 source address control;
+											data:PDMA_SAR_INC;
+											default:PDMA_SAR_INC;
+											enum:[PDMA_SAR_INC, PDMA_SAR_FIX];
+											optionLabels:[Address increase, Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB1];	
+											dependenciesOption:{ 
+																"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!>									
+#define NUCODEGEN_PDMA_CH4_DES_TYPE_TB2	<!id:PDMACH4DestinationType0TB2;
+											type:select;
+											label:CH4 table 2 destination address control;
+											data:PDMA_DAR_FIX;
+											default:PDMA_DAR_FIX;
+											enum:[PDMA_DAR_FIX];	optionLabels:[Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB1];	
+											dependenciesOption:{ "PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!><!id:PDMACH4DestinationType1TB2;
+											type:select;
+											label:CH4 table 2 destination address control;
+											data:PDMA_DAR_INC;
+											default:PDMA_DAR_INC;
+											enum:[PDMA_DAR_INC, PDMA_DAR_FIX];	optionLabels:[Address increase, Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB1];	
+											dependenciesOption:{ 
+																"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!>
+#define NUCODEGEN_PDMA_CH4_MODE_TB2			<!id:PDMACH4OpMode0TB2;
+											type:radio;
+											label:CH4 table 2 transfer mode;
+											data:PDMA_REQ_BURST;
+											default:PDMA_REQ_BURST;
+											enum:[PDMA_REQ_SINGLE, PDMA_REQ_BURST];	optionLabels:[Single mode, Burst mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpModeTB1];	dependenciesOption:{"PDMACH4SrcDesSel":"PDMA_MEM", "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!><!id:PDMACH4OpMode1TB2;
+											type:radio;
+											label:CH4 table 2 transfer mode;
+											data:PDMA_REQ_SINGLE;
+											default:PDMA_REQ_SINGLE;
+											enum:[PDMA_REQ_SINGLE];	optionLabels:[Single mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpModeTB1];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART0_RX", "PDMA_UART1_TX", "PDMA_UART1_RX", "PDMA_UART2_TX", "PDMA_UART2_RX", "PDMA_UART3_TX", "PDMA_UART3_RX",	
+												"PDMA_USCI0_TX", "PDMA_USCI0_RX", "PDMA_USCI1_TX", "PDMA_USCI1_RX",
+												"PDMA_QSPI0_TX", "PDMA_QSPI0_RX", "PDMA_SPI0_TX", "PDMA_SPI0_RX", "PDMA_SPI1_TX", "PDMA_SPI1_RX",	
+												"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+												"PDMA_I2C0_TX", "PDMA_I2C0_RX", "PDMA_I2C1_TX", "PDMA_I2C1_RX",
+												"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+												"PDMA_EADC_RX", "PDMA_DAC0_TX", "PDMA_DAC1_TX", 
+												"PDMA_PSIO_TX", "PDMA_PSIO_RX", 
+												"PDMA_USCI2_TX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!>
+#define NUCODEGEN_PDMA_CH4_BURST_SIZE_TB2	(<!id:PDMACH4BurstSizeTB2;
+											type:radio;
+											label:CH4 table 2 burst size;
+											data:PDMA_BURST_1;
+											default:PDMA_BURST_1;
+											enum:[PDMA_BURST_1, PDMA_BURST_2, PDMA_BURST_4, PDMA_BURST_8, PDMA_BURST_16, PDMA_BURST_32, PDMA_BURST_64, PDMA_BURST_128];
+											optionLabels:[1, 2, 4, 8, 16, 32, 64, 128];
+											dependencies:PDMACH4OpMode0TB2;	dependenciesOption:PDMA_REQ_BURST;
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!>)
+#define NUCODEGEN_PDMA_CH4_TB2_INT_EN	(<!id:PDMACH4TableDoneINTEnTB2;
+											type:radio;
+											label:CH4 table 2 table done interrupt;
+											data:PDMA_TBINTDIS_DISABLE;
+											default:PDMA_TBINTDIS_DISABLE;
+											enum:[PDMA_TBINTDIS_DISABLE, PDMA_TBINTDIS_ENABLE];
+											optionLabels:[Disable, Enable];
+											dependencies:[ PDMACH4OpModeTB1];	dependenciesOption:{ "PDMACH4OpModeTB1":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB2;
+											groupName:Scatter gather table 2;
+										!>)	
+#endif	
+	
+#if(NUCODEGEN_PDMA_CH4_OPMODE_TB2==PDMA_OP_SCATTER)
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB3	<!id:PDMACH4OpModeTB3;
+											type:select;
+											label:CH4 table 3 operation mode select;
+											helper:Please selected 'Scatter gather mode' if you have next scatter-gather table;
+											data:PDMA_OP_BASIC;
+											default:PDMA_OP_BASIC;
+											enum:[PDMA_OP_BASIC, PDMA_OP_SCATTER];														
+											optionLabels:[Basic mode, Scatter gather mode];
+											dependencies:[ PDMACH4OpModeTB2];	dependenciesOption:{ "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!>
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB3_S		(<!id:PDMACH4OpModeTB3_S;
+											type:hidden;
+											data:NUCODEGEN_PDMA_OP_BASIC;
+											default:NUCODEGEN_PDMA_OP_BASIC;
+											observable:PDMACH4OpModeTB3;
+											listener:{'PDMA_OP_BASIC': 'NUCODEGEN_PDMA_OP_BASIC', 'PDMA_OP_SCATTER': 'NUCODEGEN_PDMA_OP_SCATTER'};;
+										!>)										
+#define NUCODEGEN_PDMA_CH4_WIDTH_TB3	(<!id:PDMACH4WidthTB3;	
+											type:select;	
+											label:Select table 3 data width;	
+											data:PDMA_WIDTH_8;	
+											default:PDMA_WIDTH_8;
+											enum:[PDMA_WIDTH_8, PDMA_WIDTH_16, PDMA_WIDTH_32];	
+											optionLabels:[8, 16, 32];
+											dependencies:[ PDMACH4OpModeTB2];	dependenciesOption:{ "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!>)
+#define PDMA_CH4_DATA_LENGTH_TB3		(<!id:PDMACH4TXCNTIntegerTB3;	
+											type:integer;	
+											label:Set table 3 transfer count;
+											data:1;	
+											default:1;	
+											helper:Enter your transfer count 1~65535;
+											minimum:1;	maximum:65535;
+											dependencies:[ PDMACH4OpModeTB2];	dependenciesOption:{ "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_ADDR_TB3	(<!id:PDMACH4SRCAddressTB3;
+											type:hidden;
+											data:g_pu32CH4SrcArrayTB3;
+											default:g_pu32CH4SrcArrayTB3;
+											observable:PDMACH4SrcDesSel;
+											listener:{'PDMA_MEM': 'g_pu32CH4SrcArrayTB3' ,'PDMA_UART0_RX': '&UART0->DAT' ,'PDMA_UART1_RX': '&UART1->DAT' ,'PDMA_UART2_RX': '&UART2->DAT' ,'PDMA_UART3_RX': '&UART3->DAT'
+												,'PDMA_USCI0_RX': '0x400D0034' ,'PDMA_USCI1_RX': '0x400D1034' ,'PDMA_QSPI0_RX': '&QSPI0->RX' ,'PDMA_SPI0_RX': '&SPI0->RX','PDMA_SPI1_RX': '&SPI1->RX'
+												,'PDMA_PWM0_P1_RX': '&PWM0->PDMACAP[0]' ,'PDMA_PWM0_P2_RX': '&PWM0->PDMACAP[1]' ,'PDMA_PWM0_P3_RX': '&PWM0->PDMACAP[2]'
+												,'PDMA_PWM1_P1_RX': '&PWM1->PDMACAP[0]' ,'PDMA_PWM1_P2_RX': '&PWM1->PDMACAP[1]' ,'PDMA_PWM1_P3_RX': '&PWM1->PDMACAP[2]'
+												,'PDMA_I2C0_RX': '&I2C0->DAT' ,'PDMA_I2C1_RX': '&I2C1->DAT'
+												,'PDMA_TMR0': '&TIMER0->CAP' ,'PDMA_TMR1': '&TIMER1->CAP' ,'PDMA_TMR2': '&TIMER2->CAP' ,'PDMA_TMR3': '&TIMER3->CAP'
+												,'PDMA_EADC_RX': '&EADC->CURDAT' ,'PDMA_PSIO_RX': '&PSIO->PDMAIN' ,'PDMA_USCI2_RX': '0x400D2034'
+												,'PDMA_UART0_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_UART1_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_UART2_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_UART3_TX': 'g_pu32CH4SrcArrayTB3'
+												,'PDMA_USCI0_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_USCI1_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_QSPI0_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_SPI0_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_SPI1_TX': 'g_pu32CH4SrcArrayTB3'
+												,'PDMA_I2C0_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_I2C1_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_DAC0_TX': 'g_pu32CH4SrcArrayTB3', 'PDMA_DAC1_TX': 'g_pu32CH4SrcArrayTB3'
+												,'PDMA_PSIO_TX': 'g_pu32CH4SrcArrayTB3' ,'PDMA_USCI2_TX': 'g_pu32CH4SrcArrayTB3'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_DES_ADDR_TB3	(<!id:PDMACH4DESAddressTB3;
+											type:hidden;
+											data:g_pu32CH4DesArrayTB3;
+											default:g_pu32CH4DesArrayTB3;
+											observable:PDMACH4SrcDesSel;
+											listener:
+											{'PDMA_MEM': 'g_pu32CH4DesArrayTB3' ,'PDMA_UART0_TX': '&UART0->DAT' ,'PDMA_UART1_TX': '&UART1->DAT' ,'PDMA_UART2_TX': '&UART2->DAT' ,'PDMA_UART3_TX': '&UART3->DAT'
+												,'PDMA_USCI0_TX': '0x400D0030' ,'PDMA_USCI1_TX': '0x400D1030' ,'PDMA_QSPI0_TX': '&QSPI0->TX' ,'PDMA_SPI0_TX': '&SPI0->TX' ,'PDMA_SPI1_TX': '&SPI1->TX'
+												,'PDMA_I2C0_TX': '&I2C0->DAT' ,'PDMA_I2C1_TX': '&I2C1->DAT' ,'PDMA_DAC0_TX': '&DAC0->DATOUT' ,'PDMA_DAC1_TX': '&DAC1->DATOUT' ,'PDMA_PSIO_TX': '&PSIO->PDMAOUT' ,'PDMA_USCI2_TX': '0x400D2030'
+												,'PDMA_UART0_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_UART1_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_UART2_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_UART3_RX': 'g_pu32CH4DesArrayTB3'
+												,'PDMA_USCI0_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_USCI1_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_QSPI0_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_SPI0_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_SPI1_RX': 'g_pu32CH4DesArrayTB3'
+												,'PDMA_PWM0_P1_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_PWM0_P2_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_PWM0_P3_RX': 'g_pu32CH4DesArrayTB3'
+												,'PDMA_PWM1_P1_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_PWM1_P2_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_PWM1_P3_RX': 'g_pu32CH4DesArrayTB3'
+												,'PDMA_I2C0_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_I2C1_RX': 'g_pu32CH4DesArrayTB3'
+												,'PDMA_TMR0': 'g_pu32CH4DesArrayTB3' ,'PDMA_TMR1': 'g_pu32CH4DesArrayTB3' ,'PDMA_TMR2': 'g_pu32CH4DesArrayTB3' ,'PDMA_TMR3': 'g_pu32CH4DesArrayTB3'
+												,'PDMA_EADC_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_PSIO_RX': 'g_pu32CH4DesArrayTB3' ,'PDMA_USCI2_RX': 'g_pu32CH4DesArrayTB3'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_TYPE_TB3	<!id:PDMACH4SourceType0TB3;
+											type:select;
+											label:CH4 table 3 source address control;
+											data:PDMA_SAR_FIX;
+											default:PDMA_SAR_FIX;
+											enum:[PDMA_SAR_FIX];
+											optionLabels:[Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB2];	
+											dependenciesOption:{ "PDMACH4SrcDesSel":["PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!><!id:PDMACH4SourceType1TB3;
+											type:select;
+											label:CH4 table 3 source address control;
+											data:PDMA_SAR_INC;
+											default:PDMA_SAR_INC;
+											enum:[PDMA_SAR_INC, PDMA_SAR_FIX];
+											optionLabels:[Address increase, Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB2];	
+											dependenciesOption:{ 
+																"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX","PDMA_SPI0_TX","PDMA_SPI1_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!>									
+#define NUCODEGEN_PDMA_CH4_DES_TYPE_TB3	<!id:PDMACH4DestinationType0TB3;
+											type:select;
+											label:CH4 table 3 destination address control;
+											data:PDMA_DAR_FIX;
+											default:PDMA_DAR_FIX;
+											enum:[PDMA_DAR_FIX];	optionLabels:[Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB2];	
+											dependenciesOption:{ "PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX","PDMA_SPI0_TX","PDMA_SPI1_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!><!id:PDMACH4DestinationType1TB3;
+											type:select;
+											label:CH4 table 3 destination address control;
+											data:PDMA_DAR_INC;
+											default:PDMA_DAR_INC;
+											enum:[PDMA_DAR_INC, PDMA_DAR_FIX];	optionLabels:[Address increase, Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB2];	
+											dependenciesOption:{ 
+																"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!>
+#define NUCODEGEN_PDMA_CH4_MODE_TB3			<!id:PDMACH4OpMode0TB3;
+											type:radio;
+											label:CH4 table 3 transfer mode;
+											data:PDMA_REQ_BURST;
+											default:PDMA_REQ_BURST;
+											enum:[PDMA_REQ_SINGLE, PDMA_REQ_BURST];	optionLabels:[Single mode, Burst mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpModeTB2];	dependenciesOption:{"PDMACH4SrcDesSel":"PDMA_MEM", "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!><!id:PDMACH4OpMode1TB3;
+											type:radio;
+											label:CH4 table 3 transfer mode;
+											data:PDMA_REQ_SINGLE;
+											default:PDMA_REQ_SINGLE;
+											enum:[PDMA_REQ_SINGLE];	optionLabels:[Single mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpModeTB2];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART0_RX", "PDMA_UART1_TX", "PDMA_UART1_RX", "PDMA_UART2_TX", "PDMA_UART2_RX", "PDMA_UART3_TX", "PDMA_UART3_RX",	
+												"PDMA_USCI0_TX", "PDMA_USCI0_RX", "PDMA_USCI1_TX", "PDMA_USCI1_RX",
+												"PDMA_QSPI0_TX", "PDMA_QSPI0_RX", "PDMA_SPI0_TX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+												"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+												"PDMA_I2C0_TX", "PDMA_I2C0_RX", "PDMA_I2C1_TX", "PDMA_I2C1_RX",
+												"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+												"PDMA_EADC_RX", "PDMA_DAC0_TX", "PDMA_DAC1_TX", 
+												"PDMA_PSIO_TX", "PDMA_PSIO_RX", 
+												"PDMA_USCI2_TX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!>
+#define NUCODEGEN_PDMA_CH4_BURST_SIZE_TB3	(<!id:PDMACH4BurstSizeTB3;
+											type:radio;
+											label:CH4 table 3 burst size;
+											data:PDMA_BURST_1;
+											default:PDMA_BURST_1;
+											enum:[PDMA_BURST_1, PDMA_BURST_2, PDMA_BURST_4, PDMA_BURST_8, PDMA_BURST_16, PDMA_BURST_32, PDMA_BURST_64, PDMA_BURST_128];
+											optionLabels:[1, 2, 4, 8, 16, 32, 64, 128];
+											dependencies:PDMACH4OpMode0TB3;	dependenciesOption:PDMA_REQ_BURST;
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!>)
+#define NUCODEGEN_PDMA_CH4_TB3_INT_EN	(<!id:PDMACH4TableDoneINTEnTB3;
+											type:radio;
+											label:CH4 table 3 table done interrupt;
+											data:PDMA_TBINTDIS_DISABLE;
+											default:PDMA_TBINTDIS_DISABLE;
+											enum:[PDMA_TBINTDIS_DISABLE, PDMA_TBINTDIS_ENABLE];
+											optionLabels:[Disable, Enable];
+											dependencies:[ PDMACH4OpModeTB2];	dependenciesOption:{ "PDMACH4OpModeTB2":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB3;
+											groupName:Scatter gather table 3;
+										!>)	
+#endif
+	
+#if(NUCODEGEN_PDMA_CH4_OPMODE_TB3==PDMA_OP_SCATTER)
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB4	<!id:PDMACH4OpModeTB4;
+											type:select;
+											label:CH4 table 4 operation mode select;
+											helper:Please selected 'Scatter gather mode' if you have next scatter-gather table;
+											data:PDMA_OP_BASIC;
+											default:PDMA_OP_BASIC;
+											enum:[PDMA_OP_BASIC, PDMA_OP_SCATTER];														
+											optionLabels:[Basic mode, Scatter gather mode];
+											dependencies:[ PDMACH4OpModeTB3];	dependenciesOption:{ "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!>
+#define NUCODEGEN_PDMA_CH4_OPMODE_TB4_S		(<!id:PDMACH4OpModeTB4_S;
+											type:hidden;
+											data:NUCODEGEN_PDMA_OP_BASIC;
+											default:NUCODEGEN_PDMA_OP_BASIC;
+											observable:PDMACH4OpModeTB4;
+											listener:{'PDMA_OP_BASIC': 'NUCODEGEN_PDMA_OP_BASIC', 'PDMA_OP_SCATTER': 'NUCODEGEN_PDMA_OP_SCATTER'};;
+										!>)										
+#define NUCODEGEN_PDMA_CH4_WIDTH_TB4	(<!id:PDMACH4WidthTB4;	
+											type:select;	
+											label:Select table 4 data width;	
+											data:PDMA_WIDTH_8;	
+											default:PDMA_WIDTH_8;
+											enum:[PDMA_WIDTH_8, PDMA_WIDTH_16, PDMA_WIDTH_32];	
+											optionLabels:[8, 16, 32];
+											dependencies:[ PDMACH4OpModeTB3];	dependenciesOption:{ "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!>)
+#define PDMA_CH4_DATA_LENGTH_TB4		(<!id:PDMACH4TXCNTIntegerTB4;	
+											type:integer;	
+											label:Set table 4 transfer count;
+											data:1;	
+											default:1;	
+											helper:Enter your transfer count 1~65535;
+											minimum:1;	maximum:65535;
+											dependencies:[ PDMACH4OpModeTB3];	dependenciesOption:{ "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_ADDR_TB4	(<!id:PDMACH4SRCAddressTB4;
+											type:hidden;
+											data:g_pu32CH4SrcArrayTB4;
+											default:g_pu32CH4SrcArrayTB4;
+											observable:PDMACH4SrcDesSel;
+											listener:{'PDMA_MEM': 'g_pu32CH4SrcArrayTB4' ,'PDMA_UART0_RX': '&UART0->DAT' ,'PDMA_UART1_RX': '&UART1->DAT' ,'PDMA_UART2_RX': '&UART2->DAT' ,'PDMA_UART3_RX': '&UART3->DAT'
+												,'PDMA_USCI0_RX': '0x400D0034' ,'PDMA_USCI1_RX': '0x400D1034' ,'PDMA_QSPI0_RX': '&QSPI0->RX' ,'PDMA_SPI0_RX': '&SPI0->RX','PDMA_SPI1_RX': '&SPI1->RX'
+												,'PDMA_PWM0_P1_RX': '&PWM0->PDMACAP[0]' ,'PDMA_PWM0_P2_RX': '&PWM0->PDMACAP[1]' ,'PDMA_PWM0_P3_RX': '&PWM0->PDMACAP[2]'
+												,'PDMA_PWM1_P1_RX': '&PWM1->PDMACAP[0]' ,'PDMA_PWM1_P2_RX': '&PWM1->PDMACAP[1]' ,'PDMA_PWM1_P3_RX': '&PWM1->PDMACAP[2]'
+												,'PDMA_I2C0_RX': '&I2C0->DAT' ,'PDMA_I2C1_RX': '&I2C1->DAT'
+												,'PDMA_TMR0': '&TIMER0->CAP' ,'PDMA_TMR1': '&TIMER1->CAP' ,'PDMA_TMR2': '&TIMER2->CAP' ,'PDMA_TMR3': '&TIMER3->CAP'
+												,'PDMA_EADC_RX': '&EADC->CURDAT' ,'PDMA_PSIO_RX': '&PSIO->PDMAIN' ,'PDMA_USCI2_RX': '0x400D2034'
+												,'PDMA_UART0_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_UART1_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_UART2_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_UART3_TX': 'g_pu32CH4SrcArrayTB4'
+												,'PDMA_USCI0_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_USCI1_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_QSPI0_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_SPI0_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_SPI1_TX': 'g_pu32CH4SrcArrayTB4'
+												,'PDMA_I2C0_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_I2C1_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_DAC0_TX': 'g_pu32CH4SrcArrayTB4', 'PDMA_DAC1_TX': 'g_pu32CH4SrcArrayTB4'
+												,'PDMA_PSIO_TX': 'g_pu32CH4SrcArrayTB4' ,'PDMA_USCI2_TX': 'g_pu32CH4SrcArrayTB4'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_DES_ADDR_TB4	(<!id:PDMACH4DESAddressTB4;
+											type:hidden;
+											data:g_pu32CH4DesArrayTB4;
+											default:g_pu32CH4DesArrayTB4;
+											observable:PDMACH4SrcDesSel;
+											listener:
+											{'PDMA_MEM': 'g_pu32CH4DesArrayTB4' ,'PDMA_UART0_TX': '&UART0->DAT' ,'PDMA_UART1_TX': '&UART1->DAT' ,'PDMA_UART2_TX': '&UART2->DAT' ,'PDMA_UART3_TX': '&UART3->DAT'
+												,'PDMA_USCI0_TX': '0x400D0030' ,'PDMA_USCI1_TX': '0x400D1030' ,'PDMA_QSPI0_TX': '&QSPI0->TX' ,'PDMA_SPI0_TX': '&SPI0->TX' ,'PDMA_SPI1_TX': '&SPI1->TX'
+												,'PDMA_I2C0_TX': '&I2C0->DAT' ,'PDMA_I2C1_TX': '&I2C1->DAT' ,'PDMA_DAC0_TX': '&DAC0->DATOUT' ,'PDMA_DAC1_TX': '&DAC1->DATOUT' ,'PDMA_PSIO_TX': '&PSIO->PDMAOUT' ,'PDMA_USCI2_TX': '0x400D2030'
+												,'PDMA_UART0_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_UART1_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_UART2_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_UART3_RX': 'g_pu32CH4DesArrayTB4'
+												,'PDMA_USCI0_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_USCI1_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_QSPI0_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_SPI0_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_SPI1_RX': 'g_pu32CH4DesArrayTB4'
+												,'PDMA_PWM0_P1_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_PWM0_P2_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_PWM0_P3_RX': 'g_pu32CH4DesArrayTB4'
+												,'PDMA_PWM1_P1_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_PWM1_P2_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_PWM1_P3_RX': 'g_pu32CH4DesArrayTB4'
+												,'PDMA_I2C0_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_I2C1_RX': 'g_pu32CH4DesArrayTB4'
+												,'PDMA_TMR0': 'g_pu32CH4DesArrayTB4' ,'PDMA_TMR1': 'g_pu32CH4DesArrayTB4' ,'PDMA_TMR2': 'g_pu32CH4DesArrayTB4' ,'PDMA_TMR3': 'g_pu32CH4DesArrayTB4'
+												,'PDMA_EADC_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_PSIO_RX': 'g_pu32CH4DesArrayTB4' ,'PDMA_USCI2_RX': 'g_pu32CH4DesArrayTB4'};
+										!>)
+#define NUCODEGEN_PDMA_CH4_SRC_TYPE_TB4	<!id:PDMACH4SourceType0TB4;
+											type:select;
+											label:CH4 table 4 source address control;
+											data:PDMA_SAR_FIX;
+											default:PDMA_SAR_FIX;
+											enum:[PDMA_SAR_FIX];
+											optionLabels:[Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB3];	
+											dependenciesOption:{ "PDMACH4SrcDesSel":["PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!><!id:PDMACH4SourceType1TB4;
+											type:select;
+											label:CH4 table 4 source address control;
+											data:PDMA_SAR_INC;
+											default:PDMA_SAR_INC;
+											enum:[PDMA_SAR_INC, PDMA_SAR_FIX];
+											optionLabels:[Address increase, Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB3];	
+											dependenciesOption:{ 
+																"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_SPI1_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!>									
+#define NUCODEGEN_PDMA_CH4_DES_TYPE_TB4	<!id:PDMACH4DestinationType0TB4;
+											type:select;
+											label:CH4 table 4 destination address control;
+											data:PDMA_DAR_FIX;
+											default:PDMA_DAR_FIX;
+											enum:[PDMA_DAR_FIX];	optionLabels:[Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB3];	
+											dependenciesOption:{ "PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART1_TX", "PDMA_UART2_TX", "PDMA_UART3_TX",	
+																	"PDMA_USCI0_TX", "PDMA_USCI1_TX", "PDMA_QSPI0_TX", "PDMA_SPI0_TX", "PDMA_SPI1_TX", "PDMA_I2C0_TX", "PDMA_I2C1_TX",
+																	"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", "PDMA_DAC0_TX", "PDMA_DAC1_TX", "PDMA_PSIO_TX", "PDMA_USCI2_TX"], "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!><!id:PDMACH4DestinationType1TB4;
+											type:select;
+											label:CH4 table 4 destination address control;
+											data:PDMA_DAR_INC;
+											default:PDMA_DAR_INC;
+											enum:[PDMA_DAR_INC, PDMA_DAR_FIX];	optionLabels:[Address increase, Address fix];
+											dependencies:[ PDMACH4SrcDesSel, PDMACH4OpModeTB3];	
+											dependenciesOption:{ 
+																"PDMACH4SrcDesSel":["PDMA_MEM", "PDMA_UART0_RX", "PDMA_UART1_RX", "PDMA_UART2_RX", "PDMA_UART3_RX",	
+																	"PDMA_USCI0_RX", "PDMA_USCI1_RX", "PDMA_QSPI0_RX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",
+																	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+																	"PDMA_I2C0_RX", "PDMA_I2C1_RX", "PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+																	"PDMA_EADC_RX", "PDMA_PSIO_RX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!>
+#define NUCODEGEN_PDMA_CH4_MODE_TB4			<!id:PDMACH4OpMode0TB4;
+											type:radio;
+											label:CH4 table 4 transfer mode;
+											data:PDMA_REQ_BURST;
+											default:PDMA_REQ_BURST;
+											enum:[PDMA_REQ_SINGLE, PDMA_REQ_BURST];	optionLabels:[Single mode, Burst mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpModeTB3];	dependenciesOption:{"PDMACH4SrcDesSel":"PDMA_MEM", "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!><!id:PDMACH4OpMode1TB4;
+											type:radio;
+											label:CH4 table 4 transfer mode;
+											data:PDMA_REQ_SINGLE;
+											default:PDMA_REQ_SINGLE;
+											enum:[PDMA_REQ_SINGLE];	optionLabels:[Single mode];
+											dependencies:[PDMACH4SrcDesSel, PDMACH4OpModeTB3];	
+											dependenciesOption:{"PDMACH4SrcDesSel":["PDMA_UART0_TX", "PDMA_UART0_RX", "PDMA_UART1_TX", "PDMA_UART1_RX", "PDMA_UART2_TX", "PDMA_UART2_RX", "PDMA_UART3_TX", "PDMA_UART3_RX",	
+												"PDMA_USCI0_TX", "PDMA_USCI0_RX", "PDMA_USCI1_TX", "PDMA_USCI1_RX",
+												"PDMA_QSPI0_TX", "PDMA_QSPI0_RX", "PDMA_SPI0_TX", "PDMA_SPI0_RX", "PDMA_SPI1_RX",	
+												"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX", "PDMA_PWM1_P1_RX", "PDMA_PWM1_P2_RX", "PDMA_PWM1_P3_RX",
+												"PDMA_I2C0_TX", "PDMA_I2C0_RX", "PDMA_I2C1_TX", "PDMA_I2C1_RX",
+												"PDMA_TMR0", "PDMA_TMR1", "PDMA_TMR2", "PDMA_TMR3", 
+												"PDMA_EADC_RX", "PDMA_DAC0_TX", "PDMA_DAC1_TX", 
+												"PDMA_PSIO_TX", "PDMA_PSIO_RX", 
+												"PDMA_USCI2_TX", "PDMA_USCI2_RX"], "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											dependenciesDefault:false;
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!>
+#define NUCODEGEN_PDMA_CH4_BURST_SIZE_TB4	(<!id:PDMACH4BurstSizeTB4;
+											type:radio;
+											label:CH4 table 4 burst size;
+											data:PDMA_BURST_1;
+											default:PDMA_BURST_1;
+											enum:[PDMA_BURST_1, PDMA_BURST_2, PDMA_BURST_4, PDMA_BURST_8, PDMA_BURST_16, PDMA_BURST_32, PDMA_BURST_64, PDMA_BURST_128];
+											optionLabels:[1, 2, 4, 8, 16, 32, 64, 128];
+											dependencies:PDMACH4OpMode0TB4;	dependenciesOption:PDMA_REQ_BURST;
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!>)
+#define NUCODEGEN_PDMA_CH4_TB4_INT_EN	(<!id:PDMACH4TableDoneINTEnTB4;
+											type:radio;
+											label:CH4 table 4 table done interrupt;
+											data:PDMA_TBINTDIS_DISABLE;
+											default:PDMA_TBINTDIS_DISABLE;
+											enum:[PDMA_TBINTDIS_DISABLE, PDMA_TBINTDIS_ENABLE];
+											optionLabels:[Disable, Enable];
+											dependencies:[ PDMACH4OpModeTB3];	dependenciesOption:{ "PDMACH4OpModeTB3":"PDMA_OP_SCATTER"};
+											groupId:PDMAGroupTB4;
+											groupName:Scatter gather table 4;
+										!>)	
+#endif
+	
+#define NUCODEGEN_PDMA_CH4_TMOUT		(<!id:PDMACH4Timeout;
+											type:checkbox;
+											label:CH4 timeout function;
+											data:0;
+											default:0;
+											enum:[1];	optionLabels:[<br>];
+											filterExp:SUPPORT_TIMEOUT>0;
+										!>)
+#define NUCODEGEN_PDMA_CH4_TMOUT_CNT	(<!id:PDMACH4TimeoutCounter;
+											type:integer;
+											label:CH4 timeout counter: 1~65535;
+											data:1;
+											default:1;
+											minimum:1;	maximum:65535;
+											dependencies:PDMACH4Timeout;	dependenciesOption:1;
+											filterExp:SUPPORT_TIMEOUT>0;
+										!>)
+
+#define NUCODEGEN_PDMA_CH4_STRIDE_EN	(<!id:PDMACH4StrideEn;
+											type:checkbox;
+											label:Enable CH4 basic mode stride mode;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:[PDMACH4OpMode];	dependenciesOption:{"PDMACH4OpMode":"PDMA_OP_BASIC"};
+											filterExp:SUPPORT_STRIDE>0;
+										!>)
+#define NUCODEGEN_PDMA_CH4_STRIDE_CNT	(<!id:PDMACH4StrideTXCNT;
+											type:integer;
+											label:CH4 stride transfer count of each row: 1~65535;
+											data:1;
+											default:1;
+											minimum:1;	maximum:65535;
+											dependencies:PDMACH4StrideEn;	
+											dependenciesOption:{"PDMACH4StrideEn":"1"};
+											filterExp:SUPPORT_STRIDE>0;
+										!>)
+#define NUCODEGEN_PDMA_CH4_STRIDE_SRC_LENGTH	(<!id:PDMACH4StrideSrcLength;
+											type:integer;
+											label:CH4 stride source offset of each row: 1~65535;
+											data:1;
+											default:1;
+											minimum:1;	maximum:65535;
+											dependencies:PDMACH4StrideEn;	
+											dependenciesOption:{"PDMACH4StrideEn":"1"};
+											filterExp:SUPPORT_STRIDE>0;
+										!>)
+#define NUCODEGEN_PDMA_CH4_STRIDE_DES_LENGTH	(<!id:PDMACH4StrideDesLength;
+											type:integer;
+											label:CH4 stride destination offset of each row: 1~65535;
+											data:1;
+											default:1;
+											minimum:1;
+											maximum:65535;
+											dependencies:PDMACH4StrideEn;	
+											dependenciesOption:{"PDMACH4StrideEn":"1"};
+											filterExp:SUPPORT_STRIDE>0;
+										!>)
+
+#define NUCODEGEN_PDMA_CH4_INT  		<!id:PDMAEnableINTCheckbox;
+											type:checkbox;
+											label:Enable interrupts;
+											data:0;
+											default:0;
+											enum:[1];	optionLabels:[<br>];
+                                        !>
+#define NUCODEGEN_PDMA_CH4_INT_TXDONE	<!id:PDMAINTTxDoneCheckbox;
+											type:checkbox;
+											label:Enable transfer done interrupt;
+											data:0;
+											default:0;
+											enum:[1];	optionLabels:[<br>];
+											dependencies:PDMAEnableINTCheckbox;	dependenciesOption:1;
+                                        !>		
+#define NUCODEGEN_PDMA_CH4_INT_TIMEOUT	<!id:PDMAINTTimeOutCheckbox;
+											type:checkbox;
+											label:Enable timeout interrupt;
+											data:0;
+											default:0;
+											enum:[1];	optionLabels:[<br>];
+											dependencies:[PDMAEnableINTCheckbox, PDMACH4Timeout];	dependenciesOption:{"PDMAEnableINTCheckbox":"1", "PDMACH4Timeout":"1"};
+											filterExp:SUPPORT_TIMEOUT>0;
+                                        !>										
+#endif

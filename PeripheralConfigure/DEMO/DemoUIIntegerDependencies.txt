@@ -1,0 +1,47 @@
+//////////Integer//////////
+<!id:CLK_HxtFrequencyUpperBoundInteger;
+type:integer;
+label:HXT Range Detector Upper Bound;
+data:512;
+default:512;
+helper:;
+minimum:0;
+maximum:1023;
+validate:true;
+vertical:true;
+dependencies:none;
+dependenciesOption:none;!>
+<!id:CLK_HxtFrequencyDetectorIntCheckbox;
+type:checkbox;
+label:;
+data:0;
+default:0;
+helper:;
+sort:false;
+enum:[1];
+optionLabels:[Enable Hxt Frequency Detector Interrupt];
+vertical:true;
+dependencies:CLK_HxtFrequencyUpperBoundInteger;
+dependenciesOption:>512;!>
+<!id:ADCCmp1ChannelSelect;
+type:select;
+label:ADC Comparator 1 Channel Select;
+data:5;
+helper:Select your ADC Comparator 0 channel;
+enum:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+optionLabels:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12(band-gap), 13(temperature sensor)];
+dependencies:UseADCCMP0Boolean;
+dependencies:CLK_HxtFrequencyUpperBoundInteger;
+dependenciesOption:==512;
+!>
+<!id:ADCCmp0ConditionSelect;
+type:select;
+label:ADC Compare Condition 0;
+data:ADC_CMP_GREATER_OR_EQUAL_TO;
+helper:Select your ADC compare condition 0;
+enum:[ADC_CMP_LESS_THAN, ADC_CMP_GREATER_OR_EQUAL_TO];
+optionLabels:[less than, greater or equal to];
+dependencies:UseADCCMP0Boolean;
+dependencies:CLK_HxtFrequencyUpperBoundInteger;
+dependenciesOption:<512;
+!>

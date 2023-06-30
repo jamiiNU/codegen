@@ -1,0 +1,763 @@
+<!clock: {"ALL" : "RTC" };
+  pin:   {"ALL" : [""]};
+!>
+/*--------------------------------------------------------------------------*/
+/* RTC Configuration                                                        */
+/*--------------------------------------------------------------------------*/
+/* RTC Tick Interval Configuration */
+#define NUCODEGEN_RTC_TICK_CONFIG               (<!id:RTC_TickIntervalSelect;
+                                                    type:select;
+                                                    label:Select RTC Tick Interval;
+                                                    data:RTC_TICK_1_SEC;
+                                                    default:RTC_TICK_1_SEC;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[RTC_TICK_1_SEC, RTC_TICK_1_2_SEC, RTC_TICK_1_4_SEC, RTC_TICK_1_8_SEC, RTC_TICK_1_16_SEC, RTC_TICK_1_32_SEC, RTC_TICK_1_64_SEC, RTC_TICK_1_128_SEC];
+                                                    optionLabels:[1 Second, 1/2 Second, 1/4 Second, 1/8 Second, 1/16 Second, 1/32  Second, 1/64 Second, 1/128 Second];
+                                                    vertical:true;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_BasicConfig;
+                                                    groupName:Basic Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_TIMESCALE_CONFIG          (<!id:RTC_TimeScaleRadio;
+                                                    type:radio;
+                                                    label:Select RTC Time Format;
+                                                    data:RTC_CLOCK_24;
+                                                    default:RTC_CLOCK_24;
+                                                    sort:false;
+                                                    enum:[RTC_CLOCK_12, RTC_CLOCK_24];
+                                                    optionLabels:[12-Hour Scale, 24-Hour Scale];
+                                                    vertical:true;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_BasicConfig;
+                                                    groupName:Basic Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_TIMESCALE_IS_24HR         (<!id:RTC_TimeScaleHidden;
+                                                    type:hidden;
+                                                    data:1;
+                                                    default:1;
+                                                    observable:RTC_TimeScaleRadio;
+                                                    listener:{"RTC_CLOCK_12":"0",
+                                                              "RTC_CLOCK_24":"1"};
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_BasicConfig;
+                                                    groupName:Basic Configuration;
+                                                !>)
+
+#define NUCODEGEN_RTC_DATETIME_INIT             (<!id:RTC_InitDateTimeEnableRadio;
+                                                    type:radio;
+                                                    label:Configure Current Date and Time;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1,0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                    !>)
+#define NUCODEGEN_RTC_CURRENT_YEAR_CONFIG       (<!id:RTC_CurrentYearInteger;
+                                                    type:integer;
+                                                    label:Set Current Year;
+                                                    data:2021;
+                                                    default:2015;
+                                                    helper:Range : 2000-2099;
+                                                    minimum:2000;
+                                                    maximum:2099;
+                                                    dependencies:RTC_InitDateTimeEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                    !>)
+#define NUCODEGEN_RTC_CURRENT_MONTH_CONFIG      (<!id:RTC_CurrentMonthInteger;
+                                                    type:integer;
+                                                    label:Set Current Month;
+                                                    data:1;
+                                                    default:8;
+                                                    helper:Range : 1-12;
+                                                    minimum:1;
+                                                    maximum:12;
+                                                    dependencies:RTC_InitDateTimeEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                    !>)
+#define NUCODEGEN_RTC_CURRENT_DATE_CONFIG       (<!id:RTC_CurrentDate1Integer;
+                                                    type:integer;
+                                                    label:Set Current Date;
+                                                    data:2;
+                                                    default:8;
+                                                    helper:Range : 1-31;
+                                                    minimum:1;
+                                                    maximum:31;
+                                                    dependencies:[RTC_InitDateTimeEnableRadio, RTC_CurrentMonthInteger];
+                                                    dependenciesOption:{"RTC_InitDateTimeEnableRadio":1, "RTC_CurrentMonthInteger":["1", "3", "5", "7", "8", "10", "12"]};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                !><!id:RTC_CurrentDate2Integer;
+                                                    type:integer;
+                                                    label:Set Current Date;
+                                                    data:8;
+                                                    default:8;
+                                                    helper:Range : 1-30;
+                                                    minimum:1;
+                                                    maximum:30;
+                                                    dependencies:[RTC_InitDateTimeEnableRadio, RTC_CurrentMonthInteger];
+                                                    dependenciesOption:{"RTC_InitDateTimeEnableRadio":1, "RTC_CurrentMonthInteger":["4", "6", "9", "11"]};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                !><!id:RTC_CurrentDate3Integer;
+                                                    type:integer;
+                                                    label:Set Current Date;
+                                                    data:8;
+                                                    default:8;
+                                                    helper:Range : 1-29;
+                                                    minimum:1;
+                                                    maximum:29;
+                                                    dependencies:[RTC_InitDateTimeEnableRadio, RTC_CurrentMonthInteger, RTC_CurrentYearInteger];
+                                                    dependenciesOption:{"RTC_InitDateTimeEnableRadio":1, "RTC_CurrentMonthInteger":["2"], "RTC_CurrentYearInteger":["2001", "2002", "2003", "2005", "2006", "2007", "2009", "2010", "2011", "2013", "2014", "2015", "2017", "2018", "2019", "2021", "2022", "2023", "2025", "2026", "2027", "2029", "2030", "2031", "2033", "2034", "2035", "2037", "2038", "2039", "2041", "2042", "2043", "2045", "2046", "2047", "2049", "2050", "2051", "2053", "2054", "2055", "2057", "2058", "2059", "2061", "2062", "2063", "2065", "2066", "2067", "2069", "2070", "2071", "2073", "2074", "2075", "2077", "2078", "2079", "2081", "2082", "2083", "2085", "2086", "2087", "2089", "2090", "2091", "2093", "2094", "2095", "2097", "2098", "2099"]};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                !><!id:RTC_CurrentDate4Integer;
+                                                    type:integer;
+                                                    label:Set Current Date;
+                                                    data:8;
+                                                    default:8;
+                                                    helper:Range : 1-28;
+                                                    minimum:1;
+                                                    maximum:28;
+                                                    dependencies:[RTC_InitDateTimeEnableRadio, RTC_CurrentMonthInteger, RTC_CurrentYearInteger];
+                                                    dependenciesOption:{"RTC_InitDateTimeEnableRadio":1, "RTC_CurrentMonthInteger":["2"], "RTC_CurrentYearInteger":["2000", "2004", "2008", "2012", "2016", "2020", "2024", "2028", "2032", "2036", "2040", "2044", "2048", "2052", "2056", "2060", "2064", "2068", "2072", "2076", "2080", "2084", "2088", "2092", "2096"]};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_CURRENT_DOW_CONFIG        (<!id:RTC_CurrentDOWSelect;
+                                                    type:select;
+                                                    label:Set Current Day of Week;
+                                                    data:RTC_SATURDAY;
+                                                    default:RTC_SATURDAY;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[        RTC_SUNDAY, RTC_MONDAY, RTC_TUESDAY, RTC_WEDNESDAY, RTC_THURSDAY, RTC_FRIDAY, RTC_SATURDAY];
+                                                    optionLabels:[Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday];
+                                                    dependencies:[RTC_InitDateTimeEnableRadio];
+                                                    dependenciesOption:1;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                    !>)
+
+#if (NUCODEGEN_RTC_TIMESCALE_IS_24HR == 0)
+
+#define NUCODEGEN_RTC_CURRENT_AMPM_CONFIG       (<!id:RTC_CurrentAmPmSelect; 
+                                                    type:select;
+                                                    label:Set AM or PM;
+                                                    data:RTC_AM;
+                                                    default:RTC_AM;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[RTC_AM, RTC_PM];
+                                                    optionLabels:["AM", "PM"];
+                                                    dependencies:[RTC_InitDateTimeEnableRadio, RTC_TimeScaleRadio];
+                                                    dependenciesOption:{"RTC_InitDateTimeEnableRadio":1, "RTC_TimeScaleRadio":"RTC_CLOCK_12"};
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_CURRENT_HOUR_CONFIG       (<!id:RTC_CurrentHour12Integer; 
+                                                    type:integer;
+                                                    label:Set Current Hour;
+                                                    data:12;
+                                                    default:12;
+                                                    helper:Range : 1-12;
+                                                    minimum:1;
+                                                    maximum:12;
+                                                    dependencies:[RTC_InitDateTimeEnableRadio, RTC_TimeScaleRadio];
+                                                    dependenciesOption:{"RTC_InitDateTimeEnableRadio":1, "RTC_TimeScaleRadio":"RTC_CLOCK_12"};
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                !>)
+
+#endif
+#if (NUCODEGEN_RTC_TIMESCALE_IS_24HR == 1)
+
+#define NUCODEGEN_RTC_CURRENT_AMPM_CONFIG       (0)
+
+#define NUCODEGEN_RTC_CURRENT_HOUR_CONFIG       (<!id:RTC_CurrentHour24Integer;
+                                                    type:integer;
+                                                    label:Set Current Hour;
+                                                    data:3;
+                                                    default:0;
+                                                    helper:Range : 0-23;
+                                                    minimum:0;
+                                                    maximum:23;
+                                                    dependencies:[RTC_InitDateTimeEnableRadio, RTC_TimeScaleRadio];
+                                                    dependenciesOption:{"RTC_InitDateTimeEnableRadio":1, "RTC_TimeScaleRadio":"RTC_CLOCK_24"};
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                !>)
+
+#endif
+#define NUCODEGEN_RTC_CURRENT_MINUTE_CONFIG     (<!id:RTC_CurrentMinuteInteger;
+                                                    type:integer;
+                                                    label:Set Current Minute;
+                                                    data:4;
+                                                    default:0;
+                                                    helper:Range : 0-59;
+                                                    minimum:0;
+                                                    maximum:59;
+                                                    dependencies:RTC_InitDateTimeEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                    !>)
+#define NUCODEGEN_RTC_CURRENT_SECOND_CONFIG     (<!id:RTC_CurrentSecondInteger;
+                                                    type:integer;
+                                                    label:Set Current Second;
+                                                    data:5;
+                                                    default:0;
+                                                    helper:Range : 0-59;
+                                                    minimum:0;
+                                                    maximum:59;
+                                                    dependencies:RTC_InitDateTimeEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_InitDateTimeConfig;
+                                                    groupName:Inital Date and Time Configuration;
+                                                    !>)
+#define NUCODEGEN_RTC_ALARM_ENABLE              (<!id:RTC_AlarmEnableRadio;
+                                                    type:radio;
+                                                    label:Configure Alarm Date and Time;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1,0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_ALARM_YEAR_CONFIG         (<!id:RTC_AlarmYearInteger;
+                                                    type:integer;
+                                                    label:Set Alarm Year;
+                                                    data:2021;
+                                                    default:2000;
+                                                    helper:Range : 2000-2099;
+                                                    minimum:2000;
+                                                    maximum:2099;
+                                                    dependencies:RTC_AlarmEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                    !>)
+#define NUCODEGEN_RTC_ALARM_MONTH_CONFIG        (<!id:RTC_AlarmMonthInteger;
+                                                    type:integer;
+                                                    label:Set Alarm Month;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:Range : 1-12;;
+                                                    minimum:1;
+                                                    maximum:12;
+                                                    dependencies:RTC_AlarmEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                    !>)
+#define NUCODEGEN_RTC_ALARM_DATE_CONFIG         (<!id:RTC_AlarmDate1Integer;
+                                                    type:integer;
+                                                    label:Set Alarm Date;
+                                                    data:2;
+                                                    default:1;
+                                                    helper:Range : 1-31;;
+                                                    minimum:1;
+                                                    maximum:31;
+                                                    dependencies:[RTC_AlarmEnableRadio, RTC_AlarmMonthInteger];
+                                                    dependenciesOption:{"RTC_AlarmEnableRadio":1, "RTC_AlarmMonthInteger":["1", "3", "5", "7", "8", "10", "12"]};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !><!id:RTC_AlarmDate2Integer;
+                                                    type:integer;
+                                                    label:Set Alarm Date;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:Range : 1-30;;
+                                                    minimum:1;
+                                                    maximum:30;
+                                                    dependencies:[RTC_AlarmEnableRadio, RTC_AlarmMonthInteger];
+                                                    dependenciesOption:{"RTC_AlarmEnableRadio":1, "RTC_AlarmMonthInteger":["4", "6", "9", "11"]};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !><!id:RTC_AlarmDate3Integer;
+                                                    type:integer;
+                                                    label:Set Alarm Date;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:Range : 1-29;
+                                                    minimum:1;
+                                                    maximum:29;
+                                                    dependencies:[RTC_AlarmEnableRadio, RTC_AlarmMonthInteger, RTC_AlarmYearInteger];
+                                                    dependenciesOption:{"RTC_AlarmEnableRadio":1, "RTC_AlarmMonthInteger":["2"], "RTC_AlarmYearInteger":[ "2001", "2002", "2003", "2005", "2006", "2007", "2009", "2010", "2011", "2013", "2014", "2015", "2017", "2018", "2019", "2021", "2022", "2023", "2025", "2026", "2027", "2029", "2030", "2031", "2033", "2034", "2035", "2037", "2038", "2039", "2041", "2042", "2043", "2045", "2046", "2047", "2049", "2050", "2051", "2053", "2054", "2055", "2057", "2058", "2059", "2061", "2062", "2063", "2065", "2066", "2067", "2069", "2070", "2071", "2073", "2074", "2075", "2077", "2078", "2079", "2081", "2082", "2083", "2085", "2086", "2087", "2089", "2090", "2091", "2093", "2094", "2095", "2097", "2098", "2099"]};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !><!id:RTC_AlarmDate4Integer;
+                                                    type:integer;
+                                                    label:Set Alarm Date;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:Range : 1-28;
+                                                    minimum:1;
+                                                    maximum:28;
+                                                    dependencies:[RTC_AlarmEnableRadio, RTC_AlarmMonthInteger, RTC_AlarmYearInteger];
+                                                    dependenciesOption:{"RTC_AlarmEnableRadio":1, "RTC_AlarmMonthInteger":["2"], "RTC_AlarmYearInteger":["2000", "2004", "2008", "2012", "2016", "2020", "2024", "2028", "2032", "2036", "2040", "2044", "2048", "2052", "2056", "2060", "2064", "2068", "2072", "2076", "2080", "2084", "2088", "2092", "2096"]};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#if (NUCODEGEN_RTC_TIMESCALE_IS_24HR == 0)
+#define NUCODEGEN_RTC_ALARM_AMPM_CONFIG         (<!id:RTC_AlarmAmPmSelect;
+                                                    type:select; 
+                                                    label:Set AM or PM;
+                                                    data:RTC_AM;
+                                                    default:RTC_AM;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[RTC_AM, RTC_PM];
+                                                    optionLabels:["AM", "PM"];
+                                                    dependencies:[RTC_AlarmEnableRadio, RTC_TimeScaleRadio];
+                                                    dependenciesOption:{"RTC_AlarmEnableRadio":1, "RTC_TimeScaleRadio":"RTC_CLOCK_12"};
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_ALARM_HOUR_CONFIG         (<!id:RTC_AlarmHour12Integer; 
+                                                    type:integer; 
+                                                    label:Set Alarm Hour;
+                                                    data:12;
+                                                    default:12;
+                                                    helper:Range : 1-12;
+                                                    minimum:1;
+                                                    maximum:12;
+                                                    dependencies:[RTC_AlarmEnableRadio, RTC_TimeScaleRadio];
+                                                    dependenciesOption:{"RTC_AlarmEnableRadio":1, "RTC_TimeScaleRadio":"RTC_CLOCK_12"};
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+
+#endif
+#if (NUCODEGEN_RTC_TIMESCALE_IS_24HR == 1)
+#define NUCODEGEN_RTC_ALARM_HOUR_CONFIG         (<!id:RTC_AlarmHour24Integer;
+                                                    type:integer;
+                                                    label:Set Alarm Hour;
+                                                    data:3;
+                                                    default:0;
+                                                    helper:Range : 0-23;
+                                                    minimum:0;
+                                                    maximum:23;
+                                                    dependencies:[RTC_AlarmEnableRadio, RTC_TimeScaleRadio];
+                                                    dependenciesOption:{"RTC_AlarmEnableRadio":1, "RTC_TimeScaleRadio":"RTC_CLOCK_24"};
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_ALARM_AMPM_CONFIG         (0)
+#endif
+#define NUCODEGEN_RTC_ALARM_MINUTE_CONFIG       (<!id:RTC_AlarmMinuteInteger;
+                                                    type:integer;
+                                                    label:Set Alarm Minute;
+                                                    data:4;
+                                                    default:0;
+                                                    helper:Range : 0-59;
+                                                    minimum:0;
+                                                    maximum:59;
+                                                    dependencies:RTC_AlarmEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                    !>)
+#define NUCODEGEN_RTC_ALARM_SECOND_CONFIG       (<!id:RTC_AlarmSecondInteger;
+                                                    type:integer;
+                                                    label:Set Alarm Second;
+                                                    data:15;
+                                                    default:0;
+                                                    helper:Range : 0-59;
+                                                    minimum:0;
+                                                    maximum:59;
+                                                    dependencies:RTC_AlarmEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+
+#define NUCODEGEN_RTC_ALARM_MASK_DISABLE        (0)
+#define NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT      (1)
+#define NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT      (2)
+#define NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT     (3)
+
+#define NUCODEGEN_RTC_ALARM_MASK_ENABLE         (<!id:RTC_AlarmMaskEnableRadio;
+                                                    type:radio;
+                                                    label:Configure  Alarm Mask Function;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1,0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:RTC_AlarmEnableRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+                                                
+#define NUCODEGEN_RTC_CAMASK_YEAR_CONFIG        (<!id:RTC_CanlendarAlarmMaskYearSelect;
+                                                    type:select;
+                                                    label:Mask Alarm Year;
+                                                    data:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    default:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[NUCODEGEN_RTC_ALARM_MASK_DISABLE, NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT, NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT, NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT];
+                                                    optionLabels:[Mask Disable, Mask 1 Year, Mask 10 Year, Mask All];
+                                                    dependencies:RTC_AlarmMaskEnableRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_CAMASK_MONTH_CONFIG       (<!id:RTC_CanlendarAlarmMaskMonthSelect;
+                                                    type:select;
+                                                    label:Mask Alarm Month;
+                                                    data:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    default:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[NUCODEGEN_RTC_ALARM_MASK_DISABLE, NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT, NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT, NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT];
+                                                    optionLabels:[Mask Disable, Mask 1 Month, Mask 10 Month, Mask All];
+                                                    dependencies:RTC_AlarmMaskEnableRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_CAMASK_DATE_CONFIG        (<!id:RTC_CanlendarAlarmMaskDateSelect;
+                                                    type:select;
+                                                    label:Mask Alarm Date;
+                                                    data:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    default:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[NUCODEGEN_RTC_ALARM_MASK_DISABLE, NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT, NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT, NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT];
+                                                    optionLabels:[Mask Disable, Mask 1 Date, Mask 10 Date, Mask All];
+                                                    dependencies:RTC_AlarmMaskEnableRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#if (NUCODEGEN_RTC_TIMESCALE_IS_24HR == 1)
+#define NUCODEGEN_RTC_TAMASK_HOUR_CONFIG        (<!id:RTC_TimeAlarmMaskHour24Select;
+                                                    type:select;
+                                                    label:Mask Alarm Hour;
+                                                    data:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    default:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[NUCODEGEN_RTC_ALARM_MASK_DISABLE, NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT, NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT, NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT];
+                                                    optionLabels:[Mask Disable, Mask 1 Hour, Mask 10 Hour, Mask All];
+                                                    dependencies:[RTC_AlarmMaskEnableRadio, RTC_TimeScaleRadio];
+                                                    dependenciesOption:{"RTC_AlarmMaskEnableRadio":"1", "RTC_TimeScaleRadio":"RTC_CLOCK_24"};
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#endif
+#if (NUCODEGEN_RTC_TIMESCALE_IS_24HR == 0)
+#define NUCODEGEN_RTC_TAMASK_HOUR_CONFIG        (<!id:RTC_TimeAlarmMaskHour12Select;
+                                                    type:select;
+                                                    label:Mask Alarm Hour;
+                                                    data:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    default:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[NUCODEGEN_RTC_ALARM_MASK_DISABLE, NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT, NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT];
+                                                    optionLabels:[Mask Disable, Mask 1 Hour, Mask All];
+                                                    dependencies:[RTC_AlarmMaskEnableRadio, RTC_TimeScaleRadio];
+                                                    dependenciesOption:{"RTC_AlarmMaskEnableRadio":"1", "RTC_TimeScaleRadio":"RTC_CLOCK_12"};
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#endif
+
+#define NUCODEGEN_RTC_TAMASK_MINUTE_CONFIG      (<!id:RTC_TimeAlarmMaskMinuteSelect;
+                                                    type:select;
+                                                    label:Mask Alarm Minute;
+                                                    data:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    default:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[NUCODEGEN_RTC_ALARM_MASK_DISABLE, NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT, NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT, NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT];
+                                                    optionLabels:[Mask Disable, Mask 1 Minute, Mask 10 Minute, Mask All];
+                                                    dependencies:RTC_AlarmMaskEnableRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#define NUCODEGEN_RTC_TAMASK_SECOND_CONFIG      (<!id:RTC_TimeAlarmMaskSecondSelect;
+                                                    type:select;
+                                                    label:Mask Alarm Second;
+                                                    data:NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT;
+                                                    default:NUCODEGEN_RTC_ALARM_MASK_DISABLE;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[NUCODEGEN_RTC_ALARM_MASK_DISABLE, NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT, NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT, NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT];
+                                                    optionLabels:[Mask Disable, Mask 1 Second, Mask 10 Second, Mask All];
+                                                    dependencies:RTC_AlarmMaskEnableRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_AlarmConfig;
+                                                    groupName:Alarm Configuration;
+                                                !>)
+#if (NUCODEGEN_RTC_ALARM_MASK_ENABLE == 0)
+/* Calendar Alarm Mask Year Settings */
+#define RTC_ALARM_TEN_YEAR_MASK                 (0)
+#define RTC_ALARM_ONE_YEAR_MASK                 (0)
+
+/* Calendar Alarm Mask Month Settings */
+#define RTC_ALARM_TEN_MONTH_MASK                (0)
+#define RTC_ALARM_ONE_MONTH_MASK                (0)
+
+/* Calendar Alarm Mask Date Settings */
+#define RTC_ALARM_TEN_DATE_MASK                 (0)
+#define RTC_ALARM_ONE_DATE_MASK                 (0)
+
+/* Time Alarm Mask Hour Settings */
+#define RTC_ALARM_TEN_HOUR_MASK                 (0)
+#define RTC_ALARM_ONE_HOUR_MASK                 (0)
+
+/* Time Alarm Mask Minute Settings */
+#define RTC_ALARM_TEN_MINUTE_MASK               (0)
+#define RTC_ALARM_ONE_MINUTE_MASK               (0)
+
+/* Time Alarm Mask Second Settings */
+#define RTC_ALARM_TEN_SECOND_MASK               (0)
+#define RTC_ALARM_ONE_SECOND_MASK               (0)
+#endif
+
+
+#if (NUCODEGEN_RTC_ALARM_MASK_ENABLE == 1)
+#if (NUCODEGEN_RTC_CAMASK_YEAR_CONFIG == NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT)
+/* Calendar Alarm Mask Year Settings */
+#define RTC_ALARM_TEN_YEAR_MASK                 (1)
+#define RTC_ALARM_ONE_YEAR_MASK                 (1)
+#endif
+#if (NUCODEGEN_RTC_CAMASK_YEAR_CONFIG == NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT)
+/* Calendar Alarm Mask Year Settings */
+#define RTC_ALARM_TEN_YEAR_MASK                 (0)
+#define RTC_ALARM_ONE_YEAR_MASK                 (1)
+#endif
+#if (NUCODEGEN_RTC_CAMASK_YEAR_CONFIG == NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT)
+/* Calendar Alarm Mask Year Settings */
+#define RTC_ALARM_TEN_YEAR_MASK                 (1)
+#define RTC_ALARM_ONE_YEAR_MASK                 (0)
+#endif
+#if (NUCODEGEN_RTC_CAMASK_YEAR_CONFIG == NUCODEGEN_RTC_ALARM_MASK_DISABLE)
+/* Calendar Alarm Mask Year Settings */
+#define RTC_ALARM_TEN_YEAR_MASK                 (0)
+#define RTC_ALARM_ONE_YEAR_MASK                 (0)
+#endif
+
+
+#if (NUCODEGEN_RTC_CAMASK_MONTH_CONFIG == NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT)
+/* Calendar Alarm Mask Month Settings */
+#define RTC_ALARM_TEN_MONTH_MASK                (1)
+#define RTC_ALARM_ONE_MONTH_MASK                (1)
+#endif
+#if (NUCODEGEN_RTC_CAMASK_MONTH_CONFIG == NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT)
+/* Calendar Alarm Mask Month Settings */
+#define RTC_ALARM_TEN_MONTH_MASK                (0)
+#define RTC_ALARM_ONE_MONTH_MASK                (1)
+#endif
+#if (NUCODEGEN_RTC_CAMASK_MONTH_CONFIG == NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT)
+/* Calendar Alarm Mask Month Settings */
+#define RTC_ALARM_TEN_MONTH_MASK                (1)
+#define RTC_ALARM_ONE_MONTH_MASK                (0)
+#endif
+#if (NUCODEGEN_RTC_CAMASK_MONTH_CONFIG == NUCODEGEN_RTC_ALARM_MASK_DISABLE)
+/* Calendar Alarm Mask Month Settings */
+#define RTC_ALARM_TEN_MONTH_MASK                (0)
+#define RTC_ALARM_ONE_MONTH_MASK                (0)
+#endif
+
+
+#if (NUCODEGEN_RTC_CAMASK_DATE_CONFIG == NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT)
+/* Calendar Alarm Mask Date Settings */
+#define RTC_ALARM_TEN_DATE_MASK                 (1)
+#define RTC_ALARM_ONE_DATE_MASK                 (1)
+#endif
+#if (NUCODEGEN_RTC_CAMASK_DATE_CONFIG == NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT) 
+/* Calendar Alarm Mask Date Settings */
+#define RTC_ALARM_TEN_DATE_MASK                 (0)
+#define RTC_ALARM_ONE_DATE_MASK                 (1)
+#endif
+#if (NUCODEGEN_RTC_CAMASK_DATE_CONFIG == NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT)
+/* Calendar Alarm Mask Date Settings */
+#define RTC_ALARM_TEN_DATE_MASK                 (1)
+#define RTC_ALARM_ONE_DATE_MASK                 (0)
+#endif
+#if (NUCODEGEN_RTC_CAMASK_DATE_CONFIG == NUCODEGEN_RTC_ALARM_MASK_DISABLE)
+/* Calendar Alarm Mask Date Settings */
+#define RTC_ALARM_TEN_DATE_MASK                 (0)
+#define RTC_ALARM_ONE_DATE_MASK                 (0)
+#endif
+
+
+#if (NUCODEGEN_RTC_TAMASK_HOUR_CONFIG == NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT)
+/* Time Alarm Mask Hour Settings */
+#define RTC_ALARM_TEN_HOUR_MASK                 (1)
+#define RTC_ALARM_ONE_HOUR_MASK                 (1)
+#endif
+#if (NUCODEGEN_RTC_TAMASK_HOUR_CONFIG == NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT) 
+/* Time Alarm Mask Hour Settings */
+#define RTC_ALARM_TEN_HOUR_MASK                 (0)
+#define RTC_ALARM_ONE_HOUR_MASK                 (1)
+#endif
+#if (NUCODEGEN_RTC_TAMASK_HOUR_CONFIG == NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT)
+/* Time Alarm Mask Hour Settings */
+#define RTC_ALARM_TEN_HOUR_MASK                 (1)
+#define RTC_ALARM_ONE_HOUR_MASK                 (0)
+#endif
+#if (NUCODEGEN_RTC_TAMASK_HOUR_CONFIG == NUCODEGEN_RTC_ALARM_MASK_DISABLE)
+/* Time Alarm Mask Hour Settings */
+#define RTC_ALARM_TEN_HOUR_MASK                 (0)
+#define RTC_ALARM_ONE_HOUR_MASK                 (0)
+#endif
+
+
+#if (NUCODEGEN_RTC_TAMASK_MINUTE_CONFIG == NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT)
+/* Time Alarm Mask Minute Settings */
+#define RTC_ALARM_TEN_MINUTE_MASK               (1)
+#define RTC_ALARM_ONE_MINUTE_MASK               (1)
+#endif
+#if (NUCODEGEN_RTC_TAMASK_MINUTE_CONFIG == NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT) 
+/* Time Alarm Mask Minute Settings */
+#define RTC_ALARM_TEN_MINUTE_MASK               (0)
+#define RTC_ALARM_ONE_MINUTE_MASK               (1)
+#endif
+#if (NUCODEGEN_RTC_TAMASK_MINUTE_CONFIG == NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT)
+/* Time Alarm Mask Minute Settings */
+#define RTC_ALARM_TEN_MINUTE_MASK               (1)
+#define RTC_ALARM_ONE_MINUTE_MASK               (0)
+#endif
+#if (NUCODEGEN_RTC_TAMASK_MINUTE_CONFIG == NUCODEGEN_RTC_ALARM_MASK_DISABLE)
+/* Time Alarm Mask Minute Settings */
+#define RTC_ALARM_TEN_MINUTE_MASK               (0)
+#define RTC_ALARM_ONE_MINUTE_MASK               (0)
+#endif
+
+
+#if (NUCODEGEN_RTC_TAMASK_SECOND_CONFIG == NUCODEGEN_RTC_ALARM_MASK_BOTH_DIGIT)
+/* Time Alarm Mask Second Settings */
+#define RTC_ALARM_TEN_SECOND_MASK               (1)
+#define RTC_ALARM_ONE_SECOND_MASK               (1)
+#endif
+#if (NUCODEGEN_RTC_TAMASK_SECOND_CONFIG == NUCODEGEN_RTC_ALARM_MASK_ONE_DIGIT) 
+/* Time Alarm Mask Second Settings */
+#define RTC_ALARM_TEN_SECOND_MASK               (0)
+#define RTC_ALARM_ONE_SECOND_MASK               (1)
+#endif
+#if (NUCODEGEN_RTC_TAMASK_SECOND_CONFIG == NUCODEGEN_RTC_ALARM_MASK_TEN_DIGIT)
+/* Time Alarm Mask Second Settings */
+#define RTC_ALARM_TEN_SECOND_MASK               (1)
+#define RTC_ALARM_ONE_SECOND_MASK               (0)
+#endif
+#if (NUCODEGEN_RTC_TAMASK_SECOND_CONFIG == NUCODEGEN_RTC_ALARM_MASK_DISABLE)
+/* Time Alarm Mask Second Settings */
+#define RTC_ALARM_TEN_SECOND_MASK               (0)
+#define RTC_ALARM_ONE_SECOND_MASK               (0)
+#endif
+#endif
+
+#define NUCODEGEN_RTC_INT_ENABLE                (<!id:RTC_IntEnableCheckbox;
+                                                    type:checkbox;
+                                                    label:NVIC Enable RTC Interrupt;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1];
+                                                    optionLabels:[Enable Interrupt];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    !>)
+#define NUCODEGEN_RTC_INT_CONFIG                (<!id:RTC_IntMultiselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:5;
+                                                    data:[RTC_INTEN_TICKIEN_Msk, RTC_INTEN_ALMIEN_Msk];
+                                                    default:[RTC_INTEN_TICKIEN_Msk, RTC_INTEN_ALMIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[RTC_INTEN_TICKIEN_Msk, RTC_INTEN_ALMIEN_Msk];
+                                                    optionLabels:[Enable Tick Interrupt, Enable Alarm Interrupt];
+                                                    dependencies:RTC_IntEnableCheckbox;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    filterDefault:false;
+                                                !>)
+#define NUCODEGEN_RTC_FREQ_ADJ_ENABLE           (<!id:RTC_FreqCalibrateEnableRadio;
+                                                    type:radio;
+                                                    label:Enable LXT Frequency Compensation;
+                                                    data:1;
+                                                    default:[1];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1,0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_FreqCalibrateConfig;
+                                                    groupName:Frequency Calibration Function;
+                                                !>)
+#if (NUCODEGEN_RTC_FREQ_ADJ_ENABLE)
+/* Spcify the LXT frequency for calibration. The value should be set to the current frequency (Hz) * 10000. 
+ * For example: Value 327680001 means 32768.0001 Hz.
+ */
+#define RTC_LXT_FREQ                            (<!id:RTC_LXTFrequencyInteger;
+                                                    type:integer;
+                                                    label:Enter Current LXT Frequency;
+                                                    data:327680000;
+                                                    default:327680000;
+                                                    helper:Specify the RTC clock * 10000, ex: 327680001 means 32768.0001 Hz;
+                                                    minimum:327520000;
+                                                    maximum:327839999;
+                                                    dependencies:RTC_FreqCalibrateEnableRadio; 
+                                                    dependenciesOption:1; 
+                                                    groupId:none; 
+                                                    groupName:none;
+                                                    groupId:Group_FreqCalibrateConfig;
+                                                    groupName:Frequency Calibration Function;
+                                                !>)
+#endif
+
+
+

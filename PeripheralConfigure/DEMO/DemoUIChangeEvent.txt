@@ -1,0 +1,110 @@
+<!id:ADCInterrupt;
+type:radio;
+label:"A/D converter interrupt.";
+data:0;
+default:0;
+helper:;
+sort:false;
+enum:        [ 0,        1];
+optionLabels:["Disable", "Enable"];
+vertical:false;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:none;
+observable:none;
+listener:{ "1": "0" };
+changeEvent:{"DemoUIHiddenAndObservable":
+{"UART1DisableINTMultipleSelect" :{
+"1": "UART_INTEN_RDAIEN_Msk",
+"0": "UART_INTEN_THREIEN_Msk"
+}}};
+groupId:Group_ADC_Configuration;
+filterExp:none;
+filterDefault:true;
+!>
+
+<!id:UART0BaudrateSelect;
+type:select;
+label:UART0 Baud Rate;
+data:4800;
+default:57600;
+helper:Select your UART0 baud rate;
+sort:false;
+enum:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+optionLabels:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+changeEvent:{"DemoUIHiddenAndObservable":
+	{"UART1DisableINTMultipleSelect" :{
+		"4800": "UART_INTEN_RDAIEN_Msk",
+		"9600": "UART_INTEN_THREIEN_Msk"
+}}};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>
+
+<!id:UART1EnableINTCheckbox;
+type:checkbox;
+label:Enable Interrupts We Want for UART1;
+data:0;
+default:UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk;
+helper:Enable Interrupt We Want for UART1;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKCTSIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, UART Wake-Up Function, LIN RX Break Field Detected, Time-Out Counter, RTS Auto Flow Control, CTS Auto Flow Control, TX DMA, RX DMA];
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+changeEvent:{"DemoUIHiddenAndObservable":
+	{"UART1DisableINTMultipleSelect" :{
+		"UART_INTEN_RDAIEN_Msk": "UART_INTEN_RDAIEN_Msk",
+		"UART_INTEN_THREIEN_Msk": "UART_INTEN_THREIEN_Msk"
+}}};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>
+
+<!id:UART1EnableINTCheckboxBoolean;
+type:checkboxBoolean;
+label:Enable Interrupts We Want for UART1;
+data:false;
+default:true;
+helper:Enable Interrupt We Want for UART1;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+changeEvent:{"DemoUIHiddenAndObservable":
+	{"UART1DisableINTMultipleSelect" :{
+		"true": "UART_INTEN_RDAIEN_Msk",
+		"false": "UART_INTEN_THREIEN_Msk"
+}}};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>
+
+<!id:UART1DisableINTMultipleSelect111;
+type:multipleselect;
+label:Disable Interrupts We Want for UART1;
+size:5;
+data:0;
+default:UART_INTEN_RLSIEN_Msk;
+helper:Select which interrupt to disable.;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKCTSIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, UART Wake-Up Function, LIN RX Break Field Detected, Time-Out Counter, RTS Auto Flow Control, CTS Auto Flow Control, TX DMA, RX DMA];
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+changeEvent:{"DemoUIHiddenAndObservable":
+	{"UART1DisableINTMultipleSelect" :{
+		"UART_INTEN_RDAIEN_Msk": "UART_INTEN_RDAIEN_Msk",
+		"UART_INTEN_THREIEN_Msk": "UART_INTEN_THREIEN_Msk"
+}}};
+groupId:none;
+groupName:none;
+filterExp:none;
+filterDefault:true;!>

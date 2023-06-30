@@ -1,0 +1,846 @@
+/*--------------------------------------------------------------------------*/
+/* PWM1 CH2CH3 Configuration                                                */
+/*--------------------------------------------------------------------------*/
+
+<!clock: {"ALL" : "PWM1" }; !>
+<!pin:   {"UsePWM1CH2ENCapBoolean" : {"true" : ["PWM1_CH2"]} ,
+		  "UsePWM1CH3ENCapBoolean" : {"true" : ["PWM1_CH3"]} ,
+		  "UsePWM1CH2ENBoolean" : {"true" : ["PWM1_CH2"]} ,
+		  "UsePWM1CH3ENBoolean" : {"true" : ["PWM1_CH3"]} }; !>
+
+#define NUCODEGEN_PWM1_CH2_3_FUNC_SEL						(<!id:PWM1CH23FuncSelect;
+															type:radio;
+															label:Select PWM1 function;
+															data:0;
+															default:0;
+															helper:;
+															enum:[0, 1];
+															optionLabels:[PWM output waveform, PWM capture];
+															dependencies:none;
+															dependenciesOption:none;
+														    !>)
+
+#define NUCODEGEN_PWM1_CH2_3_CAP_UNITTIME					(<!id:PWM1CH23CapUnitTimeInterger;
+															type:integer;
+															label:The unit time of counter(ns). ;
+															data:1000;
+															default:1000;
+															helper: It is limited by clock source.;
+															minimum:10;
+															maximum:85000;
+															dependencies:UsePWM1CH2ENCapBoolean|UsePWM1CH3ENCapBoolean;
+															dependenciesOption:{"UsePWM1CH2ENCapBoolean":"true","UsePWM1CH3ENCapBoolean":"true"};
+															groupId:GroupPWM1Cap23;
+															groupName:PWM1 CH2 & CH3 Common Capture Configuration;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_CAP_PDMA_ENABLE    			(<!id:UsePWM1CH23PDMAENCapBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH2 and CH3 capture with PDMA function;
+															data:false;
+															default:false;
+															dependencies:UsePWM1CH2AdvanceCapBoolean|UsePWM1CH3AdvanceCapBoolean;
+															dependenciesOption:{"UsePWM1CH2AdvanceCapBoolean":"true","UsePWM1CH3AdvanceCapBoolean":"true"};
+															groupId:GroupPWM1Cap23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_CAP_PDMA_CH_SEL				(<!id:UsePWM1CH23CapPDMACHSel;
+															type:radio;
+															label:Select PWM1 CH2 capture data or CH3 to PDMA.;
+															size:5;
+															data:2;
+															default:2;
+															sort:false;
+															enum:[2, 3];
+															optionLabels:[CH2, CH3];
+															dependencies:[UsePWM1CH23PDMAENCapBoolean, UsePWM1CH2AdvanceCapBoolean, UsePWM1CH3AdvanceCapBoolean];
+															dependenciesOption:{"UsePWM1CH23PDMAENCapBoolean":"true","UsePWM1CH2AdvanceCapBoolean":"true","UsePWM1CH3AdvanceCapBoolean":"true"};
+															groupId:GroupPWM1Cap23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_CAP_PDMA_DATA_SEL 	            (<!id:UsePWM1CH2CapPDMADataSel;
+															type:select;
+															label:Select Rising or Falling Capture Data to PDMA.;
+															size:5;
+															data:PWM_CAPTURE_PDMA_RISING_LATCH;
+															default:PWM_CAPTURE_PDMA_RISING_LATCH;
+															sort:false;
+															enum:[PWM_CAPTURE_PDMA_RISING_LATCH, PWM_CAPTURE_PDMA_FALLING_LATCH, PWM_CAPTURE_PDMA_RISING_FALLING_LATCH];
+															optionLabels:[Rising Capture Data, Falling Capture Data, Rising and Falling Capture Data] ;
+															dependencies:UsePWM1CH23PDMAENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Cap23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_CAP_PDMA_FIRST_SEL 	        (<!id:UsePWM1CH2CapPDMAFirstSel;
+															type:select;
+															label: Select the capture order is rising or falling first.;
+															size:5;
+															data:0;
+															default:0;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[Falling, Rising] ;
+															dependencies:UsePWM1CH23PDMAENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Cap23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_CAP_ENABLE                       (<!id:UsePWM1CH2ENCapBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH2;
+															data:false;
+															default:false;
+															dependencies:PWM1CH23FuncSelect;
+															dependenciesOption:1;
+															groupId:GroupPWM1Cap2;
+															groupName:PWM1 CH2 Capture Configuration;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_CAP_ADVANCED                     (<!id:UsePWM1CH2AdvanceCapBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:false;
+															default:false;
+															dependencies:UsePWM1CH2ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Cap2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_CAP_RELOAD                        (<!id:UsePWM1CH2CapReloadMultiselect;
+															type:select;
+															label:Select CH2 reload mode;
+															size:5;
+															data:PWM_CAPTURE_INT_RISING_LATCH;
+															default:PWM_CAPTURE_INT_RISING_LATCH;
+															sort:false;
+															enum:[PWM_CAPTURE_INT_RISING_LATCH , PWM_CAPTURE_INT_FALLING_LATCH, PWM_CAPTURE_INT_RISING_LATCH|PWM_CAPTURE_INT_FALLING_LATCH];
+															optionLabels:[Rising reload, Falling reload, Rising and falling reload];
+															dependencies:UsePWM1CH2ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Cap2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_CAP_INT_SEL		  				(<!id:PWM1CH2CapINTSelect;
+															type:select;
+															label:Select PWM1 CH2 capture interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Disable, Rising latch, Falling latch, Rising and falling latch];
+															dependencies:UsePWM1CH2AdvanceCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Cap2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_CAP_INV      					(<!id:PWM1CH2ENCapInverter;
+															type:checkbox;
+															label:Enable PWM1 CH2 Capture source inverter;
+															data:0;
+															default:0;
+															enum:[1];
+															optionLabels:[<br>];
+															dependencies:UsePWM1CH2AdvanceCapBoolean;
+															dependenciesOption:1;
+															groupId:GroupPWM1Cap2;!>)
+
+#define NUCODEGEN_PWM1_CH3_CAP_ENABLE         				(<!id:UsePWM1CH3ENCapBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH3;
+															data:false;
+															default:false;
+															dependencies:PWM1CH23FuncSelect;
+															dependenciesOption:1;
+															groupId:GroupPWM1Cap3;
+															groupName:PWM1 CH3 Capture Configuration;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_CAP_ADVANCED       			    (<!id:UsePWM1CH3AdvanceCapBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:false;
+															default:false;
+															dependencies:UsePWM1CH3ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Cap3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_CAP_RELOAD          				(<!id:UsePWM1CH3CapReloadMultiselect;
+															type:select;
+															label:Select CH3 reload mode;
+															size:5;
+															data:PWM_CAPTURE_INT_RISING_LATCH;
+															default:PWM_CAPTURE_INT_RISING_LATCH;
+															sort:false;
+															enum:[PWM_CAPTURE_INT_RISING_LATCH , PWM_CAPTURE_INT_FALLING_LATCH, PWM_CAPTURE_INT_RISING_LATCH|PWM_CAPTURE_INT_FALLING_LATCH];
+															optionLabels:[Rising reload, Falling reload, Rising and falling reload];
+															dependencies:UsePWM1CH3ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Cap3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_CAP_INT_SEL		  				(<!id:PWM1CH3CapINTSelect;
+															type:select;
+															label:Select PWM1 CH3 capture interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Disable, Rising latch, Falling latch, Rising and falling latch];
+															dependencies:UsePWM1CH3AdvanceCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Cap3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_CAP_INV      					(<!id:PWM1CH3ENCapInverter;
+															type:checkbox;
+															label:Enable PWM1 CH3 Capture source inverter;
+															data:0;
+															default:0;
+															enum:[1];
+															optionLabels:[<br>];
+															dependencies:UsePWM1CH3AdvanceCapBoolean;
+															dependenciesOption:1;
+															groupId:GroupPWM1Cap3;!>)
+
+#define NUCODEGEN_PWM1_CH2_3_OUTPUT_FUNC_SETMODE	  		(<!id:PWM1CH23OutputFuncSetmode;
+															type:radio;
+															label:Select PWM1 CH2 and CH3 output function setting;
+															data:0;
+															default:0;
+															helper:;
+															enum:[0, 1];
+															optionLabels:[Quick setting, Manual];
+															dependencies:UsePWM1CH2ENBoolean|UsePWM1CH3ENBoolean;
+															dependenciesOption:{"UsePWM1CH2ENBoolean":"true","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output23;
+															groupName:PWM1 CH2 & CH3 Common Output Configuration;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_FREQ			  				(<!id:PWM1CH23FREQInteger;
+															type:integer;
+															label:The PWM1 CH2 and CH3 frequency(Hz);
+															data:1000;
+															default:1000;
+															helper:Enter frequency between 1~PCLK or 1~PLL_CLK;
+															minimum:1;
+															maximum:24000000;
+															dependencies:PWM1CH23OutputFuncSetmode&(UsePWM1CH2ENBoolean|UsePWM1CH3ENBoolean);
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"0","UsePWM1CH2ENBoolean":"true","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_CLKSRC			  			    (<!id:PWM1CH23CLKSRCSelect;
+															type:select;
+															label:Select PWM1 CH2 and CH3 clock source;
+															data:PWM_CLKSRC_PWM_CLK;
+															default:PWM_CLKSRC_PWM_CLK;
+															helper:;
+															sort:false;
+															enum:[PWM_CLKSRC_PWM_CLK, PWM_CLKSRC_TIMER0, PWM_CLKSRC_TIMER1, PWM_CLKSRC_TIMER2, PWM_CLKSRC_TIMER3];
+															optionLabels:[PWM1 CLK, TIMER0, TIMER1, TIMER2, TIMER3];
+															dependencies:PWM1CH23OutputFuncSetmode&(UsePWM1CH2ENBoolean|UsePWM1CH3ENBoolean);
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH2ENBoolean":"true","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_CNTTYPE		  				(<!id:PWM1CH23CNTTypeSelect;
+															type:radio;
+															label:Select PWM1 CH2 and CH3 counter type;
+															data:PWM_UP_COUNTER;
+															default:PWM_UP_COUNTER;
+															helper:;
+															sort:false;
+															enum:[PWM_UP_COUNTER, PWM_DOWN_COUNTER, PWM_UP_DOWN_COUNTER];
+															optionLabels:[Up Count, Down Count, Up Down Count];
+															dependencies:PWM1CH23OutputFuncSetmode&(UsePWM1CH2ENBoolean|UsePWM1CH3ENBoolean);
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH2ENBoolean":"true","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_PRESCALER		  				(<!id:PWM1CH23PrescalerInteger;
+															type:integer;
+															label:The PWM1 CH2 and CH3 counter clock prescaler;
+															data:10;
+															default:10;
+															helper:Enter prescaler between 0x0 ~ 0xFFF;
+															minimum:0;
+															maximum:4095;
+															dependencies:PWM1CH23OutputFuncSetmode&(UsePWM1CH2ENBoolean|UsePWM1CH3ENBoolean);
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH2ENBoolean":"true","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_PERIOD			  				(<!id:PWM1CH23PeriodInteger;
+															type:integer;
+															label:The PWM1 CH2 and CH3 period;
+															data:1000;
+															default:1000;
+															helper:Enter period between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:PWM1CH23OutputFuncSetmode;
+															dependenciesOption:1;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_SYNCSTART_ENABLE				(<!id:UsePWM1CH23SyncStartENBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH2 and CH3 synchronous start function.;
+															data:false;
+															default:false;
+															dependencies:UsePWM1CH2AdvanceBoolean&UsePWM1CH3AdvanceBoolean;
+															dependenciesOption:{"UsePWM1CH2AdvanceBoolean":"true","UsePWM1CH3AdvanceBoolean":"true"};
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_SYNCSTART_SRC					(<!id:UsePWM1CH23SyncStartSrcSelect;
+															type:radio;
+															label:Select PWM1 CH2 and CH3 synchronous start source;
+															data:PWM_SSCTL_SSRC_PWM0;
+															default:PWM_SSCTL_SSRC_PWM0;
+															helper:PWM1 only has one source controller, its setting must be the same with other;
+															enum:[PWM_SSCTL_SSRC_PWM0, PWM_SSCTL_SSRC_PWM1];
+															optionLabels:[PWM0, PWM1];
+															dependencies:UsePWM1CH23SyncStartENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_COMPLEMENTARY_ENABLE			(<!id:UsePWM1CH23ComplementaryENBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH2 and CH3 complementary function.;
+															data:false;
+															default:false;
+															dependencies:UsePWM1CH2AdvanceBoolean&UsePWM1CH3AdvanceBoolean;
+															dependenciesOption:{"UsePWM1CH2AdvanceBoolean":"true","UsePWM1CH3AdvanceBoolean":"true"};
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_DEADTIME_ENABLE				(<!id:UsePWM1CH23DeadtimeENBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH2 and CH3 dead time function.;
+															data:false;
+															default:false;
+															dependencies:UsePWM1CH23ComplementaryENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_DEADTIME_CNT					(<!id:PWM1CH23DeadtimeCNTInteger;
+															type:integer;
+															label:The PWM1 CH2 and CH3 dead time counter.;
+															data:10;
+															default:10;
+															helper:Enter dead time counter between 0x0 ~ 0xFFF.;
+															minimum:0;
+															maximum:4095;
+															dependencies:UsePWM1CH23DeadtimeENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_DEADTIME_CLKSRC				(<!id:PWM1CH23DeadtimeCLKSRCSelect;
+															type:radio;
+															label:Select PWM1 CH2 and CH3 dead time clock source;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[PWM1_CLK, Prescaler];
+															dependencies:UsePWM1CH23DeadtimeENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_BRAKE_ENABLE     				(<!id:UsePWM1CH23BrakeENBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH2 and CH3 brake function.;
+															data:false;
+															default:false;
+															dependencies:UsePWM1CH2AdvanceBoolean&UsePWM1CH3AdvanceBoolean;
+															dependenciesOption:{"UsePWM1CH2AdvanceBoolean":"true","UsePWM1CH3AdvanceBoolean":"true"};
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_BRAKE_SRC						<!id:PWM1CH23BrakeSRCMultiselect;
+															type:multipleselect;
+															label:Select PWM1 CH2 and CH3 brake source ;
+															data:PWM_FB_EDGE_BKP0;
+															default:PWM_FB_EDGE_BKP0;
+															helper:;
+															sort:false;
+															enum:[PWM_FB_EDGE_BKP0, PWM_FB_EDGE_BKP1, PWM_FB_EDGE_ACMP0,
+															      PWM_FB_EDGE_ACMP1, 0x180, 0x280,
+																  0x880];
+															optionLabels:[Brake pin 0, Brake pin 1, ACMP0 output,
+																		  ACMP1 output, Clock Security System detection, BOD detection, Core lockup detection];
+															dependencies:UsePWM1CH23BrakeENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>
+
+#define NUCODEGEN_PWM1_CH2_3_BRAKE_DETECT_TYPE				(<!id:PWM1CH23BrakedetecttypeSelect;
+															type:radio;
+															label:Select PWM1 CH2 and CH3 brake detect type.;
+															data:PWM_FB_EDGE;
+															default:PWM_FB_EDGE;
+															helper:;
+															sort:false;
+															enum:[PWM_FB_EDGE, PWM_FB_LEVEL];
+															optionLabels:[Edge detection, Level detection];
+															dependencies:UsePWM1CH23BrakeENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_BRAKE_FILTER_ENABLE			(<!id:PWM1CH23BrakefiltetEnBoolen;
+															type:checkbox;
+															label:Enable PWM1 Brake pin noise filter. ;
+															data:false;
+															default:false;
+															helper:PWM1 only has one filter, its setting must be the same with other;
+															sort:false;
+															dependencies:PWM1CH23BrakeSRCMultiselect;
+															dependenciesOption:{"PWM1CH23BrakeSRCMultiselect":"PWM_FB_EDGE_BKP0|PWM_FB_EDGE_BKP1"};
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_BRAKE_FILTER_CLK				(<!id:PWM1CH23BrakefilterCLKSelect;
+															type:select;
+															label:Select PWM1 brake pin filter clock. ;
+															data:PWM_NF_CLK_DIV_1;
+															default:PWM_NF_CLK_DIV_1;
+															helper:;
+															sort:false;
+															enum:[PWM_NF_CLK_DIV_1, PWM_NF_CLK_DIV_2, PWM_NF_CLK_DIV_4, PWM_NF_CLK_DIV_8, PWM_NF_CLK_DIV_16, PWM_NF_CLK_DIV_32, PWM_NF_CLK_DIV_64, PWM_NF_CLK_DIV_128];
+															optionLabels:[HCLK, HCLK/2, HCLK/4, HCLK/8, HCLK/16, HCLK/32, HCLK/64, HCLK/128];
+															dependencies:PWM1CH23BrakefiltetEnBoolen;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_BRAKE_FILTER_CNT				(<!id:PWM1CH23BrakefilterCNTINT;
+															type:integer;
+															label:The PWM1 brake pin detector filter count;
+															data:0;
+															default:0;
+															helper:Enter the filter count between 0x0~0x7.;
+															minimum:0;
+															maximum:7;
+															dependencies:PWM1CH23BrakefiltetEnBoolen;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_3_BRAKE_PIN_INV					(<!id:PWM1CH23BrakepininvEn;
+															type:checkbox;
+															label:Enable PWM1 Brake pin inverter.;
+															data:false;
+															default:false;
+															helper:;
+															sort:false;
+															dependencies:PWM1CH23BrakeSRCMultiselect;
+															dependenciesOption:{"PWM1CH23BrakeSRCMultiselect":"PWM_FB_EDGE_BKP0|PWM_FB_EDGE_BKP1"};
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_BRAKE_ACTION					    (<!id:PWM1CH2BrakeActionSelect;
+															type:select;
+															label:Select PWM1 CH2 action when brake happen. ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Nothing, Tri-State, Low level, High level];
+															dependencies:UsePWM1CH23BrakeENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_BRAKE_ACTION					    (<!id:PWM1CH3BrakeActionSelect;
+															type:select;
+															label:Select PWM1 CH3 action when brake happen. ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Nothing, Tri-State, Low level, High level];
+															dependencies:UsePWM1CH23BrakeENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output23;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_ENABLE           				(<!id:UsePWM1CH2ENBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH2.;
+															data:false;
+															default:false;
+															dependencies:PWM1CH23FuncSelect;
+															dependenciesOption:0;
+															groupId:GroupPWM1Output2;
+															groupName:PWM1 CH2 Output Configuration;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_ADVANCED         				(<!id:UsePWM1CH2AdvanceBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:false;
+															default:false;
+															dependencies:PWM1CH23OutputFuncSetmode&UsePWM1CH2ENBoolean;
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH2ENBoolean":"true"};
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_DUTY								(<!id:PWM1CH2DUTYInteger;
+															type:integer;
+															label:The PWM1 CH2 duty cycle(%);
+															data:10;
+															default:10;
+															helper:Enter duty cycle(0~100%).;
+															minimum:0;
+															maximum:100;
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH2ENBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"0","UsePWM1CH2ENBoolean":"true"};
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_CMPDATA							(<!id:PWM1CH2CmpdataInteger;
+															type:integer;
+															label:The PWM1 CH2 comparator ;
+															data:1000;
+															default:1000;
+															helper:Enter comparator between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH2ENBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH2ENBoolean":"true"};
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_WAVEOUT_PERIOD					(<!id:PWM1CH2WaveOutPeriodSelect;
+															type:radio;
+															label:The PWM1 CH2 period point output behavior ;
+															data:PWM_OUTPUT_NOTHING;
+															default:PWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[PWM_OUTPUT_NOTHING, PWM_OUTPUT_LOW, PWM_OUTPUT_HIGH, PWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH2ENBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH2ENBoolean":"true"};
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_WAVEOUT_ZERO						(<!id:PWM1CH2WaveOutZeroSelect;
+															type:radio;
+															label:The PWM1 CH2 zero point output behavior ;
+															data:PWM_OUTPUT_NOTHING;
+															default:PWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[PWM_OUTPUT_NOTHING, PWM_OUTPUT_LOW, PWM_OUTPUT_HIGH, PWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH2ENBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH2ENBoolean":"true"};
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_WAVEOUT_CMPUP					(<!id:PWM1CH2WaveOutCmpUpSelect;
+															type:radio;
+															label:The PWM1 CH2 compare up point output behavior ;
+															data:PWM_OUTPUT_NOTHING;
+															default:PWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[PWM_OUTPUT_NOTHING, PWM_OUTPUT_LOW, PWM_OUTPUT_HIGH, PWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[PWM1CH23CNTTypeSelect, UsePWM1CH2ENBoolean];
+															dependenciesOption:{"PWM1CH23CNTTypeSelect":"PWM_UP_COUNTER|PWM_UP_DOWN_COUNTER","UsePWM1CH2ENBoolean":"true"};
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_WAVEOUT_CMPDOWN					(<!id:PWM1CH2WaveOutCmpDownSelect;
+															type:radio;
+															label:The PWM1 CH2 compare down point output behavior ;
+															data:PWM_OUTPUT_NOTHING;
+															default:PWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[PWM_OUTPUT_NOTHING, PWM_OUTPUT_LOW, PWM_OUTPUT_HIGH, PWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[PWM1CH23CNTTypeSelect, UsePWM1CH2ENBoolean];
+															dependenciesOption:{"PWM1CH23CNTTypeSelect":"PWM_DOWN_COUNTER|PWM_UP_DOWN_COUNTER","UsePWM1CH2ENBoolean":"true"};
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_LOAD_MODE						(<!id:PWM1CH2LoadModeSelect;
+															type:radio;
+															label:Select PWM1 CH2 loading mode ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Period mode, Immediate mode, Center mode];
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH2AdvanceBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH2AdvanceBoolean":"true"};
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_OTHER_OUTPUT						(<!id:PWM1CH2otherOutputSelect;
+															type:radio;
+															label:The PWM1 CH2 other output behavior ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Disable, Mask, Inverter];
+															dependencies:UsePWM1CH2AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_MASK_DATA						(<!id:PWM1CH2MaskDataSelect;
+															type:radio;
+															label:The PWM1 CH2 mask data ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[Low, High];
+															dependencies:PWM1CH2otherOutputSelect;
+															dependenciesOption:1;
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_TRIGER_EADC_ENABLE   			(<!id:UsePWM1CH2TrigerEADCENBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH2 trigger EADC.;
+															data:false;
+															default:false;
+															dependencies:UsePWM1CH2AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_TRIGER_EADCSRC					(<!id:UsePWM1CH2TrigerEADCSrcSelect;
+															type:select;
+															label:Select condition to trigger EADC;
+															data:PWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															default:PWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															helper:;
+															sort:false;
+															enum:[PWM_TRIGGER_ADC_EVEN_ZERO_POINT, PWM_TRIGGER_ADC_EVEN_PERIOD_POINT, PWM_TRIGGER_ADC_EVEN_ZERO_OR_PERIOD_POINT, PWM_TRIGGER_ADC_EVEN_CMP_UP_COUNT_POINT, PWM_TRIGGER_ADC_EVEN_CMP_DOWN_COUNT_POINT, PWM_TRIGGER_ADC_ODD_CMP_UP_COUNT_POINT, PWM_TRIGGER_ADC_ODD_CMP_DOWN_COUNT_POINT];
+															optionLabels:[CH2 zero point, CH2 period , CH2 zero or period point, CH2 up count CMPDAT point, CH2 down count CMPDAT point, CH3 up count CMPDAT point, CH3 down count CMPDAT point];
+															vertical:false;
+															dependencies:UsePWM1CH2TrigerEADCENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output2;
+															!>)
+
+#define NUCODEGEN_PWM1_CH2_INT_SEL							<!id:PWM1CH2INTSelect;
+															type:multipleselect;
+															label:Select PWM1 CH2 interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[1, 2, 4, 8, 16];
+															optionLabels:[Zero, Period, Cmpup, Cmpdown, Brake];
+															dependencies:UsePWM1CH2AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output2;
+															!>
+
+#define NUCODEGEN_PWM1_CH3_ENABLE       			        (<!id:UsePWM1CH3ENBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH3.;
+															data:false;
+															default:false;
+															dependencies:PWM1CH23FuncSelect;
+															dependenciesOption:0;
+															groupId:GroupPWM1Output3;
+															groupName:PWM1 CH3 Output Configuration;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_ADVANCED     			        (<!id:UsePWM1CH3AdvanceBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:false;
+															default:false;
+															dependencies:[PWM1CH23OutputFuncSetmode,UsePWM1CH3ENBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_DUTY							    (<!id:PWM1CH3DUTYInteger;
+															type:integer;
+															label:The PWM1 CH3 duty cycle(%);
+															data:10;
+															default:10;
+															helper:Enter duty cycle(0~100%).;
+															minimum:0;
+															maximum:100;
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH3ENBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"0","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_CMPDATA						    (<!id:PWM1CH3CmpdataInteger;
+															type:integer;
+															label:The PWM1 CH3 comparator ;
+															data:1000;
+															default:1000;
+															helper:Enter comparator between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH3ENBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_WAVEOUT_PERIOD					(<!id:PWM1CH3WaveOutPeriodSelect;
+															type:radio;
+															label:The PWM1 CH3 period point output behavior ;
+															data:PWM_OUTPUT_NOTHING;
+															default:PWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[PWM_OUTPUT_NOTHING, PWM_OUTPUT_LOW, PWM_OUTPUT_HIGH, PWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH3ENBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_WAVEOUT_ZERO					    (<!id:PWM1CH3WaveOutZeroSelect;
+															type:radio;
+															label:The PWM1 CH3 zero point output behavior ;
+															data:PWM_OUTPUT_NOTHING;
+															default:PWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[PWM_OUTPUT_NOTHING, PWM_OUTPUT_LOW, PWM_OUTPUT_HIGH, PWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH3ENBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_WAVEOUT_CMPUP					(<!id:PWM1CH3WaveOutCmpUpSelect;
+															type:radio;
+															label:The PWM1 CH3 compare up point output behavior ;
+															data:PWM_OUTPUT_NOTHING;
+															default:PWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[PWM_OUTPUT_NOTHING, PWM_OUTPUT_LOW, PWM_OUTPUT_HIGH, PWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[PWM1CH23CNTTypeSelect, UsePWM1CH3ENBoolean];
+															dependenciesOption:{"PWM1CH23CNTTypeSelect":"PWM_UP_COUNTER|PWM_UP_DOWN_COUNTER","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_WAVEOUT_CMPDOWN					(<!id:PWM1CH3WaveOutCmpDownSelect;
+															type:radio;
+															label:The PWM1 CH3 compare down point output behavior ;
+															data:PWM_OUTPUT_NOTHING;
+															default:PWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[PWM_OUTPUT_NOTHING, PWM_OUTPUT_LOW, PWM_OUTPUT_HIGH, PWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[PWM1CH23CNTTypeSelect, UsePWM1CH3ENBoolean];
+															dependenciesOption:{"PWM1CH23CNTTypeSelect":"PWM_DOWN_COUNTER|PWM_UP_DOWN_COUNTER","UsePWM1CH3ENBoolean":"true"};
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_LOAD_MODE						(<!id:PWM1CH3LoadModeSelect;
+															type:radio;
+															label:Select PWM1 CH3 loading mode ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Period mode, Immediate mode, Center mode];
+															dependencies:[PWM1CH23OutputFuncSetmode, UsePWM1CH3AdvanceBoolean];
+															dependenciesOption:{"PWM1CH23OutputFuncSetmode":"1","UsePWM1CH3AdvanceBoolean":"true"};
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_OTHER_OUTPUT						(<!id:PWM1CH3otherOutputSelect;
+															type:radio;
+															label:The PWM1 CH3 other output behavior ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Disable, Mask, Inverter];
+															dependencies:UsePWM1CH3AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_MASK_DATA						(<!id:PWM1CH3MaskDataSelect;
+															type:radio;
+															label:The PWM1 CH3 mask data ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[Low, High];
+															dependencies:PWM1CH3otherOutputSelect;
+															dependenciesOption:1;
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_TRIGER_EADC_ENABLE   			(<!id:UsePWM1CH3TrigerEADCENBoolean;
+															type:checkbox;
+															label:Enable PWM1 CH3 trigger EADC.;
+															data:false;
+															default:false;
+															dependencies:UsePWM1CH3AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_TRIGER_EADCSRC					(<!id:UsePWM1CH3TrigerEADCSrcSelect;
+															type:select;
+															label:Select condition to trigger EADC;
+															data:PWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															default:PWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															helper:;
+															sort:false;
+															enum:[PWM_TRIGGER_ADC_EVEN_ZERO_POINT, PWM_TRIGGER_ADC_EVEN_PERIOD_POINT, PWM_TRIGGER_ADC_EVEN_ZERO_OR_PERIOD_POINT, PWM_TRIGGER_ADC_EVEN_CMP_UP_COUNT_POINT, PWM_TRIGGER_ADC_EVEN_CMP_DOWN_COUNT_POINT, PWM_TRIGGER_ADC_ODD_CMP_UP_COUNT_POINT, PWM_TRIGGER_ADC_ODD_CMP_DOWN_COUNT_POINT];
+															optionLabels:[CH2 zero point, CH2 period , CH2 zero or period point, CH2 up count CMPDAT point, CH2 down count CMPDAT point, CH3 up count CMPDAT point, CH3 down count CMPDAT point];
+															vertical:false;
+															dependencies:UsePWM1CH3TrigerEADCENBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output3;
+															!>)
+
+#define NUCODEGEN_PWM1_CH3_INT_SEL							<!id:PWM1CH3INTSelect;
+															type:multipleselect;
+															label:Select PWM1 CH3 interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[1, 2, 4, 8, 16];
+															optionLabels:[Zero, Period, Cmpup, Cmpdown, Brake];
+															dependencies:UsePWM1CH3AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupPWM1Output3;
+															!>

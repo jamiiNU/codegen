@@ -1,0 +1,616 @@
+/*--------------------------------------------------------------------------*/
+/* SPII2S0 Configuration                                                    */
+/*--------------------------------------------------------------------------*/
+<! clock: {"ALL" : "SPI0" }; !>
+<! pin: {   "SPI0_NormalPinConfigHidden":{
+                "NUCODEGEN_SPI0_PIN_NORMAL":[
+                    "SPI0_MISO", "SPI0_MOSI", "SPI0_SS", "SPI0_CLK"
+                ]},
+            "SPI0_ReadOnlyPinConfigHidden":{
+                "NUCODEGEN_SPI0_PIN_READONLY":[
+                    "SPI0_MISO", "SPI0_SS", "SPI0_CLK"
+                ]},
+            "SPI0_HalfduplexPinConfigHidden":{
+                "NUCODEGEN_SPI0_PIN_HALFDUPLEX":[
+                    "SPI0_MOSI", "SPI0_SS", "SPI0_CLK"
+                ]},
+            "ALL":["SPI0_MISO", "SPI0_MOSI", "SPI0_SS", "SPI0_CLK"]
+        };
+!>
+
+#define NUCODEGEN_SPI0_PIN_NORMAL               (0)
+#define NUCODEGEN_SPI0_PIN_HALFDUPLEX           (1)
+#define NUCODEGEN_SPI0_PIN_READONLY             (2)
+
+#define NUCODEGEN_SPI0_PIN_CONFIG               (<!id:SPI0_NormalPinConfigHidden;
+                                                    type:hidden;
+                                                    data:NUCODEGEN_SPI0_PIN_NORMAL;
+                                                    default:NUCODEGEN_SPI0_PIN_NORMAL;
+                                                    observable:ModeSelect;
+                                                    listener:{
+                                                        "NUCODEGEN_SPI0_MODE" : "NUCODEGEN_SPI0_PIN_NORMAL",
+                                                        "NUCODEGEN_I2S0_MODE" : "NUCODEGEN_SPI0_PIN_NORMAL"};
+                                                    dependencies:[
+                                                        NUCODEGEN_SPI0_HALF_DUPLEX_EN,
+                                                        NUCODEGEN_SPI0_RECEIVE_ONLY_EN
+                                                    ];
+                                                    dependenciesOption:{
+                                                        "NUCODEGEN_SPI0_HALF_DUPLEX_EN":"0",
+                                                        "NUCODEGEN_SPI0_RECEIVE_ONLY_EN":"0"};
+                                                    dependenciesDefault:false;
+                                                !><!id:SPI0_ReadOnlyPinConfigHidden;
+                                                    type:hidden;
+                                                    data:NUCODEGEN_SPI0_PIN_READONLY;
+                                                    default:NUCODEGEN_SPI0_PIN_READONLY;
+                                                    observable:SPIReceiveOnly;
+                                                    listener:{"1" : "NUCODEGEN_SPI0_PIN_READONLY"};
+                                                    dependencies:[ModeSelect, SPIReceiveOnly];
+                                                    dependenciesOption:{
+                                                        "ModeSelect":"NUCODEGEN_SPI0_MODE",
+                                                        "SPIReceiveOnly":"1"};
+                                                    dependenciesDefault:false;
+                                                !><!id:SPI0_HalfduplexPinConfigHidden;
+                                                    type:hidden;
+                                                    data:NUCODEGEN_SPI0_PIN_HALFDUPLEX;
+                                                    default:NUCODEGEN_SPI0_PIN_HALFDUPLEX;
+                                                    observable:SPIHalfDuplex;
+                                                    listener:{"1"  : "NUCODEGEN_SPI0_PIN_HALFDUPLEX"};
+                                                    dependencies:[ModeSelect, SPIHalfDuplex];
+                                                    dependenciesOption:{
+                                                        "ModeSelect":"NUCODEGEN_SPI0_MODE",
+                                                        "SPIHalfDuplex":"1"};
+                                                    dependenciesDefault:false;
+                                                !>)
+
+#define NUCODEGEN_SPI0_MODE                     (0)
+#define NUCODEGEN_I2S0_MODE                     (1)
+
+#define NUCODEGEN_SPII2S0_MODE                  (<!id:ModeSelect;
+                                                    type:radio;
+                                                    label:Select SPI/I2S mode;
+                                                    data:NUCODEGEN_SPI0_MODE;
+                                                    default:NUCODEGEN_SPI0_MODE;
+                                                    enum:[NUCODEGEN_SPI0_MODE, NUCODEGEN_I2S0_MODE];
+                                                    optionLabels:[SPI Mode, I2S Mode];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#if (NUCODEGEN_SPII2S0_MODE == NUCODEGEN_SPI0_MODE)
+#define NUCODEGEN_SPI0_MASTER                   (<!id:SPIMasterSlave;
+                                                    type:radio;
+                                                    label:Select master/slave mode;
+                                                    data:SPI_MASTER;
+                                                    default:SPI_MASTER;
+                                                    enum:[SPI_MASTER, SPI_SLAVE];
+                                                    optionLabels:[Master, Slave];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_SPI0_MODE;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+#define NUCODEGEN_SPI0_BYTE_REORDER_EN          (<!id:SPIByteReorder;
+                                                    type:radio;
+                                                    label:Enable byte reorder function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ Disable, Enable];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_SPI0_MODE;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+#define NUCODEGEN_SPI0_HALF_DUPLEX_EN           (<!id:SPIHalfDuplex;
+                                                    type:radio;
+                                                    label:Enable half duplex function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ Disable, Enable];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_SPI0_MODE;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+#define NUCODEGEN_SPI0_DATA_DIR                 (<!id:SPIDataDirection;
+                                                    type:radio;
+                                                    label:Select data direction;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ Input Mode, Output Mode];
+                                                    dependencies:SPIHalfDuplex;
+                                                    dependenciesOption:1;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+#define NUCODEGEN_SPI0_RECEIVE_ONLY_EN          (<!id:SPIReceiveOnly;
+                                                    type:radio;
+                                                    label:Enable receive only function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ Disable, Enable];
+                                                    dependencies:SPIMasterSlave;
+                                                    dependenciesOption:SPI_MASTER;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+#define NUCODEGEN_SPI0_TIME_MODE                (<!id:SPIMode;
+                                                    type:radio;
+                                                    label:Select master/slave transfer timing;
+                                                    data:SPI_MODE_0;
+                                                    default:SPI_MODE_0;
+                                                    enum:[  SPI_MODE_0, SPI_MODE_1, SPI_MODE_2, SPI_MODE_3];
+                                                    optionLabels:[  Mode 0, Mode 1, Mode 2, Mode 3];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_SPI0_MODE;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+#define NUCODEGEN_SPI0_DATAWIDTH                (<!id:SPIDataWidth;
+                                                    type:select;
+                                                    label:Select data width;
+                                                    helper: For byte reorder function, SPII2S supports 16-bits, 24-bits, 32-bits.;
+                                                    data:32;
+                                                    default:32;
+                                                    enum:[
+                                                        8, 9, 10, 11,
+                                                        12, 13, 14, 15,
+                                                        16, 17, 18, 19,
+                                                        20, 21, 22, 23,
+                                                        24, 25 ,26, 27,
+                                                        28, 29, 30, 31,
+                                                        32
+                                                    ];
+                                                    optionLabels:[
+                                                        8-bits, 9-bits, 10-bits, 11-bits,
+                                                        12-bits, 13-bits, 14-bits, 15-bits,
+                                                        16-bits, 17-bits, 18-bits, 19-bits,
+                                                        20-bits, 21-bits, 22-bits, 23-bits,
+                                                        24-bits, 25-bits, 26-bits, 27-bits,
+                                                        28-bits, 29-bits, 30-bits, 31-bits,
+                                                        32-bits
+                                                    ];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_SPI0_MODE;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_BUSCLOCK                 (<!id:SPIBusClock;
+                                                    type:integer;
+                                                    label:Set bus clock;
+                                                    data:20000000;
+                                                    default:20000000;
+                                                    helper:Enter Master bus clock 2,000,000~24,000,000 Hz, Slave bus clock is as CLKSEL setting;
+                                                    minimum:1;
+                                                    maximum:24000000;
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_SPI0_MODE;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_DATA_ORDER               (<!id:SPIDataOrder;
+                                                    type:radio;
+                                                    label:Select data format is MSB or LSB;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ MSB, LSB];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_SPI0_MODE;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_AUTOSS_EN                (<!id:SPIAutoSSEn;
+                                                    type:radio;
+                                                    label:Enable auto SS;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[Disable, Enable];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:SPIMasterSlave;
+                                                    dependenciesOption:SPI_MASTER;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_SS_EN                    (<!id:SPISSEn;
+                                                    type:radio;
+                                                    label:Enable SS function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[Disable, Enable];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:SPIAutoSSEn;
+                                                    dependenciesOption:0;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_SS_LEVEL                 (<!id:SPISSLevel;
+                                                    type:radio;
+                                                    label:Select SS active level;
+                                                    data:SPI_SS_ACTIVE_HIGH;
+                                                    default:SPI_SS_ACTIVE_HIGH;
+                                                    enum:[SPI_SS_ACTIVE_HIGH, SPI_SS_ACTIVE_LOW];
+                                                    optionLabels:[Active High, Active Low];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_SPI0_MODE;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_TX_THRESHOLD0            (<!id:SPITxThreshold0;
+                                                    type:select;
+                                                    label:Select tx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3];
+                                                    optionLabels:[0, 1, 2, 3];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:SPIDataWidth;
+                                                    dependenciesOption:>16;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_TX_THRESHOLD1            (<!id:SPITxThreshold1;
+                                                    type:select;
+                                                    label:Select tx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    optionLabels:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:SPIDataWidth;
+                                                    dependenciesOption:<=16;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_RX_THRESHOLD0            (<!id:SPIRxThreshold0;
+                                                    type:select;
+                                                    label:Select rx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3];
+                                                    optionLabels:[0, 1, 2, 3];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:SPIDataWidth;
+                                                    dependenciesOption:>16;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_RX_THRESHOLD1            (<!id:SPIRxThreshold1;
+                                                    type:select;
+                                                    label:Select rx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    optionLabels:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:SPIDataWidth;
+                                                    dependenciesOption:<=16;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#define NUCODEGEN_SPI0_INT_EN                   (<!id:SPIINTEn;
+                                                    type:radio;
+                                                    label:Enable interrupt function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[Disable, Enable];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_SPI0_MODE;
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+#define NUCODEGEN_SPI0_INT_SEL                  (<!id:SPIINTSel;
+                                                    type:multipleselect;
+                                                    label:Select interrupts;
+                                                    size:11;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:1.If you would like to use SPI_FIFO_TXTH_INT, SPI_FIFO_RXTH_INT, you can add in code.
+                                                    2.SPI_SSACT_INT, SPI_SSINACT_INT, SPI_SLVUR_INT, SPI_SLVBE_INT only act in Slave mode.;
+                                                    sort:false;
+                                                    enum:[
+                                                        SPI_UNIT_INT_MASK,
+                                                        SPI_SSACT_INT_MASK,
+                                                        SPI_SSINACT_INT_MASK,
+                                                        SPI_SLVUR_INT_MASK,
+                                                        SPI_SLVBE_INT_MASK,
+                                                        SPI_TXUF_INT_MASK,
+                                                        SPI_FIFO_RXOV_INT_MASK,
+                                                        SPI_FIFO_RXTO_INT_MASK
+                                                    ];
+                                                    optionLabels:[
+                                                        SPI_UNIT_INT,
+                                                        SPI_SSACT_INT,
+                                                        SPI_SSINACT_INT,
+                                                        SPI_SLVUR_INT,
+                                                        SPI_SLVBE_INT,
+                                                        SPI_TXUF_INT,
+                                                        SPI_FIFO_RXOV_INT,
+                                                        SPI_FIFO_RXTO_INT
+                                                    ];
+                                                    dependencies:SPIINTEn;
+                                                    dependenciesOption:1;
+                                                    functionalTest:{
+                                                        "SPIMasterSlave":"SPI_SLAVE",
+                                                        "SPISSLevel":"SPI_SS_ACTIVE_LOW"};
+                                                    groupId:SPIGroup;
+                                                    groupName:SPI Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_I2S0_MODE;
+                                                !>)
+
+#elif (NUCODEGEN_SPII2S0_MODE == NUCODEGEN_I2S0_MODE)
+
+#define NUCODEGEN_I2S0_MASTER                   (<!id:I2SMasterSlave;
+                                                    type:radio;
+                                                    label:Select master/slave mode;
+                                                    data:SPII2S_MODE_MASTER;
+                                                    default:SPII2S_MODE_MASTER;
+                                                    enum:[SPII2S_MODE_MASTER, SPII2S_MODE_SLAVE];
+                                                    optionLabels:[Master, Slave];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_I2S0_MODE;
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+#define NUCODEGEN_I2S0_AUDIO_FORMAT             (<!id:I2SAudioFormat;
+                                                    type:radio;
+                                                    label:Select audio format;
+                                                    data:SPII2S_MONO;
+                                                    default:SPII2S_MONO;
+                                                    enum:[SPII2S_MONO, SPII2S_STEREO];
+                                                    optionLabels:[Mono, Stereo];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_I2S0_MODE;
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+#define NUCODEGEN_I2S0_DATA_FORMAT              (<!id:I2SDataFormat;
+                                                    type:radio;
+                                                    label:Select data format;
+                                                    data:SPII2S_FORMAT_I2S;
+                                                    default:SPII2S_FORMAT_I2S;
+                                                    enum:[
+                                                        SPII2S_FORMAT_I2S,
+                                                        SPII2S_FORMAT_MSB,
+                                                        SPII2S_FORMAT_PCMA,
+                                                        SPII2S_FORMAT_PCMB
+                                                    ];
+                                                    optionLabels:[I2S, MSB, PCMA, PCMB];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_I2S0_MODE;
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+#define NUCODEGEN_I2S0_DATAWIDTH                (<!id:I2SDataWidth;
+                                                    type:select;
+                                                    label:Select data width;
+                                                    data:SPII2S_DATABIT_8;
+                                                    default:SPII2S_DATABIT_8;
+                                                    enum:[
+                                                        SPII2S_DATABIT_8,
+                                                        SPII2S_DATABIT_16,
+                                                        SPII2S_DATABIT_24,
+                                                        SPII2S_DATABIT_32
+                                                    ];
+                                                    optionLabels:[8-bits, 16-bits, 24-bits, 32-bits];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_I2S0_MODE;
+                                                    functionalTest:{"I2SMasterSlave":"SPII2S_MODE_MASTER"};
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+#define NUCODEGEN_I2S0_SAMPLE_RATE              (<!id:I2SSampleRate;
+                                                    type:integer;
+                                                    label:Set sample rate;
+                                                    data:24000;
+                                                    default:24000;
+                                                    helper:Master sample rate setting, common as 8,000 Hz, 16,000 Hz, 24,000 Hz, 48,000 Hz, Slave bclk is as CLKSEL;
+                                                    minimum:1465;
+                                                    maximum:375000;
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_I2S0_MODE;
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+
+#define NUCODEGEN_I2S0_MCLK_EN                  (<!id:I2SMCLKEn;
+                                                    type:checkbox;
+                                                    label:Enable master clock;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[1];
+                                                    optionLabels:[Enable];
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_I2S0_MODE;
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+#define NUCODEGEN_I2S0_MCLK                     (<!id:I2SMCLK;
+                                                    type:integer;
+                                                    label:Set MCLK;
+                                                    data:12000000;
+                                                    default:12000000;
+                                                    helper:Commonly setting is sample rate *256 Hz;
+                                                    minimum:1;
+                                                    maximum:24000000;
+                                                    dependencies:I2SMCLKEn;
+                                                    dependenciesOption:1;
+                                                !>)
+
+#define NUCODEGEN_I2S0_INT_EN                   (<!id:I2SINTEn;
+                                                    type:radio;
+                                                    label:Enable interrupt function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[Disable, Enable];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_I2S0_MODE;
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+#define NUCODEGEN_I2S0_INT_SEL                  (<!id:I2SINTSel;
+                                                    type:multipleselect;
+                                                    label:Select which interrupts we want;
+                                                    size:11;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:If you would like to use SPII2S_FIFO_TXTH_INT, SPII2S_FIFO_RXTH_INT, you can add in code.;
+                                                    sort:false;
+                                                    enum:[
+                                                        SPII2S_FIFO_RXOV_INT_MASK,
+                                                        SPII2S_FIFO_RXTO_INT_MASK,
+                                                        SPII2S_TXUF_INT_MASK,
+                                                        SPII2S_RIGHT_ZC_INT_MASK,
+                                                        SPII2S_LEFT_ZC_INT_MASK,
+                                                        SPII2S_SLV_CLKERR_INT_MASK
+                                                    ];
+                                                    optionLabels:[
+                                                        SPII2S_FIFO_RXOV_INT,
+                                                        SPII2S_FIFO_RXTO_INT,
+                                                        SPII2S_TXUF_INT,
+                                                        SPII2S_RIGHT_ZC_INT,
+                                                        SPII2S_LEFT_ZC_INT,
+                                                        SPII2S_SLV_CLKERR_INT
+                                                    ];
+                                                    dependencies:I2SINTEn;
+                                                    dependenciesOption:1;
+                                                    functionalTest:{
+                                                        "I2SMasterSlave":"SPII2S_MODE_SLAVE"
+                                                    };
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+
+#define NUCODEGEN_I2S0_TX_THRESHOLD0            (<!id:I2STxThreshold0;
+                                                    type:select;
+                                                    label:Select tx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3];
+                                                    optionLabels:[0, 1, 2, 3];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:I2SDataWidth;
+                                                    dependenciesOption:(SPII2S_DATABIT_24|SPII2S_DATABIT_32);
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+
+#define NUCODEGEN_I2S0_TX_THRESHOLD1            (<!id:I2STxThreshold1;
+                                                    type:select;
+                                                    label:Select tx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    optionLabels:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:I2SDataWidth;
+                                                    dependenciesOption:(SPII2S_DATABIT_8|SPII2S_DATABIT_16) ;
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+
+#define NUCODEGEN_I2S0_RX_THRESHOLD0            (<!id:I2SRxThreshold0;
+                                                    type:select;
+                                                    label:Select rx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3];
+                                                    optionLabels:[0, 1, 2, 3];
+                                                    dependencies:I2SDataWidth;
+                                                    dependenciesOption:(SPII2S_DATABIT_24|SPII2S_DATABIT_32);
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+
+#define NUCODEGEN_I2S0_RX_THRESHOLD1            (<!id:I2SRxThreshold1;
+                                                    type:select;
+                                                    label:Select rx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    optionLabels:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    dependencies:I2SDataWidth;
+                                                    dependenciesOption:(SPII2S_DATABIT_8|SPII2S_DATABIT_16);
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+
+#define NUCODEGEN_I2S0_WIDTH_CONFIG             (<!id:I2SDATAWIDTHConfigHidden;
+                                                    type:hidden;
+                                                    data:0;
+                                                    default:0;
+                                                    observable:I2SDataWidth;
+                                                    listener:{
+                                                        "SPII2S_DATABIT_8":"0",
+                                                        "SPII2S_DATABIT_16":"1",
+                                                        "SPII2S_DATABIT_24":"2",
+                                                        "SPII2S_DATABIT_32":"3"};
+                                                    dependencies:ModeSelect;
+                                                    dependenciesOption:NUCODEGEN_I2S0_MODE;
+                                                    dependenciesDefault:false;
+                                                    groupId:I2SGroup;
+                                                    groupName:I2S Mode configuration;
+                                                    filterExp:NUCODEGEN_SPII2S0_MODE==NUCODEGEN_SPI0_MODE;
+                                                !>)
+
+#endif  //NUCODEGEN_SPII2S0_MODE

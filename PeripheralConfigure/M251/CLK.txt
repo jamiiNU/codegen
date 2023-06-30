@@ -1,0 +1,598 @@
+/*--------------------------------------------------------------------------*/
+/* CLK Configuration                                                        */
+/*--------------------------------------------------------------------------*/
+
+#define NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE       (<!id:CLK_HXT_FailDetectorRadio;
+                                                    type:radio;
+                                                    label:Enable HXT Fail Detector;
+                                                    data:[1];
+                                                    default:[1];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    vertical:false;
+                                                    dependencies:;
+                                                    dependenciesOption:;
+                                                    groupId:Group_HXT_Detector;
+                                                    groupName:HXT Detector Configuration;
+                                                !>)
+#define NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE       (<!id:CLK_HXT_RangeDetectorRadio;
+                                                    type:radio;
+                                                    label:Enable Frequency Range Detector;
+                                                    data:[1];
+                                                    default:[1];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    vertical:false;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_HXT_Detector;
+                                                    groupName:HXT Detector Configuration;
+                                                !>)
+                                                
+#if (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE)
+#define CLK_HXT_FREQUENCY_RANGE_UPPER_BOUND     (<!id:CLK_HXT_RangeUpperBoundInteger;
+                                                    type:integer;
+                                                    label:Enter Frequency Range Upper Bound;
+                                                    data:512;
+                                                    default:512;
+                                                    helper:Upper bound frequency : F_HIRC / detect_coefficient * this value. <br>Range of this value is 0 to 1023;
+                                                    minimum:0;
+                                                    maximum:1023;
+                                                    vertical:true;
+                                                    dependencies:CLK_HXT_RangeDetectorRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_HXT_Detector;
+                                                    groupName:HXT Detector Configuration;
+                                                !>)
+#endif
+
+#if (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE)
+#define CLK_HXT_FREQUENCY_RANGE_LOWER_BOUND     (<!id:CLK_HXT_RangeLowerBoundInteger;
+                                                    type:integer;
+                                                    label:Enter Frequency Range Lower Bound;
+                                                    data:0;
+                                                    default:[0];
+                                                    helper:Lower bound frequency : F_HIRC / detect_coefficient * this value. <br>Range of this value is 0 to 1023;
+                                                    minimum:0;
+                                                    maximum:1023;
+                                                    vertical:true;
+                                                    dependencies:CLK_HXT_RangeDetectorRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_HXT_Detector;
+                                                    groupName:HXT Detector Configuration;
+                                                !>)
+#endif
+
+#define NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE       (<!id:CLK_LXT_FailDetectorRadio;
+                                                    type:radio;
+                                                    label:Select LXT Fail Detector;
+                                                    data:[1];
+                                                    default:[1];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    vertical:false;
+                                                    dependencies:;
+                                                    dependenciesOption:;
+                                                    groupId:Group_LXT_Detector;
+                                                    groupName:LXT Detector Configuration;
+                                                !>)
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+#define NUCODEGEN_CLK_DET_ENABLE                (0)
+#define NUCODEGEN_CLK_DET_CONFIG                (0)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_LXTFDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFQDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFQDEN_Msk | CLK_CLKDCTL_LXTFDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFDEN_Msk | CLK_CLKDCTL_LXTFDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFDEN_Msk | CLK_CLKDCTL_HXTFQDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFDEN_Msk | CLK_CLKDCTL_HXTFQDEN_Msk | CLK_CLKDCTL_LXTFDEN_Msk)
+#endif
+
+#define NUCODEGEN_CLK_PDWK_INT_ENABLE           (<!id:CLK_PDWK_IntEnableCheckbox;
+                                                    type:checkbox;
+                                                    label:NVIC Enable Power Down Wake-up Interrupt;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:Vector : PWRWU_IRQHandler;
+                                                    sort:false;
+                                                    enum:[1];
+                                                    optionLabels:[Enable Interrupt];
+                                                    vertical:true;
+                                                    dependencies:;
+                                                    dependenciesOption:;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_ENABLE        (<!id:CLK_CLKFAIL_IntEnableCheckbox;
+                                                    type:checkbox;
+                                                    label:NVIC Enable Clock Detector Interrupt;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:Vector : CLKFAIL_IRQHandler;
+                                                    sort:false;
+                                                    enum:[1];
+                                                    optionLabels:[Enable Interrupt];
+                                                    vertical:true;
+                                                    dependencies:;
+                                                    dependenciesOption:;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D0_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:1;
+                                                    data:[0];
+                                                    default:[0];
+                                                    helper:None of clock detector function is enabled;
+                                                    sort:false;
+                                                    enum:[0];
+                                                    optionLabels:[No available interrupt source];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1", 
+                                                                        "CLK_HXT_FailDetectorRadio":"0", "CLK_HXT_RangeDetectorRadio":"0", "CLK_LXT_FailDetectorRadio":"0"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D1_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:1;
+                                                    data:[   CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    optionLabels:[LXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"0", "CLK_HXT_RangeDetectorRadio":"0", "CLK_LXT_FailDetectorRadio":"1"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D2_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:1;
+                                                    data:[   CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    optionLabels:[HXT Frequency Range Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1", 
+                                                                        "CLK_HXT_FailDetectorRadio":"0", "CLK_HXT_RangeDetectorRadio":"1", "CLK_LXT_FailDetectorRadio":"0"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D3_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:2;
+                                                    data:[   CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    optionLabels:[HXT Frequency Range Interrupt, LXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"0", "CLK_HXT_RangeDetectorRadio":"1", "CLK_LXT_FailDetectorRadio":"1"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D4_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:1;
+                                                    data:[   CLK_CLKDCTL_HXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFIEN_Msk];
+                                                    optionLabels:[HXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1", 
+                                                                        "CLK_HXT_FailDetectorRadio":"1", "CLK_HXT_RangeDetectorRadio":"0", "CLK_LXT_FailDetectorRadio":"0"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D5_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:2;
+                                                    data:[   CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    optionLabels:[HXT Fail Interrupt, LXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1", 
+                                                                        "CLK_HXT_FailDetectorRadio":"1", "CLK_HXT_RangeDetectorRadio":"0", "CLK_LXT_FailDetectorRadio":"1"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D6_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:2;
+                                                    data:[   CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    optionLabels:[HXT Fail Interrupt, HXT Frequency Range Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1", 
+                                                                        "CLK_HXT_FailDetectorRadio":"1", "CLK_HXT_RangeDetectorRadio":"1", "CLK_LXT_FailDetectorRadio":"0"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D7_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:5;
+                                                    data:[   CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    optionLabels:[HXT Fail Interrupt, HXT Frequency Range Interrupt, LXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1", 
+                                                                        "CLK_HXT_FailDetectorRadio":"1", "CLK_HXT_RangeDetectorRadio":"1", "CLK_LXT_FailDetectorRadio":"1"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+#define NUCODEGEN_CLK_POWER_DOWN_ENABLE         (<!id:CLK_PowerDownEnableRadio;
+                                                    type:radio;
+                                                    label:Enable Clock Power Down;
+                                                    data:[1];
+                                                    default:[1];
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_POWER_DOWN_MODE           (<!id:CLK_PowerDownModeSelect;
+                                                    type:select;
+                                                    label:Select Power Down Mode;
+                                                    data:[CLK_PMUCTL_PDMSEL_DPD];
+                                                    default:[CLK_PMUCTL_PDMSEL_DPD];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_PMUCTL_PDMSEL_PD, CLK_PMUCTL_PDMSEL_FWPD, CLK_PMUCTL_PDMSEL_DPD];
+                                                    optionLabels:[Normal power down, Fast wake-up power down, Deep power down];
+                                                    dependencies:CLK_PowerDownEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_POWER_DOWN_IS_DPD         (<!id:CLK_PowerDownIsDPDHidden; 
+                                                    type:hidden; 
+                                                    data:[1];
+                                                    default:[1];
+                                                    observable:CLK_PowerDownModeSelect;
+                                                    listener:{"CLK_PMUCTL_PDMSEL_PD"  : "0", 
+                                                              "CLK_PMUCTL_PDMSEL_FWPD": "0",
+                                                              "CLK_PMUCTL_PDMSEL_DPD" : "1"};
+                                                    dependencies:CLK_PowerDownEnableRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_WKPINDB_ENABLE            (<!id:CLK_WKPINDebounceEnableRadio;
+                                                    type:radio;
+                                                    label:Enable DPD Wake-up Pin Debounce;
+                                                    data:[0];
+                                                    default:[0];
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:[CLK_PowerDownEnableRadio, CLK_PowerDownModeSelect];
+                                                    dependenciesOption:{"CLK_PowerDownEnableRadio":"1", "CLK_PowerDownModeSelect":"CLK_PMUCTL_PDMSEL_DPD"};
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+                                                    
+#define NUCODEGEN_CLK_DPDWKPIN0_CONFIG          (<!id:CLK_DPDWKPIN0Select;
+                                                    type:select;
+                                                    label:Configure DPD Wake-up Pin0;
+                                                    data:   [CLK_DPDWKPIN0_DISABLE];
+                                                    default:[CLK_DPDWKPIN0_DISABLE];
+                                                    helper:;
+                                                    enum:[CLK_DPDWKPIN0_DISABLE, CLK_DPDWKPIN0_RISING, CLK_DPDWKPIN0_FALLING, CLK_DPDWKPIN0_BOTHEDGE];
+                                                    optionLabels:[Disable, Rising Edge Trigger, Falling Edge Trigger, Both Edge Trigger];
+                                                    vertical:false;
+                                                    dependencies:[CLK_PowerDownEnableRadio, CLK_PowerDownModeSelect];
+                                                    dependenciesOption:{"CLK_PowerDownEnableRadio":"1", "CLK_PowerDownModeSelect":"CLK_PMUCTL_PDMSEL_DPD"};
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+                                                
+#define NUCODEGEN_CLK_DPDWKPIN1_CONFIG          (<!id:CLK_DPDWKPIN1Select;
+                                                    type:select;
+                                                    label:Configure DPD Wake-up Pin1;
+                                                    data:   [CLK_DPDWKPIN1_DISABLE];
+                                                    default:[CLK_DPDWKPIN1_DISABLE];
+                                                    helper:;
+                                                    enum:[CLK_DPDWKPIN1_DISABLE, CLK_DPDWKPIN1_RISING, CLK_DPDWKPIN1_FALLING, CLK_DPDWKPIN1_BOTHEDGE];
+                                                    optionLabels:[Disable, Rising Edge Trigger, Falling Edge Trigger, Both Edge Trigger] ;
+                                                    vertical:false;
+                                                    dependencies:[CLK_PowerDownEnableRadio, CLK_PowerDownModeSelect];
+                                                    dependenciesOption:{"CLK_PowerDownEnableRadio":"1", "CLK_PowerDownModeSelect":"CLK_PMUCTL_PDMSEL_DPD"};
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_DPDWKPIN2_CONFIG          (<!id:CLK_DPDWKPIN2Select;
+                                                    type:select;
+                                                    label:Configure DPD Wake-up Pin2;
+                                                    data:   [CLK_DPDWKPIN2_DISABLE];
+                                                    default:[CLK_DPDWKPIN2_DISABLE];
+                                                    helper:;
+                                                    enum:[CLK_DPDWKPIN2_DISABLE, CLK_DPDWKPIN2_RISING, CLK_DPDWKPIN2_FALLING, CLK_DPDWKPIN2_BOTHEDGE];
+                                                    optionLabels:[Disable, Rising Edge Trigger, Falling Edge Trigger, Both Edge Trigger] ;
+                                                    vertical:false;
+                                                    dependencies:[CLK_PowerDownEnableRadio, CLK_PowerDownModeSelect];
+                                                    dependenciesOption:{"CLK_PowerDownEnableRadio":"1", "CLK_PowerDownModeSelect":"CLK_PMUCTL_PDMSEL_DPD"};
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_DPDWKPIN3_CONFIG          (<!id:CLK_DPDWKPIN3Select;
+                                                    type:select;
+                                                    label:Configure DPD Wake-up Pin3;
+                                                    data:   [CLK_DPDWKPIN3_DISABLE];
+                                                    default:[CLK_DPDWKPIN3_DISABLE];
+                                                    helper:;
+                                                    enum:[CLK_DPDWKPIN3_DISABLE, CLK_DPDWKPIN3_RISING, CLK_DPDWKPIN3_FALLING, CLK_DPDWKPIN3_BOTHEDGE];
+                                                    optionLabels:[Disable, Rising Edge Trigger, Falling Edge Trigger, Both Edge Trigger] ;
+                                                    vertical:false;
+                                                    dependencies:[CLK_PowerDownEnableRadio, CLK_PowerDownModeSelect];
+                                                    dependenciesOption:{"CLK_PowerDownEnableRadio":"1", "CLK_PowerDownModeSelect":"CLK_PMUCTL_PDMSEL_DPD"};
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_DPDWKPIN4_CONFIG          (<!id:CLK_DPDWKPIN4Select;
+                                                    type:select;
+                                                    label:Configure DPD Wake-up Pin4;
+                                                    data:   [CLK_DPDWKPIN4_DISABLE];
+                                                    default:[CLK_DPDWKPIN4_DISABLE];
+                                                    helper:;
+                                                    enum:[CLK_DPDWKPIN4_DISABLE, CLK_DPDWKPIN4_RISING, CLK_DPDWKPIN4_FALLING, CLK_DPDWKPIN4_BOTHEDGE];
+                                                    optionLabels:[Disable, Rising Edge Trigger, Falling Edge Trigger, Both Edge Trigger] ;
+                                                    vertical:false;
+                                                    dependencies:[CLK_PowerDownEnableRadio, CLK_PowerDownModeSelect];
+                                                    dependenciesOption:{"CLK_PowerDownEnableRadio":"1", "CLK_PowerDownModeSelect":"CLK_PMUCTL_PDMSEL_DPD"};
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+                                                
+#define NUCODEGEN_CLK_DPDWKPIN0_ENABLE          (<!id:CLK_DPDWKPIN0EnableHidden; 
+                                                    type:hidden; 
+                                                    data:[0];
+                                                    default:[0];
+                                                    observable:CLK_DPDWKPIN0Select;
+                                                    listener:{"CLK_DPDWKPIN0_DISABLE" : "0", 
+                                                              "CLK_DPDWKPIN0_RISING"  : "1",
+                                                              "CLK_DPDWKPIN0_FALLING" : "1",
+                                                              "CLK_DPDWKPIN0_BOTHEDGE": "1"};
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    dependneciesDefault:true;
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+                                                
+#define NUCODEGEN_CLK_DPDWKPIN1_ENABLE          (<!id:CLK_DPDWKPIN1EnableHidden; 
+                                                    type:hidden; 
+                                                    data:[0];
+                                                    default:[0];
+                                                    observable:CLK_DPDWKPIN1Select;
+                                                    listener:{"CLK_DPDWKPIN1_DISABLE" : "0", 
+                                                              "CLK_DPDWKPIN1_RISING"  : "1",
+                                                              "CLK_DPDWKPIN1_FALLING" : "1",
+                                                              "CLK_DPDWKPIN1_BOTHEDGE": "1"};
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    dependneciesDefault:true;
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+                                                
+#define NUCODEGEN_CLK_DPDWKPIN2_ENABLE          (<!id:CLK_DPDWKPIN2EnableHidden; 
+                                                    type:hidden; 
+                                                    data:[0];
+                                                    default:[0];
+                                                    observable:CLK_DPDWKPIN2Select;
+                                                    listener:{"CLK_DPDWKPIN2_DISABLE" : "0", 
+                                                              "CLK_DPDWKPIN2_RISING"  : "1",
+                                                              "CLK_DPDWKPIN2_FALLING" : "1",
+                                                              "CLK_DPDWKPIN2_BOTHEDGE": "1"};
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    dependneciesDefault:true;
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+                                                
+#define NUCODEGEN_CLK_DPDWKPIN3_ENABLE          (<!id:CLK_DPDWKPIN3EnableHidden; 
+                                                    type:hidden; 
+                                                    data:[0];
+                                                    default:[0];
+                                                    observable:CLK_DPDWKPIN3Select;
+                                                    listener:{"CLK_DPDWKPIN3_DISABLE" : "0", 
+                                                              "CLK_DPDWKPIN3_RISING"  : "1",
+                                                              "CLK_DPDWKPIN3_FALLING" : "1",
+                                                              "CLK_DPDWKPIN3_BOTHEDGE": "1"};
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    dependneciesDefault:true;
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+                                                
+#define NUCODEGEN_CLK_DPDWKPIN4_ENABLE          (<!id:CLK_DPDWKPIN4EnableHidden; 
+                                                    type:hidden; 
+                                                    data:[0];
+                                                    default:[0];
+                                                    observable:CLK_DPDWKPIN4Select;
+                                                    listener:{"CLK_DPDWKPIN4_DISABLE" : "0", 
+                                                              "CLK_DPDWKPIN4_RISING"  : "1",
+                                                              "CLK_DPDWKPIN4_FALLING" : "1",
+                                                              "CLK_DPDWKPIN4_BOTHEDGE": "1"};
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    dependneciesDefault:true;
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_DPDRTCWK_ENABLE           (<!id:CLK_DPDRTCWKEnableRadio;
+                                                    type:radio;
+                                                    label:Enable DPD Wake-up by RTC;
+                                                    data:[0];
+                                                    default:[0];
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:[CLK_PowerDownEnableRadio, CLK_PowerDownModeSelect];
+                                                    dependenciesOption:{"CLK_PowerDownEnableRadio":"1", "CLK_PowerDownModeSelect":"CLK_PMUCTL_PDMSEL_DPD"};
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+                                                
+#define NUCODEGEN_CLK_DPDWKTMR_ENABLE           (<!id:CLK_DPDWKTMREnableRadio;
+                                                    type:radio;
+                                                    label:Enable DPD Wake-up Timer;
+                                                    data:[0];
+                                                    default:[0];
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable] ;
+                                                    vertical:false;
+                                                    dependencies:[CLK_PowerDownEnableRadio, CLK_PowerDownModeSelect];
+                                                    dependenciesOption:{"CLK_PowerDownEnableRadio":"1", "CLK_PowerDownModeSelect":"CLK_PMUCTL_PDMSEL_DPD"};
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_DPDWKTMR_CONFIG           (<!id:CLK_DPDWKTMRIntervalSelect;
+                                                    type:select;
+                                                    label:Select DPD Wake-up Timer Timeout Interval;
+                                                    data:   [CLK_PMUCTL_WKTMRIS_128];
+                                                    default:[CLK_PMUCTL_WKTMRIS_128];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_PMUCTL_WKTMRIS_128, CLK_PMUCTL_WKTMRIS_256, CLK_PMUCTL_WKTMRIS_512, CLK_PMUCTL_WKTMRIS_1024, CLK_PMUCTL_WKTMRIS_4096, CLK_PMUCTL_WKTMRIS_8192, CLK_PMUCTL_WKTMRIS_16384, CLK_PMUCTL_WKTMRIS_32768];
+                                                    optionLabels:[128 LIRC clocks (~3.368 ms), 256 LIRC clocks (~6.736 ms), 512 LIRC clocks (~13.47 ms), 1024 LIRC clocks (~26.95 ms), 4096 LIRC clocks (~107.79 ms), 8192 LIRC clocks (~215.58 ms), 16384 LIRC clocks (~431.16 ms), 32768 LIRC clocks (~862.32 ms)] ;
+                                                    dependencies:[CLK_PowerDownEnableRadio, CLK_PowerDownModeSelect, CLK_DPDWKTMREnableRadio];
+                                                    dependenciesOption:{"CLK_PowerDownEnableRadio":"1", "CLK_PowerDownModeSelect":"CLK_PMUCTL_PDMSEL_DPD", "CLK_DPDWKTMREnableRadio":"1"};
+                                                    groupId:Group_PowerDownConfig;
+                                                    groupName:Clock Power Down Configuration;
+                                                !>)
+
+
+
+
+
+
+

@@ -1,0 +1,162 @@
+/* --------------------------------------------------------------------
+ *  DAC0
+ * ---------------------------------------------------------------------*/
+
+#define NUCODEGEN_DAC0_UI                    0
+#if(NUCODEGEN_DAC0_UI)
+/* --------------------------------------------------------------------
+ * IP UI configuration
+ * ---------------------------------------------------------------------*/
+#endif /* NUCODEGEN_DAC0_UI */
+
+#define NUCODEGEN_DAC0_MODULE_SEL          DAC0
+#define NUCODEGEN_DAC_IRQ_MODULE_SEL       DAC_IRQn
+
+#define DAC_BIT_12                         0x0
+#define DAC_BIT_8                          0x1
+#define DAC0_WIDTH(Width)                  (DAC0->CTL = (DAC0->CTL & ~DAC_CTL_BWSEL_Msk) | (Width << DAC_CTL_BWSEL_Pos))
+#define DAC0_MODULE_0                      0x0
+
+
+#if (NUCODEGEN_DAC0_UI)
+/* --------------------------------------------------------------------
+ * DAC0 configuration
+ * ---------------------------------------------------------------------*/
+
+#endif /* NUCODEGEN_DAC0_UI */
+
+<!clock: {"ALL" : "DAC" }; !>
+<!pin:   {"UseDAC0TriggerSelect" : {"DAC_LOW_LEVEL_TRIGGER"    : "DAC0_ST" ,
+                                    "DAC_HIGH_LEVEL_TRIGGER"   : "DAC0_ST" ,
+                                    "DAC_FALLING_EDGE_TRIGGER" : "DAC0_ST" ,
+                                    "DAC_RISING_EDGE_TRIGGER"  : "DAC0_ST" },
+         "UseDAC0EnRadio" :{ '1' : "DAC0_OUT"}
+                                    }; !>
+
+#define NUCODEGEN_DAC0_ENABLE              <!id:UseDAC0EnRadio;
+                                            type:radio;
+                                            label:This DAC0;
+                                            data:0;
+                                            default:0;
+                                            sort:false;
+                                            enum:[1,0];
+                                            optionLabels:[Enable, Disable];
+                                            dependencies:none;
+                                            dependenciesOption:1;
+                                            dependenciesDefault:true;
+                                            groupId:DAC0Config;
+                                            groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC0_TRIGGER_SEL         <!id:UseDAC0TriggerSelect;
+                                           type:select;
+                                           label:DAC0 trigger source;
+                                           data:DAC_WRITE_DAT_TRIGGER;
+                                           default:DAC_WRITE_DAT_TRIGGER;
+                                           helper:;
+                                           sort:false;
+                                           enum:[DAC_WRITE_DAT_TRIGGER, DAC_SOFTWARE_TRIGGER, DAC_LOW_LEVEL_TRIGGER, DAC_HIGH_LEVEL_TRIGGER, DAC_FALLING_EDGE_TRIGGER, DAC_RISING_EDGE_TRIGGER, DAC_TIMER0_TRIGGER, DAC_TIMER1_TRIGGER, DAC_TIMER2_TRIGGER, DAC_TIMER3_TRIGGER];   
+                                           optionLabels:[Write DAC data trigger, Software trigger, External pin - DAC_ST low level trigger, External pin - DAC_ST high level trigger, External pin - DAC_ST falling edge trigger,  External pin - DAC_ST rising edge trigger, Timer0 trigger, Timer1 trigger, Timer2 trigger, Timer3 trigger];
+                                           dependencies:UseDAC0EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC0Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC0_DAT_WIDTH           <!id:UseDAC0DataWidthSelect;
+                                           type:select;
+                                           label:DAC0 data width;
+                                           data:0;
+                                           default:0;
+                                           helper:;
+                                           sort:false;
+                                           enum:[0,1];
+                                           optionLabels:[12 Bits, 8 Bits];
+                                           dependencies:UseDAC0EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC0Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC0_DAT_ALIGN           <!id:UseDAC0DatAlignRadio;
+                                           type:radio;
+                                           label:DAC0 data left alignment;
+                                           data:0;
+                                           default:0;
+                                           helper:(Only support 12 bits data width.);
+                                           enum:[0,1];
+                                           optionLabels:[Right alignment,Left alignment];
+                                           dependencies:UseDAC0DataWidthSelect;
+                                           dependenciesOption:0;
+                                           groupId:DAC0Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEDEF_DAC0_DLY_TIME            <!id:UseDAC0DlyTimeInteger;
+                                           type:integer;
+                                           label:Delay time for DAC to become stable;
+                                           data:1;
+                                           default:1;
+                                           helper:(1~(1023/PCLK1*1000000))micro seconds;
+                                           minimum:1;  
+                                           maximum:1023;
+                                           dependencies:UseDAC0EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC0Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC0_INT_EN              <!id:UseDAC0INTEnRadio;
+                                           type:radio;
+                                           label:DAC0 Interrupt function;
+                                           data:0;
+                                           default:0;
+                                           helper:Vector:DAC_IRQHandler;
+                                           enum:[1,0];
+                                           optionLabels:[Enable,Disable];
+                                           dependencies:UseDAC0EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC0Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC0_DMA_EN              <!id:UseDAC0DMAEnRadio;
+                                           type:radio;
+                                           label:DAC0 DMA function;
+                                           data:0;
+                                           default:0;
+                                           enum:[1,0];
+                                           optionLabels:[Enable,Disable];
+                                           dependencies:UseDAC0EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC0Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC0_INT_DMA_UNDERRUN_EN <!id:UseDAC0INTDMAURRadio;
+                                           type:radio;
+                                           label:DAC0 DMA under-run interrupt;
+                                           data:0;
+                                           default:0;
+                                           helper:Vector:DAC_IRQHandler;
+                                           enum:[1,0];
+                                           optionLabels:[Enable,Disable];
+                                           dependencies:[UseDAC0INTEnRadio,UseDAC0DMAEnRadio];
+                                           dependenciesOption:{"UseDAC0INTEnRadio" : "1",
+                                                               "UseDAC0DMAEnRadio" : "1" };
+                                           groupId:DAC0Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC0_VOLT_BUF_EN         <!id:UseDAC0VTGBUFEnRadio;
+                                           type:radio;
+                                           label:DAC0 voltage buffer function;
+                                           data:0;
+                                           default:0;
+                                           enum:[1,0];
+                                           optionLabels:[Enable,Disable];
+                                           dependencies:UseDAC0EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC0Config;
+                                           groupName:DAC Configuration;!>
+
+                                          <!id:UseDACMsgTextOnly;
+                                          type:textonly;
+                                          label:Chip Reference Voltage Setting Source Tip :;
+                                          data:In SYS function,dafault reference voltage is external, when internal reference voltage enable, support several steps internal voltage.;
+                                          default:In SYS function,dafault reference voltage is external, when internal reference voltage enable, support several steps internal voltage.;
+                                          dependencies:none;     dependenciesOption:1;      groupId:none;    groupName:;  filterExp:;!>
+
+

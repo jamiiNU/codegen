@@ -1,0 +1,23 @@
+<!
+	clock:{"ALL": ["HDIV"]};
+!>
+#define NUCODEGEN_HDIV_DIVIDEND				(<!id:HDIVDividend;
+										type:hextext;
+										label:Set dividend;
+										data:0;
+										default:0;
+										minimum:0;
+										maximum:0xFFFFFFFF;
+										dependencies:none;
+										dependenciesOption:none;
+									!>)		
+#define NUCODEGEN_HDIV_DIVISOR				(<!id:HDIVDivisor;
+										type:hextext;
+										label:Set divisor;
+										data:1;
+										default:0xFFFF;
+										minimum:1;
+										maximum:0xFFFF;
+										dependencies:none;
+										dependenciesOption:none;
+									!>)

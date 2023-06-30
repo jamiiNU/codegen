@@ -1,0 +1,82 @@
+//////////TwoToOne//////////
+<!id:UseADCCMP0Boolean;
+type:checkbox;
+label:Use ADC Comparator 0;
+data:0;enum:[1];
+optionLabels:[Use ADC Comparator 0];
+dependencies:none;!>
+
+<!id:ADCOperationModeSelect;
+type:select;
+label:ADC Operation Mode;
+data:ADC_OPERATION_MODE_SINGLE;
+helper:Select your ADC operation mode;
+enum:[ADC_OPERATION_MODE_SINGLE, ADC_OPERATION_MODE_SINGLE_CYCLE, ADC_OPERATION_MODE_CONTINUOUS];
+optionLabels:[Single, Single-Cycle, Continuous];
+dependencies:none;!>
+
+<!id:BPWM0SSRCRadio;
+type:radio;
+label:Select BPWM0 Synchronous start source;
+data:BPWM_SSCTL_SSRC_PWM0;
+default:0;
+helper:;
+sort:false;
+enum:[BPWM_SSCTL_SSRC_PWM0, BPWM_SSCTL_SSRC_PWM1, BPWM_SSCTL_SSRC_BPWM0, BPWM_SSCTL_SSRC_BPWM1];
+optionLabels:[PWM0, PWM1, BPWM0, BPWM1];
+dependencies:none;
+dependenciesOption:none;!>
+
+<!id:ADCCmp0ChannelSelect;
+type:select;
+label:ADC Comparator 0 Channel Select;data:0;
+helper:Select your ADC Comparator 0 channel;
+enum:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+optionLabels:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12(band-gap), 13(temperature sensor)];
+dependencies:[UseADCCMP0Boolean, ADCOperationModeSelect];
+dependenciesOption:{"UseADCCMP0Boolean": "1", "ADCOperationModeSelect": "ADC_OPERATION_MODE_SINGLE"};!>
+
+<!id:BPWM0CLKSRCSelect;
+type:select;
+label:Select BPWM0 clock source;
+data:BPWM_CLKSRC_BPWM_CLK;
+default:BPWM_CLKSRC_BPWM_CLK;
+helper:;
+sort:false;
+enum:[BPWM_CLKSRC_BPWM_CLK, BPWM_CLKSRC_TIMER0, BPWM_CLKSRC_TIMER1, BPWM_CLKSRC_TIMER2, BPWM_CLKSRC_TIMER3];
+optionLabels:[BPWM0 CLK, TIMER0, TIMER1, TIMER2, TIMER3];
+dependencies:UseADCCMP0Boolean|ADCOperationModeSelect;
+dependenciesOption:{"UseADCCMP0Boolean": "1", "ADCOperationModeSelect": "ADC_OPERATION_MODE_SINGLE"};!>
+
+<!id:BPWM0CH0UNITTIMEInteger;
+type:integer;
+label:The BPWM0 CH0 unit time of counter(nano sec);
+data:80;
+default:80;
+helper:Enter unit time of counter(MAX is).;
+sort:false;
+minimum:0;
+maximum:20000;
+dependencies:(UseADCCMP0Boolean|ADCOperationModeSelect)&BPWM0SSRCRadio;
+dependenciesOption:{
+	"UseADCCMP0Boolean": "1",
+	"ADCOperationModeSelect": "ADC_OPERATION_MODE_SINGLE",
+	"BPWM0SSRCRadio": "BPWM_SSCTL_SSRC_PWM0"};
+!>
+
+<!id:BPWM0CH1UNITTIMEInteger;
+type:integer;
+label:The BPWM0 CH1 unit time of counter(nano sec);
+data:80;
+default:10000;
+helper:Enter unit time of counter(MAX is).;
+sort:false;
+minimum:0;
+maximum:20000;
+dependencies:(UseADCCMP0Boolean|!ADCOperationModeSelect)&BPWM0SSRCRadio;
+dependenciesOption:{
+	"UseADCCMP0Boolean": "1",
+	"ADCOperationModeSelect": "ADC_OPERATION_MODE_SINGLE",
+	"BPWM0SSRCRadio": "BPWM_SSCTL_SSRC_PWM0"};
+dependenciesDefault:true;
+!>

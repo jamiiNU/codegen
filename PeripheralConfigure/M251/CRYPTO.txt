@@ -1,0 +1,214 @@
+
+<!clock: {"ALL" : "CRPT" }; !>
+
+#if (NUCODEGEN_CRYPTO==1)
+#define NUCODEGEN_CRYPTO_AES				<!id:CRYPTOAesCheckbox;
+											type:checkbox;
+											label:Enable AES;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:none;
+											dependenciesOption:none;
+											groupId:Group_AES;
+											groupName:AES configuration;!>
+#define NUCODEGEN_AES_CRYPT					<!id:AESEncryptionRadio;
+											type:radio;
+											label:Select AES encryption/decryption;
+											data:1;
+											default:1;
+											enum:[0, 1];
+											optionLabels:[AES decryption, AES encryption];
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+
+#define NUCODEGEN_AES_KEYSIZE				<!id:AESKeySizeRadio;
+											type:radio;
+											label:Select AES key size;
+											data:AES_KEY_SIZE_128;
+											default:AES_KEY_SIZE_128;
+											enum:[AES_KEY_SIZE_128, AES_KEY_SIZE_192, AES_KEY_SIZE_256];
+											optionLabels:[128-bit, 192-bit, 256-bit];
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+
+#define NUCODEGEN_AES_OP_MODE				<!id:AESOperationModeSelect;
+											type:select;
+											label:Select AES operation mode;
+											data:AES_MODE_ECB;
+											default:AES_MODE_ECB;
+											enum:[AES_MODE_ECB, AES_MODE_CBC, AES_MODE_CFB, AES_MODE_OFB, AES_MODE_CTR, AES_MODE_CBC_CS1, AES_MODE_CBC_CS2, AES_MODE_CBC_CS3];
+											optionLabels:[ECB(electronic codebook), CBC(cipher block chaining), CFB(cipher feedback), OFB(output feedback), CTR(counter), CBC-CS1(ciphertext-stealing 1), CBC-CS2(ciphertext-stealing 2), CBC-CS3(ciphertext-stealing 3)];
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+
+#define NUCODEGEN_AES_SWAP_TYPE				<!id:AESSwapTypeRadio;
+											type:radio;
+											label:Select AES swap type;
+											data:AES_NO_SWAP;
+											default:AES_NO_SWAP;
+											enum:[AES_NO_SWAP, AES_OUT_SWAP, AES_IN_SWAP, AES_IN_OUT_SWAP];
+											optionLabels:[No swap, Output swap, Input swap, Input and output swap];
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+
+#define AES_KEY0				    		<!id:AESKEY0HexText;
+											type:hextext;
+											label:AES key word 0 value;
+											data:0x00010203;
+											default:0x00010203;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+#define AES_KEY1				   		 	<!id:AESKEY1HexText;
+											type:hextext;
+											label:AES key word 1 value;
+											data:0x04050607;
+											default:0x04050607;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+#define AES_KEY2				    		<!id:AESKEY2HexText;
+											type:hextext;
+											label:AES key word 2 value;
+											data:0x08090a0b;
+											default:0x08090a0b;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+#define AES_KEY3				    		<!id:AESKEY3HexText;
+											type:hextext;
+											label:AES key word 3 value;
+											data:0x0c0d0e0f;
+											default:0x0c0d0e0f;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+#define AES_KEY4				    		<!id:AESKEY4HexText;
+											type:hextext;
+											label:AES key word 4 value;
+											data:0x00010203;
+											default:0x00010203;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:AESKeySizeRadio;
+											dependenciesOption:AES_KEY_SIZE_192|AES_KEY_SIZE_256;
+											groupId:Group_AES;!>
+#define AES_KEY5				    		<!id:AESKEY5HexText;
+											type:hextext;
+											label:AES key word 5 value;
+											data:0x04050607;
+											default:0x04050607;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:AESKeySizeRadio;
+											dependenciesOption:AES_KEY_SIZE_192|AES_KEY_SIZE_256;
+											groupId:Group_AES;!>
+#define AES_KEY6				    		<!id:AESKEY6HexText;
+											type:hextext;
+											label:AES key word 6 value;
+											data:0x08090a0b;
+											default:0x08090a0b;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:AESKeySizeRadio;
+											dependenciesOption:AES_KEY_SIZE_256;
+											groupId:Group_AES;!>
+#define AES_KEY7				    		<!id:AESKEY7HexText;
+											type:hextext;
+											label:AES key word 7 value;
+											data:0x0c0d0e0f;
+											default:0x0c0d0e0f;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:AESKeySizeRadio;
+											dependenciesOption:AES_KEY_SIZE_256;
+											groupId:Group_AES;!>
+#define AES_IV0				    			<!id:AESIV0HexText;
+											type:hextext;
+											label:AES initial vector word 0 value;
+											data:0x0;
+											default:0x0;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+#define AES_IV1								<!id:AESIV1HexText;
+											type:hextext;
+											label:AES initial vector word 1 value;
+											data:0x0;
+											default:0x0;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+#define AES_IV2				    			<!id:AESIV2HexText;
+											type:hextext;
+											label:AES initial vector word 2 value;
+											data:0x0;
+											default:0x0;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+#define AES_IV3				    			<!id:AESIV3HexText;
+											type:hextext;
+											label:AES initial vector word 3 value;
+											data:0x0;
+											default:0x0;
+											helper:Input text in the hexadecimal format;
+											minimum:0x0;
+											maximum:0xFFFFFFFF;
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+
+#define NUCODEGEN_AES_KEY_PROT				<!id:AESKeyProtCheckbox;
+											type:checkbox;
+											label:Enable AES key protect;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+
+#define NUCODEGEN_AES_INT					<!id:AESIntCheckbox;
+											type:checkbox;
+											label:Enable AES interrupt;
+											data:0;
+											default:0;
+											enum:[1];
+											optionLabels:[<br>];
+											dependencies:CRYPTOAesCheckbox;
+											dependenciesOption:1;
+											groupId:Group_AES;!>
+#endif

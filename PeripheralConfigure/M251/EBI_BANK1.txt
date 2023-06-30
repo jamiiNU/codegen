@@ -1,0 +1,120 @@
+<!
+	pin:{"ALL": ["EBI_AD0", "EBI_AD1", "EBI_AD2", "EBI_AD3", "EBI_AD4", "EBI_AD5", "EBI_AD6", "EBI_AD7", "EBI_AD8",  
+					"EBI_AD9", "EBI_AD10", "EBI_AD11", "EBI_AD12", "EBI_AD13", "EBI_AD14", "EBI_AD15", 
+					"EBI_ADR0", "EBI_ADR1", "EBI_ADR2", "EBI_ADR3", "EBI_ADR4", "EBI_ADR5", "EBI_ADR6", "EBI_ADR7", "EBI_ADR7", "EBI_ADR8", "EBI_ADR9", 
+					"EBI_ADR10", "EBI_ADR11", "EBI_ADR12", "EBI_ADR13", "EBI_ADR14", "EBI_ADR15", "EBI_ADR16", "EBI_ADR17", "EBI_ADR18", "EBI_ADR19", 
+					"EBI_ALE", "EBI_MCLK", "EBI_nCS1", "EBI_nRW", "EBI_nWR", "EBI_nWRH", "EBI_nWRH"]};
+	clock:{"ALL": ["EBI"]};
+!>
+
+#define NUCODEGEN_EBI_BANK1_DATAWIDTH				(<!id:EBIDataWidth;
+										type:select;
+										label:Select data width;
+										data:EBI_BUSWIDTH_8BIT;
+										default:EBI_BUSWIDTH_8BIT;
+										enum:[	EBI_BUSWIDTH_8BIT, 
+												EBI_BUSWIDTH_16BIT];
+										optionLabels:[	BUS WIDTH = 8 BIT, 
+														BUS WIDTH = 16 BIT];
+										dependencies:none;
+										dependenciesOption:none;
+									!>)		
+#define NUCODEGEN_EBI_BANK1_TIMING					(<!id:EBITimingClass;
+										type:select;
+										label:Select timing class;
+										data:EBI_TIMING_NORMAL;
+										default:EBI_TIMING_NORMAL;
+										enum:[	EBI_TIMING_FASTEST, 
+												EBI_TIMING_VERYFAST, 
+												EBI_TIMING_FAST, 
+												EBI_TIMING_NORMAL, 
+												EBI_TIMING_SLOW, 
+												EBI_TIMING_VERYSLOW, 
+												EBI_TIMING_SLOWEST];
+										optionLabels:[	Fastest, 
+														Very Fast, 
+														Fast, 
+														Normal, 
+														Slow, 
+														Very Slow, 
+														Slowest];
+										dependencies:none;
+										dependenciesOption:none;
+									!>)
+#define NUCODEGEN_EBI_BANK1_ADVANCE		<!id:EBITimingAdvanceSetting;
+                                        type:checkbox;
+                                        label:Bus timing advance setting;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[<br>];
+                                        dependencies:none;
+                                        dependenciesOption:none;
+										helper:Enable this setting will affect the Timing Class;
+									!>
+#define NUCODEGEN_EBI_BANK1_TACC			(<!id:EBIDataAccessTime;
+											type:integer;
+											label:Set data access time(ACC);
+											data:0;
+											default:0;
+											helper:tACC = (ACC+1)*EBI_MCLK, ACC: 0 ~ 31;
+											minimum:0;
+											maximum:31;
+											dependencies:EBITimingAdvanceSetting;
+											dependenciesOption:1;
+									!>)										
+#define NUCODEGEN_EBI_BANK1_WAHD_EN		(<!id:EBIWAHDEn;
+										type:select;
+										label:Enable access hold time when write;
+										data:0;
+										default:0;
+										enum:[	1, 0];
+										optionLabels:[	Disable, Enable];
+										dependencies:EBITimingAdvanceSetting;
+										dependenciesOption:1;
+									!>) 
+#define NUCODEGEN_EBI_BANK1_RAHD_EN		(<!id:EBIRAHDEn;
+										type:select;
+										label:Enable access hold time when read;
+										data:0;
+										default:0;
+										enum:[	1, 0];
+										optionLabels:[	Disable, Enable];
+										dependencies:EBITimingAdvanceSetting;
+										dependenciesOption:1;
+									!>) 	
+#define NUCODEGEN_EBI_BANK1_TAHD			(<!id:EBIDataAccessHoldTime;
+											type:integer;
+											label:Set data access hold time(AHD);
+											data:0;
+											default:0;
+											helper:tAHD = (AHD+1)*EBI_MCLK, AHD: 0 ~ 7;
+											minimum:0;
+											maximum:7;
+											dependencies:[EBITimingAdvanceSetting, EBIWAHDEn];
+											dependenciesOption:{"EBITimingAdvanceSetting":"1", "EBIWAHDEn":"0"};
+									!>)										
+#define NUCODEGEN_EBI_BANK1_BUS_MODE		(<!id:EBIBusMode;
+										type:select;
+										label:Select bus mode;
+										data:EBI_OPMODE_NORMAL;
+										default:EBI_OPMODE_NORMAL;
+										enum:[	EBI_OPMODE_NORMAL, 
+												EBI_OPMODE_CACCESS];
+										optionLabels:[	Normal, 
+														Caccess];
+										dependencies:none;
+										dependenciesOption:none;
+									!>)			
+#define NUCODEGEN_EBI_BANK1_CS_ACTIVE_LEVEL			(<!id:EBICSActiveLevel;
+										type:select;
+										label:Select CS active level;
+										data:EBI_CS_ACTIVE_HIGH;
+										default:EBI_CS_ACTIVE_HIGH;
+										enum:[	EBI_CS_ACTIVE_HIGH, 
+												EBI_CS_ACTIVE_LOW];
+										optionLabels:[	Active High, 
+														Active Low];
+										dependencies:none;
+										dependenciesOption:none;
+									!>)

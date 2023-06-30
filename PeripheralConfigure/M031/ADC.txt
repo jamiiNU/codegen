@@ -1,0 +1,620 @@
+
+
+<! clock:   { "ALL" : "ADC" }; !>
+
+<! pin:     {"ADCTriggerSrc":{ "NUCODEGEN_ADC_TRIGGER_SRC_STADC_LOW_LEVEL":     ["ADC0_ST"],
+                               "NUCODEGEN_ADC_TRIGGER_SRC_STADC_HIGH_LEVEL":    ["ADC0_ST"],
+                               "NUCODEGEN_ADC_TRIGGER_SRC_STADC_FALLING_EDGE":  ["ADC0_ST"],
+                               "NUCODEGEN_ADC_TRIGGER_SRC_STADC_RISING_EDGE":   ["ADC0_ST"]
+                             },
+             "ADCChannel": { "BIT0":  ["ADC0_CH0"],
+                             "BIT1":  ["ADC0_CH1"],
+                             "BIT2":  ["ADC0_CH2"],
+                             "BIT3":  ["ADC0_CH3"],
+                             "BIT4":  ["ADC0_CH4"],
+                             "BIT5":  ["ADC0_CH5"],
+                             "BIT6":  ["ADC0_CH6"],
+                             "BIT7":  ["ADC0_CH7"],
+                             "BIT8":  ["ADC0_CH8"],
+                             "BIT9":  ["ADC0_CH9"],
+                             "BIT10": ["ADC0_CH10"],
+                             "BIT11": ["ADC0_CH11"],
+                             "BIT12": ["ADC0_CH12"],
+                             "BIT13": ["ADC0_CH13"],
+                             "BIT14": ["ADC0_CH14"],
+                             "BIT15": ["ADC0_CH15"]
+                           }
+            }; !>
+
+
+#define NUCODEGEN_ADC_OP_MODE   (<!id:ADCOpMode;
+                                type:select;
+                                label:"A/D converter operation mode.";
+                                data:ADC_ADCR_ADMD_SINGLE;
+                                default:ADC_ADCR_ADMD_SINGLE;
+                                helper:;
+                                sort:false;
+                                enum:  [    ADC_ADCR_ADMD_SINGLE,
+                                            ADC_ADCR_ADMD_BURST,
+                                            ADC_ADCR_ADMD_SINGLE_CYCLE,
+                                            ADC_ADCR_ADMD_CONTINUOUS];
+                                optionLabels:[
+                                            "Single",
+                                            "Burst",
+                                            "Single-cycle scan",
+                                            "Continuous scan"];
+                                dependencies:none;
+                                dependenciesOption:none;
+                                dependenciesDefault:none;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Configuration;
+                                groupName:"ADC - A/D converter configuration";
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_TRIGGER_SRC_SOFTWARE              (0)
+#define NUCODEGEN_ADC_TRIGGER_SRC_STADC_LOW_LEVEL       (1)
+#define NUCODEGEN_ADC_TRIGGER_SRC_STADC_HIGH_LEVEL      (2)
+#define NUCODEGEN_ADC_TRIGGER_SRC_STADC_FALLING_EDGE    (3)
+#define NUCODEGEN_ADC_TRIGGER_SRC_STADC_RISING_EDGE     (4)
+#define NUCODEGEN_ADC_TRIGGER_SRC_TIMER                 (5)
+#define NUCODEGEN_ADC_TRIGGER_SRC_BPWM                  (6)
+#define NUCODEGEN_ADC_TRIGGER_SRC_PWM                   (7)
+#define NUCODEGEN_ADC_TRIGGER_SRC   (<!id:ADCTriggerSrc;
+                                type:select;
+                                label:"A/D converter tirgger source.";
+                                data:NUCODEGEN_ADC_TRIGGER_SRC_SOFTWARE;
+                                default:NUCODEGEN_ADC_TRIGGER_SRC_SOFTWARE;
+                                helper:;
+                                sort:false;
+                                enum:[  NUCODEGEN_ADC_TRIGGER_SRC_SOFTWARE,
+                                        NUCODEGEN_ADC_TRIGGER_SRC_STADC_LOW_LEVEL,
+                                        NUCODEGEN_ADC_TRIGGER_SRC_STADC_HIGH_LEVEL,
+                                        NUCODEGEN_ADC_TRIGGER_SRC_STADC_FALLING_EDGE,
+                                        NUCODEGEN_ADC_TRIGGER_SRC_STADC_RISING_EDGE,
+                                        NUCODEGEN_ADC_TRIGGER_SRC_TIMER,
+                                        NUCODEGEN_ADC_TRIGGER_SRC_BPWM,
+                                        NUCODEGEN_ADC_TRIGGER_SRC_PWM];
+                                optionLabels:[
+                                        "Software trigger",
+                                        "External STADC pin low Level trigger",
+                                        "External STADC pin high Level trigger",
+                                        "External STADC pin falling edge trigger",
+                                        "External STADC pin rising edge trigger",
+                                        "TIMER overflow pulse trigger",
+                                        "BPWM trigger",
+                                        "PWM trigger"];
+                                dependencies:none;
+                                dependenciesOption:none;
+                                dependenciesDefault:none;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_INPUT_MODE_SINGLE_END                 (0)
+#define NUCODEGEN_ADC_INPUT_MODE_DIFFERENTIAL               (1)
+#define NUCODEGEN_ADC_INPUT_MODE_DIFFERENTIAL_2_COMPLEMENT  (2)
+#define NUCODEGEN_ADC_INPUT_MODE    (<!id:ADCInputMode;
+                                type:select;
+                                label:"A/D converter analog input mode.";
+                                data:NUCODEGEN_ADC_INPUT_MODE_SINGLE_END;
+                                default:NUCODEGEN_ADC_INPUT_MODE_SINGLE_END;
+                                helper:"For differential mode, the relation between Vplus and Vminus is Vplus + Vminus = Vref";
+                                sort:false;
+                                enum:[  NUCODEGEN_ADC_INPUT_MODE_SINGLE_END,
+                                        NUCODEGEN_ADC_INPUT_MODE_DIFFERENTIAL,
+                                        NUCODEGEN_ADC_INPUT_MODE_DIFFERENTIAL_2_COMPLEMENT];
+                                optionLabels:[
+                                        "Single-end mode",
+                                        "Differential mode with unsigned format",
+                                        "Differential mode with 2's complement format"];
+                                dependencies:none;
+                                dependenciesOption:none;
+                                dependenciesDefault:none;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_EXTEND_SAMPLE_TIME   (<!id:ADCExtendSampleTime;
+                                type:integer;
+                                label:"A/D converter extend sample time.";
+                                data:0;
+                                default:0;
+                                helper:"The range of extend sample time is from 0 ~ 255 ADC clock.";
+                                minimum:0;
+                                maximum:255;
+                                validate:true;
+                                sort:false;
+                                enum:none;
+                                optionLabels:none;
+                                dependencies:none;
+                                dependenciesOption:none;
+                                dependenciesDefault:none;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_INTERRUPT (<!id:ADCInterrupt;
+                                type:radio;
+                                label:"A/D converter interrupt.";
+                                data:0;
+                                default:0;
+                                helper:;
+                                sort:false;
+                                enum:        [ 0,        1];
+                                optionLabels:["Disable", "Enable"];
+                                vertical:false;
+                                dependencies:none;
+                                dependenciesOption:none;
+                                dependenciesDefault:none;
+                                observable:ADCPdma;
+                                listener:{ "1": "0" };
+                                groupId:Group_ADC_Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_PDMA      (<!id:ADCPdma;
+                                type:radio;
+                                label:"Support PDMA.";
+                                data:0;
+                                default:0;
+                                helper:"'A/D converter interrupt' and 'PDMA' cannot be enabled at the same time.";
+                                sort:false;
+                                enum:        [ 0,        1];
+                                optionLabels:["Disable", "Enable"];
+                                vertical:false;
+                                dependencies:none;
+                                dependenciesOption:none;
+                                dependenciesDefault:none;
+                                observable:ADCInterrupt;
+                                listener:{ "1": "0" };;
+                                groupId:Group_ADC_Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_CHANNEL   (<!id:ADCChannel;
+                                type:multipleselect;
+                                label:"Select A/D converter channel";
+                                data:0;
+                                default:[];
+                                helper:"The following A/D converter channels can be multi-selected.";
+                                sort:none;
+                                enum:{  "NUC_OR":
+                                        {
+                                            "PB_dot0==1": "BIT0",
+                                            "PB_dot1==1": "BIT1",
+                                            "PB_dot2==1": "BIT2",
+                                            "PB_dot3==1": "BIT3",
+                                            "PB_dot4==1": "BIT4",
+                                            "PB_dot5==1": "BIT5",
+                                            "PB_dot6==1": "BIT6",
+                                            "PB_dot7==1": "BIT7",
+                                            "PB_dot8==1": "BIT8",
+                                            "PB_dot9==1": "BIT9",
+                                            "PB_dot10==1": "BIT10",
+                                            "PB_dot11==1": "BIT11",
+                                            "PB_dot12==1": "BIT12",
+                                            "PB_dot13==1": "BIT13",
+                                            "PB_dot14==1": "BIT14",
+                                            "PB_dot15==1": "BIT15",
+                                            "1==1":        "BIT29"
+                                        },
+                                        "NUC_ANY": []
+                                     };
+                                optionLabels:{
+                                        "NUC_OR":
+                                        {
+                                            "PB_dot0==1": "Channel 0",
+                                            "PB_dot1==1": "Channel 1",
+                                            "PB_dot2==1": "Channel 2",
+                                            "PB_dot3==1": "Channel 3",
+                                            "PB_dot4==1": "Channel 4",
+                                            "PB_dot5==1": "Channel 5",
+                                            "PB_dot6==1": "Channel 6",
+                                            "PB_dot7==1": "Channel 7",
+                                            "PB_dot8==1": "Channel 8",
+                                            "PB_dot9==1": "Channel 9",
+                                            "PB_dot10==1": "Channel 10",
+                                            "PB_dot11==1": "Channel 11",
+                                            "PB_dot12==1": "Channel 12",
+                                            "PB_dot13==1": "Channel 13",
+                                            "PB_dot14==1": "Channel 14",
+                                            "PB_dot15==1": "Channel 15",
+                                            "1==1":        "Channel Band-gap voltage"
+                                        },
+                                        "NUC_ANY": []};
+                                dependencies:none;
+                                dependenciesOption:none;
+                                dependenciesDefault:none;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+#define NUCODEGEN_ADC_COMPAER0_ENABLE   (<!id:ADCCompare0Enable;
+                                type:radio;
+                                label:"Compare 0 feature.";
+                                data:0;
+                                default:0;
+                                helper:;
+                                sort:false;
+                                enum:        [ 0,        1];
+                                optionLabels:["Disable", "Enable"];
+                                vertical:false;
+                                dependencies:none;
+                                dependenciesOption:none;
+                                dependenciesDefault:none;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare0Configuration;
+                                groupName:"ADC - Compare 0 configuration";
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER0_CHANNEL  (<!id:ADCCompare0Channel;
+                                type:select;
+                                label:"Compare 0 channel.";
+                                data:0;
+                                default:0;
+                                helper:"Select a channel from A/D converter channels";
+                                sort:false;
+                                enum:{  "NUC_OR":
+                                        {
+                                            "PB_dot0==1": 0,
+                                            "PB_dot1==1": 1,
+                                            "PB_dot2==1": 2,
+                                            "PB_dot3==1": 3,
+                                            "PB_dot4==1": 4,
+                                            "PB_dot5==1": 5,
+                                            "PB_dot6==1": 6,
+                                            "PB_dot7==1": 7,
+                                            "PB_dot8==1": 8,
+                                            "PB_dot9==1": 9,
+                                            "PB_dot10==1": 10,
+                                            "PB_dot11==1": 11,
+                                            "PB_dot12==1": 12,
+                                            "PB_dot13==1": 13,
+                                            "PB_dot14==1": 14,
+                                            "PB_dot15==1": 15,
+                                            "1==1":        29
+                                        },
+                                        "NUC_ANY": []
+                                     };
+                                optionLabels:{
+                                        "NUC_OR":
+                                        {
+                                            "PB_dot0==1": "Channel 0",
+                                            "PB_dot1==1": "Channel 1",
+                                            "PB_dot2==1": "Channel 2",
+                                            "PB_dot3==1": "Channel 3",
+                                            "PB_dot4==1": "Channel 4",
+                                            "PB_dot5==1": "Channel 5",
+                                            "PB_dot6==1": "Channel 6",
+                                            "PB_dot7==1": "Channel 7",
+                                            "PB_dot8==1": "Channel 8",
+                                            "PB_dot9==1": "Channel 9",
+                                            "PB_dot10==1": "Channel 10",
+                                            "PB_dot11==1": "Channel 11",
+                                            "PB_dot12==1": "Channel 12",
+                                            "PB_dot13==1": "Channel 13",
+                                            "PB_dot14==1": "Channel 14",
+                                            "PB_dot15==1": "Channel 15",
+                                            "1==1":        "Channel Band-gap voltage"
+                                        },
+                                        "NUC_ANY": []};                                
+                                dependencies:ADCCompare0Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare0Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER0_DATA   (<!id:ADCCompare0Data;
+                                type:integer;
+                                label:"Compare 0 data.";
+                                data:2048;
+                                default:2048;
+                                helper:"The range of compare data is from 0 ~ 4095.";
+                                minimum:0;
+                                maximum:4095;
+                                validate:true;
+                                sort:false;
+                                enum:none;
+                                optionLabels:none;
+                                dependencies:ADCCompare0Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare0Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER0_CONDITION   (<!id:ADCCompare0Condition;
+                                type:radio;
+                                label:"Compare 0 condition.";
+                                data:ADC_ADCMPR_CMPCOND_LESS_THAN;
+                                default:ADC_ADCMPR_CMPCOND_LESS_THAN;
+                                helper:;
+                                sort:false;
+                                enum:         [ ADC_ADCMPR_CMPCOND_LESS_THAN,
+                                                ADC_ADCMPR_CMPCOND_GREATER_OR_EQUAL ];
+                                optionLabels: [ "< Compare data",
+                                                ">= Compare data"];
+                                vertical:true;
+                                dependencies:ADCCompare0Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare0Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER0_MATCH_COUNT  (<!id:ADCCompare0MatchCount;
+                                type:integer;
+                                label:"Compare 0 match count.";
+                                data:1;
+                                default:1;
+                                helper:"The range of compare match count is from 1 ~ 16.";
+                                minimum:1;
+                                maximum:16;
+                                validate:true;
+                                sort:false;
+                                enum:none;
+                                optionLabels:none;
+                                dependencies:ADCCompare0Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare0Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER0_INTERRUPT   (<!id:ADCCompare0Interrupt;
+                                type:radio;
+                                label:"Compare 0 interrupt.";
+                                data:0;
+                                default:0;
+                                helper:;
+                                sort:false;
+                                enum:        [ 0,        1];
+                                optionLabels:["Disable", "Enable"];
+                                vertical:false;
+                                dependencies:ADCCompare0Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare0Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER0_WINDOW   (<!id:ADCCompare0Window;
+                                type:radio;
+                                label:"Support compare window mode with compare 1.";
+                                data:0;
+                                default:0;
+                                helper:"Please enable and setting compare 1 for compare window mode.";
+                                sort:false;
+                                enum:        [ 0,        1];
+                                optionLabels:["Disable", "Enable"];
+                                vertical:false;
+                                dependencies:ADCCompare0Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare0Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER1_ENABLE   (<!id:ADCCompare1Enable;
+                                type:radio;
+                                label:"Compare 1 feature.";
+                                data:0;
+                                default:0;
+                                helper:;
+                                sort:false;
+                                enum:        [ 0,        1];
+                                optionLabels:["Disable", "Enable"];
+                                vertical:false;
+                                dependencies:none;
+                                dependenciesOption:none;
+                                dependenciesDefault:none;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare1Configuration;
+                                groupName:"ADC - Compare 1 configuration";
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER1_CHANNEL  (<!id:ADCCompare1Channel;
+                                type:select;
+                                label:"Compare 1 channel.";
+                                data:0;
+                                default:0;
+                                helper:"Select a channel from A/D converter channels";
+                                sort:false;
+                                enum:{  "NUC_OR":
+                                        {
+                                            "PB_dot0==1": 0,
+                                            "PB_dot1==1": 1,
+                                            "PB_dot2==1": 2,
+                                            "PB_dot3==1": 3,
+                                            "PB_dot4==1": 4,
+                                            "PB_dot5==1": 5,
+                                            "PB_dot6==1": 6,
+                                            "PB_dot7==1": 7,
+                                            "PB_dot8==1": 8,
+                                            "PB_dot9==1": 9,
+                                            "PB_dot10==1": 10,
+                                            "PB_dot11==1": 11,
+                                            "PB_dot12==1": 12,
+                                            "PB_dot13==1": 13,
+                                            "PB_dot14==1": 14,
+                                            "PB_dot15==1": 15,
+                                            "1==1":        29
+                                        },
+                                        "NUC_ANY": []
+                                     };
+                                optionLabels:{
+                                        "NUC_OR":
+                                        {
+                                            "PB_dot0==1": "Channel 0",
+                                            "PB_dot1==1": "Channel 1",
+                                            "PB_dot2==1": "Channel 2",
+                                            "PB_dot3==1": "Channel 3",
+                                            "PB_dot4==1": "Channel 4",
+                                            "PB_dot5==1": "Channel 5",
+                                            "PB_dot6==1": "Channel 6",
+                                            "PB_dot7==1": "Channel 7",
+                                            "PB_dot8==1": "Channel 8",
+                                            "PB_dot9==1": "Channel 9",
+                                            "PB_dot10==1": "Channel 10",
+                                            "PB_dot11==1": "Channel 11",
+                                            "PB_dot12==1": "Channel 12",
+                                            "PB_dot13==1": "Channel 13",
+                                            "PB_dot14==1": "Channel 14",
+                                            "PB_dot15==1": "Channel 15",
+                                            "1==1":        "Channel Band-gap voltage"
+                                        },
+                                        "NUC_ANY": []};                                               dependencies:ADCCompare1Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare1Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER1_DATA   (<!id:ADCCompare1Data;
+                                type:integer;
+                                label:"Compare 1 data.";
+                                data:2048;
+                                default:2048;
+                                helper:"The range of compare data is from 0 ~ 4095.";
+                                minimum:0;
+                                maximum:4095;
+                                validate:true;
+                                sort:false;
+                                enum:none;
+                                optionLabels:none;
+                                dependencies:ADCCompare1Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare1Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER1_CONDITION   (<!id:ADCCompare1Condition;
+                                type:radio;
+                                label:"Compare 1 condition.";
+                                data:ADC_ADCMPR_CMPCOND_LESS_THAN;
+                                default:ADC_ADCMPR_CMPCOND_LESS_THAN;
+                                helper:;
+                                sort:false;
+                                enum:         [ ADC_ADCMPR_CMPCOND_LESS_THAN,
+                                                ADC_ADCMPR_CMPCOND_GREATER_OR_EQUAL ];
+                                optionLabels: [ "< Compare data",
+                                                ">= Compare data"];
+                                vertical:true;
+                                dependencies:ADCCompare1Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare1Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER1_MATCH_COUNT  (<!id:ADCCompare1MatchCount;
+                                type:integer;
+                                label:"Compare 1 match count.";
+                                data:1;
+                                default:1;
+                                helper:"The range of compare match count is from 1 ~ 16.";
+                                minimum:1;
+                                maximum:16;
+                                validate:true;
+                                sort:false;
+                                enum:none;
+                                optionLabels:none;
+                                dependencies:ADCCompare1Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare1Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)
+
+
+#define NUCODEGEN_ADC_COMPAER1_INTERRUPT   (<!id:ADCCompare1Interrupt;
+                                type:radio;
+                                label:"Compare 1 interrupt.";
+                                data:0;
+                                default:0;
+                                helper:;
+                                sort:false;
+                                enum:        [ 0,        1];
+                                optionLabels:["Disable", "Enable"];
+                                vertical:false;
+                                dependencies:ADCCompare1Enable;
+                                dependenciesOption:[1];
+                                dependenciesDefault:false;
+                                observable:none;
+                                listener:none;
+                                groupId:Group_ADC_Compare1Configuration;
+                                filterExp:none;
+                                filterDefault:true;
+                                !>)

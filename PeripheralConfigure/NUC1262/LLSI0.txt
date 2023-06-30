@@ -1,0 +1,165 @@
+/* --------------------------------------------------------------------
+ *  LLSI0
+ * ---------------------------------------------------------------------*/
+<!clock: {"ALL" : "LLSI0" };
+  pin:   {"ALL:["LLSI0_OUT"]"}
+!>
+#define NUCODEGEN_LLSI0_LLSI_MODE		(<!id:LLSI0LLSIMode;
+                                           type:radio;
+                                           label:Select LLSI mode;
+                                           data:LLSI_MODE_SW;
+                                           default:LLSI_MODE_SW;
+                                           enum:[LLSI_MODE_SW, LLSI_MODE_PDMA];
+                                           optionLabels:[Software, PDMA];
+                                           vertical:false;
+                                           sort:false;
+                                           dependencies:none;
+                                           dependenciesOption:none;
+                                        !>)
+
+#define NUCODEGEN_LLSI0_OUTPUT_FORMAT		(<!id:LLSI0OutputFormat;
+                                               type:radio;
+                                               label:Select output format;
+                                               data:LLSI_FORMAT_GRB;
+                                               default:LLSI_FORMAT_GRB;
+                                               enum:[LLSI_FORMAT_RGB, LLSI_FORMAT_GRB];
+                                               optionLabels:[RGB, GRB];
+                                               vertical:false;
+                                               sort:false;
+                                               dependencies:none;
+                                               dependenciesOption:none;
+                                            !>)
+
+#define NUCODEGEN_LLSI0_BUSCLOCK		(<!id:LLSI0BusClock;
+                                           type:integer;
+                                           label:Set bus clock;
+                                           data:48000000;
+                                           default:48000000;
+                                           helper:Enter bus clock 2,000,000~48,000,000 Hz;
+                                           minimum:1;
+                                           maximum:48000000;
+                                           dependencies:none;
+                                           dependenciesOption:none;
+                                        !>)
+
+#define NUCODEGEN_LLSI0_TRANSFER_TIME		(<!id:LLSI0TransferTime;
+                                               type:integer;
+                                               label:Set data transfer time (ns);
+                                               data:1250;
+                                               default:1250;
+                                               minimum:20;
+                                               maximum:5312;
+                                               dependencies:none;
+                                               dependenciesOption:none;
+                                            !>)
+
+#define NUCODEGEN_LLSI0_T0H_TIME		(<!id:LLSI0T0HTime;
+                                           type:integer;
+                                           label:Set T0H data time (ns);
+                                           data:400;
+                                           default:400;
+                                           minimum:20;
+                                           maximum:5312;
+                                           dependencies:none;
+                                           dependenciesOption:none;
+                                        !>)
+
+#define NUCODEGEN_LLSI0_T1H_TIME		(<!id:LLSI0T1HTime;
+                                           type:integer;
+                                           label:Set T1H data time (ns);
+                                           data:850;
+                                           default:850;
+                                           minimum:20;
+                                           maximum:5312;
+                                           dependencies:none;
+                                           dependenciesOption:none;
+                                        !>)
+
+#define NUCODEGEN_LLSI0_RESET_TIME		(<!id:LLSI0ResetTime;
+                                           type:integer;
+                                           label:Set reset command time (ns);
+                                           data:50000;
+                                           default:50000;
+                                           minimum:20;
+                                           maximum:1365312;
+                                           dependencies:none;
+                                           dependenciesOption:none;
+                                        !>)
+
+#define NUCODEGEN_LLSI0_PIXEL_COUNT		(<!id:LLSI0PixelCount;
+                                           type:integer;
+                                           label:Set pixel count;
+                                           data:6;
+                                           default:6;
+                                           helper:It decides a frame size;
+                                           minimum:1;
+                                           maximum:300;
+                                           dependencies:none;
+                                           dependenciesOption:none;
+                                        !>)
+
+#define NUCODEGEN_LLSI0_IDLE_OUTPUT_STATE	(<!id:LLSI0IdleOutputState;
+                                               type:radio;
+                                               label:Select idle output state;
+                                               data:LLSI_IDLE_LOW;
+                                               default:LLSI_IDLE_LOW;
+                                               enum:[LLSI_IDLE_LOW, LLSI_IDLE_HIGH];
+                                               optionLabels:[Low, High];
+                                               vertical:false;
+                                               sort:false;
+                                               dependencies:none;
+                                               dependenciesOption:none;
+                                            !>)
+
+#define NUCODEGEN_LLSI0_TX_THRESHOLD		(<!id:LLSI0TxThreshold;
+                                               type:select;
+                                               label:Select tx threshold;
+                                               data:0;
+                                               default:0;
+                                               enum:[0, 1, 2, 3];
+                                               optionLabels:[0, 1, 2, 3];
+                                               vertical:false;
+                                               sort:false;
+                                               dependencies:LLSI0LLSIMode;
+                                               dependenciesOption:LLSI_MODE_SW;
+                                            !>)
+
+#define NUCODEGEN_LLSI0_INT_EN			(<!id:LLSI0INTEn;
+                                           type:radio;
+                                           label:Enable interrupt function;
+                                           data:1;
+                                           default:1;
+                                           enum:[0, 1];
+                                           optionLabels:[Disable, Enable];
+                                           vertical:false;
+                                           sort:false;
+                                           dependencies:none;
+                                           dependenciesOption:none;
+                                        !>)
+
+#define NUCODEGEN_LLSI0_INT_SEL			(<!id:LLSI0INTSel;
+                                           type:multipleselect;
+                                           label:Select interrupts;
+                                           size:11;
+                                           data:0;
+                                           default:0;
+                                           sort:false;
+                                           enum:[LLSI_UNDFL_INT_MASK, LLSI_FEND_INT_MASK, LLSI_RST_INT_MASK, LLSI_EMP_INT_MASK, LLSI_FUL_INT_MASK, LLSI_TXTH_INT_MASK];
+                                           optionLabels:[LLSI_UNDFL_INT, LLSI_FEND_INT, LLSI_RST_INT, LLSI_EMP_INT, LLSI_FUL_INT, LLSI_TXTH_INT];
+                                           dependencies:LLSI0INTEn;
+                                           dependenciesOption:1;
+                                        !>)
+
+#define NUCODEGEN_LLSI0_RESET_COMMAND_EN	(<!id:LLSI0ResetCommandEn;
+                                               type:radio;
+                                               label:Enable reset command function;
+                                               data:1;
+                                               default:1;
+                                               enum:[0, 1];
+                                               optionLabels:[Disable, Enable];
+                                               vertical:false;
+                                               sort:false;
+                                               dependencies:none;
+                                               dependenciesOption:none;
+                                            !>)
+

@@ -1,0 +1,388 @@
+/*--------------------------------------------------------------------------*/
+/* USCI2_UART Configuration                                                 */
+/*--------------------------------------------------------------------------*/
+
+<! clock: {"ALL" : "USCI2" }; !>
+<! pin:   {"UUART2_UARTPinConfigHidden": {"NUCODEGEN_UUART2_PIN_RX_TX"         : ["USCI2_DAT0", "USCI2_DAT1"],
+                                           "NUCODEGEN_UUART2_PIN_RX_TX_CTS_RTS" : ["USCI2_DAT0", "USCI2_DAT1", "USCI2_CTL0", "USCI2_CTL1"]},
+           "UUART2_RS485PinConfigHidden":{"NUCODEGEN_UUART2_PIN_RX_TX_RTS"    : ["USCI2_DAT0", "USCI2_DAT1", "USCI2_CTL1"]},
+           "ALL":[""]};
+!>
+
+#define NUCODEGEN_UUART2_FUNC_UART              (0UL)
+#define NUCODEGEN_UUART2_FUNC_RS485             (1UL)
+
+#define NUCODEGEN_UUART2_PIN_RX_TX                     (0UL)
+#define NUCODEGEN_UUART2_PIN_RX_TX_RTS                 (1UL)
+#define NUCODEGEN_UUART2_PIN_RX_TX_CTS_RTS             (2UL)
+
+#define NUCODEGEN_UUART2_PIN_CONFIG               (<!id:UUART2_UARTPinConfigHidden; 
+                                                    type:hidden;
+                                                    data:NUCODEGEN_UUART2_PIN_RX_TX;
+                                                    default:NUCODEGEN_UUART2_PIN_RX_TX; 
+                                                    observable:UUART2_UARTFlowControlSelect;
+                                                    listener:{"0"  : "NUCODEGEN_UUART2_PIN_RX_TX",
+                                                              "1"  : "NUCODEGEN_UUART2_PIN_RX_TX_CTS_RTS"};
+                                                    dependencies:UUART2_FunctionSelect;
+                                                    dependenciesOption:NUCODEGEN_UUART2_FUNC_UART;
+                                                    dependenciesDefault:false;
+                                                !><!id:UUART2_RS485PinConfigHidden; 
+                                                    type:hidden;
+                                                    data:;
+                                                    default:; 
+                                                    observable:UUART2_FunctionSelect;
+                                                    listener:{"NUCODEGEN_UUART2_FUNC_RS485"  : "NUCODEGEN_UUART2_PIN_RX_TX_RTS"};
+                                                    dependencies:[UUART2_FunctionSelect];
+                                                    dependenciesOption:{"UUART2_FunctionSelect":"NUCODEGEN_UUART2_FUNC_RS485"};
+                                                    dependenciesDefault:false;
+                                                    !>)
+
+#define NUCODEGEN_UUART2_FUNC_SEL               (<!id:UUART2_FunctionSelect;
+                                                    type:select; 
+                                                    label:Select Function;
+                                                    data:NUCODEGEN_UUART2_FUNC_UART;
+                                                    default:NUCODEGEN_UUART2_FUNC_UART;
+                                                    helper:;
+                                                    sort:false; 
+                                                    enum:[NUCODEGEN_UUART2_FUNC_UART, NUCODEGEN_UUART2_FUNC_RS485];
+                                                    optionLabels:[UART Function, RS485 Function];
+                                                    vertical:true; 
+                                                    dependencies:none; 
+                                                    dependenciesOption:none;
+                                                    groupId:Group_BasicConfig;
+                                                    groupName:Basic Configuration;
+                                                    !>)
+                                                    
+#define UUART2_BAUDRATE                         (<!id:UUART2_BaudrateIntegar;
+                                                    type:integer;
+                                                    label:Configure Initial Baud Rate (2400 bps ~ 1000000 bps);
+                                                    data:115200;
+                                                    default:115200;
+                                                    helper:The unit of the input number is Bit Per Second (bps);
+                                                    minimum:2400;
+                                                    maximum:1000000;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_BasicConfig;
+                                                    groupName:Basic Configuration;
+                                                    !>)
+                                                    
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#define NUCODEGEN_UUART2_ABR_ENABLE             (<!id:UUART2_UARTAutoBaudrateSelect;
+                                                    type:select;
+                                                    label:Auto-Baud Rate Configuration;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:;
+                                                    enum:[0, 1];
+                                                    optionLabels:[Disable Auto Baud Rate, Enable Auto Baud Rate];
+                                                    vertical:true;
+                                                    dependencies:UUART2_FunctionSelect; 
+                                                    dependenciesOption:NUCODEGEN_UUART2_FUNC_UART;
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_AdvancedConfig;
+                                                    groupName:Advanced Configuration;
+                                                !>)
+#endif
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_RS485)
+#define NUCODEGEN_UUART2_ABR_ENABLE             (0)
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#if (NUCODEGEN_UUART2_ABR_ENABLE)
+#define UUART2_ABR_BRGEN_DSCNT                  (<!id:UUART2_AutoBaudrateDSCNTSelect; 
+                                                    type:select;
+                                                    label:Select Data Sample Time and Clock Divider;
+                                                    data:5;
+                                                    default:5; 
+                                                    helper:["Suggest value is 5. <br>This value will be set to BRGEN_DSCNT and BRGEN_CLKDIV bit field, and will affect the maximum and minimum baud rate detection boundary. <br> The baud rate generation formula is : <br>UART bit rate is equal to f_ref_clk * 1/(BRGEN_CLKDIV+1) * 1/(BRGEN_PDSCNT+1) * 1/(BRGEN_DSCNT+1)<br>Note that BRGEN_PDSCNT is set to 0 at firmware level."];
+                                                    enum:[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+                                                    optionLabels:["5 PCLK cycles", "6 PCLK cycles", "7 PCLK cycles", "8 PCLK cycles", "9 PCLK cycles", "10 PCLK cycles", "11 PCLK cycles", "12 PCLK cycles", "13 PCLK cycles", "14 PCLK cycles", "15 PCLK cycles"];
+                                                    dependencies:UUART2_UARTAutoBaudrateSelect;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_AdvancedConfig;
+                                                    groupName:Advanced Configuration;
+                                                !>)
+#endif
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#if (NUCODEGEN_UUART2_ABR_ENABLE)
+#define UUART2_ABR_BRGEN_CLKDIV                 (<!id:UUART2_AutoBaudrateCLKDIVHidden; 
+                                                    type:hidden;
+                                                    data:5;
+                                                    default:5; 
+                                                    observable:UUART2_AutoBaudrateDSCNTSelect;
+                                                    listener:{"5"  : "5",
+                                                              "6"  : "6",
+                                                              "7"  : "7",
+                                                              "8"  : "8",
+                                                              "9"  : "9",
+                                                              "10" : "10",
+                                                              "11" : "11",
+                                                              "12" : "12",
+                                                              "13" : "13",
+                                                              "14" : "14",
+                                                              "15" : "15"};
+                                                    dependencies:UUART2_UARTAutoBaudrateSelect;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_AdvancedConfig;
+                                                    groupName:Advanced Configuration;
+                                                !>)
+#endif
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#define NUCODEGEN_UUART2_FLOW_CTRL_ENABLE       (<!id:UUART2_UARTFlowControlSelect;
+                                                    type:select;
+                                                    label:Select Flow Control;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[0, 1];
+                                                    optionLabels:[Disable Flow Control, Enable Flow Control];
+                                                    dependencies:UUART2_FunctionSelect; 
+                                                    dependenciesOption:NUCODEGEN_UUART2_FUNC_UART;
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_AdvancedConfig;
+                                                    groupName:Advanced Configuration;
+                                                    filterExp:type == "M252_G" or type == "M252_E" or type == "M252_D";
+                                                !>)
+#endif
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_RS485)
+#define NUCODEGEN_UUART2_FLOW_CTRL_ENABLE       (0)
+#endif
+                                                    
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#define NUCODEGEN_UUART2_WORD_LEN               (<!id:UUART2_UARTWordLengthSelect;
+                                                    type:select;
+                                                    label:Select Data Word Length;
+                                                    data:UUART_WORD_LEN_8;
+                                                    default:UUART_WORD_LEN_8;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[UUART_WORD_LEN_6, UUART_WORD_LEN_7, UUART_WORD_LEN_8];
+                                                    optionLabels:[6 bits, 7 bits, 8 bits];
+                                                    dependencies:UUART2_FunctionSelect;
+                                                    dependenciesOption:NUCODEGEN_UUART2_FUNC_UART;
+                                                    groupId:Group_AdvancedConfig;
+                                                    groupName:Advanced Configuration;
+                                                    !>)
+#endif
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_RS485)
+#define NUCODEGEN_UUART2_WORD_LEN               (UUART_WORD_LEN_9)
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#define NUCODEGEN_UUART2_PARITY_BIT             (<!id:UUART2_UARTParityBitSelect;
+                                                    type:select;
+                                                    label:Select Data Parity Bit;
+                                                    data:UUART_PARITY_NONE;
+                                                    default:UUART_PARITY_NONE;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[UUART_PARITY_NONE, UUART_PARITY_ODD, UUART_PARITY_EVEN];
+                                                    optionLabels:[No Parity Bit, Odd Parity, Even Parity];
+                                                    dependencies:UUART2_FunctionSelect;
+                                                    dependenciesOption:NUCODEGEN_UUART2_FUNC_UART;
+                                                    groupId:Group_AdvancedConfig;
+                                                    groupName:Advanced Configuration;
+                                                    !>)
+#endif
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_RS485)
+#define NUCODEGEN_UUART2_PARITY_BIT             (UUART_PARITY_NONE)
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#define NUCODEGEN_UUART2_STOP_BIT               (<!id:UUART2_UARTStopBitSelect;
+                                                    type:select;
+                                                    label:Select Stop Bits;
+                                                    data:UUART_STOP_BIT_1;
+                                                    default:UUART_STOP_BIT_1;
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[UUART_STOP_BIT_1, UUART_STOP_BIT_2];
+                                                    optionLabels:[1 Stop Bit, 2 Stop Bit];
+                                                    dependencies:UUART2_FunctionSelect;
+                                                    dependenciesOption:NUCODEGEN_UUART2_FUNC_UART;
+                                                    groupId:Group_AdvancedConfig;
+                                                    groupName:Advanced Configuration;
+                                                    !>)
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_RS485)
+#define NUCODEGEN_UUART2_STOP_BIT               (UUART_STOP_BIT_1)
+#endif
+
+#define NUCODEGEN_UUART2_INT_ENABLE             (<!id:UUART2_IntEnableCheckbox;
+                                                    type:checkbox;
+                                                    label:Enable USCI2_UART Interrupt;
+                                                    data:1;
+                                                    default:1;
+                                                    enum:[1];
+                                                    optionLabels:[Enable Interrupt];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    !>)
+                                                    
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#if (NUCODEGEN_UUART2_ABR_ENABLE == 1)
+#define UUART2_INT_CONFIG                       (<!id:UUART2_UARTIntControlCheckBox;
+                                                    type:multipleselect;
+                                                    label:Select Interrupts;
+                                                    size:;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:Vector:USCI2_IRQHandler;
+                                                    enum:[ UUART_ABR_INT_MASK, UUART_RLS_INT_MASK,  UUART_BUF_RXOV_INT_MASK, UUART_TXST_INT_MASK, UUART_TXEND_INT_MASK, UUART_RXST_INT_MASK, UUART_RXEND_INT_MASK];
+                                                    optionLabels:[Auto Baud Rate, Receive Line Status (Break | Frame Error | Parity Error), Receive Buffer Overrun,  Transmit Start, Transmit End, Receive Start, Receive End];
+                                                    dependencies:[UUART2_IntEnableCheckbox, UUART2_FunctionSelect, UUART2_UARTAutoBaudrateSelect];
+                                                    dependenciesOption:{"UUART2_IntEnableCheckbox":1, "UUART2_FunctionSelect":"NUCODEGEN_UUART2_FUNC_UART", "UUART2_UARTAutoBaudrateSelect":1};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    !>)
+#endif
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#if (NUCODEGEN_UUART2_ABR_ENABLE == 0)
+#define UUART2_INT_CONFIG                       (<!id:UUART2_UARTIntControl2CheckBox;
+                                                    type:multipleselect;
+                                                    label:Select Interrupts;
+                                                    size:;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:Vector:USCI2_IRQHandler;
+                                                    enum:[ UUART_RLS_INT_MASK,  UUART_BUF_RXOV_INT_MASK, UUART_TXST_INT_MASK, UUART_TXEND_INT_MASK, UUART_RXST_INT_MASK, UUART_RXEND_INT_MASK];
+                                                    optionLabels:[Receive Line Status (Break | Frame Error | Parity Error),  Receive Buffer Overrun,  Transmit Start,Transmit End,Receive Start,Receive End];
+                                                    dependencies:[UUART2_IntEnableCheckbox, UUART2_FunctionSelect, UUART2_UARTAutoBaudrateSelect];
+                                                    dependenciesOption:{"UUART2_IntEnableCheckbox":1, "UUART2_FunctionSelect":"NUCODEGEN_UUART2_FUNC_UART", "UUART2_UARTAutoBaudrateSelect":0};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    !>)
+#endif
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_RS485)
+#define UUART2_INT_CONFIG                       (<!id:UUART2_RS485IntControlCheckBox;
+                                                    type:multipleselect;
+                                                    label:Select Interrupts;
+                                                    size:;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:Vector:USCI2_IRQHandler;
+                                                    enum:[ UUART_RLS_INT_MASK, UUART_BUF_RXOV_INT_MASK, UUART_TXST_INT_MASK, UUART_TXEND_INT_MASK, UUART_RXST_INT_MASK, UUART_RXEND_INT_MASK];
+                                                    optionLabels:[Receive Line Status (Break | Frame Error | Parity Error), Receive Buffer Overrun,  Transmit Start, Transmit End, Receive Start, Receive End];
+                                                    dependencies:[UUART2_IntEnableCheckbox, UUART2_FunctionSelect];
+                                                    dependenciesOption:{"UUART2_IntEnableCheckbox":1, "UUART2_FunctionSelect":"NUCODEGEN_UUART2_FUNC_RS485"};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    !>)
+#endif
+                                                    
+#define NUCODEGEN_UUART2_WKEN_ENABLE            (<!id:UUART2_WakeupEnableCheckbox;
+                                                    type:checkbox;
+                                                    label:Enable Wakeup Function;
+                                                    data:1;
+                                                    default:1;
+                                                    sort:false;
+                                                    enum:[1];
+                                                    optionLabels:[Enable USCI2_UART wakeup];
+                                                    dependencies:[UUART2_IntEnableCheckbox];
+                                                    dependenciesOption:{"UUART2_IntEnableCheckbox":1};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    !>)
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#if (NUCODEGEN_UUART2_FLOW_CTRL_ENABLE == 1)
+#define NUCODEGEN_UUART2_WAKEUP_CONFIG          (<!id:UUART2_UARTWakeupSourceCheckbox;
+                                                    type:multipleselect;
+                                                    label:Select Wakeup Functions;
+                                                    data:0;
+                                                    default:0;
+                                                    sort:false;
+                                                    enum:[UUART_PROTCTL_DATWKEN_Msk, UUART_PROTCTL_CTSWKEN_Msk];
+                                                    optionLabels:[Data Wakeup, nCTS wakeup];
+                                                    dependencies:[UUART2_WakeupEnableCheckbox, UUART2_FunctionSelect, UUART2_UARTFlowControlSelect];
+                                                    dependenciesOption:{"UUART2_WakeupEnableCheckbox" : 1, "UUART2_FunctionSelect":"NUCODEGEN_UUART2_FUNC_UART", "UUART2_UARTFlowControlSelect":1};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    !>)
+#endif
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_UART)
+#if (NUCODEGEN_UUART2_FLOW_CTRL_ENABLE == 0)
+#define NUCODEGEN_UUART2_WAKEUP_CONFIG          (<!id:UUART2_UARTWakeupSource2Checkbox;
+                                                    type:multipleselect;
+                                                    label:Select Wakeup Functions;
+                                                    data:0;
+                                                    default:0;
+                                                    sort:false;
+                                                    enum:[UUART_PROTCTL_DATWKEN_Msk];
+                                                    optionLabels:[Data Wakeup];
+                                                    dependencies:[UUART2_WakeupEnableCheckbox, UUART2_FunctionSelect, UUART2_UARTFlowControlSelect];
+                                                    dependenciesOption:{"UUART2_WakeupEnableCheckbox" : 1, "UUART2_FunctionSelect":"NUCODEGEN_UUART2_FUNC_UART", "UUART2_UARTFlowControlSelect":0};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    !>)
+#endif
+#endif
+
+#if (NUCODEGEN_UUART2_FUNC_SEL == NUCODEGEN_UUART2_FUNC_RS485)
+#define NUCODEGEN_UUART2_WAKEUP_CONFIG          (<!id:UUART2_RS485WakeupSourceCheckbox;
+                                                    type:multipleselect;
+                                                    label:Select Wakeup Functions;
+                                                    data:[UUART_PROTCTL_DATWKEN_Msk];
+                                                    default:[UUART_PROTCTL_DATWKEN_Msk];
+                                                    sort:false;
+                                                    enum:[UUART_PROTCTL_DATWKEN_Msk];
+                                                    optionLabels:[Data Wakeup];
+                                                    dependencies:[UUART2_WakeupEnableCheckbox, UUART2_FunctionSelect];
+                                                    dependenciesOption:{ "UUART2_WakeupEnableCheckbox" : 1, "UUART2_FunctionSelect":"NUCODEGEN_UUART2_FUNC_RS485"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                    !>)
+#endif
+
+#define NUCODEGEN_UUART2_PDMA_ENABLE            (<!id:UUART2_PDMAEnableCheckbox;
+                                                    type:checkbox;
+                                                    label:Configure PDMA Function;
+                                                    data:0;
+                                                    default:0;
+                                                    sort:false;
+                                                    enum:[1];
+                                                    optionLabels:[Enable USCI2_UART PDMA];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_PDMAConfig;
+                                                    groupName:PDMA Configuration;
+                                                    !>)
+#if (NUCODEGEN_UUART2_PDMA_ENABLE == 1)
+#define NUCODEGEN_UUART2_PDMA_CONFIG            (<!id:UUART2_PDMAConfigSelect;
+                                                    type:select;
+                                                    label:Select PDMA Operation;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:This setting only enables the USCI_UART to support the PDMA function. It is still necessary to set the required functions for the PDMA.;
+                                                    sort:false;
+                                                    enum:[UUART_PDMACTL_PDMAEN_Msk | UUART_PDMACTL_RXPDMAEN_Msk, 
+                                                          UUART_PDMACTL_PDMAEN_Msk | UUART_PDMACTL_TXPDMAEN_Msk, 
+                                                          UUART_PDMACTL_PDMAEN_Msk | UUART_PDMACTL_RXPDMAEN_Msk | UUART_PDMACTL_TXPDMAEN_Msk];
+                                                    optionLabels:[Receive PDMA Only, Transmit PDMA Only, Receive PDMA + Transmit PDMA];
+                                                    dependencies:[UUART2_PDMAEnableCheckbox];
+                                                    dependenciesOption:{"UUART2_PDMAEnableCheckbox":1};
+                                                    groupId:Group_PDMAConfig;
+                                                    groupName:PDMA Configuration;
+                                                    !>)
+#else
+#define NUCODEGEN_UUART2_PDMA_CONFIG            (NULL)
+#endif

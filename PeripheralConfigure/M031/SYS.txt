@@ -1,0 +1,236 @@
+
+
+
+#define NUCODEGEN_SYS_LVREN_CONFIG              (<!id:SYS_LVRENRadio;
+                                                    type:radio;
+                                                    label:Enable LVR;
+                                                    data:1;
+                                                    default:1;
+                                                    enum:[1,0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_LVRConfig;
+                                                    groupName:Low-Voltage Detector (LVR) Configuration;
+                                                !>)
+#define NUCODEGEN_SYS_LVRVL_CONFIG              (<!id:SYS_LVRVLSelect;
+                                                    type:radio;
+                                                    label:Select LVR Voltage;
+                                                    data:1;
+                                                    default:1;
+                                                    enum:[ 0, 1 ];
+                                                    optionLabels:["1.6 V", "1.7 V"];
+                                                    dependencies:SYS_LVRENRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_LVRConfig;
+                                                !>)
+#define NUCODEGEN_SYS_LVRDG_CONFIG              (<!id:SYS_LVRDGSelect;
+                                                    type:select;
+                                                    label:Select LVR De-glitch Time;
+                                                    data:SYS_BODCTL_LVRDGSEL_0HCLK;
+                                                    default:SYS_BODCTL_LVRDGSEL_0HCLK;
+                                                    enum:[  SYS_BODCTL_LVRDGSEL_0HCLK,   SYS_BODCTL_LVRDGSEL_64HCLK,   SYS_BODCTL_LVRDGSEL_128HCLK,  SYS_BODCTL_LVRDGSEL_256HCLK,
+                                                            SYS_BODCTL_LVRDGSEL_512HCLK, SYS_BODCTL_LVRDGSEL_1024HCLK, SYS_BODCTL_LVRDGSEL_2048HCLK, SYS_BODCTL_LVRDGSEL_4096HCLK];
+                                                    optionLabels:["Without de-glitch function",  "64 system clock (HCLK)",  "128 system clock (HCLK)",  "256 system clock (HCLK)",
+                                                                  "512 system clock (HCLK)",   "1024 system clock (HCLK)", "2048 system clock (HCLK)", "4096 system clock (HCLK)"];
+                                                    dependencies:SYS_LVRENRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_LVRConfig;
+                                                !>)
+
+#define NUCODEGEN_SYS_BODEN_CONFIG              (<!id:SYS_BODENRadio;
+                                                    type:radio;
+                                                    label:Enable BOD;
+                                                    data:1;
+                                                    default:1;
+                                                    enum:[1,0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_BODConfig;
+                                                    groupName:Brown-Out Detector (BOD) Configuration;
+                                                !>)
+#define NUCODEGEN_SYS_BODVL_CONFIG              (<!id:SYS_BODVLSelect;
+                                                    type:radio;
+                                                    label:Select BOD Voltage;
+                                                    data:SYS_BODCTL_BODVL_2_5V;
+                                                    default:SYS_BODCTL_BODVL_2_5V;
+                                                    enum:[  SYS_BODCTL_BODVL_2_0V, SYS_BODCTL_BODVL_2_5V];
+                                                    optionLabels:[2.0 V, 2.5 V];
+                                                    dependencies:SYS_BODENRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_BODConfig;
+                                                !>)
+#define NUCODEGEN_SYS_BODDG_CONFIG              (<!id:SYS_BODDGSelect;
+                                                    type:select;
+                                                    label:Select BOD De-glitch Time;
+                                                    data:SYS_BODCTL_BODDGSEL_256HCLK;
+                                                    default:SYS_BODCTL_BODDGSEL_256HCLK;
+                                                    enum:[  SYS_BODCTL_BODDGSEL_0HCLK,   SYS_BODCTL_BODDGSEL_64HCLK,   SYS_BODCTL_BODDGSEL_128HCLK,  SYS_BODCTL_BODDGSEL_256HCLK,
+                                                            SYS_BODCTL_BODDGSEL_512HCLK, SYS_BODCTL_BODDGSEL_1024HCLK, SYS_BODCTL_BODDGSEL_2048HCLK, SYS_BODCTL_BODDGSEL_4096HCLK];
+                                                    optionLabels:["BOD output is sample by LIRC", "64 system clock (HCLK)",  "128 system clock (HCLK)",  "256 system clock (HCLK)",
+                                                                  "512 system clock (HCLK)",    "1024 system clock (HCLK)", "2048 system clock (HCLK)", "4096 system clock (HCLK)"];
+                                                    dependencies:SYS_BODENRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_BODConfig;
+                                                !>)
+#define NUCODEGEN_SYS_BODRSTEN_CONFIG           (<!id:SYS_BODRSTENRadio;
+                                                    type:select;
+                                                    label:Enable BOD Reset Signal;
+                                                    data:SYS_BODCTL_BOD_RST_EN;
+                                                    default:SYS_BODCTL_BOD_RST_EN;
+                                                    enum:[SYS_BODCTL_BOD_RST_EN, SYS_BODCTL_BOD_INTERRUPT_EN];
+                                                    optionLabels:["Reset signal", "Interrupt signal"];
+                                                    vertical:false;
+                                                    dependencies:SYS_BODENRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_BODConfig;
+                                                !>)
+#define NUCODEGEN_SYS_BODLPM_CONFIG             (<!id:SYS_BODLPM1Select;
+                                                    type:select;
+                                                    label:Select BOD Power Mode;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:If BOD operates in low-power mode, user must enable LVR manually.;
+                                                    enum:[0,1];
+                                                    optionLabels:[Normal power mode, Low power mode];
+                                                    vertical:false;
+                                                    dependencies:[SYS_BODENRadio, SYS_LVRENRadio];
+                                                    dependenciesOption:{"SYS_BODENRadio":"1", "SYS_LVRENRadio":"1"};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_BODConfig;
+                                                !><!id:SYS_BODLPM2Select;
+                                                    type:select;
+                                                    label:Select BOD Power Mode;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:If BOD operates in low-power mode, user must enable LVR manually.;
+                                                    enum:[0];
+                                                    optionLabels:[Normal power mode];
+                                                    vertical:false;
+                                                    dependencies:[SYS_BODENRadio, SYS_LVRENRadio];
+                                                    dependenciesOption:{"SYS_BODENRadio":"1", "SYS_LVRENRadio":"0"};
+                                                    dependenciesDefault:false;
+                                                    groupId:Group_BODConfig;
+                                                !>)
+#define NUCODEGEN_SYS_BOD_INT_ENABLE            (<!id:SYS_BODIntEnableCheckbox;
+                                                    type:checkbox;
+                                                    label:Enable BOD Interrupt;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:Vector: BOD_IRQHandler;
+                                                    enum:[1];
+                                                    optionLabels:[Enable BOD Interrupt];
+                                                    dependencies:SYS_BODENRadio;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_BODConfig;
+                                                !>)
+
+#define NUCODEGEN_SYS_HIRCTRIM_EN               (<!id:SYS_HIRCTRIM_En;
+                                                    type:radio;
+                                                    label:Enable HIRC Trim Function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[1,0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_HIRCTrim;
+                                                    groupName:HIRC Trim Configuration;
+                                                !>)
+#define NUCODEGEN_SYS_HIRCTRIM_ERRSTOP_EN       (<!id:SYS_HIRCTRIM_Error_Stop_En;
+                                                    type:radio;
+                                                    label:Enable HIRC Trim Error Stop;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[1,0];
+                                                    optionLabels:[Enable, Disable];
+                                                    dependencies:SYS_HIRCTRIM_En;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_HIRCTrim;
+                                                !>)
+#define NUCODEGEN_SYS_HIRCTRIM_LOOPSEL          (<!id:SYS_HIRCTRIM_LoopSel;
+                                                    type:select;
+                                                    label:Select Trim Calculation Loop ;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3];
+                                                    optionLabels:[4 Reference clock, 8 Reference clock, 16 Reference clock, 32 Reference clock];
+                                                    vertical:true;
+                                                    dependencies:SYS_HIRCTRIM_En;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_HIRCTrim;
+                                                !>)
+#define NUCODEGEN_SYS_HIRCTRIM_RETRYCNT         (<!id:SYS_HIRCTRIM_RetryCnt;
+                                                    type:select;
+                                                    label:Select Trim Retry Count ;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3];
+                                                    optionLabels:[64 Loops, 128 Loops, 256 Loops, 512 Loops];
+                                                    vertical:true;
+                                                    dependencies:SYS_HIRCTRIM_En;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_HIRCTrim;
+                                                !>)
+#define NUCODEGEN_SYS_HIRCTRIM_REFCLOCK         (<!id:SYS_HIRCTRIM_Ref_CLK;
+                                                    type:select;
+                                                    label:Select Trim Reference Clock;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[LXT, USB];
+                                                    vertical:true;
+                                                    dependencies:SYS_HIRCTRIM_En;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_HIRCTrim;
+                                                !>)
+#define NUCODEGEN_SYS_HIRCTRIM_BOUND_EN         (<!id:SYS_HIRCTRIM_Boundary_En;
+                                                    type:radio;
+                                                    label:Enable HIRC Trim Boundary ;
+                                                    data:1;
+                                                    default:1;
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    vertical:false;
+                                                    dependencies:SYS_HIRCTRIM_En;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_HIRCTrim;
+                                                !>)
+#define NUCODEGEN_SYS_HIRCTRIM_BOUND_RANGE      (<!id:SYS_HIRCTRIM_Boundary_Range;
+                                                    type:integer;
+                                                    label:Enter HIRC Trim Boundary value;
+                                                    data:8;
+                                                    default:8;
+                                                    helper:Enter your boundary value 1~31;
+                                                    minimum:1;
+                                                    maximum:31;
+                                                    dependencies:SYS_HIRCTRIM_Boundary_En;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_HIRCTrim;
+                                                !>)
+#define NUCODEGEN_SYS_HIRCTRIM_INT_EN           (<!id:SYS_HIRCTRIM_INT_En;
+                                                    type:checkbox;
+                                                    label:Enable HIRC Trim Interrupt Function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[1];
+                                                    optionLabels:[Enable HIRC Trim Interrupt];
+                                                    dependencies:SYS_HIRCTRIM_En;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_HIRCTrim;
+                                                !>)
+#define NUCODEGEN_SYS_HIRCTRIM_INT_SEL          (<!id:SYS_HIRCTRIM_INT_Sel;
+                                                    type:multipleselect;
+                                                    label:Select Interrupts We Want for HIRC trim;
+                                                    size:2;
+                                                    data:[];
+                                                    default:[];
+                                                    helper:Select which interrupt enable.;
+                                                    sort:false;
+                                                    enum:[2, 4];
+                                                    optionLabels:[Trim Failure, Clock Error];
+                                                    dependencies:SYS_HIRCTRIM_INT_En;
+                                                    dependenciesOption:1;
+                                                    groupId:Group_HIRCTrim;
+                                                !>)

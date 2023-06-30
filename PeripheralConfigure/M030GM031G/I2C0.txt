@@ -1,0 +1,501 @@
+//I2C0
+
+<! clock: {"ALL" : "I2C0" }; !>
+<! pin:   {"i2c_submode_select" : {"NUCODEGEN_I2C0_SUBMODE_SMBUS": ["I2C0_SMBAL","I2C0_SMBSUS"]
+                                   },
+         "ALL" : ["I2C0_DAT","I2C0_SCL"]
+        }; !>
+
+#define NUCODEGEN_I2C0_SUBMODE_NORMAL         0
+#define NUCODEGEN_I2C0_SUBMODE_SMBUS          1
+
+#define NUCODEGEN_I2C0_SMBUS_ROLE_HOST    0
+#define NUCODEGEN_I2C0_SMBUS_ROLE_DEVICE  1
+
+#define NUCODEGEN_I2C0_BUSCLOCK   (<!id:i2c0_busclock; type:integer;
+                                 label:I2C bus clock rate (Hz);
+                                 data:100000; default:100000;
+                                 helper:100000 Hz ~ 1000000 Hz;
+                                 minimum:100000; maximum:1000000;
+                                 dependencies:none; dependenciesOption:none;
+                                 groupId:Group_I2C0_Common_config;!>)
+
+#define NUCODEGEN_I2C0_SUBMODE_SEL  (<!id:i2c_submode_select;
+                                    type:radio;
+                                    label:Select I2C0 function mode;
+                                    data:NUCODEGEN_I2C0_SUBMODE_NORMAL;
+                                    default:NUCODEGEN_I2C0_SUBMODE_NORMAL;
+                                    enum:[NUCODEGEN_I2C0_SUBMODE_NORMAL, NUCODEGEN_I2C0_SUBMODE_SMBUS];
+                                    optionLabels:[Normal, SMBUS];
+                                    vertical:true;
+                                    dependencies:none;
+                                    dependenciesOption:none;
+                                    groupId:Group_I2C0_Common_config;!>)
+
+#define NUCODEGEN_I2C0_INT_EN (<!id:i2c0_interrupt_en; type:checkbox;
+                                label:Enable I2C0 interrupt;
+                                data:0; default:0; helper:;
+                                sort:false; enum:[1];
+                                optionLabels:[<br>];
+                                dependencies:none;
+                                dependenciesOption:none;
+                                groupId:Group_I2C_Interrupt;
+                                groupName:Interrupt Setting;!>)
+
+#define NUCODEGEN_I2C0_WAKEUP_EN (<!id:i2c0_wakeup_en; type:checkbox;
+                                    label:Enable I2C0 wakeup function;
+                                    data:0; default:0; helper:;
+                                    sort:false; enum:[1];
+                                    optionLabels:[];
+                                    dependencies:i2c0_interrupt_en;
+                                    dependenciesOption:1;
+                                    groupId:Group_I2C_Interrupt;!>)
+
+#define NUCODEGEN_I2C0_TIMEOUT_EN (<!id:i2c0_timeout_en; type:checkbox;
+                            label:Enable timeout;
+                            data:0; default:0; helper:;
+                            sort:false; enum:[1];
+                            optionLabels:[];
+                            dependencies:none;
+                            dependenciesOption:none;
+                            groupId:Group_I2C_Interrupt;!>)
+
+#if (NUCODEGEN_I2C0_TIMEOUT_EN)
+#define I2C0_TIMEOUT_SEL    (<!id:i2c0_timeout_period_radio;
+                            type:radio;
+                            label:<br>;
+                            data:0;
+                            default:0;
+                            helper:;
+                            sort:false; enum:[0, 1];
+                            optionLabels:[Short period, Long period];
+                            vertical:true;
+                            dependencies:i2c0_timeout_en;
+                            dependenciesOption:1;
+                            groupId:Group_I2C_Interrupt;!>)
+#endif /*NUCODEGEN_I2C0_TIMEOUT_EN*/
+
+#if (NUCODEGEN_I2C0_SUBMODE_SEL==NUCODEGEN_I2C0_SUBMODE_NORMAL)
+
+#define NUCODEGEN_I2C0_PDMA_EN (<!id:i2c0_pdma_en; type:checkbox;
+                            label:Enable PDMA;
+                            data:0; default:0;
+                            helper:;
+                            sort:false; enum:[1];
+                            optionLabels:[];
+                            dependencies:i2c_submode_select;
+                            dependenciesOption:NUCODEGEN_I2C0_SUBMODE_NORMAL;
+                            groupId:Group_I2C_Normal;
+                            groupName:I2C;!>)
+
+#define NUCODEGEN_I2C0_10BIT_ADDRESSING_EN  (<!id:i2c0_10bit_addressing_en_radio;
+                                            type:radio;
+                                            label:I2C0 addressing ;
+                                            data:0;
+                                            default:0;
+                                            helper:;
+                                            sort:false; enum:[0, 1];
+                                            optionLabels:[7-bit, 10-bit];
+                                            vertical:true;
+                                            dependencies:i2c_submode_select;
+                                            dependenciesOption:NUCODEGEN_I2C0_SUBMODE_NORMAL;
+                                            groupId:Group_I2C_Normal;!>)
+
+#endif /*NUCODEGEN_I2C0_SUBMODE_SEL==NUCODEGEN_I2C0_SUBMODE_NORMAL*/
+
+
+#if (NUCODEGEN_I2C0_SUBMODE_SEL == NUCODEGEN_I2C0_SUBMODE_SMBUS)
+
+#undef NUCODEGEN_I2C0_PDMA_EN
+#undef NUCODEGEN_I2C0_10BIT_FORMAT_EN
+
+#define NUCODEGEN_I2C0_PDMA_EN (0)
+#define NUCODEGEN_I2C0_10BIT_FORMAT_EN (0)
+
+
+#define NUCODEGEN_I2C0_SMBUS_ROLE_SEL    (<!id:i2c0_smbus_role_sel_radio;
+                        type:radio;
+                        label:Select SMBUS role;
+                        data:NUCODEGEN_I2C0_SMBUS_ROLE_HOST;
+                        default:NUCODEGEN_I2C0_SMBUS_ROLE_HOST;
+                        helper:;
+                        sort:false; enum:[I2C_SMBH_ENABLE,
+                                          I2C_SMBD_ENABLE];
+                        optionLabels:[Host,
+                                      Device];
+                        vertical:true;
+                        dependencies:i2c_submode_select;
+                        dependenciesOption:NUCODEGEN_I2C0_SUBMODE_SMBUS;
+                        groupId:Group_I2C_SMBUS;
+                        groupName:SMBUS;!>)
+
+#define NUCODEGEN_I2C0_SMBUS_PEC_EN    (<!id:i2c0_smbus_pec_en_radio;
+                    type:radio;
+                    label:Enable PEC function;
+                    data:1;
+                    default:1;
+                    helper:;
+                    sort:false; enum:[I2C_PECTX_ENABLE,
+                                      I2C_PECTX_DISABLE];
+                    optionLabels:[Enable,
+                                  Disable];
+                    vertical:true;
+                    dependencies:i2c_submode_select;
+                    dependenciesOption:NUCODEGEN_I2C0_SUBMODE_SMBUS;
+                    groupId:Group_I2C_SMBUS;!>)
+
+#endif /* (NUCODEGEN_I2C0_SUBMODE_SEL == NUCODEGEN_I2C0_SUBMODE_SMBUS) */
+
+#define NUCODEGEN_I2C0_ADDR0_EN (<!id:i2c0_address_enable_0; type:checkbox;
+                            label:Enable ADDRESS0;
+                            data:0; default:0;
+                            helper:;
+                            sort:false; enum:[1];
+                            optionLabels:[];
+                            dependencies:none;
+                            dependenciesOption:none;
+                            groupId:Group_I2C_Address0;
+                            groupName:ADDRESS0;!>)
+
+#if (NUCODEGEN_I2C0_ADDR0_EN)
+#define NUCODEGEN_I2C0_ADDR0 (<!id:I2C0_addr0_10bit; type:hextext;
+                      label:I2C address 0 (10-bit)(hex);
+                      data:0;
+                      default:0;
+                      helper:;
+                      minimum:0x0;
+                      maximum:0x3ff;
+                      dependencies:[i2c0_address_enable_0, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                      dependenciesOption:{"i2c0_address_enable_0":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address0;!><!id:I2C0_addr0_7bit; type:hextext;
+                      label:I2C address 0 (7-bit)(hex);
+                      data:0;
+                      default:0;
+                      helper:;
+                      minimum:0x0;
+                      maximum:0x7f;
+                      dependencies:[i2c0_address_enable_0, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                      dependenciesOption:{"i2c0_address_enable_0":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"0"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address0;!><!id:I2C0_addr0_7bit_smbus; type:hextext;
+                      label:I2C address 0 (7-bit)(hex);
+                      data:0;
+                      default:0;
+                      helper:;
+                      minimum:0x0;
+                      maximum:0x7f;
+                      dependencies:[i2c0_address_enable_0, i2c_submode_select];
+                      dependenciesOption:{"i2c0_address_enable_0":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_SMBUS"};
+                                        groupId:Group_I2C_Address0;!>)
+
+#define NUCODEGEN_I2C0_ADDRMSK0  (<!id:I2C0_address_mask0_10bit;
+                            type:hextext;
+                            label:I2C address mask 0 (10-bit)(hex);
+                            data:0; default:0;
+                            helper:;
+                            minimum:0x0; maximum:0x3ff;
+                            dependencies:[i2c0_address_enable_0, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                            dependenciesOption:{"i2c0_address_enable_0":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address0;!><!id:I2C0_address_mask0_7bit;
+                            type:hextext;
+                            label:I2C address mask 0 (7-bit)(hex);
+                            data:0; default:0;
+                            helper:;
+                            minimum:0x0; maximum:0x7f;
+                            dependencies:[i2c0_address_enable_0, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                            dependenciesOption:{"i2c0_address_enable_0":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"0"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address0;!><!id:I2C0_address_mask0_7bit_smbus;
+                            type:hextext;
+                            label:I2C address mask 0 (7-bit)(hex);
+                            data:0; default:0;
+                            helper:;
+                            minimum:0x0; maximum:0x7f;
+                            dependencies:[i2c0_address_enable_0, i2c_submode_select];
+                            dependenciesOption:{"i2c0_address_enable_0":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_SMBUS"};
+                                        groupId:Group_I2C_Address0;!>)
+
+#define NUCODEGEN_I2C0_ADDR0_GC_SEL (<!id:i2c0_address_gc_enable_0;
+                        type:radio; label:Address 0 GC mode;
+                        data:I2C_GCMODE_DISABLE; default:I2C_GCMODE_DISABLE;
+                        helper:;
+                        sort:false; enum:[I2C_GCMODE_ENABLE, I2C_GCMODE_DISABLE];
+                        optionLabels:[I2C_GCMODE_ENABLE,
+                        I2C_GCMODE_DISABLE];
+                        dependencies:i2c0_address_enable_0;
+                        dependenciesOption:1;
+                        groupId:Group_I2C_Address0;!>)
+
+#endif //NUCODEGEN_I2C0_ADDR0_EN
+
+#define NUCODEGEN_I2C0_ADDR1_EN (<!id:i2c0_address_enable_1; type:checkbox;
+                            label:Enable ADDRESS1;
+                            data:0; default:0; helper:;
+                            sort:false; enum:[1];
+                            optionLabels:[];
+                            dependencies:none;
+                            dependenciesOption:none;
+                            groupId:Group_I2C_Address1;
+                            groupName:ADDRESS1;!>)
+
+#if (NUCODEGEN_I2C0_ADDR1_EN)
+#define NUCODEGEN_I2C0_ADDR1 (<!id:I2C0_addr1_10bit; type:hextext;
+                      label:I2C address 1 (10-bit)(hex); data:0;
+                      default:0;
+                      helper:;
+                      minimum:0x0;
+                      maximum:0x3ff;
+                      dependencies:[i2c0_address_enable_1, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                      dependenciesOption:{"i2c0_address_enable_1":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address1;!><!id:I2C0_addr1_7bit; type:hextext;
+                      label:I2C address 1 (7-bit)(hex);
+                      data:0;
+                      default:0;
+                      helper:;
+                      minimum:0x0;
+                      maximum:0x7f;
+                      dependencies:[i2c0_address_enable_1, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                      dependenciesOption:{"i2c0_address_enable_1":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"0"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address1;!><!id:I2C0_addr1_7bit_smbus; type:hextext;
+                      label:I2C address 1 (7-bit)(hex);
+                      data:0;
+                      default:0;
+                      helper:;
+                      minimum:0x0;
+                      maximum:0x7f;
+                      dependencies:[i2c0_address_enable_1, i2c_submode_select];
+                      dependenciesOption:{"i2c0_address_enable_1":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_SMBUS"};
+                                        groupId:Group_I2C_Address1;!>)
+
+
+#define NUCODEGEN_I2C0_ADDRMSK1  (<!id:I2C0_address_mask1_10bit;
+                            type:hextext;
+                            label:I2C address mask 1 (10-bit)(hex);
+                            data:0; default:0;
+                            helper:;
+                            minimum:0x0; maximum:0x3ff;
+                            dependencies:[i2c0_address_enable_1, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                            dependenciesOption:{"i2c0_address_enable_1":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address1;!><!id:I2C0_address_mask1_7bit;
+                            type:hextext;
+                            label:I2C address mask 1 (7-bit)(hex);
+                            data:0; default:0;
+                            helper:;
+                            minimum:0x0; maximum:0x7f;
+                            dependencies:[i2c0_address_enable_1, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                            dependenciesOption:{"i2c0_address_enable_1":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"0"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address1;!><!id:I2C0_address_mask1_7bit_smbus;
+                            type:hextext;
+                            label:I2C address mask 1 (7-bit)(hex);
+                            data:0; default:0;
+                            helper:;
+                            minimum:0x0; maximum:0x7f;
+                            dependencies:[i2c0_address_enable_1, i2c_submode_select];
+                            dependenciesOption:{"i2c0_address_enable_1":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_SMBUS"};
+                                        groupId:Group_I2C_Address1;!>)
+
+#define NUCODEGEN_I2C0_ADDR1_GC_SEL (<!id:i2c0_address_gc_enable_1;
+                                    type:radio; label:Address 1 GC mode;
+                                    data:I2C_GCMODE_DISABLE; default:I2C_GCMODE_DISABLE;
+                                    helper:;
+                                    sort:false; enum:[I2C_GCMODE_ENABLE, I2C_GCMODE_DISABLE];
+                                    optionLabels:[I2C_GCMODE_ENABLE,
+                                    I2C_GCMODE_DISABLE];
+                                    dependencies:i2c0_address_enable_1;
+                                    dependenciesOption:1;
+                                    groupId:Group_I2C_Address1;!>)
+#endif //NUCODEGEN_I2C0_ADDR1_EN
+
+#define NUCODEGEN_I2C0_ADDR2_EN (<!id:i2c0_address_enable_2; type:checkbox;
+                            label:Enable ADDRESS2;
+                            data:0; default:0; helper:;
+                            sort:false; enum:[1];
+                            optionLabels:[];
+                            dependencies:none;
+                            dependenciesOption:none;
+                            groupId:Group_I2C_Address2;
+                            groupName:ADDRESS2;!>)
+
+#if (NUCODEGEN_I2C0_ADDR2_EN)
+#define NUCODEGEN_I2C0_ADDR2 (<!id:I2C0_addr2_10bit; type:hextext;
+                          label:I2C address 2 (10-bit)(hex); data:0;
+                          default:0;
+                          helper:;
+                          minimum:0x0;
+                          maximum:0x3ff;
+                          dependencies:[i2c0_address_enable_2, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                          dependenciesOption:{"i2c0_address_enable_2":"1"
+                                            ,"i2c0_10bit_addressing_en_radio":"1"
+                                            ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                            groupId:Group_I2C_Address2;!><!id:I2C0_addr2_7bit; type:hextext;
+                          label:I2C address 2 (7-bit)(hex);
+                          data:0;
+                          default:0;
+                          helper:;
+                          minimum:0x0;
+                          maximum:0x7f;
+                          dependencies:[i2c0_address_enable_2, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                          dependenciesOption:{"i2c0_address_enable_2":"1"
+                                            ,"i2c0_10bit_addressing_en_radio":"0"
+                                            ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                            groupId:Group_I2C_Address2;!><!id:I2C0_addr2_7bit_smbus; type:hextext;
+                          label:I2C address 2 (7-bit)(hex);
+                          data:0;
+                          default:0;
+                          helper:;
+                          minimum:0x0;
+                          maximum:0x7f;
+                          dependencies:[i2c0_address_enable_2, i2c_submode_select];
+                          dependenciesOption:{"i2c0_address_enable_2":"1"
+                                            ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_SMBUS"};
+                                            groupId:Group_I2C_Address2;!>)
+
+#define NUCODEGEN_I2C0_ADDRMSK2  (<!id:I2C0_address_mask2_10bit;
+                            type:hextext;
+                            label:I2C address mask 2 (10-bit)(hex);
+                            data:0; default:0;
+                            helper:;
+                            minimum:0x0; maximum:0x3ff;
+                            dependencies:[i2c0_address_enable_2, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                            dependenciesDefault:false;
+                            dependenciesOption:{"i2c0_address_enable_2":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address2;!><!id:I2C0_address_mask2_7bit;
+
+                            type:hextext;
+                            label:I2C address mask 2 (7-bit)(hex);
+                            data:0; default:0;
+                            helper:;
+                            minimum:0x0; maximum:0x7f;
+                            dependencies:[i2c0_address_enable_2, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                            dependenciesDefault:false;
+                            dependenciesOption:{"i2c0_address_enable_2":"1"
+                                        ,"i2c0_10bit_addressing_en_radio":"0"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                        groupId:Group_I2C_Address2;!><!id:I2C0_address_mask2_7bit_smbus;
+                            type:hextext;
+                            label:I2C address mask 2 (7-bit)(hex);
+                            data:0; default:0;
+                            helper:;
+                            minimum:0x0; maximum:0x7f;
+                            dependencies:[i2c0_address_enable_2, i2c_submode_select];
+                            dependenciesDefault:false;
+                            dependenciesOption:{"i2c0_address_enable_2":"1"
+                                        ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_SMBUS"};
+                                        groupId:Group_I2C_Address2;!>)
+
+#define NUCODEGEN_I2C0_ADDR2_GC_SEL (<!id:i2c0_address_gc_enable_2;
+                            type:radio; label:Address 2 GC mode;
+                            data:I2C_GCMODE_DISABLE; default:I2C_GCMODE_DISABLE;
+                            helper:;
+                            sort:false; enum:[I2C_GCMODE_ENABLE, I2C_GCMODE_DISABLE];
+                            optionLabels:[I2C_GCMODE_ENABLE,
+                            I2C_GCMODE_DISABLE];
+                            dependencies:i2c0_address_enable_2;
+                            dependenciesOption:1;
+                            groupId:Group_I2C_Address2;!>)
+#endif //NUCODEGEN_I2C0_ADDR2_EN
+
+#define NUCODEGEN_I2C0_ADDR3_EN (<!id:i2c0_address_enable_3; type:checkbox;
+                            label:Enable ADDRESS3;
+                            data:0; default:0; helper:;
+                            sort:false; enum:[1];
+                            optionLabels:[];
+                            dependencies:none;
+                            dependenciesOption:none;
+                            groupId:Group_I2C_Address3;
+                            groupName:ADDRESS3;!>)
+
+#if (NUCODEGEN_I2C0_ADDR3_EN)
+#define NUCODEGEN_I2C0_ADDR3 (<!id:I2C0_addr3_10bit; type:hextext;
+                          label:I2C address 3 (10-bit)(hex); data:0;
+                          default:0;
+                          helper:;
+                          minimum:0x0;
+                          maximum:0x3ff;
+                          dependencies:[i2c0_address_enable_3, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                          dependenciesOption:{"i2c0_address_enable_3":"1"
+                                            ,"i2c0_10bit_addressing_en_radio":"1"
+                                            ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                            groupId:Group_I2C_Address3;!><!id:I2C0_addr3_7bit; type:hextext;
+                          label:I2C address 3 (7-bit)(hex); data:0;
+                          default:0;
+                          helper:;
+                          minimum:0x0;
+                          maximum:0x7f;
+                          dependencies:[i2c0_address_enable_3, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                          dependenciesOption:{"i2c0_address_enable_3":"1"
+                                            ,"i2c0_10bit_addressing_en_radio":"0"
+                                            ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                            groupId:Group_I2C_Address3;!><!id:I2C0_addr3_7bit_smbus; type:hextext;
+                          label:I2C address 3 (7-bit)(hex); data:0;
+                          default:0;
+                          helper:;
+                          minimum:0x0;
+                          maximum:0x7f;
+                          dependencies:[i2c0_address_enable_3, i2c_submode_select];
+                          dependenciesOption:{"i2c0_address_enable_3":"1"
+                                            ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_SMBUS"};
+                                            groupId:Group_I2C_Address3;!>)
+
+#define NUCODEGEN_I2C0_ADDRMSK3  (<!id:I2C0_address_mask3_10bit;
+                                type:hextext;
+                                label:I2C address mask 3 (10-bit)(hex);
+                                data:0; default:0;
+                                helper:;
+                                minimum:0; maximum:0x3ff;
+                                dependencies:[i2c0_address_enable_3, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                                dependenciesOption:{"i2c0_address_enable_3":"1"
+                                            ,"i2c0_10bit_addressing_en_radio":"1"
+                                            ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                            groupId:Group_I2C_Address3;!><!id:I2C0_address_mask3_7bit;
+                                type:hextext;
+                                label:I2C address mask 3 (7-bit)(hex);
+                                data:0; default:0;
+                                helper:;
+                                minimum:0; maximum:0x7f;
+                                dependencies:[i2c0_address_enable_3, i2c0_10bit_addressing_en_radio, i2c_submode_select];
+                                dependenciesOption:{"i2c0_address_enable_3":"1"
+                                            ,"i2c0_10bit_addressing_en_radio":"0"
+                                            ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_NORMAL"};
+                                            groupId:Group_I2C_Address3;!><!id:I2C0_address_mask3_7bit_smbus;
+                                type:hextext;
+                                label:I2C address mask 3 (7-bit)(hex);
+                                data:0; default:0;
+                                helper:;
+                                minimum:0; maximum:0x7f;
+                                dependencies:[i2c0_address_enable_3, i2c_submode_select];
+                                dependenciesOption:{"i2c0_address_enable_3":"1"
+                                            ,"i2c_submode_select":"NUCODEGEN_I2C0_SUBMODE_SMBUS"};
+                                            groupId:Group_I2C_Address3;!>)
+
+#define NUCODEGEN_I2C0_ADDR3_GC_SEL (<!id:i2c0_address_gc_enable_3;
+                    type:radio; label:Address 3 GC mode;
+                    data:I2C_GCMODE_DISABLE; default:I2C_GCMODE_DISABLE;
+                    helper:;
+                    sort:false; enum:[I2C_GCMODE_ENABLE, I2C_GCMODE_DISABLE];
+                    optionLabels:[I2C_GCMODE_ENABLE,
+                    I2C_GCMODE_DISABLE];
+                    dependencies:i2c0_address_enable_3;
+                    dependenciesOption:1;
+                    groupId:Group_I2C_Address3;!>)
+#endif //NUCODEGEN_I2C0_ADDR3_EN

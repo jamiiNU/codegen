@@ -1,0 +1,10 @@
+<!id:Timer0InputHexText0;
+type:hextext;
+label:Timer0 Prescale Value;
+data:0x5000;
+default:0x5000;
+helper:Input text in the hexadecimal format;
+minimum:0x4800;
+maximum:921600;
+validate:true;
+dependencies:none;!>

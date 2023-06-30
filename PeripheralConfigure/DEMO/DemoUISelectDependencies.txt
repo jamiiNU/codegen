@@ -1,0 +1,74 @@
+//////////Select//////////
+<!id:UART0BaudrateSelect;
+type:select;
+label:UART0 Baud Rate;data:9600;
+helper:Select your UART0 baud rate;
+enum:[4800, 9600, 19200];
+optionLabels:[4800, 9600, 19200];
+dependencies:none;
+dependenciesOption:none;!>
+<!id:UART1BaudrateInteger;
+type:integer;
+label:UART1 Baud Rate;
+data:115200;
+helper:Enter your UART1 baud rate;
+minimum:4800;
+maximum:921600;
+dependencies:UART0BaudrateSelect;
+dependenciesOption:4800;!>
+<!id:TIMER0ModeSelect;
+type:select;
+label:Select TIMER0 Operation Mode;
+data:TIMER_ONESHOT_MODE;
+default:TIMER_ONESHOT_MODE;
+enum:[TIMER_ONESHOT_MODE, TIMER_PERIODIC_MODE, TIMER_TOGGLE_MODE, TIMER_CONTINUOUS_MODE];
+optionLabels:[One-shot Mode, Periodic Mode, Toggle Mode, Continuous Counting Mode];
+dependencies:none;
+dependenciesOption:none;
+!>
+<!id:TIMER0OutputPinSelect;
+type:select;
+label:Select TIMER0 Output Pin;
+data:TIMER_TOUT_PIN_FROM_TX;
+default:TIMER_TOUT_PIN_FROM_TX;
+enum:[TIMER_TOUT_PIN_FROM_TX, TIMER_TOUT_PIN_FROM_TX_EXT];
+optionLabels:[Output Pin from TX, Output Pin from TX_EXT];
+dependencies:TIMER0ModeSelect;
+dependenciesOption:TIMER_PERIODIC_MODE|TIMER_TOGGLE_MODE;
+!>
+<!id:PDMACH2Source;
+type:select;
+label:PDMA CH2 Source;
+data:PDMA_MEM;
+default:PDMA_MEM;
+enum:[	PDMA_MEM,		PDMA_UART0_RX,	PDMA_UART1_RX,	PDMA_UART2_RX,	PDMA_USCI0_RX,	PDMA_USCI1_RX,
+PDMA_QSPI0_RX,	PDMA_SPI0_RX,	PDMA_PWM0_P1_RX,PDMA_PWM0_P2_RX,PDMA_PWM0_P3_RX,
+PDMA_PWM1_P1_RX,PDMA_PWM1_P2_RX,PDMA_PWM1_P3_RX,PDMA_I2C0_RX,	PDMA_I2C1_RX,
+PDMA_TMR0,		PDMA_TMR1,		PDMA_TMR2,		PDMA_TMR3,		PDMA_ADC_RX,
+PDMA_PSIO_RX,	PDMA_USCI2_RX	];
+optionLabels:[	Memory,		UART0_RX,	UART1_RX,	UART2_RX,	USCI0_RX, USCI1_RX,
+QSPI0_RX,	SPI0_RX,		PWM0_P1_RX,		PWM0_P2_RX,		PWM0_P3_RX,
+PWM1_P1_RX, PWM1_P2_RX,		PWM1_P3_RX,		I2C0_RX,		I2C1_RX,
+TMR0,		TMR1,			TMR2,			TMR3,			ADC_RX,
+PSIO_RX, USCI2_RX];
+vertical:false;
+sort:false;
+dependencies:none;
+dependenciesOption:none;
+!>
+<!id:PDMACH2Destination1;
+type:select;
+label:PDMA CH2 Destination;
+data:;
+default:;
+enum:[PDMA_MEM];
+optionLabels:[Memory];
+vertical:false;
+sort:false;
+dependencies:PDMACH2Source;
+dependenciesOption:{"PDMACH2Source":["PDMA_UART0_RX",	"PDMA_UART1_RX",	"PDMA_UART2_RX",	"PDMA_USCI0_RX",	"PDMA_USCI1_RX",
+"PDMA_QSPI0_RX",	"PDMA_SPI0_RX",	"PDMA_PWM0_P1_RX","PDMA_PWM0_P2_RX","PDMA_PWM0_P3_RX",
+"PDMA_PWM1_P1_RX","PDMA_PWM1_P2_RX","PDMA_PWM1_P3_RX","PDMA_I2C0_RX",	"PDMA_I2C1_RX",
+"PDMA_TMR0",		"PDMA_TMR1",		"PDMA_TMR2",		"PDMA_TMR3",		"PDMA_ADC_RX",
+"PDMA_PSIO_RX", "PDMA_USCI2_RX"]};
+!>

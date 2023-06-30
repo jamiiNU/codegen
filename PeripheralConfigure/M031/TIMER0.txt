@@ -1,0 +1,249 @@
+<!clock: {"ALL" : "TMR0" };
+  pin:   {"TIMER0OutputPinRadio":{"TIMER_TOUT_PIN_FROM_TX": "TM0",
+								  "TIMER_TOUT_PIN_FROM_TX_EXT": "TM0_EXT"},
+		  "TPWM0OutputPinRadio":{"TPWM_TOUT_PIN_FROM_TX": "TM0",
+								 "TPWM_TOUT_PIN_FROM_TX_EXT": "TM0_EXT"},
+		  "TIMER0EventCountCheckbox":{"1": "TM0"},
+		  "TIMER0CaptureSourceSelect":{"TIMER0_CAP_FROM_EXTERNAL": "TM0_EXT"},
+		  "ALL":[""]};
+!>
+/*--------------------------------------------------------------------------*/
+/* TIMER0 Configuration                                                     */
+/*--------------------------------------------------------------------------*/
+
+#define TIMER0_MODE						<!id:TIMER0ModeRadio;
+										type:radio;
+										label:Select TIMER0 operation mode;
+										data:TIMER_ONESHOT_MODE;
+										default:TIMER_ONESHOT_MODE;
+										enum:[TIMER_ONESHOT_MODE, TIMER_PERIODIC_MODE, TIMER_TOGGLE_MODE, TIMER_CONTINUOUS_MODE];
+										optionLabels:[One-shot, Periodic, Toggle, Continuous counting];
+										dependencies:none;
+										dependenciesOption:none;
+										groupId:Timer_Common;
+										groupName:Timer common configuration;!>
+
+#define NUCODEGEN_TIMER0_TOUT_PIN		<!id:TIMER0OutputPinRadio;
+										type:radio;
+										label:Select TIMER0 output pin;
+										data:TIMER_TOUT_PIN_FROM_TX;
+										default:TIMER_TOUT_PIN_FROM_TX;
+										enum:[TIMER_TOUT_PIN_FROM_TX, TIMER_TOUT_PIN_FROM_TX_EXT];
+										optionLabels:[Output pin from TX, Output pin from TX_EXT];
+										dependencies:TIMER0ModeRadio;
+										dependenciesOption:TIMER_TOGGLE_MODE;
+										groupId:Timer_Common;!>
+
+#define TIMER0_FREQ						<!id:TIMER0FreqInteger;
+										type:integer;
+										label:Set TIMER0 frequency;
+										data:1000000;
+										default:1000000;
+										helper:Enter your TIMER0 frequency 1~ClkSrc/2(Hz);
+										minimum:1;
+										maximum:24000000;
+										dependencies:none;
+										dependenciesOption:none;
+										groupId:Timer_Common;!>
+
+#define NUCODEGEN_TIMER0_VALUE			<!id:TIMER0SetValueCheckbox;
+										type:checkbox;
+										label:Enable TIMER0 set prescale & compared value;
+										data:0;
+										default:0;
+										helper:Will change TIMER0 frequency;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:none;
+										dependenciesOption:none;
+										groupId:Timer_Common;!>
+
+#if NUCODEGEN_TIMER0_VALUE
+	#define TIMER0_PRESCALE_VALUE		<!id:TIMER0PrescaleInteger;
+										type:integer;
+										label:TIMER0 prescale value;
+										data:90;
+										default:90;
+										helper:Enter your TIMER0 prescale value(dec);
+										minimum:0;
+										maximum:255;
+										dependencies:TIMER0SetValueCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Common;!>
+	#define TIMER0_CMP_VALUE			<!id:TIMER0CMPHexText;
+										type:hextext;
+										label:TIMER0 compared value;
+										data:0x5A5A5A;
+										default:0x5A5A5A;
+										helper:Enter your TIMER0 compared value(hex);
+										minimum:0x2;
+										maximum:0xFFFFFF;
+										dependencies:TIMER0SetValueCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Common;!>
+#endif //NUCODEGEN_TIMER0_VALUE
+
+#define NUCODEGEN_TIMER0_WAKEUP			<!id:TIMER0WakeUpCheckbox;
+										type:checkbox;
+										label:Enable TIMER0 wake-up;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:none;
+										dependenciesOption:none
+										groupId:Timer_Common;!>
+
+#define NUCODEGEN_TIMER0_INT			<!id:TIMER0IntCheckbox;
+										type:checkbox;
+										label:Enable TIMER0 time-out interrupt;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:none;
+										dependenciesOption:none
+										groupId:Timer_Common;!>
+
+#define NUCODEGEN_TIMER0_EVENT_CNT		<!id:TIMER0EventCountCheckbox;
+										type:checkbox;
+										label:Enable TIMER0 event counting;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER0ModeRadio;
+										dependenciesOption:TIMER_ONESHOT_MODE|TIMER_PERIODIC_MODE|TIMER_CONTINUOUS_MODE;
+										groupId:Event_Count;
+										groupName:Event count configuration;
+                                        filterExp:PB_dot5==1 or PC_dot7==1;!>
+
+#define NUCODEGEN_TIMER0_COUNTER_PHASE	<!id:TIMER0PhaseRadio;
+										type:radio;
+										label:Select TIMER0 external count phase;
+										data:TIMER_COUNTER_FALLING_EDGE;
+										default:TIMER_COUNTER_FALLING_EDGE;
+										enum:[TIMER_COUNTER_FALLING_EDGE, TIMER_COUNTER_RISING_EDGE];
+										optionLabels:[Event falling edge, Event rising edge];
+										dependencies:TIMER0EventCountCheckbox;
+										dependenciesOption:1;
+										groupId:Event_Count;
+                                        filterExp:PB_dot5==1 or PC_dot7==1;!>
+
+#define NUCODEGEN_TIMER0_EVENT_CNTDB	<!id:TIMER0EventCountDebounceCheckbox;
+										type:checkbox;
+										label:Enable TIMER0 event counting de-bounce;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER0EventCountCheckbox;
+										dependenciesOption:1;
+										groupId:Event_Count;
+                                        filterExp:PB_dot5==1 or PC_dot7==1;!>
+
+#define NUCODEGEN_TIMER0_CAP			<!id:TIMER0CaptureCheckbox;
+										type:checkbox;
+										label:Enable TIMER0 capture;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER0ModeRadio;
+										dependenciesOption:TIMER_ONESHOT_MODE|TIMER_PERIODIC_MODE|TIMER_CONTINUOUS_MODE;
+										groupId:Capture;
+										groupName:Capture configuration;!>
+
+#if NUCODEGEN_TIMER0_CAP
+#define TIMER0_CAP_FROM_EXTERNAL 1
+#define TIMER0_CAP_SRC					<!id:TIMER0CaptureSourceSelect;
+										type:select;
+										label:Select TIMER0 capture trigger source;
+										data:TIMER0_CAP_FROM_EXTERNAL;
+										default:TIMER0_CAP_FROM_EXTERNAL;
+										enum:[TIMER0_CAP_FROM_EXTERNAL, TIMER_INTERCAPSEL_ACMP0, TIMER_INTERCAPSEL_ACMP1, TIMER_INTERCAPSEL_LIRC];
+										optionLabels:[Capture source from external, Internal source from ACMP0, Internal source from ACMP1, Internal source from LIRC];
+										dependencies:TIMER0CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;!>
+#endif //NUCODEGEN_TIMER0_CAP
+
+#define NUCODEGEN_TIMER0_CAP_EDGE		<!id:TIMER0CaptureEdgeSelect;
+										type:select;
+										label:Select TIMER0 capture edge detect;
+										data:TIMER_CAPTURE_FALLING_EDGE;
+										default:TIMER_CAPTURE_FALLING_EDGE;
+										enum:[TIMER_CAPTURE_FALLING_EDGE, TIMER_CAPTURE_RISING_EDGE, TIMER_CAPTURE_FALLING_AND_RISING_EDGE];
+										optionLabels:[Capture on falling edge, Capture on rising edge, Capture on falling or rising edges];
+										dependencies:TIMER0CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;!>
+
+#define NUCODEGEN_TIMER0_CAP_MODE		<!id:TIMER0CaptureModeRadio;
+										type:radio;
+										label:Select TIMER0 capture mode;
+										data:TIMER_CAPTURE_FREE_COUNTING_MODE;
+										default:TIMER_CAPTURE_FREE_COUNTING_MODE;
+										enum:[TIMER_CAPTURE_FREE_COUNTING_MODE, TIMER_CAPTURE_COUNTER_RESET_MODE];
+										optionLabels:[Free counting, Counter reset];
+										dependencies:TIMER0CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;!>
+
+#define NUCODEGEN_TIMER0_CAPDB			<!id:TIMER0CaptureDebounceCheckbox;
+										type:checkbox;
+										label:Enable TIMER0 capture de-bounce;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER0CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;!>
+
+#define NUCODEGEN_TIMER0_CAP_INT		<!id:TIMER0CaptureIntCheckbox;
+										type:checkbox;
+										label:Enable TIMER0 capture interrupt;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER0CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;!>
+
+#define NUCODEGEN_TIMER0_TRG			<!id:TIMER0TriggerCheckbox;
+										type:checkbox;
+										label:Enable TIMER0 trigger;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:none;
+										dependenciesOption:none;
+										groupId:Timer_Trigger;
+										groupName:Timer trigger configuration;!>
+
+#define NUCODEGEN_TIMER0_TRG_SRC		<!id:TIMER0TriggerConditionRadio;
+										type:radio;
+										label:TIMER0 trigger condition select;
+										data:TIMER_TRGSRC_TIMEOUT_EVENT;
+										default:TIMER_TRGSRC_TIMEOUT_EVENT;
+										enum:[TIMER_TRGSRC_TIMEOUT_EVENT, TIMER_TRGSRC_CAPTURE_EVENT];
+										optionLabels:[Time-out event, Capture event];
+										dependencies:TIMER0TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Trigger;!>
+
+#define NUCODEGEN_TIMER0_TRG_TARGET		<!id:TIMER0TriggerTargetCheckbox;
+										type:checkbox;
+										label:Select TIMER0 trigger target;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[TIMER_CTL_TRGPDMA_Msk, TIMER_CTL_TRGBPWM_Msk, TIMER_CTL_TRGADC_Msk, TIMER_CTL_TRGPWM_Msk];
+										optionLabels:[TIMER0 trigger PDMA, TIMER0 trigger BPWM, TIMER0 trigger ADC, TIMER0 trigger PWM];
+										dependencies:TIMER0TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Trigger;!>
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Quick Start of NuTool - CodeGenerator</title>
+<meta http-equiv="X-UA-Compatible" content="IE=10"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="responsiveslides.css">
+<link rel="stylesheet" href="quickstart.css">
+<script src="../jquery.js"></script>
+<script src="responsiveslides.js"></script>
+<script src="NUC_NuTool_Configuration.js"></script>
+<script>
+$(function () {
+	var recordedUIlanguage = $.ajax({ url: "../NuToolSetup.txt", async: false }).responseText,
+		userSelectUIlanguage = "English";
+	if (typeof (recordedUIlanguage) !== 'undefined' && recordedUIlanguage.indexOf('UIlanguage:') !== -1) {
+		userSelectUIlanguage = recordedUIlanguage.sliceAfterX('UIlanguage:');
+		userSelectUIlanguage = userSelectUIlanguage.slicePriorToX('\r');
+	}
+
+	if (userSelectUIlanguage.indexOf("Simplified") !== -1) {
+		document.title = 'NuTool - CodeGenerator 快速上手';
+		$("#h1_text")[0].innerHTML = 'NuTool - CodeGenerator 快速上手';
+		$("#h2_text")[0].innerHTML = '请参阅用户手册以获取更多细节';
+		$("#p1_text")[0].innerHTML = '步骤一:配置外设';
+		$("#p2_text")[0].innerHTML = '步骤二:配置管脚';
+		$("#p3_text")[0].innerHTML = '步骤三:配置时脉';
+		$("#p4_text")[0].innerHTML = '步骤四:产生程式码';
+		$("#image1")[0].title = '从左上区域的选项中选择想要的新唐微控器系列和型号。若想配置外设及相關設定，点击工具栏上的Configure Peripheral按键。';
+		$("#image2")[0].title = '若想配置管腳及相關設定，点击工具栏上的Configure Pin按键。';
+		$("#image3")[0].title = '若想配置时脉及相關設定，点击工具栏上的Configure Clock按键。';
+		$("#image4")[0].title = '若想产生程式码，点击工具栏上的Generate Code按键。请注意新唐开发版支持软件包(BSP)必须事先准备好。若无BSP，点选Generate Code对话框中的 Download BSP按键来取得它。';
+	}
+	else if (userSelectUIlanguage.indexOf("Traditional") !== -1) {
+		document.title = 'NuTool - CodeGenerator 快速上手';
+		$("#h1_text")[0].innerHTML = 'NuTool - CodeGenerator 快速上手';
+		$("#h2_text")[0].innerHTML = '請參閱用戶手冊以獲取更多細節';
+		$("#p1_text")[0].innerHTML = '步驟一:配置週邊';
+		$("#p2_text")[0].innerHTML = '步驟二:配置腳位';
+		$("#p3_text")[0].innerHTML = '步驟三:配置時鐘';
+		$("#p4_text")[0].innerHTML = '步驟四:產生程式碼';
+		$("#image1")[0].title = '從左上區域的選項中選擇想要的新唐微控器系列和型號。若想配置週邊及相關設定，點擊工具欄上的Configure Peripheral按鍵。';
+		$("#image2")[0].title = '若想配置腳位及相關設定，點擊工具欄上的Configure Pin按鍵。';
+		$("#image3")[0].title = '若想配置時鐘及相關設定，點擊工具欄上的Configure Clock按鍵。';
+		$("#image4")[0].title = '若想產生程式碼，點擊工具欄上的Generate Code按鍵。請注意新唐開發版支持軟件包(BSP)必須事先准備好。若無BSP，點選Generate Code對話框中的 Download BSP按鍵來取得它。';
+	}
+
+	$("#slideshow").responsiveSlides({
+		auto: false,
+		pager: false,
+		nav: true,
+		speed: 50,
+		namespace: "callbacks",
+	});
+});
+</script>
+</head>
+<body>
+<div id="wrapper">
+	<h1 id="h1_text">Quick Start of NuTool - CodeGenerator</h1>
+	<h2 id="h2_text">Please read the user manual for more details</h2>
+	<div class="callbacks_container">
+		<ul id="slideshow" class="rslides">
+			<li>
+				<img id="image1" src="images/Step 1.jpg" alt="" title="Select the expected chip series and part number from the upper-left select field. To configure peripheral functions and related settings, click the Configure Peripheral button on the toolbar.">
+				<p id="p1_text" class="caption">Step 1: Configuring Peripherals</p>
+			</li>
+			<li>
+				<img id="image2" src="images/Step 2.jpg" alt="" title="To configure pins and related settings, click the Configure Pin button on the toolbar.">
+				<p id="p2_text" class="caption">Step 2: Configuring Pins</p>
+			</li>
+			<li>
+				<img id="image3" src="images/Step 3.jpg" alt="" title="To configure clocks and related settings, click the Configure Clock button on the toolbar.">
+				<p id="p3_text" class="caption">Step 3: Configuring Clocks</p>
+			</li>
+			<li>
+				<img id="image4" src="images/Step 4.jpg" alt="" title="To generate code, click the Generate Code button on the toolbar. Please note that a Nuvoton board support package (BSP) must be ready in advance. If not ready, click the Download BSP button on the Generate Code dialog to get it.">
+				<p id="p4_text" class="caption">Step 4: Generating Code</p>
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

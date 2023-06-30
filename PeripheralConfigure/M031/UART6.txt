@@ -1,0 +1,471 @@
+/*--------------------------------------------------------------------------*/
+/* UART6 Configuration                                                      */
+/*--------------------------------------------------------------------------*/
+#define NUCODEGEN_UART6_FUNCSEL_UART		0
+#define NUCODEGEN_UART6_FUNCSEL_IrDA		2
+#define NUCODEGEN_UART6_FUNCSEL_RS485		3
+#define NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE	4
+
+#define UART6_MATCH_ADDRSS1     0xC0
+#define UART6_MATCH_ADDRSS2     0xA2
+#define UART6_UNMATCH_ADDRSS1   0xB1
+#define UART6_UNMATCH_ADDRSS2   0xD3
+
+#define NUCODEGEN_UART6_CTS_HIGH_LEVEL_ACT   0
+#define NUCODEGEN_UART6_CTS_LOW_LEVEL_ACT    1
+
+#define NUCODEGEN_UART6_RTS_HIGH_LEVEL_ACT   0
+#define NUCODEGEN_UART6_RTS_LOW_LEVEL_ACT    1
+
+#define NUCODEGEN_UART6_RS485_ADD_MODE       0
+#define NUCODEGEN_UART6_RS485_NMM_MODE       1
+
+<! clock:  {"ALL" : "UART6" }; !>
+
+		  
+<! pin:   {"UART6FunctionRadio":{ "NUCODEGEN_UART6_FUNCSEL_UART":        ["UART6_TXD","UART6_RXD"],
+								  "NUCODEGEN_UART6_FUNCSEL_IrDA":        ["UART6_TXD","UART6_RXD"],
+								  "NUCODEGEN_UART6_FUNCSEL_RS485":       ["UART6_TXD","UART6_RXD","UART6_nRTS"],
+								  "NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE": ["UART6_RXD"]
+								 },
+								 
+           "UART6AutoflowControlCheckbox":{"1":["UART6_nCTS","UART6_nRTS"]
+		   }							 
+        }; !>
+
+
+#define NUCODEGEN_UART6_FUNCSEL			<!id:UART6FunctionRadio;
+										type:radio;
+										label:UART6 Function Select;
+										data:NUCODEGEN_UART6_FUNCSEL_UART;
+										default:NUCODEGEN_UART6_FUNCSEL_UART;
+										helper:;
+										sort:false;
+										enum:[NUCODEGEN_UART6_FUNCSEL_UART, NUCODEGEN_UART6_FUNCSEL_IrDA, NUCODEGEN_UART6_FUNCSEL_RS485, NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE];
+										optionLabels:[UART, IrDA, RS485, Single Wire];
+										vertical:false;
+										dependencies:none;
+										dependenciesOption:none;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+
+#if (NUCODEGEN_UART6_FUNCSEL == NUCODEGEN_UART6_FUNCSEL_UART)
+#define UART6_BAUD						<!id:UART6Baudrateinteger;
+										type:integer;
+										label:UART6 Baud Rate ( 2400 bps ~ 1000000 bps );
+										data:115200;
+										default:115200;
+										helper:Enter your UART6 baud rate.;
+										sort:false;
+										minimum:2400;
+										maximum:1000000;
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_UART;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART6_LINE_CONFIG		<!id:UART6SetLineConfigCheckbox;
+										type:checkbox;
+										label:Config UART6 Line Setting;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable Config UART6 Line Setting];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_UART;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART6_WORD_LEN	    <!id:UART6WordLengthSelect;
+										type:select;
+										label:UART6 Word Length;
+										data:UART_WORD_LEN_8;
+										default:UART_WORD_LEN_8;
+										helper:;
+										sort:false;
+										enum:[UART_WORD_LEN_5, UART_WORD_LEN_6, UART_WORD_LEN_7, UART_WORD_LEN_8];
+										optionLabels:[5 bits, 6 bits, 7 bits, 8 bits];
+										dependencies:UART6SetLineConfigCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART6_PARITY		    <!id:UART6ParityBitSelect;
+										type:select;
+										label:UART6 Parity Bit;
+										data:UART_PARITY_NONE;
+										default:UART_PARITY_NONE;
+										helper:;
+										sort:false;
+										enum:[UART_PARITY_NONE, UART_PARITY_ODD, UART_PARITY_EVEN, UART_PARITY_MARK, UART_PARITY_SPACE];
+										optionLabels:[None, Odd, Even, Mark, Space];
+										dependencies:UART6SetLineConfigCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART6_STOP_BIT	    <!id:UART6StopBitSelect;
+										type:select;
+										label:UART6 Stop Bits;
+										data:UART_STOP_BIT_1;
+										default:UART_STOP_BIT_1;
+										helper:;
+										sort:false;
+										enum:[UART_STOP_BIT_1, UART_STOP_BIT_1_5, UART_STOP_BIT_2];
+										optionLabels:[1, 1.5 (for Word Lenght 5bits), 2 (for Word Lenght 6-8bits)];
+										dependencies:UART6SetLineConfigCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART6_AUTOFLOW		<!id:UART6AutoflowControlCheckbox;
+										type:checkbox;
+										label:UART6 Auto-flow Control;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable UART6 Auto-flow Control];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_UART;
+										groupId:UART6Advanced;    
+										groupName:Advanced Configuration;!>
+										
+#define NUCODEGEN_UART6_RTSACTLV_LOW	<!id:UART6RTSACTLVLevelSelect;
+										type:select;
+										label:nRTS pin input active level;
+										data:NUCODEGEN_UART6_RTS_LOW_LEVEL_ACT;
+										default:NUCODEGEN_UART6_RTS_LOW_LEVEL_ACT;
+										enum:[NUCODEGEN_UART6_RTS_HIGH_LEVEL_ACT,NUCODEGEN_UART6_RTS_LOW_LEVEL_ACT];
+										optionLabels:[High level,Low level];
+										dependencies:UART6AutoflowControlCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Advanced;    
+										groupName:Advanced Configuration;!>
+
+#define NUCODEGEN_UART6_CTSACTLV_LOW	<!id:UART6CTSACTLVLevelSelect;
+										type:select;
+										label:nCTS pin input active level;
+										data:NUCODEGEN_UART6_CTS_LOW_LEVEL_ACT;
+										default:NUCODEGEN_UART6_CTS_LOW_LEVEL_ACT;
+										enum:[NUCODEGEN_UART6_CTS_HIGH_LEVEL_ACT,NUCODEGEN_UART6_CTS_LOW_LEVEL_ACT];
+										optionLabels:[High level,Low level];
+										dependencies:UART6AutoflowControlCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Advanced;    
+										groupName:Advanced Configuration;!>
+
+#define NUCODEGEN_UART6_PDMAEN		   <!id:UART6PDMACheckbox;
+										type:checkbox;
+										label:PDMA Channel Control;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable PDMA Channel];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_UART;
+										groupId:UART6PDMA;    
+										groupName:PDMA Configuration;!>
+										
+#define NUCODEGEN_UART6_PDMAEN_Msk		<!id:UART6PDMASelectCheckbox;
+										type:multipleselect;
+										label:Channel Setting;
+										data:0;
+										default:0;
+										sort:false;
+                                        enum:[UART_INTEN_TXPDMAEN_Msk,UART_INTEN_RXPDMAEN_Msk];
+										optionLabels:[Enable TX PDMA,Enable RX PDMA];
+										dependencies:UART6PDMACheckbox;
+								    	dependenciesOption:1;
+										groupId:UART6PDMA;    
+								        groupName:PDMA Configuration;!>					
+										
+										
+#define NUCODEGEN_UART6_INTEN			<!id:UART6IntCheckbox;
+										type:checkbox;
+										label:UART6 Interrupt Control ;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[Enable UART6 Interrupt];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_UART;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART6_INT_MASK		<!id:UART6INTMASKMultipleSelect;
+										type:multipleselect;
+										label:Select Interrupts;
+										size:7;
+										data:0;
+										default:0;
+										helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.;
+										sort:false;
+										enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKIEN_Msk, UART_INTEN_ABRIEN_Msk];
+										optionLabels:[Receive Data Available, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, Wake-Up, Auto-baud Rate];
+										dependencies:UART6IntCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!>
+										
+#elif (NUCODEGEN_UART6_FUNCSEL == NUCODEGEN_UART6_FUNCSEL_IrDA)
+#define UART6_IRDA_BAUD					<!id:UART6IRDABaudrateinteger;
+										type:integer;
+										label:UART6 IrDA Baud Rate ( 2400 bps ~ 115200 bps );;
+										data:115200;
+										default:115200;
+										helper:Enter your UART6 IRDA baud rate.;
+										sort:false;
+										minimum:2400;
+										maximum:115200;
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_IrDA;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART6_IRDA_MODE		<!id:UART6IrDAModeRadio;
+										type:radio;
+										label:IrDA Receivr/Transmitter Selection;
+										data:UART_IRDA_RXEN;
+										default:UART_IRDA_RXEN;
+										sort:false;
+										enum:[UART_IRDA_RXEN, UART_IRDA_TXEN];
+										optionLabels:[Rx mode, Tx mode];
+										vertical:false;
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_IrDA;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART6_IRDA_INTEN		<!id:UART6IRDAIntCheckbox;
+										type:checkbox;
+										label:UART6 IrDA Interrupt Control;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[Enable UART6 IrDA Interrupt];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_IrDA;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART6_IRDA_INT_MASK	<!id:UART6IRDAINTMASKMultipleSelect;
+										type:multipleselect;
+										label:Select Interrupts;
+										size:2;
+										data:0;
+										default:0;
+										helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.;
+										sort:false;
+										enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+										optionLabels:[Receive Data Available, RX Time-Out];
+										dependencies:UART6IRDAIntCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!>
+										
+#elif (NUCODEGEN_UART6_FUNCSEL == NUCODEGEN_UART6_FUNCSEL_RS485)
+#define UART6_RS485_BAUD				<!id:UART6RS485Baudrateinteger;
+										type:integer;
+										label:UART6 RS485 Baud Rate ( 2400 bps ~ 1000000 bps );;
+										data:115200;
+										default:115200;
+										helper:Enter your UART6 RS485 baud rate.;
+										sort:false;
+										minimum:2400;
+										maximum:1000000;
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_RS485;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART6_RS485_MODE		<!id:UART6RS485CTLRadio;
+										type:radio;
+										label:RS485 Operation Mode;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[NUCODEGEN_UART6_RS485_ADD_MODE, NUCODEGEN_UART6_RS485_NMM_MODE];
+										optionLabels:[Auto Address Detection Operation Mode (AAD), Normal Multi-Drop Operation Mode (NMM) ];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_RS485;
+										groupId:UART6Advanced;    
+										groupName:Advanced Configuration;!>
+
+#define UART6_RS485_ADDRMV				<!id:UART6RS485AddrMVInteger;
+										type:integer;
+										label:UART6 RS485 Address Match Value;
+										data:0;
+										default:0;
+										helper:Enter your UART6 RS485 Address Match Value;
+										minimum:0;
+										maximum:255;
+										dependencies:UART6RS485CTLRadio;
+										dependenciesOption:NUCODEGEN_UART6_RS485_ADD_MODE;
+										groupId:UART6Advanced;    
+										groupName:Advanced Configuration;!>
+
+#define NUCODEGEN_UART6_RS485_INTEN		<!id:UART6RS485IntCheckbox;
+										type:checkbox;
+										label:UART6 RS485 Interrupt Control;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[Enable UART6 RS485 Interrupt];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_RS485;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!> 
+
+#define NUCODEGEN_UART6_RS485_INT_MASK	<!id:UART6RS485INTMASKMultipleSelect;
+										type:multipleselect;
+										label:Select UART6 RS485 Interrupts;
+										size:5;
+										data:0;
+										default:0;
+										helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.;
+										sort:false;
+										enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk];
+										optionLabels:[Receive Data Available, Receive Line Status, RX Time-Out, Buffer Error];
+										dependencies:UART6RS485IntCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!> 
+
+#elif (NUCODEGEN_UART6_FUNCSEL == NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE)
+
+#define UART6_SW_BAUD					<!id:UART6SWBaudrateinteger;
+										type:integer;
+										label:UART6 Single-wire Baud Rate ( 2400 bps ~ 1000000 bps );
+										data:115200;
+										default:115200;
+										helper:Enter your UART6 Single-wire baud rate.;
+										sort:false;
+										minimum:2400;
+										maximum:1000000;
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE;
+										groupId:UART6Basic;    
+										groupName:Basic Configuration;!>
+										
+#define NUCODEGEN_UART6_PDMAEN		   <!id:UART6SWPDMACheckbox;
+										type:checkbox;
+										label:PDMA Channel Control;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable PDMA Channel];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE;
+										groupId:UART6PDMA;    
+										groupName:PDMA Configuration;!>	
+										
+#define NUCODEGEN_UART6_PDMAEN_Msk		<!id:UART6SWPDMASelectCheckbox;
+										type:select;
+										label:Channel Select;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[UART_INTEN_TXPDMAEN_Msk,UART_INTEN_RXPDMAEN_Msk];
+										optionLabels:[Enable TX PDMA,Enable RX PDMA];
+										dependencies:UART6SWPDMACheckbox;
+										dependenciesOption:1;
+										groupId:UART6PDMA;    
+										groupName:PDMA Configuration;!>	
+										
+#define NUCODEGEN_UART6_SW_INTEN		<!id:UART6SWIntCheckbox;
+										type:checkbox;
+										label:UART6 Single-wire Interrupt Control;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[Enable UART6 Single-wire Interrupt];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART6_SW_INT_MASK		<!id:UART6SWINTMASKMultipleSelect;
+										type:multipleselect;
+										label:Select Interrupts;
+										size:7;
+										data:0;
+										default:0;
+										helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.;
+										sort:false;
+										enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKIEN_Msk, UART_INTEN_ABRIEN_Msk, UART_INTEN_SWBEIEN_Msk];
+										optionLabels:[Receive Data Available, Receive Line Status, RX Time-Out, Buffer Error, Wake-Up, Auto-baud Rate, Single-wire Bit Error Detection];
+										dependencies:UART6SWIntCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!>
+#endif
+
+#define NUCODEGEN_UART6_ABRDEN			<!id:UART6AutobaudRateCheckbox;
+										type:checkbox;
+										label:Auto-baud Rate Detect;
+										data:0;
+										default:0;
+										helper:Input pattern shall be 0x01;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable Auto-baud Rate Detect];
+										dependencies:UART6FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_UART|NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE;
+										groupId:UART6Advanced;    
+										groupName:Advanced Configuration;!>	
+
+#define NUCODEGEN_UART6_TOCNTEN			<!id:UART6TimeoutCounterCheckbox;
+										type:checkbox;
+										label:Receive Buffer Time Out Control;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable Receive Buffer Time Out];
+										dependencies:UART6FunctionRadio;	
+										dependenciesOption:NUCODEGEN_UART6_FUNCSEL_UART|NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE|NUCODEGEN_UART6_FUNCSEL_IrDA;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!>
+
+#if NUCODEGEN_UART6_TOCNTEN
+#define UART6_TOCNT						<!id:UART6TimeoutCountInteger;
+										type:integer;
+										label:Time Out Interrupt Comparator;
+										data:40;
+										default:40;
+										helper:Enter your UART6 Time-Out Interrupt Comparator(The counting clock = Baud rate);
+										minimum:40;
+										maximum:255;
+										dependencies:UART6TimeoutCounterCheckbox;
+										dependenciesOption:1;
+										groupId:UART6Interrupt;    
+										groupName:Interrupt Configuration;!>
+#endif
+
+#define NUCODEGEN_UART6_WKDATEN 	  <!id:UART6DataWakeupCheckbox;
+								 	  type:checkbox;
+									  label:Wake Up Source;
+									  data:0;
+									  default:0;
+									  enum:[1];
+									  optionLabels:[Enable Incoming Data Wake-up];
+									  dependencies:UART6FunctionRadio;
+									  dependenciesOption:NUCODEGEN_UART6_FUNCSEL_UART|NUCODEGEN_UART6_FUNCSEL_SINGLE_WIRE;
+									  groupId:UART6Interrupt;    
+						              groupName:Interrupt Configuration;!>				  
+									
+#define NUCODEGEN_UART6_WKCTSEN 	<!id:UART6nCTSWakeupCheckbox;
+									type:checkbox;
+									label:<br>;
+									data:0;
+									default:0;
+									enum:[1];
+									optionLabels:[Enable nCTS Wake-up];
+									dependencies:UART6FunctionRadio;
+									dependenciesOption:NUCODEGEN_UART6_FUNCSEL_UART;
+									groupId:UART6Interrupt;    
+						            groupName:Interrupt Configuration;!>

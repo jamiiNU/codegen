@@ -1,0 +1,58 @@
+<!id:UART1EnableINTCheckbox;
+type:checkbox;
+label:Enable Interrupts We Want for UART1;
+data:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+default:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+helper:Enable Interrupt We Want for UART1;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out];
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Group 1;!>
+
+<!id:UART0BaudrateRadio;
+type:radio;
+label:UART0 Baud Rate;
+data:115200;
+default:115200;
+helper:Select your UART0 baud rate;
+sort:false;
+enum:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+optionLabels:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+vertical:true;
+dependencies:none;
+dependenciesOption:none;
+observable:UART1EnableINTCheckbox;
+listener:{"UART_INTEN_RDAIEN_Msk,UART_INTEN_THREIEN_Msk": "4800"};
+groupId:group1;
+groupName:Group 1;!>
+
+<!id:i2c0_wakeup_en; type:checkbox;
+label:Enable I2C0 wakeup function;
+data:0; default:0; helper:Enable I2C0 wake-up function;
+sort:false; enum:[1];
+optionLabels:[Enable I2C0 wakeup function];
+dependencies:UART1EnableINTCheckbox;
+dependenciesOption:UART_INTEN_RDAIEN_Msk;
+groupId:group2;
+groupName:Group 2;!>
+
+<!id:CRCModeSelect;
+type:select;
+label:Select CRC Operation Polynomial Mode;
+data:CRC_CCITT;
+default:CRC_CCITT;
+enum:[CRC_CCITT, CRC_8, CRC_16, CRC_32];
+optionLabels:[CRC-CCITT, CRC-8, CRC-16, CRC-32];
+dependencies:none;
+dependenciesOption:none;
+observable:UART1EnableINTCheckbox;
+listener:{
+'UART_INTEN_RDAIEN_Msk': 'CRC_CCITT',
+'UART_INTEN_THREIEN_Msk': 'CRC_8',
+'UART_INTEN_RLSIEN_Msk': 'CRC_16',
+'UART_INTEN_MODEMIEN_Msk': 'CRC_32'};
+groupId:group2;
+groupName:Group 1;!>

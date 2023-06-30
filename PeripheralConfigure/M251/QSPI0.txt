@@ -1,0 +1,358 @@
+/*--------------------------------------------------------------------------*/
+/* QSPI0 Configuration                                                      */
+/*--------------------------------------------------------------------------*/
+
+<! clock: {"ALL" : "QSPI0" }; !>
+<! pin: {   "QSPI0_NormalPinConfigHidden":{
+                "NUCODEGEN_QSPI0_PIN_NORMAL":[
+                    "QSPI0_MISO0", "QSPI0_MOSI0", "QSPI0_SS", "QSPI0_CLK"
+                ],
+                "NUCODEGEN_QSPI0_PIN_QUADMODE":[
+                    "QSPI0_MISO0", "QSPI0_MOSI0",
+                    "QSPI0_MISO1", "QSPI0_MOSI1",
+                    "QSPI0_SS", "QSPI0_CLK"
+                ],
+                "NUCODEGEN_QSPI0_PIN_HALFDUPLEX":[
+                    "QSPI0_MOSI0", "QSPI0_SS", "QSPI0_CLK"
+                ]
+            },
+            "QSPI0_ReadOnlyPinConfigHidden":{
+                "NUCODEGEN_QSPI0_PIN_READONLY":[
+                    "QSPI0_MISO0", "QSPI0_SS", "QSPI0_CLK"
+                ]
+            },
+            "QSPI0_3WIREPinConfigHidden":{
+                "NUCODEGEN_QSPI0_PIN_HALFDUPLEX":[
+                    "QSPI0_MOSI0", "QSPI0_SS", "QSPI0_CLK"
+                ]
+            },
+            "QSPI0_TwoBitPinConfigHidden":{
+                "NUCODEGEN_QSPI0_PIN_QUADMODE":[
+                    "QSPI0_MISO0", "QSPI0_MOSI0",
+                    "QSPI0_MISO1", "QSPI0_MOSI1",
+                    "QSPI0_SS", "QSPI0_CLK"
+                ]
+            },
+            "ALL":["QSPI0_MISO0", "QSPI0_MOSI0", "QSPI0_SS","QSPI0_CLK"]
+        };
+!>
+
+#define NUCODEGEN_QSPI0_CTL_NORMALEN            (0)
+#define NUCODEGEN_QSPI0_CTL_DUALIOEN            (1)
+#define NUCODEGEN_QSPI0_CTL_QUADIOEN            (2)
+#define NUCODEGEN_QSPI0_CTL_HALFIOEN            (3)
+
+#define NUCODEGEN_QSPI0_PIN_NORMAL              (0)
+#define NUCODEGEN_QSPI0_PIN_HALFDUPLEX          (1)
+#define NUCODEGEN_QSPI0_PIN_READONLY            (2)
+#define NUCODEGEN_QSPI0_PIN_QUADMODE            (3)
+#define NUCODEGEN_QSPI0_PIN_3WIRE               (4)
+
+#define NUCODEGEN_QSPI0_PIN_CONFIG              (<!id:QSPI0_NormalPinConfigHidden;
+                                                    type:hidden;
+                                                    data:NUCODEGEN_QSPI0_PIN_NORMAL;
+                                                    default:NUCODEGEN_QSPI0_PIN_NORMAL;
+                                                    observable:QSPIDualModeEn;
+                                                    listener:{
+                                                        "NUCODEGEN_QSPI0_CTL_NORMALEN"  : "NUCODEGEN_QSPI0_PIN_NORMAL",
+                                                        "NUCODEGEN_QSPI0_CTL_DUALIOEN"  : "NUCODEGEN_QSPI0_PIN_NORMAL",
+                                                        "NUCODEGEN_QSPI0_CTL_QUADIOEN"  : "NUCODEGEN_QSPI0_PIN_QUADMODE",
+                                                        "NUCODEGEN_QSPI0_CTL_HALFIOEN"  : "NUCODEGEN_QSPI0_PIN_HALFDUPLEX"};
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    dependenciesDefault:false;
+                                                !><!id:QSPI0_ReadOnlyPinConfigHidden;
+                                                    type:hidden;
+                                                    data:;
+                                                    default:;
+                                                    observable:QSPIReceiveOnly;
+                                                    listener:{"1" : "NUCODEGEN_QSPI0_PIN_READONLY"};
+                                                    dependencies:[QSPIDualModeEn, QSPIReceiveOnly];
+                                                    dependenciesOption:{
+                                                        "QSPIDualModeEn":"NUCODEGEN_QSPI0_CTL_NORMALEN",
+                                                        "QSPIReceiveOnly":"1"};
+                                                    dependenciesDefault:false;
+                                                !><!id:QSPI0_TwoBitPinConfigHidden;
+                                                    type:hidden;
+                                                    data:;
+                                                    default:;
+                                                    observable:QSPI2BitModeEn;
+                                                    listener:{"1" : "NUCODEGEN_QSPI0_PIN_QUADMODE"};
+                                                    dependencies:[QSPIDualModeEn, QSPI2BitModeEn];
+                                                    dependenciesOption:{
+                                                        "QSPIDualModeEn":"NUCODEGEN_QSPI0_CTL_NORMALEN",
+                                                        "QSPI2BitModeEn":"1"};
+                                                    dependenciesDefault:false;
+                                                !><!id:QSPI0_3WIREPinConfigHidden;
+                                                    type:hidden;
+                                                    data:;
+                                                    default:;
+                                                    observable:QSPI3WireModeEn;
+                                                    listener:{"1"  : "NUCODEGEN_QSPI0_PIN_3WIRE"};
+                                                    dependencies:[QSPIDualModeEn, QSPI3WireModeEn];
+                                                    dependenciesOption:{"QSPIDualModeEn":"NUCODEGEN_QSPI0_CTL_NORMALEN",
+                                                                        "QSPI3WireModeEn":"1"};
+                                                    dependenciesDefault:false;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_MASTER                  (<!id:QSPIMasterSlave;
+                                                    type:radio;
+                                                    label:Select master/slave mode;
+                                                    data:QSPI_MASTER;
+                                                    default:QSPI_MASTER;
+                                                    enum:[QSPI_MASTER, QSPI_SLAVE];
+                                                    optionLabels:[Master, Slave];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_MODE                    (<!id:QSPIMode;
+                                                    type:radio;
+                                                    label:Select master/slave transfer timing;
+                                                    data:QSPI_MODE_0;
+                                                    default:QSPI_MODE_0;
+                                                    enum:[QSPI_MODE_0, QSPI_MODE_1, QSPI_MODE_2, QSPI_MODE_3];
+                                                    optionLabels:[  Mode 0, Mode 1, Mode 2, Mode 3];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_DUAL_QUAD_HALF_EN       (<!id:QSPIDualModeEn;
+                                                    type:select;
+                                                    label:Select normal/dual/quad/halfduplex mode;
+                                                    data:NUCODEGEN_QSPI0_CTL_NORMALEN;
+                                                    default:NUCODEGEN_QSPI0_CTL_NORMALEN;
+                                                    enum:[
+                                                        NUCODEGEN_QSPI0_CTL_NORMALEN,
+                                                        NUCODEGEN_QSPI0_CTL_DUALIOEN,
+                                                        NUCODEGEN_QSPI0_CTL_QUADIOEN,
+                                                        NUCODEGEN_QSPI0_CTL_HALFIOEN
+                                                    ];
+                                                    optionLabels:[Normal Mode, Dual Mode, Quad Mode, Half Duplex Mode];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_DATA_DIR                (<!id:QSPIDataDirection;
+                                                    type:radio;
+                                                    label:Select data direction;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ Input Mode, Output Mode];
+                                                    dependencies:QSPIDualModeEn;
+                                                    dependenciesOption:NUCODEGEN_QSPI0_CTL_DUALIOEN|NUCODEGEN_QSPI0_CTL_QUADIOEN|NUCODEGEN_QSPI0_CTL_HALFIOEN;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_BYTE_REORDER_EN         (<!id:QSPIByteReorder;
+                                                    type:radio;
+                                                    label:Enable byte reorder function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ Disable, Enable];
+                                                    dependencies:QSPIDualModeEn;
+                                                    dependenciesOption:NUCODEGEN_QSPI0_CTL_NORMALEN|NUCODEGEN_QSPI0_CTL_HALFIOEN;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_3WIRE_EN                (<!id:QSPI3WireModeEn;
+                                                    type:radio;
+                                                    label:Enable 3 wire mode;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ Disable, Enable];
+                                                    dependencies:[QSPIMasterSlave, QSPIDualModeEn] ;
+                                                    dependenciesOption:{"QSPIMasterSlave":"QSPI_SLAVE","QSPIDualModeEn":"(NUCODEGEN_QSPI0_CTL_NORMALEN|NUCODEGEN_QSPI0_CTL_HALFIOEN)"};
+                                                !>)
+
+#define NUCODEGEN_QSPI0_2BIT_EN                 (<!id:QSPI2BitModeEn;
+                                                    type:radio;
+                                                    label:Enable 2-bit mode;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ Disable, Enable];
+                                                    dependencies:QSPIDualModeEn;
+                                                    dependenciesOption:NUCODEGEN_QSPI0_CTL_NORMALEN;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_RECEIVE_ONLY_EN         (<!id:QSPIReceiveOnly;
+                                                    type:radio;
+                                                    label:Enable receive only function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ Disable, Enable];
+                                                    dependencies:QSPIMasterSlave;
+                                                    dependenciesOption:QSPI_MASTER;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_DATAWIDTH               (<!id:QSPIDataWidth;
+                                                    type:select;
+                                                    label:Select data width;
+                                                    helper: For byte reoder function, QSPI supports 16-bits, 24-bits, 32-bits.
+                                                    For dual and quad function, QSPI supports 8-bits, 16-bits, 24-bits, 32-bits. ;
+                                                    data:32;
+                                                    default:32;
+                                                    enum:[
+                                                        8, 9, 10, 11,
+                                                        12, 13, 14, 15,
+                                                        16, 17, 18, 19,
+                                                        20, 21, 22, 23,
+                                                        24, 25 ,26, 27,
+                                                        28, 29, 30, 31,
+                                                        32
+                                                    ];
+                                                    optionLabels:[
+                                                        8-bits, 9-bits, 10-bits, 11-bits,
+                                                        12-bits, 13-bits, 14-bits, 15-bits,
+                                                        16-bits, 17-bits, 18-bits, 19-bits,
+                                                        20-bits, 21-bits, 22-bits, 23-bits,
+                                                        24-bits, 25-bits, 26-bits, 27-bits,
+                                                        28-bits, 29-bits, 30-bits, 31-bits,
+                                                        32-bits
+                                                    ];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_BUSCLOCK                (<!id:QSPIBusClock;
+                                                    type:integer;
+                                                    label:Set bus clock;
+                                                    data:20000000;
+                                                    default:20000000;
+                                                    helper:Enter Master bus clock 2,000,000~24,000,000 Hz, Slave bus clock is as CLKSEL setting;
+                                                    minimum:1;
+                                                    maximum:24000000;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_DATA_ORDER              (<!id:QSPIDataOrder;
+                                                    type:radio;
+                                                    label:Select data format is MSB or LSB;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[ MSB, LSB];
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_AUTOSS_EN               (<!id:QSPIAutoSSEn;
+                                                    type:radio;
+                                                    label:Enable auto SS;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[Disable, Enable];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:QSPIMasterSlave;
+                                                    dependenciesOption:QSPI_MASTER;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_SS_EN                   (<!id:QSPISSEn;
+                                                    type:radio;
+                                                    label:Enable SS function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[Disable, Enable];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:QSPIAutoSSEn;
+                                                    dependenciesOption:0;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_SS_LEVEL                (<!id:QSPISSLevel;
+                                                    type:radio;
+                                                    label:Select SS active level;
+                                                    data:QSPI_SS_ACTIVE_HIGH;
+                                                    default:QSPI_SS_ACTIVE_HIGH;
+                                                    enum:[QSPI_SS_ACTIVE_HIGH, QSPI_SS_ACTIVE_LOW];
+                                                    optionLabels:[Active High, Active Low];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_TX_THRESHOLD            (<!id:QSPITxThreshold;
+                                                    type:select;
+                                                    label:Select tx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    optionLabels:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_RX_THRESHOLD            (<!id:QSPIRxThreshold;
+                                                    type:select;
+                                                    label:Select rx threshold;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    optionLabels:[0, 1, 2, 3, 4, 5, 6, 7];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_INT_EN                  (<!id:QSPIINTEn;
+                                                    type:radio;
+                                                    label:Enable interrupt function;
+                                                    data:0;
+                                                    default:0;
+                                                    enum:[0, 1];
+                                                    optionLabels:[Disable, Enable];
+                                                    vertical:false;
+                                                    sort:false;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                !>)
+
+#define NUCODEGEN_QSPI0_INT_SEL                 (<!id:QSPISSINTSel;
+                                                    type:multipleselect;
+                                                    label:Select interrupt;
+                                                    size:11;
+                                                    data:0;
+                                                    default:0;
+                                                    helper:1.If you would like to use QSPI_FIFO_TXTH_INT, QSPI_FIFO_RXTH_INT, you can add in code.
+                                                    2.QSPI_SSACT_INT, QSPI_SSINACT_INT, QSPI_SLVUR_INT, QSPI_SLVBE_INT, QSPI_SLVTO_INT only act in Slave mode.;
+                                                    sort:false;
+                                                    enum:[
+                                                        QSPI_UNIT_INT_MASK,
+                                                        QSPI_SSACT_INT_MASK,
+                                                        QSPI_SSINACT_INT_MASK,
+                                                        QSPI_SLVUR_INT_MASK,
+                                                        QSPI_SLVBE_INT_MASK,
+                                                        QSPI_SLVTO_INT_MASK,
+                                                        QSPI_TXUF_INT_MASK,
+                                                        QSPI_FIFO_RXOV_INT_MASK,
+                                                        QSPI_FIFO_RXTO_INT_MASK
+                                                    ];
+                                                    optionLabels:[
+                                                        QSPI_UNIT_INT,
+                                                        QSPI_SSACT_INT,
+                                                        QSPI_SSINACT_INT,
+                                                        QSPI_SLVUR_INT,
+                                                        QSPI_SLVBE_INT,
+                                                        QSPI_SLVTO_INT,
+                                                        QSPI_TXUF_INT,
+                                                        QSPI_FIFO_RXOV_INT,
+                                                        QSPI_FIFO_RXTO_INT
+                                                    ];
+                                                    dependencies:QSPIINTEn;
+                                                    dependenciesOption:1;
+                                                    functionalTest:{
+                                                        "QSPIMasterSlave":"QSPI_SLAVE",
+                                                        "QSPISSLevel":"QSPI_SS_ACTIVE_LOW"
+                                                    };
+                                                !>)

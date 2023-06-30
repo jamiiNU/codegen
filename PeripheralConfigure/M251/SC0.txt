@@ -1,0 +1,101 @@
+//SC0 
+
+<! clock: {"ALL" : "SC0" }; !>
+<! pin:   {"sc0_submode_select":{"NUCODEGEN_SC0_SUBMODE_SC":        ["SC0_CLK","SC0_DAT","SC0_PWR","SC0_RST"],
+                                 "NUCODEGEN_SC0_SUBMODE_SCUART":    ["SC0_CLK","SC0_DAT"]}                                               
+        }; !>
+
+#define NUCODEGEN_SC0_SUBMODE_SC              0
+#define NUCODEGEN_SC0_SUBMODE_SCUART          1
+
+#define NUCODEGEN_SC0_SUBMODE_SEL   (<!id:sc0_submode_select;
+                                    type:radio;
+                                    label:Select SC0 function mode;
+
+                                    data:NUCODEGEN_SC0_SUBMODE_SC;
+
+                                    default:NUCODEGEN_SC0_SUBMODE_SC;
+                                    enum:[NUCODEGEN_SC0_SUBMODE_SC, NUCODEGEN_SC0_SUBMODE_SCUART];
+                                    optionLabels:[Smart Card, SCUART];
+                                    dependencies:none;
+                                    dependenciesOption:none;
+                                    !>)
+
+
+#if (NUCODEGEN_SC0_SUBMODE_SEL==NUCODEGEN_SC0_SUBMODE_SC)
+#include "sclib.h"
+#define SC_INTF 0  // Smartcard interface 0
+    
+#define NUCODEGEN_SC0_PIN_STATE_CARDDETECT    (<!id:sc0_pin_carddetect_radio; 
+                                            type:radio; 
+                                            label:Card detection polarity ; 
+                                            data:SC_PIN_STATE_LOW; 
+                                            default:SC_PIN_STATE_LOW; 
+                                            helper:Card detect polarity, select the SC_CD pin state which indicates card insert; 
+                                            sort:false; enum:[SC_PIN_STATE_IGNORE, 
+                                                              SC_PIN_STATE_HIGH,
+                                                              SC_PIN_STATE_LOW]; 
+                                            optionLabels:[No CARD detect pin, HIGH detect, LOW detect]; 
+                                            vertical:true; 
+                                            dependencies:sc0_submode_select; 
+                                            dependenciesOption:NUCODEGEN_SC0_SUBMODE_SC;
+                                            groupId:Group_SC_gr1;!>)
+
+#define NUCODEGEN_SC0_PIN_STATE_PWR   (<!id:sc0_pin_state_radio; 
+                                    type:radio; 
+                                    label: Power on polarity ; 
+                                    data:SC_PIN_STATE_HIGH; 
+                                    default:SC_PIN_STATE_HIGH; 
+                                    helper:Power on polarity, select the SC_PWR pin state which could set smartcard VCC to high level.; 
+                                    sort:false; enum:[SC_PIN_STATE_HIGH, SC_PIN_STATE_LOW]; 
+                                    optionLabels:[Power Pin HIGH, Power Pin LOW]; 
+                                    vertical:true; 
+                                    dependencies:sc0_submode_select; 
+                                    dependenciesOption:NUCODEGEN_SC0_SUBMODE_SC;
+                                    groupId:Group_SC_gr2;!>)                        
+
+#endif /*NUCODEGEN_SC0_SUBMODE_SEL==NUCODEGEN_SC0_SUBMODE_SC*/
+
+
+#if (NUCODEGEN_SC0_SUBMODE_SEL == NUCODEGEN_SC0_SUBMODE_SCUART)
+#define NUCODEGEN_SC0_UART_BAUDRATE   (<!id:sc0_uart; type:integer; 
+                                    label:SCUART baud rate; 
+                                    data:115200; default:115200; 
+                                    helper:Enter SC0_UART baud rate (2400 bps ~ 921600 bps); 
+                                    minimum:2400; maximum:921600; 
+                                    dependencies:sc0_submode_select; 
+                                    dependenciesOption:NUCODEGEN_SC0_SUBMODE_SCUART;
+                                    groupId:Group_SC_gr3;
+                                    groupName:;!>)
+
+#define NUCODEGEN_SC0_INT_EN (<!id:sc0_interrupt_en; type:checkbox; 
+                            label:Enable SC0 interrupt; 
+                            data:0; default:0;
+                            helper: The function, TBEIEN, can be enabled by setting the bit, SC_INTEN(1), as 1 if needed.; 
+                            sort:false; enum:[1]; 
+                            optionLabels:[]; 
+                            dependencies:sc0_submode_select; 
+                            dependenciesOption:NUCODEGEN_SC0_SUBMODE_SCUART;
+                            groupId:Group_SC_gr4;
+                            groupName:;
+                            !>)
+
+
+#define NUCODEGEN_SCUART0_INTSEL (<!id:scuart0_interrupt_en_multipleselect; type:checkbox; 
+                            label:<br>; 
+                            data:0; default:0; helper:; 
+                            sort:false; 
+                            enum:[SC_INTEN_RXTOIEN_Msk, 
+                                  SC_INTEN_TERRIEN_Msk, 
+                                  SC_INTEN_RDAIEN_Msk
+                                  ]; 
+                            optionLabels:[Receiver buffer time-out interrupt, 
+                                          Transfer error, 
+                                          Transmit buffer empty , 
+                                          Receive data available]; 
+                            dependencies:sc0_interrupt_en; 
+                            dependenciesOption:1;
+                            groupId:Group_SC_gr4;
+                            !>)
+                               
+#endif /*NUCODEGEN_SC0_SUBMODE_SEL == NUCODEGEN_SC0_SUBMODE_SCUART*/

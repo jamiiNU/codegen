@@ -1,0 +1,524 @@
+<!clock: {"ALL" : "TMR1" };
+  pin:   {"TIMER1OutputPinRadio":{"TIMER_TOUT_PIN_FROM_TX": "TM1",
+								  "TIMER_TOUT_PIN_FROM_TX_EXT": "TM1_EXT"},
+		  "TPWM1OutputPinRadio":{"TPWM_TOUT_PIN_FROM_TX": "TM1",
+								 "TPWM_TOUT_PIN_FROM_TX_EXT": "TM1_EXT"},
+		  "TIMER1EventCountCheckbox":{"1": "TM1"},
+		  "TIMER1CaptureSourceSelect":{"TIMER1_CAP_FROM_EXTERNAL": "TM1_EXT"},
+		  "ALL":[""]};
+!>
+<!filter:{"M252_G": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"1", "TM1_TK_SUPPORT":"0"        },
+          "M252_E": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"0", "TM1_TK_SUPPORT":"0"        },
+          "M252_D": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"0", "TM1_TK_SUPPORT":"0"        },
+          "M252_C": {  "TM1_ACMP_SUPPORT":"0", "TM1_DAC_SUPPORT":"0", "TM1_TK_SUPPORT":"0"        },
+          "M254_E": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"0", "TM1_TK_SUPPORT":"0"        },
+          "M256_E": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"0", "TM1_TK_SUPPORT":"1"        },
+          "M258_E": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"0", "TM1_TK_SUPPORT":"1"        },
+          "M254_D": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"0", "TM1_TK_SUPPORT":"0"        },
+          "M256_D": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"0", "TM1_TK_SUPPORT":"1"        },
+          "M254_G": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"1", "TM1_TK_SUPPORT":"0"        },
+          "M256_G": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"1", "TM1_TK_SUPPORT":"1"        },
+          "M258_G": {  "TM1_ACMP_SUPPORT":"1", "TM1_DAC_SUPPORT":"1", "TM1_TK_SUPPORT":"1"        }};!>
+
+/*--------------------------------------------------------------------------*/
+/* TIMER1 Configuration                                                     */
+/*--------------------------------------------------------------------------*/
+#define NUCODEGEN_TIMER1_FUNC_TIMER		0
+#define NUCODEGEN_TIMER1_FUNC_PWM		1
+
+#define NUCODEGEN_TIMER1_FUNC			<!id:TIMER1FUNCRadio;
+										type:radio;
+										label:Select TIMER1 function;
+										data:NUCODEGEN_TIMER1_FUNC_TIMER;
+										default:NUCODEGEN_TIMER1_FUNC_TIMER;
+										enum:[NUCODEGEN_TIMER1_FUNC_TIMER, NUCODEGEN_TIMER1_FUNC_PWM];
+										optionLabels:[Timer function, Timer Pwm function];
+										dependencies:none;
+										dependenciesOption:none;!>
+
+#if (NUCODEGEN_TIMER1_FUNC == NUCODEGEN_TIMER1_FUNC_TIMER)
+#define TIMER1_MODE						<!id:TIMER1ModeRadio;
+										type:radio;
+										label:Select TIMER1 operation mode;
+										data:TIMER_ONESHOT_MODE;
+										default:TIMER_ONESHOT_MODE;
+										enum:[TIMER_ONESHOT_MODE, TIMER_PERIODIC_MODE, TIMER_TOGGLE_MODE, TIMER_CONTINUOUS_MODE];
+										optionLabels:[One-shot, Periodic, Toggle, Continuous counting];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_TIMER;
+										groupId:Timer_Common;
+										groupName:Timer common configuration;!>
+
+#define NUCODEGEN_TIMER1_TOUT_PIN		<!id:TIMER1OutputPinRadio;
+										type:radio;
+										label:Select TIMER1 output pin;
+										data:TIMER_TOUT_PIN_FROM_TX;
+										default:TIMER_TOUT_PIN_FROM_TX;
+										enum:[TIMER_TOUT_PIN_FROM_TX, TIMER_TOUT_PIN_FROM_TX_EXT];
+										optionLabels:[Output pin from TX, Output pin from TX_EXT];
+										dependencies:TIMER1ModeRadio;
+										dependenciesOption:TIMER_TOGGLE_MODE;
+										groupId:Timer_Common;!>
+
+#define TIMER1_FREQ						<!id:TIMER1FreqInteger;
+										type:integer;
+										label:Set TIMER1 frequency;
+										data:1000000;
+										default:1000000;
+										helper:Enter your TIMER1 frequency 1 ~ Source Clocks/2(Hz);
+										minimum:1;
+										maximum:24000000;
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_TIMER;
+										groupId:Timer_Common;!>
+
+#define NUCODEGEN_TIMER1_VALUE			<!id:TIMER1SetValueCheckbox;
+										type:checkbox;
+										label:Enable TIMER1 set prescale & compared value;
+										data:0;
+										default:0;
+										helper:Will change TIMER1 frequency;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_TIMER;
+										groupId:Timer_Common;!>
+
+#if NUCODEGEN_TIMER1_VALUE
+	#define TIMER1_PRESCALE_VALUE		<!id:TIMER1PrescaleInteger;
+										type:integer;
+										label:TIMER1 prescale value;
+										data:5;
+										default:5;
+										helper:Enter your TIMER1 prescale value(dec);
+										minimum:0;
+										maximum:255;
+										dependencies:TIMER1SetValueCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Common;!>
+	#define TIMER1_CMP_VALUE			<!id:TIMER1CMPHexText;
+										type:hextext;
+										label:TIMER1 compared value;
+										data:0x5A5A5A;
+										default:0x5A5A5A;
+										helper:Enter your TIMER1 compared value(hex);
+										minimum:0x2;
+										maximum:0xFFFFFF;
+										dependencies:TIMER1SetValueCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Common;!>
+#endif //NUCODEGEN_TIMER1_VALUE
+
+#define NUCODEGEN_TIMER1_WAKEUP			<!id:TIMER1WakeUpCheckbox;
+										type:checkbox;
+										label:Enable TIMER1 wake-up;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_TIMER;
+										groupId:Timer_Common;!>
+
+#define NUCODEGEN_TIMER1_INT			<!id:TIMER1IntCheckbox;
+										type:checkbox;
+										label:Enable TIMER1 time-out interrupt;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_TIMER;
+										groupId:Timer_Common;!>
+
+#define NUCODEGEN_TIMER1_EVENT_CNT		<!id:TIMER1EventCountCheckbox;
+										type:checkbox;
+										label:Enable TIMER1 event counting;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1ModeRadio;
+										dependenciesOption:TIMER_ONESHOT_MODE|TIMER_PERIODIC_MODE|TIMER_CONTINUOUS_MODE;
+										groupId:Event_Count;
+										groupName:Event count configuration;
+                                        filterExp:PB_dot4==1 or PC_dot6==1 or PC_dot14==1;!>
+
+#define NUCODEGEN_TIMER1_COUNTER_PHASE	<!id:TIMER1PhaseRadio;
+										type:radio;
+										label:Select TIMER1 external count phase;
+										data:TIMER_COUNTER_EVENT_FALLING;
+										default:TIMER_COUNTER_EVENT_FALLING;
+										enum:[TIMER_COUNTER_EVENT_FALLING, TIMER_COUNTER_EVENT_RISING];
+										optionLabels:[Event falling edge, Event rising edge];
+										dependencies:TIMER1EventCountCheckbox;
+										dependenciesOption:1;
+										groupId:Event_Count;
+                                        filterExp:PB_dot4==1 or PC_dot6==1 or PC_dot14==1;!>
+
+#define NUCODEGEN_TIMER1_EVENT_CNTDB	<!id:TIMER1EventCountDebounceCheckbox;
+										type:checkbox;
+										label:Enable TIMER1 event counting de-bounce;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1EventCountCheckbox;
+										dependenciesOption:1;
+										groupId:Event_Count;
+                                        filterExp:PB_dot4==1 or PC_dot6==1 or PC_dot14==1;!>
+
+#define NUCODEGEN_TIMER1_CAP			<!id:TIMER1CaptureCheckbox;
+										type:checkbox;
+										label:Enable TIMER1 capture;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1ModeRadio;
+										dependenciesOption:TIMER_ONESHOT_MODE|TIMER_PERIODIC_MODE|TIMER_CONTINUOUS_MODE;
+										groupId:Capture;
+										groupName:Capture configuration;!>
+
+#if NUCODEGEN_TIMER1_CAP
+
+#define NUCODEGEN_TIMER1_CAP_SRC		<!id:TIMER1CaptureSourceSelect;
+										type:select;
+										label:Select TIMER1 capture trigger source;
+										data:TIMER_CAPTURE_FROM_EXTERNAL;
+										default:TIMER_CAPTURE_FROM_EXTERNAL;
+										enum:[TIMER_CAPTURE_FROM_EXTERNAL, TIMER_CAPTURE_FROM_ACMP0, TIMER_CAPTURE_FROM_ACMP1, TIMER_CAPTURE_FROM_HXT, TIMER_CAPTURE_FROM_LXT, TIMER_CAPTURE_FROM_HIRC, TIMER_CAPTURE_FROM_LIRC, TIMER_CAPTURE_FROM_MIRC];
+										optionLabels:[Capture source from external, Internal source from ACMP0, Internal source from ACMP1, Internal source from HXT, Internal source from LXT, Internal source from HIRC, Internal source from LIRC, Internal source from MIRC];
+										dependencies:TIMER1CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;
+										filterExp:TM1_ACMP_SUPPORT>0;
+										filterDefault: false;!><!id:TIMER1CaptureSourceSelect1;
+										type:select;
+										label:Select TIMER1 capture trigger source;
+										data:TIMER_CAPTURE_FROM_EXTERNAL;
+										default:TIMER_CAPTURE_FROM_EXTERNAL;
+										enum:[TIMER_CAPTURE_FROM_EXTERNAL, TIMER_CAPTURE_FROM_HXT, TIMER_CAPTURE_FROM_LXT, TIMER_CAPTURE_FROM_HIRC, TIMER_CAPTURE_FROM_LIRC, TIMER_CAPTURE_FROM_MIRC];
+										optionLabels:[Capture source from external, Internal source from HXT, Internal source from LXT, Internal source from HIRC, Internal source from LIRC, Internal source from MIRC];
+										dependencies:TIMER1CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;
+										filterExp:TM1_ACMP_SUPPORT==0;
+										filterDefault: false;!>
+#endif //NUCODEGEN_TIMER1_CAP
+
+#define NUCODEGEN_TIMER1_CAP_EDGE		<!id:TIMER1CaptureEdgeSelect;
+										type:select;
+										label:Select TIMER1 capture edge detect;
+										data:TIMER_CAPTURE_EVENT_FALLING;
+										default:TIMER_CAPTURE_EVENT_FALLING;
+										enum:[TIMER_CAPTURE_EVENT_FALLING, TIMER_CAPTURE_EVENT_RISING, TIMER_CAPTURE_EVENT_FALLING_RISING, TIMER_CAPTURE_EVENT_RISING_FALLING, TIMER_CAPTURE_EVENT_GET_LOW_PERIOD, TIMER_CAPTURE_EVENT_GET_HIGH_PERIOD];
+										optionLabels:[Capture falling edge, Capture rising edge, Capture both falling and rising edge first at falling edge, Capture both rising and falling edge first at rising edge, Capture first at falling edge follows at rising edge, Capture first at rising edge follows at falling edge];
+										dependencies:TIMER1CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;!>
+
+#define NUCODEGEN_TIMER1_CAP_MODE		<!id:TIMER1CaptureModeRadio;
+										type:radio;
+										label:Select TIMER1 capture mode;
+										data:TIMER_CAPTURE_FREE_COUNTING_MODE;
+										default:TIMER_CAPTURE_FREE_COUNTING_MODE;
+										enum:[TIMER_CAPTURE_FREE_COUNTING_MODE, TIMER_CAPTURE_COUNTER_RESET_MODE];
+										optionLabels:[Free counting, Counter reset];
+										dependencies:TIMER1CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;!>
+
+#define NUCODEGEN_TIMER1_CAPDB			<!id:TIMER1CaptureDebounceCheckbox;
+										type:checkbox;
+										label:Enable TIMER1 capture de-bounce;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;!>
+
+#define NUCODEGEN_TIMER1_CAP_INT		<!id:TIMER1CaptureIntCheckbox;
+										type:checkbox;
+										label:Enable TIMER1 capture interrupt;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1CaptureCheckbox;
+										dependenciesOption:1;
+										groupId:Capture;!>
+
+#define NUCODEGEN_TIMER1_TRG			<!id:TIMER1TriggerCheckbox;
+										type:checkbox;
+										label:Enable TIMER1 trigger;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_TIMER;
+										groupId:Timer_Trigger;
+										groupName:Timer trigger configuration;!>
+
+#define NUCODEGEN_TIMER1_TRG_SRC		<!id:TIMER1TriggerConditionRadio;
+										type:radio;
+										label:TIMER1 trigger condition select;
+										data:TIMER_TRGSEL_TIMEOUT_EVENT;
+										default:TIMER_TRGSEL_TIMEOUT_EVENT;
+										enum:[TIMER_TRGSEL_TIMEOUT_EVENT, TIMER_TRGSEL_CAPTURE_EVENT];
+										optionLabels:[Time-out event, Capture event];
+										dependencies:TIMER1TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Trigger;!>
+
+#define NUCODEGEN_TIMER1_TRG_TARGET		<!id:TIMER1TriggerTargetCheckbox;
+										type:checkbox;
+										label:Select TIMER1 trigger target;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[TIMER_TRGCTL_TRGPDMA_Msk, TIMER_TRGCTL_TRGDAC_Msk, TIMER_TRGCTL_TRGEADC_Msk, TIMER_TRGCTL_TRGPWM_Msk, TIMER_TRGCTL_TRGTK_Msk];
+										optionLabels:[TIMER1 trigger PDMA, TIMER1 trigger DAC, TIMER1 trigger EADC, TIMER1 trigger PWM&BPWM, TIMER1 time-out trigger Touch-key];
+										dependencies:TIMER1TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Trigger;
+										filterExp:TM1_DAC_SUPPORT>0 and TM1_TK_SUPPORT>0;
+										filterDefault: false;!><!id:TIMER1TriggerTargetCheckbox1;
+										type:checkbox;
+										label:Select TIMER1 trigger target;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[TIMER_TRGCTL_TRGPDMA_Msk, TIMER_TRGCTL_TRGEADC_Msk, TIMER_TRGCTL_TRGPWM_Msk, TIMER_TRGCTL_TRGTK_Msk];
+										optionLabels:[TIMER1 trigger PDMA, TIMER1 trigger EADC, TIMER1 trigger PWM&BPWM, TIMER1 time-out trigger Touch-key];
+										dependencies:TIMER1TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Trigger;
+										filterExp:TM1_DAC_SUPPORT==0 and TM1_TK_SUPPORT>0;
+										filterDefault: false;!><!id:TIMER1TriggerTargetCheckbox2;
+										type:checkbox;
+										label:Select TIMER1 trigger target;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[TIMER_TRGCTL_TRGPDMA_Msk, TIMER_TRGCTL_TRGDAC_Msk, TIMER_TRGCTL_TRGEADC_Msk, TIMER_TRGCTL_TRGPWM_Msk];
+										optionLabels:[TIMER1 trigger PDMA, TIMER1 trigger DAC, TIMER1 trigger EADC, TIMER1 trigger PWM&BPWM];
+										dependencies:TIMER1TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Trigger;
+										filterExp:TM1_DAC_SUPPORT>0 and TM1_TK_SUPPORT==0;
+										filterDefault: false;!><!id:TIMER1TriggerTargetCheckbox3;
+										type:checkbox;
+										label:Select TIMER1 trigger target;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[TIMER_TRGCTL_TRGPDMA_Msk, TIMER_TRGCTL_TRGEADC_Msk, TIMER_TRGCTL_TRGPWM_Msk];
+										optionLabels:[TIMER1 trigger PDMA, TIMER1 trigger EADC, TIMER1 trigger PWM&BPWM];
+										dependencies:TIMER1TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:Timer_Trigger;
+										filterExp:TM1_DAC_SUPPORT==0 and TM1_TK_SUPPORT==0;
+										filterDefault: false;!>
+
+#endif //(NUCODEGEN_TIMER1_FUNC == NUCODEGEN_TIMER1_FUNC_TIMER)------------------------------------------------------------------------------------------------------
+
+#if (NUCODEGEN_TIMER1_FUNC == NUCODEGEN_TIMER1_FUNC_PWM)
+#define NUCODEGEN_TPWM1_CONFIG_FREQ_DUTY	0
+#define NUCODEGEN_TPWM1_CONFIG_VALUE		1
+
+#define NUCODEGEN_TPWM1_CONFIG			<!id:TPWM1ConfigRadio;
+										type:radio;
+										label:TPWM1 config;
+										data:NUCODEGEN_TPWM1_CONFIG_FREQ_DUTY;
+										default:NUCODEGEN_TPWM1_CONFIG_FREQ_DUTY;
+										enum:[NUCODEGEN_TPWM1_CONFIG_FREQ_DUTY, NUCODEGEN_TPWM1_CONFIG_VALUE];
+										optionLabels:[Config by frequency & duty, Config by value];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_PWM;
+										groupId:TPWM_Common;
+										groupName:TPWM common configuration;!>
+
+#if (NUCODEGEN_TPWM1_CONFIG == NUCODEGEN_TPWM1_CONFIG_FREQ_DUTY)
+	#define TPWM1_FREQ					<!id:TPWM1OutputFreqInteger;
+										type:integer;
+										label:Set TPWM1 output frequency;
+										data:1000000;
+										default:1000000;
+										helper:Enter your TPWM1 output frequency, 3 ~ Source Clocks/2(Hz);
+										minimum:3;
+										maximum:24000000;
+										dependencies:TPWM1ConfigRadio;
+										dependenciesOption:NUCODEGEN_TPWM1_CONFIG_FREQ_DUTY;
+										groupId:TPWM_Common;!>
+
+	#define TPWM1_DUTY					<!id:TPWM1OutputDutyInteger;
+										type:integer;
+										label:Set TPWM1 output duty;
+										data:50;
+										default:50;
+										helper:Enter your TPWM1 output duty, 0~100(%);
+										minimum:0;
+										maximum:100;
+										dependencies:TPWM1ConfigRadio;
+										dependenciesOption:NUCODEGEN_TPWM1_CONFIG_FREQ_DUTY;
+										groupId:TPWM_Common;!>
+#endif //(NUCODEGEN_TPWM1_CONFIG == NUCODEGEN_TPWM1_CONFIG_FREQ_DUTY)
+
+#if (NUCODEGEN_TPWM1_CONFIG == NUCODEGEN_TPWM1_CONFIG_VALUE)
+	#define TPWM1_PRESCALE_VALUE		<!id:TPWM1PrescaleInteger;
+										type:integer;
+										label:TPWM1 prescale value;
+										data:5;
+										default:5;
+										helper:Enter your TPWM1 prescale value;
+										minimum:0;
+										maximum:255;
+										dependencies:TPWM1ConfigRadio;
+										dependenciesOption:NUCODEGEN_TPWM1_CONFIG_VALUE;
+										groupId:TPWM_Common;!>
+
+	#define TPWM1_PERIOD_VALUE			<!id:TPWM1PeriodHexText;
+										type:hextext;
+										label:TPWM1 period value;
+										data:0x5A5A;
+										default:0x5A5A;
+										helper:Enter your TPWM1 period value;
+										minimum:0;
+										maximum:0xFFFF;
+										dependencies:TPWM1ConfigRadio;
+										dependenciesOption:NUCODEGEN_TPWM1_CONFIG_VALUE;
+										groupId:TPWM_Common;!>
+
+	#define TPWM1_CMP_VALUE				<!id:TPWM1CMPHexText;
+										type:hextext;
+										label:TPWM1 compared value;
+										data:0x5A5A;
+										default:0x5A5A;
+										helper:Enter your TPWM1 compared value;
+										minimum:0;
+										maximum:0xFFFF;
+										dependencies:TPWM1ConfigRadio;
+										dependenciesOption:NUCODEGEN_TPWM1_CONFIG_VALUE;
+										groupId:TPWM_Common;!>
+#endif //(NUCODEGEN_TPWM1_CONFIG == NUCODEGEN_TPWM1_CONFIG_VALUE)
+
+#define NUCODEGEN_TPWM1_WAKEUP			<!id:TPWM1WakeUpCheckbox;
+										type:checkbox;
+										label:Enable TPWM1 wake-up;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_PWM;
+										groupId:TPWM_Common;!>
+
+#define NUCODEGEN_TPWM1_PERIOD_INT		<!id:TPWM1PeriodIntCheckbox;
+										type:checkbox;
+										label:Enable TPWM1 period point interrupt;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_PWM;
+										groupId:TPWM_Common;!>
+
+#define NUCODEGEN_TPWM1_CMP_UP_INT		<!id:TPWM1CompareIntCheckbox;
+										type:checkbox;
+										label:Enable TPWM1 compare interrupt;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_PWM;
+										groupId:TPWM_Common;!>
+
+#define NUCODEGEN_TPWM1_OUTPUT			<!id:TPWM1OutputCheckbox;
+										type:checkbox;
+										label:Enable TPWM1 output;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_PWM;
+										groupId:TPWM_Output;
+										groupName:TPWM output configuration;!>
+
+#define NUCODEGEN_TPWM1_TOUT_PIN		<!id:TPWM1OutputPinRadio;
+										type:radio;
+										label:Select TPWM1 output pin;
+										data:TPWM_TOUT_PIN_FROM_TX;
+										default:TPWM_TOUT_PIN_FROM_TX;
+										enum:[TPWM_TOUT_PIN_FROM_TX, TPWM_TOUT_PIN_FROM_TX_EXT];
+										optionLabels:[Output pin from TX, Output pin from TX_EXT];
+										dependencies:TPWM1OutputCheckbox;
+										dependenciesOption:1;
+										groupId:TPWM_Output;!>
+
+#define NUCODEGEN_TPWM1_OUT_INV			<!id:TPWM1OutputInverseCheckbox;
+										type:checkbox;
+										label:Enable TPWM1 output inverse;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TPWM1OutputCheckbox;
+										dependenciesOption:1;
+										groupId:TPWM_Output;!>
+
+#define NUCODEGEN_TPWM1_TRG				<!id:TPWM1TriggerCheckbox;
+										type:checkbox;
+										label:Enable TPWM1 trigger;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[<br>];
+										dependencies:TIMER1FUNCRadio;
+										dependenciesOption:NUCODEGEN_TIMER1_FUNC_PWM;
+										groupId:TPWM_Trigger;
+										groupName:TPWM trigger configuration;!>
+
+#define NUCODEGEN_TPWM1_TRG_SRC			<!id:TPWM1TriggerConditionRadio;
+										type:radio;
+										label:Select TPWM1 trigger condition;
+										data:TPWM_TRIGGER_AT_PERIOD_POINT;
+										default:TPWM_TRIGGER_AT_PERIOD_POINT;
+										enum:[TPWM_TRIGGER_AT_PERIOD_POINT, TPWM_TRIGGER_AT_COMPARE_POINT, TPWM_TRIGGER_AT_PERIOD_OR_COMPARE_POINT];
+										optionLabels:[Period point, Compare point, Period or compare point];
+										dependencies:TPWM1TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:TPWM_Trigger;!>
+
+#define NUCODEGEN_TPWM1_TRG_TARGET		<!id:TPWM1TriggerTargetCheckbox;
+										type:checkbox;
+										label:Select TPWM1 trigger target;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[TIMER_PWMTRGCTL_PWMTRGPDMA_Msk, TIMER_PWMTRGCTL_PWMTRGDAC_Msk, TIMER_PWMTRGCTL_PWMTRGEADC_Msk];
+										optionLabels:[TPWM1 trigger PDMA, TPWM1 trigger DAC, TPWM1 trigger EADC];
+										dependencies:TPWM1TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:TPWM_Trigger;
+										filterExp:TM1_DAC_SUPPORT>0;
+										filterDefault: false;!><!id:TPWM1TriggerTargetCheckbox1;
+										type:checkbox;
+										label:Select TPWM1 trigger target;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[TIMER_PWMTRGCTL_PWMTRGPDMA_Msk, TIMER_PWMTRGCTL_PWMTRGEADC_Msk];
+										optionLabels:[TPWM1 trigger PDMA, TPWM1 trigger EADC];
+										dependencies:TPWM1TriggerCheckbox;
+										dependenciesOption:1;
+										groupId:TPWM_Trigger;
+										filterExp:TM1_DAC_SUPPORT==0;
+										filterDefault: false;!>
+#endif //(NUCODEGEN_TIMER1_FUNC == NUCODEGEN_TIMER1_FUNC_PWM)

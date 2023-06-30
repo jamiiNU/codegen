@@ -1,0 +1,536 @@
+/*--------------------------------------------------------------------------*/
+/* UART4 Configuration                                                      */
+/*--------------------------------------------------------------------------*/
+#define NUCODEGEN_UART4_FUNCSEL_UART		0
+#define NUCODEGEN_UART4_FUNCSEL_IrDA		2
+#define NUCODEGEN_UART4_FUNCSEL_RS485		3
+#define NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE	4
+
+#define UART4_MATCH_ADDRSS1     0xC0
+#define UART4_MATCH_ADDRSS2     0xA2
+#define UART4_UNMATCH_ADDRSS1   0xB1
+#define UART4_UNMATCH_ADDRSS2   0xD3
+
+#define NUCODEGEN_UART4_CTS_HIGH_LEVEL_ACT   0
+#define NUCODEGEN_UART4_CTS_LOW_LEVEL_ACT    1
+
+#define NUCODEGEN_UART4_RTS_HIGH_LEVEL_ACT   0
+#define NUCODEGEN_UART4_RTS_LOW_LEVEL_ACT    1
+
+#define NUCODEGEN_UART4_RS485_ADD_MODE       0
+#define NUCODEGEN_UART4_RS485_NMM_MODE       1
+
+
+<! clock:  {"ALL" : "UART4" }; !>
+	  
+<! pin:   {"UART4FunctionRadio":{ "NUCODEGEN_UART4_FUNCSEL_UART":        ["UART4_TXD","UART4_RXD"],
+								  "NUCODEGEN_UART4_FUNCSEL_IrDA":        ["UART4_TXD","UART4_RXD"],
+								  "NUCODEGEN_UART4_FUNCSEL_RS485":       ["UART4_TXD","UART4_RXD","UART4_nRTS"],
+								  "NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE": ["UART4_RXD"]
+								 },
+								 
+           "UART4AutoflowControlCheckbox":{"1":["UART4_nCTS","UART4_nRTS"]
+		   }							 
+        }; !>
+
+
+
+#define NUCODEGEN_UART4_FUNCSEL			<!id:UART4FunctionRadio;
+										type:radio;
+										label:UART4 Function Select;
+										data:NUCODEGEN_UART4_FUNCSEL_UART;
+										default:NUCODEGEN_UART4_FUNCSEL_UART;
+										helper:;
+										sort:false;
+										enum:[NUCODEGEN_UART4_FUNCSEL_UART, NUCODEGEN_UART4_FUNCSEL_IrDA, NUCODEGEN_UART4_FUNCSEL_RS485, NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE];
+										optionLabels:[UART, IrDA, RS485, Single Wire];
+										vertical:false;
+										dependencies:none;
+										dependenciesOption:none;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+
+#if (NUCODEGEN_UART4_FUNCSEL == NUCODEGEN_UART4_FUNCSEL_UART)
+#define UART4_BAUD						<!id:UART4Baudrateinteger;
+										type:integer;
+										label:UART4 Baud Rate ( 2400 bps ~ 1000000 bps );
+										data:115200;
+										default:115200;
+										helper:Enter your UART4 baud rate.;
+										sort:false;
+										minimum:2400;
+										maximum:1000000;
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+										
+
+#define NUCODEGEN_UART4_LINE_CONFIG		<!id:UART4SetLineConfigCheckbox;
+										type:checkbox;
+										label:Config UART4 Line Setting;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable Config UART4 Line Setting];
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART4_WORD_LEN	    <!id:UART4WordLengthSelect;
+										type:select;
+										label:UART4 Word Length;
+										data:UART_WORD_LEN_8;
+										default:UART_WORD_LEN_8;
+										helper:;
+										sort:false;
+										enum:[UART_WORD_LEN_5, UART_WORD_LEN_6, UART_WORD_LEN_7, UART_WORD_LEN_8];
+										optionLabels:[5 bits, 6 bits, 7 bits, 8 bits];
+										dependencies:UART4SetLineConfigCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART4_PARITY		    <!id:UART4ParityBitSelect;
+										type:select;
+										label:UART4 Parity Bit;
+										data:UART_PARITY_NONE;
+										default:UART_PARITY_NONE;
+										helper:;
+										sort:false;
+										enum:[UART_PARITY_NONE, UART_PARITY_ODD, UART_PARITY_EVEN, UART_PARITY_MARK, UART_PARITY_SPACE];
+										optionLabels:[None, Odd, Even, Mark, Space];
+										dependencies:UART4SetLineConfigCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART4_STOP_BIT	    <!id:UART4StopBitSelect;
+										type:select;
+										label:UART4 Stop Bits;
+										data:UART_STOP_BIT_1;
+										default:UART_STOP_BIT_1;
+										helper:;
+										sort:false;
+										enum:[UART_STOP_BIT_1, UART_STOP_BIT_1_5, UART_STOP_BIT_2];
+										optionLabels:[1, 1.5 (for Word Lenght 5bits), 2 (for Word Lenght 6-8bits)];
+										dependencies:UART4SetLineConfigCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART4_AUTOFLOW		<!id:UART4AutoflowControlCheckbox;
+										type:checkbox;
+										label:UART4 Auto-flow Control;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable UART4 Auto-flow Control];
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART;
+										groupId:UART4Advanced;    
+										groupName:Advanced Configuration;!>
+										
+#define NUCODEGEN_UART4_RTSACTLV_LOW	<!id:UART4RTSACTLVLevelSelect;
+										type:select;
+										label:nRTS pin output active level;
+										data:NUCODEGEN_UART4_RTS_LOW_LEVEL_ACT;
+										default:NUCODEGEN_UART4_RTS_LOW_LEVEL_ACT;
+										enum:[NUCODEGEN_UART4_RTS_HIGH_LEVEL_ACT,NUCODEGEN_UART4_RTS_LOW_LEVEL_ACT];
+										optionLabels:[High level,Low level];
+										dependencies:UART4AutoflowControlCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Advanced;    
+										groupName:Advanced Configuration;!>
+
+#define NUCODEGEN_UART4_CTSACTLV_LOW	<!id:UART4CTSACTLVLevelSelect;
+										type:select;
+										label:nCTS pin input active level;
+										data:NUCODEGEN_UART4_CTS_LOW_LEVEL_ACT;
+										default:NUCODEGEN_UART4_CTS_LOW_LEVEL_ACT;
+										enum:[NUCODEGEN_UART4_CTS_HIGH_LEVEL_ACT,NUCODEGEN_UART4_CTS_LOW_LEVEL_ACT];
+										optionLabels:[High level,Low level];
+										dependencies:UART4AutoflowControlCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Advanced;    
+										groupName:Advanced Configuration;!>
+
+#define NUCODEGEN_UART4_FIFO_RTSTRGLV	<!id:UART4RTSTriggerLevelSelect;
+										type:select;
+										label:nRTS Trigger Level for Auto-flow Control;
+										data:UART_FIFO_RTSTRGLV_1BYTE;
+										default:UART_FIFO_RTSTRGLV_1BYTE;
+										helper:;
+										sort:false;
+										enum:[UART_FIFO_RTSTRGLV_1BYTE, UART_FIFO_RTSTRGLV_4BYTES, UART_FIFO_RTSTRGLV_8BYTES, UART_FIFO_RTSTRGLV_14BYTES];
+										optionLabels:[1 byte, 4 bytes, 8 bytes, 14 bytes];
+										dependencies:UART4AutoflowControlCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Advanced;    
+										groupName:Advanced Configuration;!>
+										
+#define NUCODEGEN_UART4_PDMAEN		   <!id:UART4PDMACheckbox;
+										type:checkbox;
+										label:PDMA Channel Control;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable PDMA Channel];
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART;
+										groupId:UART4PDMA;    
+										groupName:PDMA Configuration;!>
+										
+#define NUCODEGEN_UART4_PDMAEN_Msk		<!id:UART4PDMASelectCheckbox;
+										type:multipleselect;
+										label:Channel Setting;
+										data:0;
+										default:0;
+										sort:false;
+                                        enum:[UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];
+										optionLabels:[Enable TX PDMA,Enable RX PDMA];
+										dependencies:UART4PDMACheckbox;
+										dependenciesOption:1;
+									    groupId:UART4PDMA;    
+										groupName:PDMA Configuration;!>
+										
+#define NUCODEGEN_UART4_INTEN			<!id:UART4IntCheckbox;
+										type:checkbox;
+										label:UART4 Interrupt Control ;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[Enable UART4 Interrupt];
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!>	
+
+#define NUCODEGEN_UART4_INT_MASK		<!id:UART4INTMASKMultipleSelect;
+										type:multipleselect;
+										label:Select Interrupts;
+										size:7;
+										data:0;
+										default:0;
+										helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.;
+										sort:false;
+										enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKIEN_Msk, UART_INTEN_ABRIEN_Msk];
+										optionLabels:[Receive Data Available, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, Wake-Up, Auto-baud Rate];
+										dependencies:UART4IntCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!>	
+										
+#elif (NUCODEGEN_UART4_FUNCSEL == NUCODEGEN_UART4_FUNCSEL_IrDA)
+#define UART4_IRDA_BAUD					<!id:UART4IRDABaudrateinteger;
+										type:integer;
+										label:UART4 IrDA Baud Rate ( 2400 bps ~ 115200 bps );
+										data:115200;
+										default:115200;
+										helper:Enter your UART4 IRDA baud rate.;
+										sort:false;
+										minimum:2400;
+										maximum:115200;
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_IrDA;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART4_IRDA_MODE		<!id:UART4IrDAModeRadio;
+										type:radio;
+										label:IrDA Receivr/Transmitter Selection;
+										data:UART_IRDA_RXEN;
+										default:UART_IRDA_RXEN;
+										sort:false;
+										enum:[UART_IRDA_RXEN, UART_IRDA_TXEN];
+										optionLabels:[Rx mode, Tx mode];
+										vertical:false;
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_IrDA;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART4_IRDA_INTEN		<!id:UART4IRDAIntCheckbox;
+										type:checkbox;
+										label:UART4 IrDA Interrupt Control;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[Enable UART4 IrDA Interrupt];
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_IrDA;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART4_IRDA_INT_MASK	<!id:UART4IRDAINTMASKMultipleSelect;
+										type:multipleselect;
+										label:Select Interrupts;
+										size:2;
+										data:0;
+										default:0;
+										helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.;
+										sort:false;
+										enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+										optionLabels:[Receive Data Available, RX Time-Out];
+										dependencies:UART4IRDAIntCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!>
+										
+#elif (NUCODEGEN_UART4_FUNCSEL == NUCODEGEN_UART4_FUNCSEL_RS485)
+#define UART4_RS485_BAUD				<!id:UART4RS485Baudrateinteger;
+										type:integer;
+										label:UART4 RS485 Baud Rate ( 2400 bps ~ 1000000 bps );
+										data:115200;
+										default:115200;
+										helper:Enter your UART4 RS485 baud rate.;
+										sort:false;
+										minimum:2400;
+										maximum:1000000;
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_RS485;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART4_RS485_MODE		<!id:UART4RS485CTLRadio;
+										type:radio;
+										label:RS485 Operation Mode;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[NUCODEGEN_UART4_RS485_ADD_MODE, NUCODEGEN_UART4_RS485_NMM_MODE];
+										optionLabels:[Auto Address Detection Operation Mode (AAD), Normal Multi-Drop Operation Mode (NMM) ];
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_RS485;
+										groupId:UART4Advanced;    
+										groupName:Advanced Configuration;!>
+
+#define UART4_RS485_ADDRMV				<!id:UART4RS485AddrMVInteger;
+										type:integer;
+										label:UART4 RS485 Address Match Value;
+										data:0;
+										default:0;
+										helper:Enter your UART4 RS485 Address Match Value;
+										minimum:0;
+										maximum:255;
+										dependencies:UART4RS485CTLRadio;
+										dependenciesOption:NUCODEGEN_UART4_RS485_ADD_MODE;
+										groupId:UART4Advanced;    
+										groupName:Advanced Configuration;!>
+
+#define NUCODEGEN_UART4_RS485_INTEN		<!id:UART4RS485IntCheckbox;
+										type:checkbox;
+										label:UART4 RS485 Interrupt Control;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[Enable UART4 RS485 Interrupt];
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_RS485;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!> 
+
+#define NUCODEGEN_UART4_RS485_INT_MASK	<!id:UART4RS485INTMASKMultipleSelect;
+										type:multipleselect;
+										label:Select Interrupts;
+										size:5;
+										data:0;
+										default:0;
+										helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.;
+										sort:false;
+										enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKIEN_Msk];
+										optionLabels:[Receive Data Available, Receive Line Status, RX Time-Out, Buffer Error, Wake-Up];
+										dependencies:UART4RS485IntCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!> 
+										
+#define NUCODEGEN_UART4_WKRS485EN	   <!id:UART4RS485WakeupCheckbox;
+									   type:checkbox;
+									   label:RS485 Address Match Wake up;
+									   data:0;
+									   default:0;
+									   enum:[1];
+									   optionLabels:[Enable RS-485 Address Match (AAD Mode) Wake-up];
+									   dependencies:UART4RS485CTLRadio;
+									   dependenciesOption:NUCODEGEN_UART4_RS485_ADD_MODE;
+                                       groupId:UART4Interrupt;    
+                                       groupName:Interrupt Configuration;!>	
+										
+#elif (NUCODEGEN_UART4_FUNCSEL == NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE)
+#define UART4_SW_BAUD					<!id:UART4SWBaudrateinteger;
+										type:integer;
+										label:UART4 Single-wire Baud Rate ( 2400 bps ~ 1000000 bps );
+										data:115200;
+										default:115200;
+										helper:Enter your UART4 Single-wire baud rate.;
+										sort:false;
+										minimum:2400;
+										maximum:1000000;
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE;
+										groupId:UART4Basic;    
+										groupName:Basic Configuration;!>
+										
+#define NUCODEGEN_UART4_PDMAEN		   <!id:UART4SWPDMACheckbox;
+										type:checkbox;
+										label:PDMA Channel Control;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable PDMA Channel];
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE;
+										groupId:UART4PDMA;    
+										groupName:PDMA Configuration;!>	
+										
+#define NUCODEGEN_UART4_PDMAEN_Msk		<!id:UART4SWPDMASelectCheckbox;
+										type:select;
+										label:Channel Select;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[UART_INTEN_TXPDMAEN_Msk,UART_INTEN_RXPDMAEN_Msk];
+										optionLabels:[Enable TX PDMA,Enable RX PDMA];
+										dependencies:UART4SWPDMACheckbox;
+										dependenciesOption:1;
+                                        groupId:UART4PDMA;    
+							            groupName:PDMA Configuration;!>								
+										
+#define NUCODEGEN_UART4_SW_INTEN		<!id:UART4SWIntCheckbox;
+										type:checkbox;
+										label:UART4 Single-wire Interrupt Control;
+										data:0;
+										default:0;
+										enum:[1];
+										optionLabels:[Enable UART4 Single-wire Interrupt];
+										dependencies:UART4FunctionRadio;
+										dependenciesOption:NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART4_SW_INT_MASK		<!id:UART4SWINTMASKMultipleSelect;
+										type:multipleselect;
+										label:Select Interrupts;
+										size:7;
+										data:0;
+										default:0;
+										helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.;
+										sort:false;
+										enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKIEN_Msk, UART_INTEN_ABRIEN_Msk, UART_INTEN_SWBEIEN_Msk];
+										optionLabels:[Receive Data Available, Receive Line Status, RX Time-Out, Buffer Error, Wake-Up, Auto-baud Rate, Single-wire Bit Error Detection];
+										dependencies:UART4SWIntCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!>
+#endif
+
+#define NUCODEGEN_UART4_ABRDEN			<!id:UART4AutobaudRateCheckbox;
+										type:checkbox;
+										label:Auto-baud Rate Detect;
+										data:0;
+										default:0;
+										helper:Input pattern shall be 0x01.;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable Auto-baud Rate Detect];
+										dependencies:UART4FunctionRadio;
+			                            dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART|NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE;
+										groupId:UART4Advanced;    
+										groupName:Advanced Configuration;!>	
+										
+#define NUCODEGEN_UART4_TOCNTEN			<!id:UART4TimeoutCounterCheckbox;
+										type:checkbox;
+										label:Receive Buffer Time Out Control;
+										data:0;
+										default:0;
+										sort:false;
+										enum:[1];
+										optionLabels:[Enable Receive Buffer Time Out];
+										dependencies:UART4FunctionRadio;	dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART|NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE|NUCODEGEN_UART4_FUNCSEL_IrDA;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!>
+
+#if NUCODEGEN_UART4_TOCNTEN
+#define UART4_TOCNT						<!id:UART4TimeoutCountInteger;
+										type:integer;
+										label:Time Out Interrupt Comparator;
+										data:40;
+										default:40;
+										helper:Enter your UART4 Time-Out Interrupt Comparator(The counting clock = Baud rate);
+										minimum:40;
+										maximum:255;
+										dependencies:UART4TimeoutCounterCheckbox;
+										dependenciesOption:1;
+										groupId:UART4Interrupt;    
+										groupName:Interrupt Configuration;!>
+#endif
+
+
+
+#define NUCODEGEN_UART4_RFITL		   <!id:UART4RXTriggerLevelSelect;
+									   type:select;
+									   label:RX FIFO Threshold Interrupt;
+									   data:UART_FIFO_RFITL_1BYTE;
+									   default:UART_FIFO_RFITL_1BYTE;
+									   helper:;
+									   sort:false;
+									   enum:[UART_FIFO_RFITL_1BYTE, UART_FIFO_RFITL_4BYTES, UART_FIFO_RFITL_8BYTES, UART_FIFO_RFITL_14BYTES];
+									   optionLabels:[1 byte, 4 bytes, 8 bytes, 14 bytes];
+									   dependencies:none;
+									   dependenciesOption:none;
+									   groupId:UART4Interrupt;    
+									   groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART4_WKDATEN 	   <!id:UART4DataWakeupCheckbox;
+									   type:checkbox;
+									   label:Wake Up Source;
+									   data:0;
+									   default:0;
+									   enum:[1];
+									   optionLabels:[Enable Incoming Data Wake-up];
+									   dependencies:UART4FunctionRadio;
+									   dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART|NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE;
+                                       groupId:UART4Interrupt;    
+									   groupName:Interrupt Configuration;!>			   
+					
+#define NUCODEGEN_UART4_WKCTSEN 	   <!id:UART4nCTSWakeupCheckbox;
+									   type:checkbox;
+									   label:<br>;
+									   data:0;
+								 	   default:0;
+									   enum:[1];
+									   optionLabels:[Enable nCTS Wake-up];
+									   dependencies:UART4FunctionRadio;
+									   dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART;
+									   groupId:UART4Interrupt;    
+									   groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART4_WKRFRTEN 	  <!id:UART4ReachedThresholdWakeupCheckbox;
+									  type:checkbox;
+									  label:<br>;
+									  data:0;
+									  default:0;
+									  enum:[1];
+									  optionLabels:[Enable Received Data FIFO Reached Threshold Wake-up];
+									  dependencies:UART4FunctionRadio;
+									  dependenciesOption:NUCODEGEN_UART4_FUNCSEL_UART|NUCODEGEN_UART4_FUNCSEL_SINGLE_WIRE;
+									  groupId:UART4Interrupt;    
+									  groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART4_WKTOUTEN	  <!id:UART4TimeoutWakeupCheckbox;
+									  type:checkbox;
+									  label:<br>;
+									  data:0;
+									  default:0;
+									  enum:[1];
+									  optionLabels:[Enable Received Data FIFO Reached Threshold Time-out Wake-up];
+									  dependencies:UART4ReachedThresholdWakeupCheckbox;
+									  dependenciesOption:1;
+									  groupId:UART4Interrupt;    
+									  groupName:Interrupt Configuration;!>

@@ -1,0 +1,177 @@
+/* --------------------------------------------------------------------
+ *  DAC1
+ * ---------------------------------------------------------------------*/
+
+#define NUCODEGEN_DAC1_UI                    0
+#if(NUCODEGEN_DAC1_UI)
+/* --------------------------------------------------------------------
+ * IP UI configuration
+ * ---------------------------------------------------------------------*/
+#endif /* NUCODEGEN_DAC1_UI */
+
+#define NUCODEGEN_DAC1_MODULE_SEL          DAC1
+#define NUCODEGEN_DAC_IRQ_MODULE_SEL       DAC_IRQn
+
+#define DAC_BIT_12                         0x0
+#define DAC_BIT_8                          0x1
+#define DAC1_WIDTH(Width)                  (DAC1->CTL = (DAC1->CTL & ~DAC_CTL_BWSEL_Msk) | (Width << DAC_CTL_BWSEL_Pos))
+#define DAC1_MODULE_0                      0x0
+
+#if (NUCODEGEN_DAC1_UI)
+/* --------------------------------------------------------------------
+ * DAC1 configuration
+ * ---------------------------------------------------------------------*/
+
+#endif /* NUCODEGEN_DAC1_UI */
+
+<!clock: {"ALL" : "DAC" }; !>
+<!pin:   {"UseDAC1TriggerSelect" : { "DAC_LOW_LEVEL_TRIGGER"   : "DAC1_ST" ,
+          "DAC_HIGH_LEVEL_TRIGGER"   : "DAC1_ST" ,
+          "DAC_FALLING_EDGE_TRIGGER" : "DAC1_ST" ,
+          "DAC_RISING_EDGE_TRIGGER"  : "DAC1_ST" },
+          "UseDAC1EnRadio" :{ '1' : "DAC1_OUT"}
+          }; !>
+
+#define NUCODEGEN_DAC1_ENABLE               <!id:UseDAC1EnRadio;
+                                            type:radio;
+                                            label:This DAC1;
+                                            data:0;
+                                            default:0;
+                                            sort:false;
+                                            enum:[1,0];
+                                            optionLabels:[Enable, Disable];
+                                            dependencies:none;
+                                            dependenciesOption:1;
+                                            dependenciesDefault:true;
+                                            groupId:DAC1Config;
+                                            groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC0_GROUP_EN             <!id:UseDAC0GROUPEnRadio;
+                                            type:radio;
+                                            label:DAC0 and DAC1 group mode(DAC0 must be enable);
+                                            data:0;
+                                            default:0;
+                                            helper: DAC0 and DAC1 can be combined to synchronize the update of each DAC output;
+                                            enum:[1,0];
+                                            optionLabels:[Enable, Disable];
+                                            dependencies:UseDAC1EnRadio;
+                                            dependenciesOption:1;
+                                            dependenciesDefault:true;
+                                            groupId:DAC1Config;
+                                            groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC1_TRIGGER_SEL         <!id:UseDAC1TriggerSelect;
+                                           type:select;
+                                           label:DAC1 trigger source;
+                                           data:DAC_WRITE_DAT_TRIGGER;
+                                           default:DAC_WRITE_DAT_TRIGGER;
+                                           helper:;
+                                           sort:false;
+                                           enum:[DAC_WRITE_DAT_TRIGGER, DAC_SOFTWARE_TRIGGER, DAC_LOW_LEVEL_TRIGGER, DAC_HIGH_LEVEL_TRIGGER, DAC_FALLING_EDGE_TRIGGER, DAC_RISING_EDGE_TRIGGER, DAC_TIMER0_TRIGGER, DAC_TIMER1_TRIGGER, DAC_TIMER2_TRIGGER, DAC_TIMER3_TRIGGER];   
+                                           optionLabels:[Write DAC data trigger, Software trigger, External pin - DAC_ST low level trigger, External pin - DAC_ST high level trigger, External pin - DAC_ST falling edge trigger,  External pin - DAC_ST rising edge trigger, Timer0 trigger, Timer1 trigger, Timer2 trigger, Timer3 trigger];         
+                                           dependencies:[UseDAC1EnRadio,UseDAC0GROUPEnRadio];
+                                           dependenciesOption:{"UseDAC1EnRadio":"1","UseDAC0GROUPEnRadio":"0"};
+                                           dependenciesDefault:true;
+                                           groupId:DAC1Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC1_DAT_WIDTH           <!id:UseDAC1DataWidthSelect;
+                                           type:select;
+                                           label:DAC1 data width;
+                                           data:0;
+                                           default:0;
+                                           helper:;
+                                           sort:false;
+                                           enum:[0,1];
+                                           optionLabels:[12 Bits, 8 Bits];
+                                           dependencies:UseDAC1EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC1Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC1_DAT_ALIGN           <!id:UseDAC1DatAlignRadio;
+                                           type:radio;
+                                           label:DAC1 data left alignment;
+                                           data:0;
+                                           default:0;
+                                           helper:(Only support 12 bits data width.);
+                                           enum:[0,1];
+                                           optionLabels:[Right alignment,Left alignment];
+                                           dependencies:UseDAC1DataWidthSelect;
+                                           dependenciesOption:0;
+                                           groupId:DAC1Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEDEF_DAC1_DLY_TIME            <!id:UseDAC1DlyTimeInteger;
+                                           type:integer;
+                                           label:Delay time for DAC1 to become stable;
+                                           data:1;
+                                           default:1;
+                                           helper:(1~(1023/PCLK1*1000000))micro seconds;
+                                           minimum:1;  maximum:1023;
+                                           dependencies:UseDAC1EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC1Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC1_INT_EN              <!id:UseDAC1INTEnRadio;
+                                           type:radio;
+                                           label:DAC1 interrupt function;
+                                           data:0;
+                                           default:0;
+                                           helper:Vector:DAC_IRQHandler;
+                                           enum:[1,0];
+                                           optionLabels:[Enable, Disable];
+                                           dependencies:UseDAC1EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC1Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC1_DMA_EN              <!id:UseDAC1DMAEnRadio;
+                                           type:radio;
+                                           label:DAC1 DMA function enable;
+                                           data:0;
+                                           default:0;
+                                           enum:[1,0];
+                                           optionLabels:[Enable, Disable];
+                                           dependencies:[UseDAC1EnRadio,UseDAC0GROUPEnRadio];
+                                           dependenciesOption:{"UseDAC1EnRadio":1,"UseDAC0GROUPEnRadio":0};
+                                           groupId:DAC1Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC1_INT_DMA_UNDERRUN_EN <!id:UseDAC1INTDMAURRadio;
+                                           type:radio;
+                                           label:DAC1 DMA under-run interrupt;
+                                           data:0;
+                                           default:0;
+                                           helper:Vector:DAC_IRQHandler;
+                                           enum:[1,0];
+                                           optionLabels:[Enable, Disable];
+                                           dependencies:UseDAC1AdvanceRadio;
+                                           dependencies:[UseDAC1INTEnRadio,UseDAC1DMAEnRadio];
+                                           dependenciesOption:{"UseDAC1INTEnRadio" : "1",
+                                                               "UseDAC1DMAEnRadio" : "1" };
+                                           groupId:DAC1Config;
+                                           groupName:DAC Configuration;!>
+
+#define NUCODEGEN_DAC1_VOLT_BUF_EN         <!id:UseDAC1VTGBUFEnRadio;
+                                           type:radio;
+                                           label:DAC1 voltage buffer function;
+                                           data:0;
+                                           default:0;
+                                           enum:[1,0];
+                                           optionLabels:[Enable, Disable];
+                                           dependencies:UseDAC1EnRadio;
+                                           dependenciesOption:1;
+                                           groupId:DAC1Config;
+                                           groupName:DAC Configuration;!>
+
+
+                                          <!id:UseDACMsgTextOnly;
+                                          type:textonly;
+                                          label:Chip Reference Voltage Setting Source Tip :;
+                                          data:In SYS function,dafault reference voltage is external, when internal reference voltage enable, support several steps internal voltage.;
+                                          default:In SYS function,dafault reference voltage is external, when internal reference voltage enable, support several steps internal voltage.;
+                                          dependencies:none;     dependenciesOption:1;      groupId:none;    groupName:;  filterExp:;!>
+
+

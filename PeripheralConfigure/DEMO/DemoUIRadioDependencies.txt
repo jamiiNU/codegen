@@ -1,0 +1,42 @@
+//////////Radio//////////
+<!id:UART0BaudrateRadio;
+type:radio;
+label:UART0 Baud Rate;
+data:115200;
+default:115200;
+helper:Select your UART0 baud rate;
+enum:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+optionLabels:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+vertical:true;
+dependencies:none;
+dependenciesOption:none;!>
+<!id:UART1EnableINTCheckbox;
+type:checkbox;
+label:Enable Interrupts We Want for UART1;
+data:[UART_INTEN_RXTOIEN_Msk, UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk];
+default:[UART_INTEN_RXTOIEN_Msk, UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk];
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKCTSIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, UART Wake-Up Function, LIN RX Break Field Detected, Time-Out Counter, RTS Auto Flow Control, CTS Auto Flow Control, TX DMA, RX DMA];
+dependencies:UART0BaudrateRadio;
+dependenciesOption:115200;!>
+<!id:CLK_PowerDownModeRadio;
+type:radio;
+label:Select Power Down Mode;
+data:CLK_PMUCTL_PDMSEL_PD;
+default:CLK_PMUCTL_PDMSEL_PD;
+helper:;
+sort:false;
+enum:[CLK_PMUCTL_PDMSEL_PD, CLK_PMUCTL_PDMSEL_FWPD, CLK_PMUCTL_PDMSEL_DPD];
+optionLabels:[Normal power down mode, Fast wake-up power down mode, Deep power down mode] ;
+vertical:true;
+dependencies:none;
+dependenciesOption:none;!>
+<!id:CLK_DPDWKPIN0Checkbox;
+type:checkbox;
+label:Enable the wake-up source of deep power-down (DPD) mode;
+data:0;
+default:0;
+enum:[1];
+optionLabels:[DPD wake-up pin0 (PC.00)];
+dependencies:CLK_PowerDownModeRadio;
+dependenciesOption:CLK_PMUCTL_PDMSEL_FWPD|CLK_PMUCTL_PDMSEL_DPD;!>

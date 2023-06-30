@@ -1,0 +1,149 @@
+input {
+	outline: none;
+	/*text-align: right*/
+}
+
+.div_clock_composite {
+	float:left;
+	margin: 0 auto ;
+	font: 18px Arial;
+}
+
+.cb-enable, .cb-disable, .cb-enable span, .cb-disable span { background: url(switch.gif) repeat-x; display: block; float: left; }
+.cb-enable span, .cb-disable span { line-height: 30px; display: block; background-repeat: no-repeat; font-weight: bold; }
+.cb-enable span { background-position: left -90px; padding: 0 10px; }
+.cb-disable span { background-position: right -180px;padding: 0 10px; }
+.cb-disable.selected { background-position: 0 -30px; }
+.cb-disable.selected span { background-position: right -210px; color: #fff; }
+.cb-enable.selected { background-position: 0 -60px; }
+.cb-enable.selected span { background-position: left -150px; color: #fff; }
+.switch label { cursor: pointer; }
+.switch input { display: none; }
+
+.css_btn_class {
+	font-size:12px;
+	font-family:Arial;
+	font-weight:normal;
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	border-radius:8px;
+	border:1px solid #eda933;
+	padding:9px 18px;
+	text-decoration:none;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #f6b33d), color-stop(100%, #d29105) );
+	background:-moz-linear-gradient( center top, #f6b33d 5%, #d29105 100% );
+	background:-ms-linear-gradient( top, #f6b33d 5%, #d29105 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6b33d', endColorstr='#d29105');
+	background-color:#f6b33d;
+	color:#ffffff;
+	display:inline-block;
+	text-shadow:1px 1px 0px #cd8a15;
+ 	-webkit-box-shadow:inset 1px 1px 0px 0px #fed897;
+ 	-moz-box-shadow:inset 1px 1px 0px 0px #fed897;
+ 	box-shadow:inset 1px 1px 0px 0px #fed897;
+}.css_btn_class:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #d29105), color-stop(100%, #f6b33d) );
+	background:-moz-linear-gradient( center top, #d29105 5%, #f6b33d 100% );
+	background:-ms-linear-gradient( top, #d29105 5%, #f6b33d 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#d29105', endColorstr='#f6b33d');
+	background-color:#d29105;
+}.css_btn_class:active {
+	position:relative;
+	top:1px;
+}
+
+#measureTextWidth {
+	position: absolute;
+	visibility: hidden;
+	height: auto;
+	width: auto;
+}
+
+.tooltip{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 3;
+	color: #fff;
+	background-color: rgba(0, 0, 0, 0.8);
+	line-height: 1;
+	font-weight: bold;
+	padding: 12px;
+	border-radius: 2px;
+	font-family:Arial;
+}
+
+.no-close .ui-dialog-titlebar-close { display: none }
+.ui-dialog-content {
+	font-family:Arial;
+}
+
+.node {
+	cursor: pointer;
+}
+
+.node.notDraggable {
+	cursor: alias;
+}
+
+.baseDraggable {
+	cursor: copy;
+}
+
+.overlay {
+	background-color:#ECEADF;
+}
+
+.node circle {
+	fill: #fff;
+	stroke: steelblue;
+	stroke-width: 1.5px;
+}
+
+.node text {
+	font-size:10px;
+	font-family:Arial;
+}
+
+.link {
+	fill: none;
+	stroke: #ccc;
+	stroke-width: 1.5px;
+}
+
+.templink {
+	fill: none;
+	stroke: red;
+	stroke-width: 3px;
+}
+
+.selected {
+	stroke: #FF8000;
+	fill: none;
+	stroke-width: 2px;
+}
+
+.ghostCircle.show {
+	display:block;
+}
+
+.ghostCircle, .activeDrag .ghostCircle {
+	display: none;
+}
+
+g.hover {
+	fill: #FC517E;
+}
+/* for NuCodeGenerater */
+h2 {
+	font-family: inherit;
+	font-weight: 500;
+	line-height: inherit;
+	color: inherit;
+}
+/* for NuCodeGenerater */
+.jq-toast-single {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}

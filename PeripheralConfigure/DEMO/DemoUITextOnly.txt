@@ -1,0 +1,13 @@
+<!id:NuvotonTextOnly;
+type:textonly;
+label:Nuvoton;
+data:["Nuvoton Technology is a leading semiconductor manufacturer in 8051 microcontrollers, ARM Cortex-M0 microcontrollers, ARM Cortex-M4 microcontrollers."];
+default:["Nuvoton Technology is a leading semiconductor manufacturer in 8051 microcontrollers, ARM Cortex-M0 microcontrollers, ARM Cortex-M4 microcontrollers."];
+helper:;
+dependencies:none;
+dependenciesOption:none;
+observable:none;
+listener:none;
+groupId:none;
+groupName:none;
+filterExp:none;!>

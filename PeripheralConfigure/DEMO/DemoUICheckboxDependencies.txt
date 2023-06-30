@@ -1,0 +1,48 @@
+//////////Checkbox//////////
+<!id:UART2EnableINTCheckbox;
+type:checkbox;
+label:Enable Interrupts We Want for UART2;
+data:0;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_MODEMIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk, UART_INTEN_WKCTSIEN_Msk, UART_INTEN_LINIEN_Msk, UART_INTEN_TOCNTEN_Msk, UART_INTEN_ATORTSEN_Msk, UART_INTEN_ATOCTSEN_Msk, UART_INTEN_TXPDMAEN_Msk, UART_INTEN_RXPDMAEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status, Modem Status, RX Time-Out, Buffer Error, UART Wake-Up Function, LIN RX Break Field Detected, Time-Out Counter, RTS Auto Flow Control, CTS Auto Flow Control, TX DMA, RX DMA];
+dependencies:none;
+dependenciesOption:none;!>
+
+<!id:UART1BaudrateRadio;
+type:radio;
+label:UART1 Baud Rate;
+data:38400;
+helper:Select your UART0 baud rate;
+enum:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+optionLabels:[4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600];
+vertical:false;
+dependencies:UART2EnableINTCheckbox;
+dependenciesOption:[UART_INTEN_RDAIEN_Msk,UART_INTEN_THREIEN_Msk];!>
+
+<!id:i2c0_wakeup_en; type:checkbox;
+label:Enable I2C0 wakeup function;
+data:0; default:0; helper:Enable I2C0 wake-up function;
+sort:false; enum:[1];
+optionLabels:[Enable I2C0 wakeup function];
+dependencies:UART2EnableINTCheckbox;
+dependenciesOption:UART_INTEN_RDAIEN_Msk|UART_INTEN_THREIEN_Msk;!>
+
+<!id:i2c_submode_select;
+type:radio;
+label:Select I2C0 FunctionMode;
+data:I2C0_SUBMODE_NORMAL;
+default:I2C0_SUBMODE_NORMAL;
+enum:[I2C0_SUBMODE_NORMAL, I2C0_SUBMODE_SMBUS];
+optionLabels:[Normal, SMBUS];
+dependencies:UART2EnableINTCheckbox;
+dependenciesOption:(UART_INTEN_RDAIEN_Msk|UART_INTEN_THREIEN_Msk)&UART_INTEN_RLSIEN_Msk;!>
+
+<!id:i2c1_submode_select;
+type:radio;
+label:Select I2C1 FunctionMode;
+data:I2C0_SUBMODE_NORMAL;
+default:I2C0_SUBMODE_NORMAL;
+enum:[I2C0_SUBMODE_NORMAL, I2C0_SUBMODE_SMBUS];
+optionLabels:[Normal, SMBUS];
+dependencies:UART2EnableINTCheckbox;
+dependenciesOption:(UART_INTEN_RDAIEN_Msk|UART_INTEN_THREIEN_Msk)&!UART_INTEN_RLSIEN_Msk;!>

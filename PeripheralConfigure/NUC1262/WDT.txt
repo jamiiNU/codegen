@@ -1,0 +1,91 @@
+<!clock: {"ALL" : "WDT"};
+  pin:   {"ALL" : [""]};
+!>
+/*--------------------------------------------------------------------------*/
+/* WDT Configuration                                                        */
+/*--------------------------------------------------------------------------*/
+
+/* Configure WDT Timeout Interval */
+#define WDT_TOUTSEL_CONFIG                  (<!id:WDT_TimeoutSelect;
+                                            type:select;
+                                            label:Select WDT Timeout Interval;
+                                            data:WDT_TIMEOUT_2POW18;
+                                            default:WDT_TIMEOUT_2POW18;
+                                            helper:WDT will generate interrupt signal once the internal up-counter reaches the time-out interval.;
+                                            sort:false;
+                                            enum:[WDT_TIMEOUT_2POW4, WDT_TIMEOUT_2POW6, WDT_TIMEOUT_2POW8, WDT_TIMEOUT_2POW10, WDT_TIMEOUT_2POW12, WDT_TIMEOUT_2POW14, WDT_TIMEOUT_2POW16, WDT_TIMEOUT_2POW18];
+                                            optionLabels:[2^4 WDT clock cycles, 2^6 WDT clock cycles, 2^8 WDT clock cycles, 2^10 WDT clock cycles, 2^12 WDT clock cycles, 2^14 WDT clock cycles, 2^16 WDT clock cycles, 2^18 WDT clock cycles];
+                                            vertical:true;
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                            groupId:Group_BasicConfig;
+                                            groupName:Basic Configuration;
+                                            !>)
+
+/* Configure WDT Reset Delay Time */
+#define WDT_RSTDSEL_CONFIG                  (<!id:WDT_ResetDelaySelect;
+                                            type:select;
+                                            label:Select WDT Reset Delay Time;
+                                            data:WDT_RESET_DELAY_1026CLK;
+                                            default:WDT_RESET_DELAY_1026CLK;
+                                            helper:This is a buffer time for software to reset the WDT internal counter before WDT generates reset signal.;
+                                            sort:false;
+                                            enum:[WDT_RESET_DELAY_1026CLK, WDT_RESET_DELAY_130CLK, WDT_RESET_DELAY_18CLK, WDT_RESET_DELAY_3CLK];
+                                            optionLabels:[1026 WDT clock cycles, 130 WDT clock cycles, 18 WDT clock cycles, 3 WDT clock cycles];
+                                            vertical:true;
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                            groupId:Group_BasicConfig;
+                                            groupName:Basic Configuration;
+                                            !>)
+
+/* Enable or Disable WDT Reset Function */
+#define WDT_RSTEN_CONFIG                    (<!id:WDT_ResetEnableRadio;
+                                            type:radio;
+                                            label:Select WDT Reset Function;
+                                            data:0;
+                                            default:0;
+                                            helper:This option decides whether WDT generates reset signal once the reset delay time is expired.;
+                                            sort:false;
+                                            enum:[1, 0];
+                                            optionLabels:[Enable Reset, Disable Reset];
+                                            vertical:false;
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                            groupId:Group_BasicConfig;
+                                            groupName:Basic Configuration;
+                                            !>)
+
+/* Enable WDT Interrupt Function */
+#define NUCODEGEN_WDT_INT_ENABLE            (<!id:WDT_IntEnableCheckbox;
+                                            type:checkbox;
+                                            label:Enable WDT Interrupt;
+                                            data:1;
+                                            default:1;
+                                            helper:;
+                                            sort:false;
+                                            enum:[1];
+                                            optionLabels:[Enable Interrupt];
+                                            vertical:true;
+                                            dependencies:none;
+                                            dependenciesOption:none;
+                                            groupId:Group_IntConfig;
+                                            groupName:Interrupt Configuration;
+                                            !>)
+
+/* Configure WDT Wake-up Ability */
+#define WDT_WKEN_CONFIG                     (<!id:WDT_WakeupEnableCheckbox;
+                                            type:checkbox;
+                                            label:Enable WDT Wakeup Function;
+                                            data:1;
+                                            default:1;
+                                            helper:This option decides whether WDT interrupt can wakes the system up in power down mode.;
+                                            sort:false;
+                                            enum:[1];
+                                            optionLabels:[Enable wake-up];
+                                            vertical:true;
+                                            dependencies:WDT_IntEnableCheckbox;
+                                            dependenciesOption:1;
+                                            groupId:Group_IntConfig;
+                                            groupName:Interrupt Configuration;
+                                            !>)

@@ -1,0 +1,224 @@
+/////////Select/////////
+<!id:__RCC_CFGR_VAL_18_21;
+type:select;
+label: PLLMUL: PLL Multiplication Factor;
+data:2;
+default:2;
+enum:[0,1,2];
+optionLabels:[PLLSRC * 0, PLLSRC * 1, PLLSRC * 2];
+helper:;
+groupId:group1;
+groupName:Test;!>
+#define HIDDEN_EX <!id:Uart1Hidden;
+type:hidden;
+data:2U;
+default:2U;
+observable:__RCC_CFGR_VAL_18_21;
+listener:{
+'0': '0U',
+'1': '1U',
+'2': '2U'};
+groupId:group1;
+groupName:Test;!>
+
+/////////Radio/////////
+<!id:UART0BaudrateRadio;
+type:radio;
+label:UART0 Baud Rate;
+data:9600;
+default:9600;
+helper:Select your UART0 baud rate;
+sort:false;
+enum:[4800, 9600, 19200];
+optionLabels:[4800, 9600, 19200];
+vertical:true;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;};
+filterExp:none;
+groupId:group1;
+groupName:Test;!>
+#define HIDDEN_EX1 <!id:RadioHidden;
+type:hidden;
+data:1U;
+default:1U;
+observable:UART0BaudrateRadio;
+listener:{
+'4800': '0U',
+'9600': '1U',
+'19200': '2U'};
+groupId:group1;
+groupName:Test;!>
+
+/////////Checkbox/////////
+<!id:UART1EnableINTCheckbox;
+type:checkbox;
+label:Enable Interrupts We Want for UART1;
+data:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk];
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status];
+dependencies:none;
+dependenciesOption:none;
+groupId:group1;
+groupName:Test;!>
+#define HIDDEN_EX2 <!id:CheckBoxHidden;
+type:hidden;
+data:0U;
+default:0U;
+observable:UART1EnableINTCheckbox;
+listener:{
+'UART_INTEN_RDAIEN_Msk': '0U',
+'UART_INTEN_THREIEN_Msk': '1U',
+'UART_INTEN_RLSIEN_Msk': '2U',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk': '10U',
+'UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk': '11U',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk': '100U'};
+groupId:group1;
+groupName:Test;!>
+
+/////////CheckboxBoolean/////////
+<!id:UART1EnableINTCheckboxBoolean;
+type:checkboxBoolean;
+label:Enable Interrupts We Want for UART1;
+data:true;
+default:true;
+helper:Enable Interrupt We Want for UART1;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:none;
+listener:none;
+groupId:none;
+groupName:none;
+filterExp:none;
+groupId:group1;
+groupName:Test;!>
+#define HIDDEN_EX3 <!id:CheckBoxBooleanHidden;
+type:hidden;
+data:1U;
+default:1U;
+observable:UART1EnableINTCheckboxBoolean;
+listener:{
+'false': '0U',
+'true': '1U'};
+groupId:group1;
+groupName:Test;!>
+
+/////////MultipleSelect/////////
+<!id:UART1DisableINTMultipleSelect;
+type:multipleselect;
+label:Disable Interrupts We Want for UART1;
+size:5;
+data:[UART_INTEN_THREIEN_Msk];
+default:[UART_INTEN_THREIEN_Msk];
+helper:Select which interrupt to disable.;
+sort:false;
+enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk];
+optionLabels:[Receive Data Available, Transmit Holding Register Empty, Receive Line Status];
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:none;
+listener:none;
+groupId:none;
+groupName:none;
+filterExp:none;
+groupId:group1;
+groupName:Test;!>
+#define HIDDEN_EX4 <!id:MultipleSelectHidden;
+type:hidden;
+data:1U;
+default:1U;
+observable:UART1DisableINTMultipleSelect;
+listener:{
+'UART_INTEN_RDAIEN_Msk': '0U',
+'UART_INTEN_THREIEN_Msk': '1U',
+'UART_INTEN_RLSIEN_Msk': '2U',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk': '10U',
+'UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk': '11U',
+'UART_INTEN_RDAIEN_Msk, UART_INTEN_THREIEN_Msk, UART_INTEN_RLSIEN_Msk': '100U'};
+groupId:group1;
+groupName:Test;!>
+<!id:TIMER0TriggerTargetMultipleSelect;
+type:multipleselect;
+label:Select TIMER0 Trigger Target;
+size:4;
+data:TIMER_TRGCTL_TRGPDMA_Msk;
+default:TIMER_TRGCTL_TRGPDMA_Msk;
+sort:false;
+enum:[TIMER_TRGCTL_TRGPDMA_Msk, TIMER_TRGCTL_TRGDAC_Msk, TIMER_TRGCTL_TRGEADC_Msk, TIMER_TRGCTL_TRGPWM_Msk];
+optionLabels:[TIMER0 Trigger PDMA, TIMER0 Trigger DAC, TIMER0 Trigger EADC, TIMER0 Trigger PWM];
+dependencies:none;
+dependenciesOption:1;
+groupId:group1;
+groupName:Test;!>
+#define HIDDEN_EX4 <!id:MultipleSelectHidden1;
+type:hidden;
+data:1U;
+default:1U;
+observable:TIMER0TriggerTargetMultipleSelect;
+listener:{
+'NUC_ANY': '1U',
+'NUC_NONE': '0U'};
+groupId:group1;
+groupName:Test;!>
+
+/////////Integer/////////
+<!id:UART1BaudrateInteger;
+type:integer;
+label:UART1 Baud Rate;
+data:115200;
+default:115200;
+helper:Enter your UART1 baud rate;
+minimum:4800;
+maximum:921600;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:none;
+listener:none;
+groupId:none;
+groupName:none;
+filterExp:none;
+groupId:group1;
+groupName:Test;!>
+#define HIDDEN_EX5 <!id:IntegerHidden;
+type:hidden;
+data:115200U;
+default:115200U;
+observable:UART1BaudrateInteger;
+listener:{
+'115200': '115200U',
+'4800': '4800U'};
+groupId:group1;
+groupName:Test;!>
+
+/////////HexText/////////
+<!id:Timer0InputHexText;
+type:hextext;
+label:Timer0 Prescale Value;
+data:0x1289abEF;
+default:0x1289abEF;
+helper:Input text in the hexadecimal format;
+minimum:4800;
+maximum:921600;
+dependencies:none;
+dependenciesOption:none;
+dependenciesDefault:true;
+observable:none;
+listener:none;
+groupId:none;
+groupName:none;
+filterExp:none;
+groupId:group1;
+groupName:Test;!>
+#define HIDDEN_EX6 <!id:HexTextHidden;
+type:hidden;
+data:115200U;
+default:115200U;
+observable:Timer0InputHexText;
+listener:{
+'115200': '115200U',
+'4800': '4800U'};
+groupId:group1;
+groupName:Test;!>

@@ -1,0 +1,130 @@
+<!header:ADC\periph_adc.h;
+filter:{"M252_D": {"level": "1"},
+		"M251SE3AE": {"ChipSeries": "M2351", "level": "2"},
+		"ChipSeries": "M480",
+		"level": "0"};!>
+
+#define CRC_SEED				<!id:CRCSEEDHexText;
+								type:hextext;
+								label:CRC SEED Value;
+								data:0xFFFFFFFF;
+								default:0xFFFFFFFF;
+								helper:Input text in the hexadecimal format;
+								dependencies:none;
+								dependenciesOption:none;
+								filterExp:type=="M252_C";
+								filterDefault:false;!>
+
+#define NUCODEGEN_CRC_DATALEN	<!id:CRCDataLenSelect;
+								type:select;
+								label:Select CRC Data Length;
+								data:CRC_CPU_WDATA_8;
+								default:CRC_CPU_WDATA_8;
+								enum:[CRC_CPU_WDATA_8, CRC_CPU_WDATA_16, CRC_CPU_WDATA_32];
+								optionLabels:[8-bit, 16-bit, 32-bit];
+								dependencies:none;
+								dependenciesOption:none;
+								filterExp:name=="M251LG6AE";!>
+
+#define NUCODEGEN_GPIO_PA_PIN0_EN	<!id:GPIOPAPIN0Checkbox;
+								type:checkbox;
+								label:Enable pin 0 setting;
+								data:0;
+								default:0;
+								enum:[1];
+								optionLabels:[<br>];
+								dependencies:none;
+								dependenciesOption:none;
+								groupId:Group0;
+								groupName:GPIO_PA pin 10 configuration;
+								filterExp:PA_dot10==1;!>
+
+#define NUCODEGEN_GPIO_PA_PIN4_EN	<!id:GPIOPAPIN4Checkbox;
+								type:checkbox;
+								label:Enable pin 4 setting;
+								data:0;
+								default:0;
+								enum:[1];
+								optionLabels:[<br>];
+								dependencies:none;
+								dependenciesOption:none;
+								groupId:Group4;
+								groupName:GPIO_PA pin 4 configuration;
+								filterExp:PA_dot4==1;!>
+
+#define NUCODEGEN_CLK_HXT_FREQ_DET_ENABLED      (<!id:CLK_HxtFrequencyDetectorCheckbox;
+                                                type:checkbox;
+                                                label:HXT Frequency Detector Function;
+                                                data:1;
+                                                default:1;
+                                                helper:;
+                                                sort:false;
+                                                enum:[1];
+                                                optionLabels:[Enable Hxt Frequency Range Detector];
+                                                vertical:true;
+                                                dependencies:;
+                                                dependenciesOption:;
+                                                groupId:Group1;
+                                                groupName:Clock Detector Configuration;
+                                                filterExp:ChipSeries=="M251";!>)
+
+#define NUCODEGEN_CLK_HXT_FREQ_DET_INT_ENABLED  (<!id:CLK_HxtFrequencyDetectorIntCheckbox;
+                                                type:checkbox;
+                                                label:HXT Frequency Detector Interrupt;
+                                                data:0;
+                                                default:0;
+                                                helper:;
+                                                sort:false;
+                                                enum:[1];
+                                                optionLabels:[Enable Hxt Frequency Detector Interrupt];
+                                                vertical:true;
+                                                dependencies:none;
+                                                dependenciesOption:none;
+                                                groupId:Group1;
+                                                groupName:Clock Detector Configuration;
+                                                filterExp:ChipSeries=="M251" or level==2;!>)
+
+												(<!id:i2c0_wakeup_en; type:checkbox;
+												label:Enable I2C0 wakeup function;
+												data:0; default:0; helper:Enable I2C0 wake-up function;
+												sort:false; enum:[1];
+												optionLabels:[Enable I2C0 wakeup function];
+												dependencies:none;
+												dependenciesOption:none;
+												groupId:Group1;
+                                                groupName:Clock Detector Configuration;
+                                                filterExp:ChipSeries=="M2351" and level==2;!>)
+
+#if NUCODEGEN_CLK_HXT_FREQ_DET_ENABLED
+#define CLK_HXT_FREQ_DET_UB                     (<!id:CLK_HxtFrequencyUpperBoundInteger;
+                                                type:integer;
+                                                label:HXT Range Detector Upper Bound;
+                                                data:512;
+                                                default:512;
+                                                helper:;
+                                                minimum:0;
+                                                maximum:1023;
+                                                vertical:true;
+                                                dependencies:none;
+                                                dependenciesOption:none;
+                                                groupId:Group1;
+                                                groupName:Clock Detector Configuration;
+                                                filterExp:level>0;!>)
+#endif
+
+#if NUCODEGEN_CLK_HXT_FREQ_DET_ENABLED
+#define CLK_HXT_FREQ_DET_LB                     (<!id:HxtFrequencyLowerBoundInteger;
+                                                type:integer;
+                                                label:HxtFrequencyLowerBoundInteger;
+                                                data:[0];
+                                                default:[0];
+                                                helper:;
+                                                minimum:0;
+                                                maximum:1023;
+                                                vertical:true;
+                                                dependencies:none;
+                                                dependenciesOption:none;
+                                                groupId:Group1;
+                                                groupName:Clock Detector Configuration;
+                                                filterExp:level>3;!>)
+#endif

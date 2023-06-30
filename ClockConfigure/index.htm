@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>NuTool - ClockConfigure</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=10"/>
+	<meta charset="utf-8"/>
+	<!--[if lt IE 7]> <html class="ie6"> <![endif]-->
+	<!--[if IE 7]>    <html class="ie7"> <![endif]-->
+	<!--[if IE 8]>    <html class="ie8"></script><![endif]-->
+	<!--some js files are dynamically loaded by NUC_Clock_Configuration.js.-->
+	<script src="NUC_NuTool_Configuration.js"></script>
+	<script src="NUC_Clock_Configuration.js"></script>
+	<script src="NUC_NUC400_Content.js"></script>
+	<script src="jquery.js"></script>
+	<script src="jquery.jstree.js"></script>
+	<script src="underscore.js"></script>
+	<script src="jquery.simpletip-1.3.1-modified.js"></script>
+	<script src="DataTables-1.10.12/media/js/jquery.dataTables.js"></script>
+	<script src="jquery-ui-1.10.4.custom.min.js"></script>
+	<link rel="stylesheet" href="NUC_Clock_Configuration.css"/>
+	<link rel="stylesheet" href="d3-tip-styles.css"/>
+	<link rel="stylesheet" href="pepper-grinder/jquery-ui-1.10.4.custom.css"/>
+	<link rel="stylesheet" href="DataTables-1.10.12/media/css/jquery.dataTables.css"/>
+</head>
+
+<body style="overflow: hidden;">
+	<div id="tabs">
+		<ul></ul>
+	</div>
+	<div id="ChipType">
+		<span id="ChipType_span"></span>
+		<select id="ChipTypeSelect" style="font-family:Arial;"></select>
+	</div>
+	<div id="MCU">
+		<span id="MCU_span"></span>
+		<select id="MCUselect" style="font-family:Arial;"></select>
+	</div>
+	<div id="rootTree_Clock"></div>
+</body>
+</html>

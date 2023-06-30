@@ -1,0 +1,1550 @@
+/*--------------------------------------------------------------------------*/
+/* BPWM3 Configuration                                                      */
+/*--------------------------------------------------------------------------*/
+
+<!clock: {"ALL" : "BPWM3" }; !>
+<!pin:   {"UseBPWM3CH0ENCapBoolean" : {"true" : ["BPWM3_CH0"]} ,
+		  "UseBPWM3CH1ENCapBoolean" : {"true" : ["BPWM3_CH1"]} ,
+		  "UseBPWM3CH2ENCapBoolean" : {"true" : ["BPWM3_CH2"]} ,
+		  "UseBPWM3CH3ENCapBoolean" : {"true" : ["BPWM3_CH3"]} ,
+		  "UseBPWM3CH4ENCapBoolean" : {"true" : ["BPWM3_CH4"]} ,
+		  "UseBPWM3CH5ENCapBoolean" : {"true" : ["BPWM3_CH5"]} ,
+		  "UseBPWM3CH0ENBoolean" : {"true" : ["BPWM3_CH0"]} ,
+		  "UseBPWM3CH1ENBoolean" : {"true" : ["BPWM3_CH1"]} ,
+		  "UseBPWM3CH2ENBoolean" : {"true" : ["BPWM3_CH2"]} ,
+		  "UseBPWM3CH3ENBoolean" : {"true" : ["BPWM3_CH3"]},
+		  "UseBPWM3CH4ENBoolean" : {"true" : ["BPWM3_CH4"]} ,
+		  "UseBPWM3CH5ENBoolean" : {"true" : ["BPWM3_CH5"]} }; !>
+
+#define NUCODEGEN_BPWM3_FUNC_SEL				            (<!id:BPWM3FuncSelect;
+															type:radio;
+															label:Select BPWM3 function;
+															data:0;
+															default:0;
+															helper:;
+															enum:[0, 1];
+															optionLabels:[BPWM output waveform, BPWM capture];
+															dependencies:none;
+															dependenciesOption:none;
+															!>)
+
+#define NUCODEGEN_BPWM3_CAP_UNITTIME						(<!id:BPWM3CapUnitTimeInteger;
+															type:integer;
+															label:The unit time of counter(ns). ;
+															data:1000;
+															default:1000;
+															helper: It is limited by clock source.;
+															minimum:10;
+															maximum:85000;
+															dependencies:UseBPWM3CH0ENCapBoolean|UseBPWM3CH1ENCapBoolean|UseBPWM3CH2ENCapBoolean|UseBPWM3CH3ENCapBoolean|UseBPWM3CH4ENCapBoolean|UseBPWM3CH5ENCapBoolean;
+															dependenciesOption:{"UseBPWM3CH0ENCapBoolean":"true","UseBPWM3CH1ENCapBoolean":"true",
+															"UseBPWM3CH2ENCapBoolean":"true","UseBPWM3CH3ENCapBoolean":"true",
+															"UseBPWM3CH4ENCapBoolean":"true","UseBPWM3CH5ENCapBoolean":"true"};
+															groupId:GroupBPWM3Cap;
+															groupName:BPWM3 Common Capture Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_CAP_ENABLE      				(<!id:UseBPWM3CH0ENCapBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH0;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Cap0;
+															groupName:BPWM3 CH0 Capture Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_CAP_ADVANCED    				(<!id:UseBPWM3CH0AdvanceCapBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH0ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_CAP_RELOAD      				(<!id:UseBPWM3CH0CapReloadSelect;
+															type:select;
+															label:Select CH0 reload mode;
+															size:5;
+															data:BPWM_CAPTURE_INT_RISING_LATCH;
+															default:BPWM_CAPTURE_INT_RISING_LATCH;
+															sort:false;
+															enum:[BPWM_CAPTURE_INT_RISING_LATCH , BPWM_CAPTURE_INT_FALLING_LATCH, BPWM_CAPTURE_INT_RISING_LATCH|BPWM_CAPTURE_INT_FALLING_LATCH];
+															optionLabels:[Rising reload, Falling reload, Rising and falling reload];
+															dependencies:UseBPWM3CH0ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_CAP_INT_SEL						(<!id:BPWM3CH0CapINTSelect;
+															type:select;
+															label:Select BPWM3 CH0 capture interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Disable, Rising latch, Falling latch, Rising and falling latch];
+															dependencies:UseBPWM3CH0AdvanceCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_CAP_ENABLE      				(<!id:UseBPWM3CH1ENCapBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH1;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Cap1;
+															groupName:BPWM3 CH1 Capture Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_CAP_ADVANCED    				(<!id:UseBPWM3CH1AdvanceCapBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH1ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_CAP_RELOAD      	     		(<!id:UseBPWM3CH1CapReloadSelect;
+															type:select;
+															label:Select CH1 reload mode;
+															size:5;
+															data:BPWM_CAPTURE_INT_RISING_LATCH;
+															default:BPWM_CAPTURE_INT_RISING_LATCH;
+															sort:false;
+															enum:[BPWM_CAPTURE_INT_RISING_LATCH , BPWM_CAPTURE_INT_FALLING_LATCH, BPWM_CAPTURE_INT_RISING_LATCH|BPWM_CAPTURE_INT_FALLING_LATCH];
+															optionLabels:[Rising reload, Falling reload, Rising and falling reload];
+															dependencies:UseBPWM3CH1ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_CAP_INT_SEL				   	    (<!id:BPWM3CH1CapINTSelect;
+															type:select;
+															label:Select BPWM3 CH1 capture interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Disable, Rising latch, Falling latch, Rising and falling latch];
+															dependencies:UseBPWM3CH1AdvanceCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_CAP_ENABLE      	            (<!id:UseBPWM3CH2ENCapBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH2;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Cap2;
+															groupName:BPWM3 CH2 Capture Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_CAP_ADVANCED    	            (<!id:UseBPWM3CH2AdvanceCapBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH2ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_CAP_RELOAD      	            (<!id:UseBPWM3CH2CapReloadSelect;
+															type:select;
+															label:Select CH2 reload mode;
+															size:5;
+															data:BPWM_CAPTURE_INT_RISING_LATCH;
+															default:BPWM_CAPTURE_INT_RISING_LATCH;
+															sort:false;
+															enum:[BPWM_CAPTURE_INT_RISING_LATCH , BPWM_CAPTURE_INT_FALLING_LATCH, BPWM_CAPTURE_INT_RISING_LATCH|BPWM_CAPTURE_INT_FALLING_LATCH];
+															optionLabels:[Rising reload, Falling reload, Rising and falling reload];
+															dependencies:UseBPWM3CH2ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_CAP_INT_SEL			  			(<!id:BPWM3CH2CapINTSelect;
+															type:select;
+															label:Select BPWM3 CH2 capture interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Disable, Rising latch, Falling latch, Rising and falling latch];
+															dependencies:UseBPWM3CH2AdvanceCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_CAP_ENABLE      	      		(<!id:UseBPWM3CH3ENCapBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH3;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Cap3;
+															groupName:BPWM3 CH3 Capture Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_CAP_ADVANCED    	      		(<!id:UseBPWM3CH3AdvanceCapBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH3ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_CAP_RELOAD      	      		(<!id:UseBPWM3CH3CapReloadSelect;
+															type:select;
+															label:Select CH3 reload mode;
+															size:5;
+															data:BPWM_CAPTURE_INT_RISING_LATCH;
+															default:BPWM_CAPTURE_INT_RISING_LATCH;
+															sort:false;
+															enum:[BPWM_CAPTURE_INT_RISING_LATCH , BPWM_CAPTURE_INT_FALLING_LATCH, BPWM_CAPTURE_INT_RISING_LATCH|BPWM_CAPTURE_INT_FALLING_LATCH];
+															optionLabels:[Rising reload, Falling reload, Rising and falling reload];
+															dependencies:UseBPWM3CH3ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_CAP_INT_SEL			  			(<!id:BPWM3CH3CapINTSelect;
+															type:select;
+															label:Select BPWM3 CH3 capture interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Disable, Rising latch, Falling latch, Rising and falling latch];
+															dependencies:UseBPWM3CH3AdvanceCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_CAP_ENABLE      	    	    (<!id:UseBPWM3CH4ENCapBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH4;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Cap4;
+															groupName:BPWM3 CH4 Capture Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_CAP_ADVANCED    	      		(<!id:UseBPWM3CH4AdvanceCapBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH4ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_CAP_RELOAD      	     		(<!id:UseBPWM3CH4CapReloadSelect;
+															type:select;
+															label:Select CH4 reload mode;
+															size:5;
+															data:BPWM_CAPTURE_INT_RISING_LATCH;
+															default:BPWM_CAPTURE_INT_RISING_LATCH;
+															sort:false;
+															enum:[BPWM_CAPTURE_INT_RISING_LATCH , BPWM_CAPTURE_INT_FALLING_LATCH, BPWM_CAPTURE_INT_RISING_LATCH|BPWM_CAPTURE_INT_FALLING_LATCH];
+															optionLabels:[Rising reload, Falling reload, Rising and falling reload];
+															dependencies:UseBPWM3CH4ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_CAP_INT_SEL			  			(<!id:BPWM3CH4CapINTSelect;
+															type:select;
+															label:Select BPWM3 CH4 capture interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Disable, Rising latch, Falling latch, Rising and falling latch];
+															dependencies:UseBPWM3CH4AdvanceCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_CAP_ENABLE      	            (<!id:UseBPWM3CH5ENCapBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH5;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Cap5;
+															groupName:BPWM3 CH5 Capture Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_CAP_ADVANCED    	     	    (<!id:UseBPWM3CH5AdvanceCapBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH5ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_CAP_RELOAD      	            (<!id:UseBPWM3CH5CapReloadSelect;
+															type:select;
+															label:Select CH5 reload mode;
+															size:5;
+															data:BPWM_CAPTURE_INT_RISING_LATCH;
+															default:BPWM_CAPTURE_INT_RISING_LATCH;
+															sort:false;
+															enum:[BPWM_CAPTURE_INT_RISING_LATCH , BPWM_CAPTURE_INT_FALLING_LATCH, BPWM_CAPTURE_INT_RISING_LATCH|BPWM_CAPTURE_INT_FALLING_LATCH];
+															optionLabels:[Rising reload, Falling reload, Rising and falling reload];
+															dependencies:UseBPWM3CH5ENCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_CAP_INT_SEL			 	        (<!id:BPWM3CH5CapINTSelect;
+															type:select;
+															label:Select BPWM3 CH5 capture interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2, 3];
+															optionLabels:[Disable, Rising latch, Falling latch, Rising and falling latch];
+															dependencies:UseBPWM3CH5AdvanceCapBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Cap5;
+															!>)
+
+#define NUCODEGEN_BPWM3_OUTPUT_FUNC_SETMODE		     	    (<!id:BPWM3OutputFuncSetmode;
+															type:radio;
+															label:Select BPWM3 output function setting;
+															data:0;
+															default:0;
+															helper:;
+															enum:[0, 1];
+															optionLabels:[Quick setting, Manual];
+															dependencies:UseBPWM3CH0ENBoolean|UseBPWM3CH1ENBoolean|UseBPWM3CH2ENBoolean|UseBPWM3CH3ENBoolean|UseBPWM3CH4ENBoolean|UseBPWM3CH5ENBoolean;
+															dependenciesOption:{"UseBPWM3CH0ENBoolean":"true","UseBPWM3CH1ENBoolean":"true",
+															"UseBPWM3CH2ENBoolean":"true","UseBPWM3CH3ENBoolean":"true",
+															"UseBPWM3CH4ENBoolean":"true","UseBPWM3CH5ENBoolean":"true"};
+															groupId:GroupBPWM3Output;
+															groupName:BPWM3 Common Output Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_FREQ			    	         	(<!id:BPWM3FREQInteger;
+															type:integer;
+															label:The BPWM3 frequency(Hz);
+															data:1000;
+															default:1000;
+															helper:Enter frequency between 1~PCLK or 1~PLL_CLK;
+															minimum:1;
+															maximum:24000000;
+															dependencies:BPWM3OutputFuncSetmode;
+															dependenciesOption:0;
+															groupId:GroupBPWM3Output;
+															!>)
+
+#define NUCODEGEN_BPWM3_CLKSRC					     		(<!id:BPWM3CLKSRCSelect;
+															type:select;
+															label:Select BPWM3 clock source;
+															data:BPWM_CLKSRC_BPWM_CLK;
+															default:BPWM_CLKSRC_BPWM_CLK;
+															helper:;
+															sort:false;
+															enum:[BPWM_CLKSRC_BPWM_CLK, BPWM_CLKSRC_TIMER0, BPWM_CLKSRC_TIMER1, BPWM_CLKSRC_TIMER2, BPWM_CLKSRC_TIMER3];
+															optionLabels:[BPWM3_CLK, TIMER0, TIMER1, TIMER2, TIMER3];
+															dependencies:BPWM3OutputFuncSetmode;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output;
+															!>)
+
+#define NUCODEGEN_BPWM3_CNTTYPE					     		(<!id:BPWM3CNTTypeSelect;
+															type:radio;
+															label:Select BPWM3 counter type;
+															data:BPWM_UP_COUNTER;
+															default:BPWM_UP_COUNTER;
+															helper:;
+															sort:false;
+															enum:[BPWM_UP_COUNTER, BPWM_DOWN_COUNTER, BPWM_UP_DOWN_COUNTER];
+															optionLabels:[Up count, Down count, Up down count];
+															dependencies:BPWM3OutputFuncSetmode;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output;
+															!>)
+
+#define NUCODEGEN_BPWM3_PRESCALER		    	     		(<!id:BPWM3PrescalerInteger;
+															type:integer;
+															label:The BPWM3 counter clock prescaler;
+															data:10;
+															default:10;
+															helper:Enter prescaler between 0x0 ~ 0xFFF;
+															minimum:0;
+															maximum:4095;
+															dependencies:BPWM3OutputFuncSetmode;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output;
+															!>)
+
+#define NUCODEGEN_BPWM3_PERIOD			    	    		(<!id:BPWM3PeriodInteger;
+															type:integer;
+															label:The BPWM3  period;
+															data:1000;
+															default:1000;
+															helper:Enter period between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:BPWM3OutputFuncSetmode;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output;
+															!>)
+
+#define NUCODEGEN_BPWM3_SYNCSTART_ENABLE				    (<!id:UseBPWM3SyncStartENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 synchronous start function.;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH0AdvanceBoolean|UseBPWM3CH1AdvanceBoolean|UseBPWM3CH2AdvanceBoolean|UseBPWM3CH3AdvanceBoolean|UseBPWM3CH4AdvanceBoolean|UseBPWM3CH5AdvanceBoolean;
+															dependenciesOption:{"UseBPWM3CH0AdvanceBoolean":"true","UseBPWM3CH1AdvanceBoolean":"true",
+																				"UseBPWM3CH2AdvanceBoolean":"true","UseBPWM3CH3AdvanceBoolean":"true",
+																				"UseBPWM3CH4AdvanceBoolean":"true","UseBPWM3CH5AdvanceBoolean":"true"};
+															groupId:GroupBPWM3Output;
+															!>)
+
+#define NUCODEGEN_BPWM3_SYNCSTART_SRC					    (<!id:UseBPWM3SyncStartSrcSelect;
+															type:radio;
+															label:Select BPWM3 synchronous start source;
+															data:BPWM_SSCTL_SSRC_BPWM3;
+															default:BPWM_SSCTL_SSRC_BPWM3;
+															enum:[BPWM_SSCTL_SSRC_BPWM0, BPWM_SSCTL_SSRC_BPWM1, BPWM_SSCTL_SSRC_BPWM2, BPWM_SSCTL_SSRC_BPWM3];
+															optionLabels:[BPWM0, BPWM1, BPWM2, BPWM3];
+															dependencies:UseBPWM3SyncStartENBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_ENABLE          	            (<!id:UseBPWM3CH0ENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH0.;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:0;
+															groupId:GroupBPWM3Output0;
+															groupName:BPWM3 CH0 Output Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_ADVANCED        	            (<!id:UseBPWM3CH0AdvanceBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:[BPWM3OutputFuncSetmode,UseBPWM3CH0ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH0ENBoolean":"true"};
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_DUTY		    	     		(<!id:BPWM3CH0DUTYInteger;
+															type:integer;
+															label:The BPWM3 CH0 duty cycle(%);
+															data:10;
+															default:10;
+															helper:Enter duty cycle between 0~100.;
+															minimum:0;
+															maximum:100;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH0ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"0","UseBPWM3CH0ENBoolean":"true"};
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_CMPDATA		         			(<!id:BPWM3CH0CmpdataInteger;
+															type:integer;
+															label:The BPWM3 CH0 comparator ;
+															data:1000;
+															default:1000;
+															helper:Enter comparator between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH0ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH0ENBoolean":"true"};
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_WAVEOUT_PERIOD	            	(<!id:BPWM3CH0WaveOutPeriodSelect;
+															type:radio;
+															label:The BPWM3 CH0 period point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH0ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH0ENBoolean":"true"};
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_WAVEOUT_ZERO	            	(<!id:BPWM3CH0WaveOutZeroSelect;
+															type:radio;
+															label:The BPWM3 CH0 zero point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH0ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH0ENBoolean":"true"};
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_WAVEOUT_CMPUP	            	(<!id:BPWM3CH0WaveOutCmpUpSelect;
+															type:radio;
+															label:The BPWM3 CH0 compare up point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH0ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_UP_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH0ENBoolean":"true"};
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_WAVEOUT_CMPDOWN	            	(<!id:BPWM3CH0WaveOutCmpDownSelect;
+															type:radio;
+															label:The BPWM3 CH0 compare down point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH0ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_DOWN_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH0ENBoolean":"true"};
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_LOAD_MODE						(<!id:BPWM3CH0LoadModeSelect;
+															type:radio;
+															label:Select BPWM3 CH0 loading mode ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Period mode, Immediately mode, Center mode];
+															dependencies:UseBPWM3CH0AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_OTHER_OUTPUT					(<!id:BPWM3CH0otherOutputSelect;
+															type:radio;
+															label:The BPWM3 CH0 other output behavior ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Disable, Mask, Inverter];
+															dependencies:UseBPWM3CH0AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_MASK_DATA						(<!id:BPWM3CH0MaskDataSelect;
+															type:radio;
+															label:The BPWM3 CH0 mask data ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[Low, High];
+															dependencies:BPWM3CH0otherOutputSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_TRIGER_ADC_ENABLE   			(<!id:UseBPWM3CH0TrigerADCENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH0 trigger ADC.;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH0AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_TRIGER_ADCSRC					(<!id:UseBPWM3CH0TrigerADCSrcSelect;
+															type:select;
+															label:Select condition to trigger ADC;
+															data:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															default:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															helper:;
+															sort:false;
+															enum:[BPWM_TRIGGER_ADC_EVEN_ZERO_POINT, BPWM_TRIGGER_ADC_EVEN_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_ZERO_OR_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_DOWN_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_DOWN_COUNT_POINT];
+															optionLabels:[CH0 zero point, CH0 period , CH0 zero or period point, CH0 up count CMPDAT point, CH0 down count CMPDAT point, CH1 up count CMPDAT point, CH1 down count CMPDAT point];
+															vertical:false;
+															dependencies:UseBPWM3CH0TrigerADCENBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH0_INT_SEL							(<!id:BPWM3CH0INTSelect;
+															type:multipleselect;
+															label:Select BPWM3 CH0 interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[1, 2, 4, 8];
+															optionLabels:[Zero, Period, Cmpup, Cmpdown];
+															dependencies:[UseBPWM3CH0AdvanceBoolean];
+															dependenciesOption:{"UseBPWM3CH0AdvanceBoolean":"true"};
+															groupId:GroupBPWM3Output0;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_ENABLE                          (<!id:UseBPWM3CH1ENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH1.;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:0;
+															groupId:GroupBPWM3Output1;
+															groupName:BPWM3 CH1 Output Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_ADVANCED                        (<!id:UseBPWM3CH1AdvanceBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH1ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH1ENBoolean":"true"};
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_DUTY			            	(<!id:BPWM3CH1DUTYInteger;
+															type:integer;
+															label:The BPWM3 CH1 duty cycle(%);
+															data:10;
+															default:10;
+															helper:Enter duty cycle between 0~100.;
+															minimum:0;
+															maximum:100;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH1ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"0","UseBPWM3CH1ENBoolean":"true"};
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_CMPDATA			            	(<!id:BPWM3CH1CmpdataInteger;
+															type:integer;
+															label:The BPWM3 CH1 comparator ;
+															data:1000;
+															default:1000;
+															helper:Enter comparator between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH1ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH1ENBoolean":"true"};
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_WAVEOUT_PERIOD	            	(<!id:BPWM3CH1WaveOutPeriodSelect;
+															type:radio;
+															label:The BPWM3 CH1 period point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH1ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH1ENBoolean":"true"};
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_WAVEOUT_ZERO	            	(<!id:BPWM3CH1WaveOutZeroSelect;
+															type:radio;
+															label:The BPWM3 CH1 zero point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH1ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH1ENBoolean":"true"};
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_WAVEOUT_CMPUP	            	(<!id:BPWM3CH1WaveOutCmpUpSelect;
+															type:radio;
+															label:The BPWM3 CH1 compare up point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH1ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_UP_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH1ENBoolean":"true"};
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_WAVEOUT_CMPDOWN	            	(<!id:BPWM3CH1WaveOutCmpDownSelect;
+															type:radio;
+															label:The BPWM3 CH1 compare down point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH1ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_DOWN_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH1ENBoolean":"true"};
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_LOAD_MODE						(<!id:BPWM3CH1LoadModeSelect;
+															type:radio;
+															label:Select BPWM3 CH1 loading mode ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Period mode, Immediately mode, Center mode];
+															dependencies:UseBPWM3CH1AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_OTHER_OUTPUT					(<!id:BPWM3CH1otherOutputSelect;
+															type:radio;
+															label:The BPWM3 CH1 other output behavior ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Disable, Mask, Inverter];
+															dependencies:UseBPWM3CH1AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_MASK_DATA						(<!id:BPWM3CH1MaskDataSelect;
+															type:radio;
+															label:The BPWM3 CH1 mask data ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[Low, High];
+															dependencies:BPWM3CH1otherOutputSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_TRIGER_ADC_ENABLE   			(<!id:UseBPWM3CH1TrigerADCENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH1 trigger ADC.;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH1AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_TRIGER_ADCSRC					(<!id:UseBPWM3CH1TrigerADCSrcSelect;
+															type:select;
+															label:Select condition to trigger ADC;
+															data:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															default:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															helper:;
+															sort:false;
+															enum:[BPWM_TRIGGER_ADC_EVEN_ZERO_POINT, BPWM_TRIGGER_ADC_EVEN_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_ZERO_OR_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_DOWN_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_DOWN_COUNT_POINT];
+															optionLabels:[CH0 zero point, CH0 period , CH0 zero or period point, CH0 up count CMPDAT point, CH0 down count CMPDAT point, CH1 up count CMPDAT point, CH1 down count CMPDAT point];
+															vertical:false;
+															dependencies:UseBPWM3CH1TrigerADCENBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH1_INT_SEL							(<!id:BPWM3CH1INTSelect;
+															type:multipleselect;
+															label:Select BPWM3 CH1 interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[1, 2, 4, 8];
+															optionLabels:[Zero, Period, Cmpup, Cmpdown];
+															dependencies:[UseBPWM3CH1AdvanceBoolean];
+															dependenciesOption:{"UseBPWM3CH1AdvanceBoolean":"true"};
+															groupId:GroupBPWM3Output1;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_ENABLE                          (<!id:UseBPWM3CH2ENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH2.;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:0;
+															groupId:GroupBPWM3Output2;
+															groupName:BPWM3 CH2 Output Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_ADVANCED                        (<!id:UseBPWM3CH2AdvanceBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH2ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH2ENBoolean":"true"};
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_DUTY			            	(<!id:BPWM3CH2DUTYInteger;
+															type:integer;
+															label:The BPWM3 CH2 duty cycle(%);
+															data:10;
+															default:10;
+															helper:Enter duty cycle between 0~100.;
+															minimum:0;
+															maximum:100;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH2ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"0","UseBPWM3CH2ENBoolean":"true"};
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_CMPDATA			            	(<!id:BPWM3CH2CmpdataInteger;
+															type:integer;
+															label:The BPWM3 CH2 comparator ;
+															data:1000;
+															default:1000;
+															helper:Enter comparator between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH2ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH2ENBoolean":"true"};
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_WAVEOUT_PERIOD	            	(<!id:BPWM3CH2WaveOutPeriodSelect;
+															type:radio;
+															label:The BPWM3 CH2 period point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH2ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH2ENBoolean":"true"};
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_WAVEOUT_ZERO	            	(<!id:BPWM3CH2WaveOutZeroSelect;
+															type:radio;
+															label:The BPWM3 CH2 zero point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH2ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH2ENBoolean":"true"};
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_WAVEOUT_CMPUP	            	(<!id:BPWM3CH2WaveOutCmpUpSelect;
+															type:radio;
+															label:The BPWM3 CH2 compare up point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH2ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_UP_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH2ENBoolean":"true"};
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_WAVEOUT_CMPDOWN	            	(<!id:BPWM3CH2WaveOutCmpDownSelect;
+															type:radio;
+															label:The BPWM3 CH2 compare down point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH2ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_DOWN_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH2ENBoolean":"true"};
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_LOAD_MODE						(<!id:BPWM3CH2LoadModeSelect;
+															type:radio;
+															label:Select BPWM3 CH2 loading mode ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Period mode, Immediately mode, Center mode];
+															dependencies:UseBPWM3CH2AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_OTHER_OUTPUT					(<!id:BPWM3CH2otherOutputSelect;
+															type:radio;
+															label:The BPWM3 CH2 other output behavior ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Disable, Mask, Inverter];
+															dependencies:UseBPWM3CH2AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_MASK_DATA						(<!id:BPWM3CH2MaskDataSelect;
+															type:radio;
+															label:The BPWM3 CH2 mask data ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[Low, High];
+															dependencies:BPWM3CH2otherOutputSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_TRIGER_ADC_ENABLE   			(<!id:UseBPWM3CH2TrigerADCENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH2 trigger ADC.;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH2AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_TRIGER_ADCSRC					(<!id:UseBPWM3CH2TrigerADCSrcSelect;
+															type:select;
+															label:Select condition to trigger ADC;
+															data:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															default:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															helper:;
+															sort:false;
+															enum:[BPWM_TRIGGER_ADC_EVEN_ZERO_POINT, BPWM_TRIGGER_ADC_EVEN_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_ZERO_OR_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_DOWN_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_DOWN_COUNT_POINT];
+															optionLabels:[CH2 zero point, CH2 period , CH2 zero or period point, CH2 up count CMPDAT point, CH2 down count CMPDAT point, CH3 up count CMPDAT point, CH3 down count CMPDAT point];
+															vertical:false;
+															dependencies:UseBPWM3CH2TrigerADCENBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH2_INT_SEL							(<!id:BPWM3CH2INTSelect;
+															type:multipleselect;
+															label:Select BPWM3 CH2 interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[1, 2, 4, 8];
+															optionLabels:[Zero, Period, Cmpup, Cmpdown];
+															dependencies:[UseBPWM3CH2AdvanceBoolean];
+															dependenciesOption:{"UseBPWM3CH2AdvanceBoolean":"true"};
+															groupId:GroupBPWM3Output2;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_ENABLE                        	(<!id:UseBPWM3CH3ENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH3.;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:0;
+															groupId:GroupBPWM3Output3;
+															groupName:BPWM3 CH3 Output Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_ADVANCED                        (<!id:UseBPWM3CH3AdvanceBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH3ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH3ENBoolean":"true"};
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_DUTY			            	(<!id:BPWM3CH3DUTYInteger;
+															type:integer;
+															label:The BPWM3 CH3 duty cycle(%);
+															data:10;
+															default:10;
+															helper:Enter duty cycle between 0~100.;
+															minimum:0;
+															maximum:100;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH3ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"0","UseBPWM3CH3ENBoolean":"true"};
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_CMPDATA			            	(<!id:BPWM3CH3CmpdataInteger;
+															type:integer;
+															label:The BPWM3 CH3 comparator ;
+															data:1000;
+															default:1000;
+															helper:Enter comparator between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH3ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH3ENBoolean":"true"};
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_WAVEOUT_PERIOD	            	(<!id:BPWM3CH3WaveOutPeriodSelect;
+															type:radio;
+															label:The BPWM3 CH3 period point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH3ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH3ENBoolean":"true"};
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_WAVEOUT_ZERO	            	(<!id:BPWM3CH3WaveOutZeroSelect;
+															type:radio;
+															label:The BPWM3 CH3 zero point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH3ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH3ENBoolean":"true"};
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_WAVEOUT_CMPUP	            	(<!id:BPWM3CH3WaveOutCmpUpSelect;
+															type:radio;
+															label:The BPWM3 CH3 compare up point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH3ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_UP_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH3ENBoolean":"true"};
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_WAVEOUT_CMPDOWN	            	(<!id:BPWM3CH3WaveOutCmpDownSelect;
+															type:radio;
+															label:The BPWM3 CH3 compare down point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH3ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_DOWN_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH3ENBoolean":"true"};
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_LOAD_MODE						(<!id:BPWM3CH3LoadModeSelect;
+															type:radio;
+															label:Select BPWM3 CH3 loading mode ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Period mode, Immediately mode, Center mode];
+															dependencies:UseBPWM3CH3AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_OTHER_OUTPUT					(<!id:BPWM3CH3otherOutputSelect;
+															type:radio;
+															label:The BPWM3 CH3 other output behavior ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Disable, Mask, Inverter];
+															dependencies:UseBPWM3CH3AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_MASK_DATA						(<!id:BPWM3CH3MaskDataSelect;
+															type:radio;
+															label:The BPWM3 CH3 mask data ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[Low, High];
+															dependencies:BPWM3CH3otherOutputSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_TRIGER_ADC_ENABLE   			(<!id:UseBPWM3CH3TrigerADCENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH3 trigger ADC.;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH3AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_TRIGER_ADCSRC					(<!id:UseBPWM3CH3TrigerADCSrcSelect;
+															type:select;
+															label:Select condition to trigger ADC;
+															data:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															default:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															helper:;
+															sort:false;
+															enum:[BPWM_TRIGGER_ADC_EVEN_ZERO_POINT, BPWM_TRIGGER_ADC_EVEN_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_ZERO_OR_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_DOWN_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_DOWN_COUNT_POINT];
+															optionLabels:[CH2 zero point, CH2 period , CH2 zero or period point, CH2 up count CMPDAT point, CH2 down count CMPDAT point, CH3 up count CMPDAT point, CH3 down count CMPDAT point];
+															vertical:false;
+															dependencies:UseBPWM3CH3TrigerADCENBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH3_INT_SEL							(<!id:BPWM3CH3INTSelect;
+															type:multipleselect;
+															label:Select BPWM3 CH3 interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[1, 2, 4, 8];
+															optionLabels:[Zero, Period, Cmpup, Cmpdown];
+															dependencies:[UseBPWM3CH3AdvanceBoolean];
+															dependenciesOption:{"UseBPWM3CH3AdvanceBoolean":"true"};
+															groupId:GroupBPWM3Output3;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_ENABLE                          (<!id:UseBPWM3CH4ENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH4.;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:0;
+															groupId:GroupBPWM3Output4;
+															groupName:BPWM3 CH4 Output Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_ADVANCED                        (<!id:UseBPWM3CH4AdvanceBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH4ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH4ENBoolean":"true"};
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_DUTY			            	(<!id:BPWM3CH4DUTYInteger;
+															type:integer;
+															label:The BPWM3 CH4 duty cycle(%);
+															data:10;
+															default:10;
+															helper:Enter duty cycle between 0~100.;
+															minimum:0;
+															maximum:100;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH4ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"0","UseBPWM3CH4ENBoolean":"true"};
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_CMPDATA			          	    (<!id:BPWM3CH4CmpdataInteger;
+															type:integer;
+															label:The BPWM3 CH4 comparator ;
+															data:1000;
+															default:1000;
+															helper:Enter comparator between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH4ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH4ENBoolean":"true"};
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_WAVEOUT_PERIOD	            	(<!id:BPWM3CH4WaveOutPeriodSelect;
+															type:radio;
+															label:The BPWM3 CH4 period point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH4ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH4ENBoolean":"true"};
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_WAVEOUT_ZERO	            	(<!id:BPWM3CH4WaveOutZeroSelect;
+															type:radio;
+															label:The BPWM3 CH4 zero point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH4ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH4ENBoolean":"true"};
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_WAVEOUT_CMPUP	            	(<!id:BPWM3CH4WaveOutCmpUpSelect;
+															type:radio;
+															label:The BPWM3 CH4 compare up point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH4ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_UP_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH4ENBoolean":"true"};
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_WAVEOUT_CMPDOWN	            	(<!id:BPWM3CH4WaveOutCmpDownSelect;
+															type:radio;
+															label:The BPWM3 CH4 compare down point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH4ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_DOWN_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH4ENBoolean":"true"};
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_LOAD_MODE						(<!id:BPWM3CH4LoadModeSelect;
+															type:radio;
+															label:Select BPWM3 CH4 loading mode ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Period mode, Immediately mode, Center mode];
+															dependencies:UseBPWM3CH4AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_OTHER_OUTPUT					(<!id:BPWM3CH4otherOutputSelect;
+															type:radio;
+															label:The BPWM3 CH4 other output behavior ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Disable, Mask, Inverter];
+															dependencies:UseBPWM3CH4AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_MASK_DATA						(<!id:BPWM3CH4MaskDataSelect;
+															type:radio;
+															label:The BPWM3 CH4 mask data ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[Low, High];
+															dependencies:BPWM3CH4otherOutputSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_TRIGER_ADC_ENABLE   			(<!id:UseBPWM3CH4TrigerADCENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH4 trigger ADC.;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH4AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_TRIGER_ADCSRC					(<!id:UseBPWM3CH4TrigerADCSrcSelect;
+															type:select;
+															label:Select condition to trigger ADC;
+															data:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															default:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															helper:;
+															sort:false;
+															enum:[BPWM_TRIGGER_ADC_EVEN_ZERO_POINT, BPWM_TRIGGER_ADC_EVEN_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_ZERO_OR_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_DOWN_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_DOWN_COUNT_POINT];
+															optionLabels:[CH4 zero point, CH4 period , CH4 zero or period point, CH4 up count CMPDAT point, CH4 down count CMPDAT point, CH5 up count CMPDAT point, CH5 down count CMPDAT point];
+															vertical:false;
+															dependencies:UseBPWM3CH4TrigerADCENBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH4_INT_SEL							(<!id:BPWM3CH4INTSelect;
+															type:multipleselect;
+															label:Select BPWM3 CH4 interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[1, 2, 4, 8];
+															optionLabels:[Zero, Period, Cmpup, Cmpdown];
+															dependencies:[UseBPWM3CH4AdvanceBoolean];
+															dependenciesOption:{"UseBPWM3CH4AdvanceBoolean":"true"};
+															groupId:GroupBPWM3Output4;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_ENABLE                          (<!id:UseBPWM3CH5ENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH5.;
+															data:0;
+															default:0;
+															dependencies:BPWM3FuncSelect;
+															dependenciesOption:0;
+															groupId:GroupBPWM3Output5;
+															groupName:BPWM3 CH5 Output Configuration;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_ADVANCED                        (<!id:UseBPWM3CH5AdvanceBoolean;
+															type:checkbox;
+															label:Advanced configuration;
+															data:0;
+															default:0;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH5ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH5ENBoolean":"true"};
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_DUTY			            	(<!id:BPWM3CH5DUTYInteger;
+															type:integer;
+															label:The BPWM3 CH5 duty cycle(%);
+															data:10;
+															default:10;
+															helper:Enter duty cycle between 0~100.;
+															minimum:0;
+															maximum:100;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH5ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"0","UseBPWM3CH5ENBoolean":"true"};
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_CMPDATA			            	(<!id:BPWM3CH5CmpdataInteger;
+															type:integer;
+															label:The BPWM3 CH5 comparator ;
+															data:1000;
+															default:1000;
+															helper:Enter comparator between 0x0 ~ 0xFFFF;
+															minimum:0;
+															maximum:65535;
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH5ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH5ENBoolean":"true"};
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_WAVEOUT_PERIOD	            	(<!id:BPWM3CH5WaveOutPeriodSelect;
+															type:radio;
+															label:The BPWM3 CH5 period point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH5ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH5ENBoolean":"true"};
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_WAVEOUT_ZERO	            	(<!id:BPWM3CH5WaveOutZeroSelect;
+															type:radio;
+															label:The BPWM3 CH5 zero point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3OutputFuncSetmode, UseBPWM3CH5ENBoolean];
+															dependenciesOption:{"BPWM3OutputFuncSetmode":"1","UseBPWM3CH5ENBoolean":"true"};
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_WAVEOUT_CMPUP	            	(<!id:BPWM3CH5WaveOutCmpUpSelect;
+															type:radio;
+															label:The BPWM3 CH5 compare up point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH5ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_UP_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH5ENBoolean":"true"};
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_WAVEOUT_CMPDOWN	            	(<!id:BPWM3CH5WaveOutCmpDownSelect;
+															type:radio;
+															label:The BPWM3 CH5 compare down point output behavior ;
+															data:BPWM_OUTPUT_NOTHING;
+															default:BPWM_OUTPUT_NOTHING;
+															helper:;
+															sort:false;
+															enum:[BPWM_OUTPUT_NOTHING, BPWM_OUTPUT_LOW, BPWM_OUTPUT_HIGH, BPWM_OUTPUT_TOGGLE];
+															optionLabels:[Nothing, Low, High, Toggle];
+															dependencies:[BPWM3CNTTypeSelect, UseBPWM3CH5ENBoolean];
+															dependenciesOption:{"BPWM3CNTTypeSelect":"BPWM_DOWN_COUNTER|BPWM_UP_DOWN_COUNTER","UseBPWM3CH5ENBoolean":"true"};
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_LOAD_MODE						(<!id:BPWM3CH5LoadModeSelect;
+															type:radio;
+															label:Select BPWM3 CH5 loading mode ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Period mode, Immediately mode, Center mode];
+															dependencies:UseBPWM3CH5AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_OTHER_OUTPUT					(<!id:BPWM3CH5otherOutputSelect;
+															type:radio;
+															label:The BPWM3 CH5 other output behavior ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1, 2];
+															optionLabels:[Disable, Mask, Inverter];
+															dependencies:UseBPWM3CH5AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_MASK_DATA						(<!id:BPWM3CH5MaskDataSelect;
+															type:radio;
+															label:The BPWM3 CH5 mask data ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[0, 1];
+															optionLabels:[Low, High];
+															dependencies:BPWM3CH5otherOutputSelect;
+															dependenciesOption:1;
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_TRIGER_ADC_ENABLE   			(<!id:UseBPWM3CH5TrigerADCENBoolean;
+															type:checkbox;
+															label:Enable BPWM3 CH5 trigger ADC.;
+															data:0;
+															default:0;
+															dependencies:UseBPWM3CH5AdvanceBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_TRIGER_ADCSRC					(<!id:UseBPWM3CH5TrigerADCSrcSelect;
+															type:select;
+															label:Select condition to trigger ADC;
+															data:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															default:BPWM_TRIGGER_ADC_EVEN_ZERO_POINT;
+															helper:;
+															sort:false;
+															enum:[BPWM_TRIGGER_ADC_EVEN_ZERO_POINT, BPWM_TRIGGER_ADC_EVEN_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_ZERO_OR_PERIOD_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_EVEN_CMP_DOWN_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_UP_COUNT_POINT, BPWM_TRIGGER_ADC_ODD_CMP_DOWN_COUNT_POINT];
+															optionLabels:[CH4 zero point, CH4 period , CH4 zero or period point, CH4 up count CMPDAT point, CH4 down count CMPDAT point, CH5 up count CMPDAT point, CH5 down count CMPDAT point];
+															vertical:false;
+															dependencies:UseBPWM3CH5TrigerADCENBoolean;
+															dependenciesOption:true;
+															groupId:GroupBPWM3Output5;
+															!>)
+
+#define NUCODEGEN_BPWM3_CH5_INT_SEL							(<!id:BPWM3CH5INTSelect;
+															type:multipleselect;
+															label:Select BPWM3 CH5 interrupt ;
+															data:0;
+															default:0;
+															helper:;
+															sort:false;
+															enum:[1, 2, 4, 8];
+															optionLabels:[Zero, Period, Cmpup, Cmpdown];
+															dependencies:[UseBPWM3CH5AdvanceBoolean];
+															dependenciesOption:{"UseBPWM3CH5AdvanceBoolean":"true"};
+															groupId:GroupBPWM3Output5;
+															!>)

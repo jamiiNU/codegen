@@ -1,0 +1,353 @@
+/*--------------------------------------------------------------------------*/
+/* CLK Configuration                                                        */
+/*--------------------------------------------------------------------------*/
+
+#define NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE       (<!id:CLK_HXT_FailDetectorRadio;
+                                                    type:radio;
+                                                    label:Enable HXT Fail Detector;
+                                                    data:[0];
+                                                    default:[0];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    vertical:false;
+                                                    dependencies:;
+                                                    dependenciesOption:;
+                                                    groupId:Group_HXT_Detector;
+                                                    groupName:HXT Detector Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE       (<!id:CLK_HXT_RangeDetectorRadio;
+                                                    type:radio;
+                                                    label:Enable Frequency Range Detector;
+                                                    data:[0];
+                                                    default:[0];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    vertical:false;
+                                                    dependencies:none;
+                                                    dependenciesOption:none;
+                                                    groupId:Group_HXT_Detector;
+                                                    groupName:HXT Detector Configuration;
+                                                !>)
+
+#define CLK_HXT_FREQUENCY_RANGE_UPPER_BOUND     (<!id:CLK_HXT_RangeUpperBoundInteger;
+                                                    type:integer;
+                                                    label:Enter Frequency Range Upper Bound;
+                                                    data:697;
+                                                    default:697;
+                                                    helper:Upper bound frequency : F_HIRC/1024* this value. <br>Range of this value is 0 to 1023;
+                                                    minimum:0;
+                                                    maximum:1023;
+                                                    vertical:true;
+                                                    dependencies:CLK_HXT_RangeDetectorRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_HXT_Detector;
+                                                    groupName:HXT Detector Configuration;
+                                                !>)
+
+#define CLK_HXT_FREQUENCY_RANGE_LOWER_BOUND     (<!id:CLK_HXT_RangeLowerBoundInteger;
+                                                    type:integer;
+                                                    label:Enter Frequency Range Lower Bound;
+                                                    data:669;
+                                                    default:669;
+                                                    helper:Lower bound frequency : F_HIRC/1024* this value. <br>Range of this value is 0 to 1023;
+                                                    minimum:0;
+                                                    maximum:1023;
+                                                    vertical:true;
+                                                    dependencies:CLK_HXT_RangeDetectorRadio;
+                                                    dependenciesOption:1;
+                                                    dependenciesDefault:true;
+                                                    groupId:Group_HXT_Detector;
+                                                    groupName:HXT Detector Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE       (<!id:CLK_LXT_FailDetectorRadio;
+                                                    type:radio;
+                                                    label:Select LXT Fail Detector;
+                                                    data:[0];
+                                                    default:[0];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[1, 0];
+                                                    optionLabels:[Enable, Disable];
+                                                    vertical:false;
+                                                    dependencies:;
+                                                    dependenciesOption:;
+                                                    groupId:Group_LXT_Detector;
+                                                    groupName:LXT Detector Configuration;
+                                                    filterExp:type!="M031_B" and type!="M032_C" and type!="M032_D";
+                                                    filterDefault:false;
+                                                !><!id:CLK_LXT_FailDetectorRadio;
+                                                    type:radio;
+                                                    label:Select LXT Fail Detector;
+                                                    data:[0];
+                                                    default:[0];
+                                                    helper:"This part number don't support LXT.";
+                                                    sort:false;
+                                                    enum:[0];
+                                                    optionLabels:[Disable];
+                                                    vertical:false;
+                                                    dependencies:;
+                                                    dependenciesOption:;
+                                                    groupId:Group_LXT_Detector;
+                                                    groupName:LXT Detector Configuration;
+                                                    filterExp:type=="M031_B" or type=="M032_C" or type=="M032_D";
+                                                    filterDefault:false;
+                                                !>)
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+#define NUCODEGEN_CLK_DET_ENABLE                (0)
+#define NUCODEGEN_CLK_DET_CONFIG                (0)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_LXTFDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFQDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFQDEN_Msk | CLK_CLKDCTL_LXTFDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFDEN_Msk | CLK_CLKDCTL_LXTFDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFDEN_Msk | CLK_CLKDCTL_HXTFQDEN_Msk)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+#define NUCODEGEN_CLK_DET_ENABLE                (1)
+#define NUCODEGEN_CLK_DET_CONFIG                (CLK_CLKDCTL_HXTFDEN_Msk | CLK_CLKDCTL_HXTFQDEN_Msk | CLK_CLKDCTL_LXTFDEN_Msk)
+#endif
+
+#define NUCODEGEN_CLK_PDWK_INT_ENABLE           (<!id:CLK_PDWK_IntEnableCheckbox;
+                                                    type:checkbox;
+                                                    label:NVIC Enable Power Down Wake-up Interrupt;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:Vector : PWRWU_IRQHandler;
+                                                    sort:false;
+                                                    enum:[1];
+                                                    optionLabels:[Enable Interrupt];
+                                                    vertical:true;
+                                                    dependencies:;
+                                                    dependenciesOption:;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_ENABLE        (<!id:CLK_CLKFAIL_IntEnableCheckbox;
+                                                    type:checkbox;
+                                                    label:NVIC Enable Clock Detector Interrupt;
+                                                    data:1;
+                                                    default:1;
+                                                    helper:Vector : CLKFAIL_IRQHandler;
+                                                    sort:false;
+                                                    enum:[1];
+                                                    optionLabels:[Enable Interrupt];
+                                                    vertical:true;
+                                                    dependencies:;
+                                                    dependenciesOption:;
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D0_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:1;
+                                                    data:[0];
+                                                    default:[0];
+                                                    helper:None of clock detetor function is enabled;
+                                                    sort:false;
+                                                    enum:[0];
+                                                    optionLabels:[No available interrupt source];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"0", "CLK_HXT_RangeDetectorRadio":"0", "CLK_LXT_FailDetectorRadio":"0"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D1_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:1;
+                                                    data:[CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    optionLabels:[LXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"0", "CLK_HXT_RangeDetectorRadio":"0", "CLK_LXT_FailDetectorRadio":"1"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D2_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:1;
+                                                    data:[CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    optionLabels:[HXT Frequency Range Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"0", "CLK_HXT_RangeDetectorRadio":"1", "CLK_LXT_FailDetectorRadio":"0"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D3_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:2;
+                                                    data:[CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    optionLabels:[HXT Frequency Range Interrupt, LXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"0", "CLK_HXT_RangeDetectorRadio":"1", "CLK_LXT_FailDetectorRadio":"1"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D4_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:1;
+                                                    data:[CLK_CLKDCTL_HXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFIEN_Msk];
+                                                    optionLabels:[HXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"1", "CLK_HXT_RangeDetectorRadio":"0", "CLK_LXT_FailDetectorRadio":"0"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 0) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D5_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:2;
+                                                    data:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    optionLabels:[HXT Fail Interrupt, LXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"1", "CLK_HXT_RangeDetectorRadio":"0", "CLK_LXT_FailDetectorRadio":"1"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 0))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D6_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:2;
+                                                    data:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk];
+                                                    optionLabels:[HXT Fail Interrupt, HXT Frequency Range Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"1", "CLK_HXT_RangeDetectorRadio":"1", "CLK_LXT_FailDetectorRadio":"0"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif
+
+
+#if ((NUCODEGEN_CLK_HXT_FAIL_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_HXT_FREQ_DET_ENABLE == 1) && \
+     (NUCODEGEN_CLK_LXT_FAIL_DET_ENABLE == 1))
+
+#define NUCODEGEN_CLK_CLKFAIL_INT_CONFIG        (<!id:CLK_Int_D7_Multipleselect;
+                                                    type:multipleselect;
+                                                    label:Select Interrupt Source;
+                                                    size:5;
+                                                    data:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    default:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    helper:;
+                                                    sort:false;
+                                                    enum:[CLK_CLKDCTL_HXTFIEN_Msk, CLK_CLKDCTL_HXTFQIEN_Msk, CLK_CLKDCTL_LXTFIEN_Msk];
+                                                    optionLabels:[HXT Fail Interrupt, HXT Frequency Range Interrupt, LXT Fail Interrupt];
+                                                    dependencies:[CLK_CLKFAIL_IntEnableCheckbox, CLK_HXT_FailDetectorRadio, CLK_HXT_RangeDetectorRadio, CLK_LXT_FailDetectorRadio];
+                                                    dependenciesOption:{"CLK_CLKFAIL_IntEnableCheckbox":"1",
+                                                                        "CLK_HXT_FailDetectorRadio":"1", "CLK_HXT_RangeDetectorRadio":"1", "CLK_LXT_FailDetectorRadio":"1"};
+                                                    groupId:Group_IntConfig;
+                                                    groupName:Interrupt Configuration;
+                                                !>)
+#endif

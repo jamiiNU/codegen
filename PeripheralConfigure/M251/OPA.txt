@@ -1,0 +1,47 @@
+/* --------------------------------------------------------------------
+ *  OPA
+ * ---------------------------------------------------------------------*/
+
+#define NUCODEGEN_OPA_UI                  0
+#if (NUCODEGEN_OPA_UI)
+/* --------------------------------------------------------------------
+ * IP UI configuration
+ * ---------------------------------------------------------------------*/
+#endif /* NUCODEGEN_OPA_UI */
+ 
+#define NUCODEGEN_OPA_MODULE_SEL          OPA
+#define NUCODEGEN_OPA_IRQ_MODULE_SEL      OPA_IRQn
+
+#define OPA_MODULE_0                      0
+
+/* --------------------------------------------------------------------
+ * OPA configuration
+ * ---------------------------------------------------------------------*/
+#define NUCODEGEN_OPA_SCHMIT_BUF_EN        <!id:UseOPASchBufEnBoolean;
+                                            type:checkbox;
+                                            label:Operational Amplifier Schmitt Trigger Non-inverting Buffer;
+                                            data:0;
+                                            default:0;
+                                            helper:Suggest enable;
+                                            enum:[1];
+                                            optionLabels:[Enable schmitt trigger buffer];
+                                            dependencies:none;
+                                            dependenciesOption:1;
+                                            groupId:OPA;
+                                            groupName:OPA configuration;!>
+
+#define NUCODEGEN_OPA_INT_EN              <!id:UseOPAIntEnBoolean;
+                                            type:checkbox;
+                                            label:Operational Amplifier Schmitt Trigger Digital Output Interrupt;
+                                            data:0;
+                                            default:0;
+                                            helper:To use interrupts, be sure to enable the Schmitt trigger buffer.;
+                                            enum:[1];
+                                            optionLabels:[Enable interrupt];
+                                            dependencies:UseOPASchBufEnBoolean;
+                                            dependenciesOption:{"UseOPASchBufEnBoolean" : "1"};
+                                            groupId:OPA;
+                                            groupName:OPA configuration;!>
+
+                                          <!clock: {"ALL" : "OPA" };!>
+                                          <!pin:   {"ALL" : ["OPA0_P" , "OPA0_N" , "OPA0_O"]}; !>

@@ -1,0 +1,41 @@
+/*--------------------------------------------------------------------------*/
+/* GPIO De-bounce Configuration                                                      */
+/*--------------------------------------------------------------------------*/
+
+#define NUCODEGEN_GPIO_DBCLKSRC					<!id:GPIODBCLKSRCRadio;
+												type:radio;
+												label:Select GPIO de-bounce clock source;
+												data:GPIO_DBCTL_DBCLKSRC_HCLK;
+												default:GPIO_DBCTL_DBCLKSRC_HCLK;
+												sort:false;
+												enum:[GPIO_DBCTL_DBCLKSRC_HCLK, GPIO_DBCTL_DBCLKSRC_LIRC];
+												optionLabels:[HCLK, LIRC(38.4k Hz)];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group;
+                                                groupName:GPIO de-bounce configuration;!>
+
+#define NUCODEGEN_GPIO_DBCLKSEL					<!id:GPIODBCLKSELSelect;
+												type:select;
+												label:Select GPIO de-bounce sampling cycle;
+												data:GPIO_DBCTL_DBCLKSEL_1;
+												default:GPIO_DBCTL_DBCLKSEL_1;
+												sort:false;
+												enum:[GPIO_DBCTL_DBCLKSEL_1, GPIO_DBCTL_DBCLKSEL_2, GPIO_DBCTL_DBCLKSEL_4, GPIO_DBCTL_DBCLKSEL_8, GPIO_DBCTL_DBCLKSEL_16, GPIO_DBCTL_DBCLKSEL_32, GPIO_DBCTL_DBCLKSEL_64, GPIO_DBCTL_DBCLKSEL_128, GPIO_DBCTL_DBCLKSEL_256, GPIO_DBCTL_DBCLKSEL_512, GPIO_DBCTL_DBCLKSEL_1024, GPIO_DBCTL_DBCLKSEL_2048, GPIO_DBCTL_DBCLKSEL_4096, GPIO_DBCTL_DBCLKSEL_8192, GPIO_DBCTL_DBCLKSEL_16384, GPIO_DBCTL_DBCLKSEL_32768];
+												optionLabels:[1 clock, 2 clocks, 4 clocks, 8 clocks, 16 clocks, 32 clocks, 64 clocks, 128 clocks, 256 clocks, 512 clocks, 1024 clocks, 2048 clocks, 4096 clocks, 8192 clocks, 16384 clocks, 32768 clocks];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group;!>
+
+
+#define NUCODEGEN_GPIO_CLR_DB_ICLKON			        <!id:GPIOCLRDBICLKONCheckboxBoolean;
+												type:checkboxBoolean;
+												label:Disable GPIO de-bounce circuit always clock on;
+												data:false;      /* Check the radio will disable always clock on */
+												default:false;  /* SPEC: default always clock on */
+												enum:[true];
+												optionLabels:[<br>];
+												dependencies:none;
+												dependenciesOption:none;
+                                                groupId:Group;
+                                                groupName:GPIO de-bounce configuration;!>

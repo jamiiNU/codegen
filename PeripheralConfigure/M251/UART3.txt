@@ -1,0 +1,846 @@
+
+#define NUCODEGEN_UART3_FUNCSEL_UART           0
+#define NUCODEGEN_UART3_FUNCSEL_IrDA           2
+#define NUCODEGEN_UART3_FUNCSEL_RS485          3
+#define NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE    4
+
+#define UART3_MATCH_ADDRSS1     0xC0
+#define UART3_MATCH_ADDRSS2     0xA2
+#define UART3_UNMATCH_ADDRSS1   0xB1
+#define UART3_UNMATCH_ADDRSS2   0xD3
+
+#define NUCODEGEN_UART3_CTS_HIGH_LEVEL_ACT    0
+#define NUCODEGEN_UART3_CTS_LOW_LEVEL_ACT     1
+
+#define NUCODEGEN_UART3_RTS_HIGH_LEVEL_ACT    0
+#define NUCODEGEN_UART3_RTS_LOW_LEVEL_ACT     1
+
+#define NUCODEGEN_UART3_RS485_ADD_MODE        0
+#define NUCODEGEN_UART3_RS485_NMM_MODE        1
+
+#define NUCODEGEN_UART3_DISABLE_DATA_WAKEUP          0
+#define NUCODEGEN_UART3_INCOMING_DATA_WAKEUP         1
+#define NUCODEGEN_UART3_FIFO_THRESHOLD_WAKEUP        2
+
+<! clock:  {"ALL" : "UART3" }; !>
+
+<! pin:   {"UART3FunctionRadio":{ "NUCODEGEN_UART3_FUNCSEL_UART":        ["UART3_TXD","UART3_RXD"],
+                                  "NUCODEGEN_UART3_FUNCSEL_IrDA":        ["UART3_TXD","UART3_RXD"],
+                                  "NUCODEGEN_UART3_FUNCSEL_RS485":       ["UART3_TXD","UART3_RXD","UART3_nRTS"],
+                                  "NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE": ["UART3_RXD"]
+                                  },
+           "UART3AutoflowControlCheckbox":{"1":["UART3_nCTS","UART3_nRTS"]
+           }
+        }; !>
+
+#define NUCODEGEN_UART3_FUNCSEL_SEL     (<!id:UART3FunctionRadio;
+                                        type:radio;
+                                        label:UART3 Function Select;
+                                        data:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        default:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        helper:;
+                                        sort:false;
+                                        enum:[NUCODEGEN_UART3_FUNCSEL_UART, NUCODEGEN_UART3_FUNCSEL_IrDA, NUCODEGEN_UART3_FUNCSEL_RS485, NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE];
+                                        optionLabels:[UART, IrDA, RS485, Single Wire];
+                                        vertical:false;
+                                        dependencies:none;
+                                        dependenciesOption:none;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#if (NUCODEGEN_UART3_FUNCSEL_SEL == NUCODEGEN_UART3_FUNCSEL_UART)
+
+#define NUCODEGEN_UART3_BAUDRATE       (<!id:UART3Baudrateinteger;
+                                        type:integer;
+                                        label:UART3 Baud Rate ( 2400 bps ~ 1000000 bps );
+                                        data:115200;
+                                        default:115200;
+                                        helper:Enter your UART3 baud rate.If the "data wake-up" function is enabled, the baud rate setting is invalid,
+                                               and it will be set to a defined value.;
+                                        sort:false;
+                                        minimum:2400;
+                                        maximum:1000000;
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_LINE_CONFIG     (<!id:UART3SetLineConfigCheckbox;
+                                        type:checkbox;
+                                        label:Config UART3 Line Setting;
+                                        data:0;
+                                        default:0;
+                                        sort:false;
+                                        enum:[1];
+                                        optionLabels:[Enable Config UART3 Line Setting];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_WORD_LEN       (<!id:UART3WordLengthSelect;
+                                        type:select;
+                                        label:UART3 Word Length;
+                                        data:UART_WORD_LEN_8;
+                                        default:UART_WORD_LEN_8;
+                                        helper:;
+                                        sort:false;
+                                        enum:[UART_WORD_LEN_5, UART_WORD_LEN_6, UART_WORD_LEN_7, UART_WORD_LEN_8];
+                                        optionLabels:[5 bits, 6 bits, 7 bits, 8 bits];
+                                        dependencies:UART3SetLineConfigCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_PARITY          (<!id:UART3ParityBitSelect;
+                                        type:select;
+                                        label:UART3 Parity Bit;
+                                        data:UART_PARITY_NONE;
+                                        default:UART_PARITY_NONE;
+                                        helper:;
+                                        sort:false;
+                                        enum:[UART_PARITY_NONE, UART_PARITY_ODD, UART_PARITY_EVEN, UART_PARITY_MARK, UART_PARITY_SPACE];
+                                        optionLabels:[None, Odd, Even, Mark, Space];
+                                        dependencies:UART3SetLineConfigCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_STOP_BIT        (<!id:UART3StopBitSelect;
+                                        type:select;
+                                        label:UART3 Stop Bits;
+                                        data:UART_STOP_BIT_1;
+                                        default:UART_STOP_BIT_1;
+                                        helper:;
+                                        sort:false;
+                                        enum:[UART_STOP_BIT_1, UART_STOP_BIT_1_5, UART_STOP_BIT_2];
+                                        optionLabels:[1, 1.5 (for Word Length 5 bits), 2 (for Word Length 6-8 bits)];
+                                        dependencies:UART3SetLineConfigCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_AUTOFLOW_EN     (<!id:UART3AutoflowControlCheckbox;
+                                        type:checkbox;
+                                        label:UART3 Auto-flow Control;
+                                        data:0;
+                                        default:0;
+                                        sort:false;
+                                        enum:[1];
+                                        optionLabels:[Enable Auto-flow Control];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        groupId:UART3AutoFlow;
+                                        groupName:Auto flow Configuration;!>)
+
+#define NUCODEGEN_UART3_RTSACTLV_LOW    (<!id:UART3RTSACTLVLevelSelect;
+                                        type:select;
+                                        label:nRTS pin output active level;
+                                        data:NUCODEGEN_UART3_RTS_HIGH_LEVEL_ACT;
+                                        default:NUCODEGEN_UART3_RTS_HIGH_LEVEL_ACT;
+                                        enum:[NUCODEGEN_UART3_RTS_HIGH_LEVEL_ACT,NUCODEGEN_UART3_RTS_LOW_LEVEL_ACT];
+                                        optionLabels:[High level,Low level];
+                                        dependencies:UART3AutoflowControlCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3AutoFlow;
+                                        groupName:Auto flow Configuration;!>)
+
+#define NUCODEGEN_UART3_CTSACTLV_LOW    (<!id:UART3CTSACTLVLevelSelect;
+                                        type:select;
+                                        label:nCTS pin input active level;
+                                        data:NUCODEGEN_UART3_CTS_HIGH_LEVEL_ACT;
+                                        default:NUCODEGEN_UART3_CTS_HIGH_LEVEL_ACT;
+                                        enum:[NUCODEGEN_UART3_CTS_HIGH_LEVEL_ACT,NUCODEGEN_UART3_CTS_LOW_LEVEL_ACT];
+                                        optionLabels:[High level,Low level];
+                                        dependencies:UART3AutoflowControlCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3AutoFlow;
+                                        groupName:Auto flow Configuration;!>)
+
+#define NUCODEGEN_UART3_FIFO_RTSTRGLV   (<!id:UART3RTSTriggerLevelSelect;
+                                        type:select;
+                                        label:nRTS Trigger Level for Auto-flow Control;
+                                        data:UART_FIFO_RTSTRGLV_1BYTE;
+                                        default:UART_FIFO_RTSTRGLV_1BYTE;
+                                        helper:;
+                                        sort:false;
+                                        enum:[UART_FIFO_RTSTRGLV_1BYTE, UART_FIFO_RTSTRGLV_4BYTES, UART_FIFO_RTSTRGLV_8BYTES, UART_FIFO_RTSTRGLV_14BYTES];
+                                        optionLabels:[1 byte, 4 bytes, 8 bytes, 14 bytes];
+                                        dependencies:UART3AutoflowControlCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3AutoFlow;
+                                        groupName:Auto flow Configuration;!>)
+
+#define NUCODEGEN_UART3_MODEMINT_EN     <!id:UART3ModemINTSelect;
+                                        type:select;
+                                        label:Modem Status Interrupt Control;
+                                        data:0;
+                                        default:0;
+                                        helper:Vector:UART3_IRQHandler;
+                                        enum:[0,1];
+                                        optionLabels:[Disable Interrupt, Enable Interrupt];
+                                        vertical:true;
+                                        dependencies:UART3AutoflowControlCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3AutoFlow;
+                                        groupName:Auto flow Configuration;!>
+
+#define NUCODEGEN_UART3_ABRD_EN         <!id:UART3AutoBaudrateCheckbox;
+                                        type:checkbox;
+                                        label:Automatic Baud Rate Detection;
+                                        data:0;
+                                        default:0;
+                                        helper: The input pattern shall be 0x01.;
+                                        enum:[1];
+                                        optionLabels:[Enable Automatic Baud Rate Detection];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        groupId:UART3AutoBaudRate;
+                                        groupName:Auto Baud Rate Configuration;!>
+
+#define NUCODEGEN_UART3_ABRDINT_EN      (<!id:UART3AutoBaudRateDetectINTSelect;
+                                        type:select;
+                                        label:Automatic Baud Rate Detection Interrupt;
+                                        data:0;
+                                        default:0;
+                                        helper:Vector:UART3_IRQHandler;
+                                        enum:[0,1];
+                                        optionLabels:[Disable Interrupt, Enable Interrupt];
+                                        dependencies:UART3AutoBaudrateCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3AutoBaudRate;
+                                        groupName:Auto Baud Rate Configuration;!>)
+
+#define NUCODEGEN_UART3_PDMA_EN         (<!id:UART3PDMACheckbox;
+                                        type:checkbox;
+                                        label:PDMA Channel Control;
+                                        data:0;
+                                        default:0;
+                                        sort:false;
+                                        enum:[1];
+                                        optionLabels:[Enable PDMA Channel];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        groupId:UART3PDMA;
+                                        groupName:PDMA Configuration;!>)
+
+#define NUCODEGEN_UART3_PDMAEN_MASK      (<!id:UART3PDMASelectCheckbox;
+                                        type:multipleselect;
+                                        label:Channel Setting;
+                                        data:0;
+                                        default:0;
+                                        helper:This setting only enables the UART to support the PDMA function. It is still necessary to set the required functions for the PDMA.;
+                                        sort:false;
+                                        enum:[UART_INTEN_TXPDMAEN_Msk,UART_INTEN_RXPDMAEN_Msk];
+                                        optionLabels:[Enable TX PDMA,Enable RX PDMA];
+                                        dependencies:UART3PDMACheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3PDMA;
+                                        groupName:PDMA Configuration;!>)
+
+#define NUCODEGEN_UART3_INT_EN          (<!id:UART3IntCheckbox;
+                                        type:checkbox;
+                                        label:UART3 Interrupt Control ;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[Enable UART3 Interrupt];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_INT_MASK        (<!id:UART3INTMASKMultipleSelect;
+                                        type:multipleselect;
+                                        label:Select Interrupts;
+                                        size:4;
+                                        data:0;
+                                        default:0;
+                                        helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.
+                                               Vector:UART3_IRQHandler;
+                                        sort:false;
+                                        enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RLSIEN_Msk,UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk];
+                                        optionLabels:[Receive Data Available, Receive Line Status, RX Time-Out, Buffer Error];
+                                        dependencies:UART3IntCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+
+#define NUCODEGEN_UART3_TOCNT_EN       (<!id:UART3TimeoutCounterCheckbox;
+                                        type:checkbox;
+                                        label:Receive Buffer Timeout Control;
+                                        data:0;
+                                        default:0;
+                                        sort:false;
+                                        enum:[1];
+                                        optionLabels:[Enable Receive Buffer Timeout];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define  NUCODEGEN_UART3_TOCNT          (<!id:UART3TimeoutCountInteger;
+                                        type:integer;
+                                        label:Timeout Count Value Setting;
+                                        data:40;
+                                        default:40;
+                                        helper:Enter your UART3 Timeout Interrupt Comparator(The counting clock is baud rate).
+                                               In order to avoid receiver time-out interrupt generation immediately during one character is being received, Timeout count value should be set between 40 and 255.;
+                                        minimum:40;
+                                        maximum:255;
+                                        dependencies:(UART3TimeoutCounterCheckbox | UART3TimeoutWakeupSelect);
+                                        dependenciesOption:{"UART3TimeoutCounterCheckbox" : "1",
+                                                            "UART3TimeoutWakeupSelect" : "1"};
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_RFITL           (<!id:UART3RxFifoLevelSelect;
+                                        type:select;
+                                        label:RX FIFO Threshold Interrupt;
+                                        data:UART_FIFO_RFITL_1BYTE;
+                                        default:UART_FIFO_RFITL_1BYTE;
+                                        helper:;
+                                        sort:false;
+                                        enum:[UART_FIFO_RFITL_1BYTE, UART_FIFO_RFITL_4BYTES, UART_FIFO_RFITL_8BYTES, UART_FIFO_RFITL_14BYTES];
+                                        optionLabels:[1 byte, 4 bytes, 8 bytes, 14 bytes];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_WAKEUP_EN       (<!id:UART3WakeUpCheckbox;
+                                        type:checkbox;
+                                        label:Wake-up Function Control;
+                                        data:0;
+                                        default:0;
+                                        helper:;
+                                        enum:[1];
+                                        optionLabels:[Enable Wake-up function];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_UART;
+                                        groupId:UART3WakeUp;
+                                        groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_WAKEUP_INT_EN   (<!id:UART3WakeUpINTSelect;
+                                        type:select;
+                                        label:Wake-up interrupt Control;
+                                        data:0;
+                                        default:0;
+                                        helper:Vector:UART3_IRQHandler;
+                                        enum:[0,1];
+                                        optionLabels:[Disable Interrupt, Enable Interrupt];
+                                        dependencies:UART3WakeUpCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3WakeUp;
+                                        groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_WKCTS_EN       (<!id:UART3nCTSWakeupSelect;
+                                       type:select;
+                                       label:nCTS Pin Wake Up Control;
+                                       data:0;
+                                       default:0;
+                                       enum:[0,1];
+                                       optionLabels:[Disable,Enable];
+                                       dependencies:[UART3AutoflowControlCheckbox,UART3WakeUpCheckbox,UART3DataWakeupTypeSelect];
+                                       dependenciesOption:{"UART3AutoflowControlCheckbox":"1",
+                                                              "UART3WakeUpCheckbox":"1",
+                                                              "UART3DataWakeupTypeSelect":"NUCODEGEN_UART3_DISABLE_DATA_WAKEUP" 
+                                                              };
+                                       groupId:UART3WakeUp;
+                                       groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_DATA_WAKEUP_SEL   (<!id:UART3DataWakeupTypeSelect;
+                                          type:select;
+                                          label:UART3 Data Wake Up Select;
+                                          data:NUCODEGEN_UART3_DISABLE_DATA_WAKEUP;
+                                          default:NUCODEGEN_UART3_DISABLE_DATA_WAKEUP;
+                                          helper:To use the "Incoming data wake-up" function, you must set the UART clock source as HIRC.(If HIRC is 48000000 hz, the wake-up time will take 10.67 us.)
+                                          To use the "FIFO threshold wake-up" function, you must set the UART clock source as LXT.(The maximum baud rate is 9600 bps.);
+                                          enum:[NUCODEGEN_UART3_DISABLE_DATA_WAKEUP,NUCODEGEN_UART3_INCOMING_DATA_WAKEUP,NUCODEGEN_UART3_FIFO_THRESHOLD_WAKEUP];
+                                          optionLabels:[Disable Data Wake Up,Incoming Data Wake Up ,FIFO Threshold Wake Up];
+                                          dependencies:UART3WakeUpCheckbox;
+                                          dependenciesOption:1;
+                                          groupId:UART3WakeUp;
+                                          groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_WKTOUT_EN    (<!id:UART3TimeoutWakeupSelect;
+                                      type:select;
+                                      label:Received Data FIFO Threshold Time Out Wake Up Control;
+                                      helper:To use this function, you must set the 'Timeout Count Value'.;
+                                      data:0;
+                                      default:0;
+                                      enum:[0,1];
+                                      optionLabels:[Disable,Enable];
+                                      dependencies:UART3DataWakeupTypeSelect;
+                                      dependenciesOption:NUCODEGEN_UART3_FIFO_THRESHOLD_WAKEUP;
+                                      groupId:UART3WakeUp;
+                                      groupName:Wake Up Configuration;!>)
+
+#if (NUCODEGEN_UART3_MODEMINT_EN == 1 && NUCODEGEN_UART3_ABRDINT_EN == 1 && NUCODEGEN_UART3_WAKEUP_INT_EN == 1  )
+  #define NUCODEGEN_UART3_INT_CONFIG_MASK   NUCODEGEN_UART3_INT_MASK | UART_INTEN_MODEMIEN_Msk |UART_INTEN_ABRIEN_Msk | UART_INTEN_WKIEN_Msk
+#elif(NUCODEGEN_UART3_MODEMINT_EN == 1 && NUCODEGEN_UART3_ABRDINT_EN == 1 && NUCODEGEN_UART3_WAKEUP_INT_EN == 0  )
+  #define NUCODEGEN_UART3_INT_CONFIG_MASK   NUCODEGEN_UART3_INT_MASK | UART_INTEN_MODEMIEN_Msk |UART_INTEN_ABRIEN_Msk 
+#elif(NUCODEGEN_UART3_MODEMINT_EN == 0 && NUCODEGEN_UART3_ABRDINT_EN == 1 && NUCODEGEN_UART3_WAKEUP_INT_EN == 1  )
+  #define NUCODEGEN_UART3_INT_CONFIG_MASK   NUCODEGEN_UART3_INT_MASK |UART_INTEN_ABRIEN_Msk | UART_INTEN_WKIEN_Msk
+#elif(NUCODEGEN_UART3_MODEMINT_EN == 1 && NUCODEGEN_UART3_ABRDINT_EN == 0 && NUCODEGEN_UART3_WAKEUP_INT_EN == 1  )
+  #define NUCODEGEN_UART3_INT_CONFIG_MASK   NUCODEGEN_UART3_INT_MASK |UART_INTEN_MODEMIEN_Msk| UART_INTEN_WKIEN_Msk
+#else
+ #if(NUCODEGEN_UART3_MODEMINT_EN == 1)
+   #define  NUCODEGEN_UART3_INT_CONFIG_MASK   NUCODEGEN_UART3_INT_MASK | UART_INTEN_MODEMIEN_Msk
+ #elif (NUCODEGEN_UART3_ABRDINT_EN == 1)
+   #define  NUCODEGEN_UART3_INT_CONFIG_MASK   NUCODEGEN_UART3_INT_MASK | UART_INTEN_ABRIEN_Msk
+ #elif ( NUCODEGEN_UART3_WAKEUP_INT_EN == 1)
+   #define  NUCODEGEN_UART3_INT_CONFIG_MASK   NUCODEGEN_UART3_INT_MASK | UART_INTEN_WKIEN_Msk
+ #else
+   #define  NUCODEGEN_UART3_INT_CONFIG_MASK   NUCODEGEN_UART3_INT_MASK
+ #endif
+#endif
+
+#elif (NUCODEGEN_UART3_FUNCSEL_SEL == NUCODEGEN_UART3_FUNCSEL_IrDA)
+
+#define NUCODEGEN_UART3_IRDA_BAUDRATE   (<!id:UART3IRDABaudrateinteger;
+                                        type:integer;
+                                        label:UART3 IrDA Baud Rate ( 2400 bps ~ 115200 bps );
+                                        data:9600;
+                                        default:9600;
+                                        helper:Enter your UART3 IRDA baud rate.;
+                                        sort:false;
+                                        minimum:2400;
+                                        maximum:115200;
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_IrDA;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_IRDA_MODE       (<!id:UART3IrDAModeRadio;
+                                        type:radio;
+                                        label:IrDA Receiver/Transmitter Selection;
+                                        data:UART_IRDA_RXEN;
+                                        default:UART_IRDA_RXEN;
+                                        sort:false;
+                                        enum:[UART_IRDA_RXEN, UART_IRDA_TXEN];
+                                        optionLabels:[Rx mode, Tx mode];
+                                        vertical:false;
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_IrDA;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_IRDA_INT_EN     (<!id:UART3IRDAIntCheckbox;
+                                        type:checkbox;
+                                        label:UART3 IrDA Interrupt Control; 
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[Enable UART3 IrDA Interrupt];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_IrDA;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_IRDA_INT_MASK   (<!id:UART3IRDAINTMASKMultipleSelect;
+                                        type:multipleselect;
+                                        label:Select Interrupts;
+                                        size:2;
+                                        data:0;
+                                        default:0;
+                                        helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.
+                                               Vector:UART3_IRQHandler;
+                                        sort:false;
+                                        enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RXTOIEN_Msk];
+                                        optionLabels:[Receive Data Available, RX Time-Out];
+                                        dependencies:UART3IRDAIntCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#elif (NUCODEGEN_UART3_FUNCSEL_SEL == NUCODEGEN_UART3_FUNCSEL_RS485)
+
+#define NUCODEGEN_UART3_RS485_BAUDRATE  (<!id:UART3RS485Baudrateinteger;
+                                        type:integer;
+                                        label:UART3 RS485 Baud Rate(2400 bps ~ 1000000 bps);
+                                        data:115200;
+                                        default:115200;
+                                        helper:Enter your UART3 RS485 baud rate.If the "data wake-up" function is enabled, the baud rate setting is invalid,
+                                               and it will be set to a defined value.;
+                                        minimum:2400;
+                                        maximum:1000000;
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_RS485;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_RS485_MODE      (<!id:UART3RS485CTLRadio;
+                                        type:radio;
+                                        label:RS485 Operation Mode;
+                                        data:0;
+                                        default:0;
+                                        enum:[NUCODEGEN_UART3_RS485_ADD_MODE, NUCODEGEN_UART3_RS485_NMM_MODE];
+                                        optionLabels:[Auto Address Detection Operation Mode (AAD), Normal Multi-Drop Operation Mode (NMM) ];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_RS485;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_RS485_ADDRMV    (<!id:UART3RS485AddrMVInteger;
+                                        type:integer;
+                                        label:UART3 RS485 Address Match Value;
+                                        data:0;
+                                        default:0;
+                                        helper:Enter your UART3 RS485 Address Match Value;
+                                        minimum:0;
+                                        maximum:255;
+                                        dependencies:UART3RS485CTLRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_RS485_ADD_MODE;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>)
+
+#define NUCODEGEN_UART3_RS485_INT_EN    (<!id:UART3RS485IntCheckbox;
+                                        type:checkbox;
+                                        label:UART3 RS485 Interrupt Control;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[Enable UART3 RS485 Interrupt];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_RS485;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_RS485_INT_MASK  (<!id:UART3RS485INTMASKMultipleSelect;
+                                        type:multipleselect;
+                                        label:Select Interrupts;
+                                        size:4;
+                                        data:0;
+                                        default:0;
+                                        helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.;
+                                        sort:false;
+                                        enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk];
+                                        optionLabels:[Receive Data Available, Receive Line Status, RX Time-Out, Buffer Error];
+                                        dependencies:UART3RS485IntCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_TOCNT_EN       (<!id:UART3RS485TimeoutCounterCheckbox;
+                                        type:checkbox;
+                                        label:Receive Buffer Timeout Control;
+                                        data:0;
+                                        default:0;
+                                        sort:false;
+                                        enum:[1];
+                                        optionLabels:[Enable Receive Buffer Timeout];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_RS485;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define  NUCODEGEN_UART3_TOCNT          (<!id:UART3RS485TimeoutCountInteger;
+                                        type:integer;
+                                        label:Timeout Count Value Setting;
+                                        data:40;
+                                        default:40;
+                                        helper:Enter your UART3 Timeout Interrupt Comparator(The counting clock is baud rate).
+                                               In order to avoid receiver time-out interrupt generation immediately during one character is being received, Timeout count value should be set between 40 and 255.;
+                                        minimum:40;
+                                        maximum:255;
+                                        dependencies:(UART3RS485TimeoutCounterCheckbox | UART3RS485TimeoutWakeupSelect);
+                                        dependenciesOption:{"UART3RS485TimeoutCounterCheckbox" : "1",
+                                                            "UART3RS485TimeoutWakeupSelect" : "1"};
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_RFITL           (<!id:UART3RS485RxFifoLevelSelect;
+                                        type:select;
+                                        label:RX FIFO Threshold Interrupt;
+                                        data:UART_FIFO_RFITL_1BYTE;
+                                        default:UART_FIFO_RFITL_1BYTE;
+                                        helper:;
+                                        sort:false;
+                                        enum:[UART_FIFO_RFITL_1BYTE, UART_FIFO_RFITL_4BYTES, UART_FIFO_RFITL_8BYTES, UART_FIFO_RFITL_14BYTES];
+                                        optionLabels:[1 byte, 4 bytes, 8 bytes, 14 bytes];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_RS485;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_WAKEUP_EN       (<!id:UART3RS485WakeUpCheckbox;
+                                        type:checkbox;
+                                        label:Wake-up Function Control;
+                                        data:0;
+                                        default:0;
+                                        helper:;
+                                        enum:[1];
+                                        optionLabels:[Enable Wake-up function];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_RS485;
+                                        groupId:UART3WakeUp;
+                                        groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_WAKEUP_INT_EN   (<!id:UART3RS485WakeUpINTSelect;
+                                        type:select;
+                                        label:Wake-up interrupt Control;
+                                        data:0;
+                                        default:0;
+                                        helper:Vector:UART3_IRQHandler;
+                                        enum:[0,1];
+                                        optionLabels:[Disable Interrupt, Enable Interrupt];
+                                        dependencies:UART3RS485WakeUpCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3WakeUp;
+                                        groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_WKRS485_EN      <!id:UART3RS485ADDMWakeUpSelect;
+                                        type:select;
+                                        label:UART3 RS485 Address Match Wake-up Control;
+                                        data:0;
+                                        default:0;
+                                        helper:To use this function, you must set the UART clock source as LXT.(The maximum baud rate is 9600 bps);
+                                        enum:[0,1];
+                                        optionLabels:[Disable, Enable];
+                                        dependencies:[UART3RS485CTLRadio,UART3RS485WakeUpCheckbox];
+                                        dependenciesOption:{"UART3RS485CTLRadio" : "NUCODEGEN_UART3_RS485_ADD_MODE",
+                                                             "UART3RS485WakeUpCheckbox" : "1" };
+                                        groupId:UART3WakeUp;
+                                        groupName:Wake Up Configuration;!>
+
+#define NUCODEGEN_UART3_WKRFRT_EN     (<!id:UART3RS485ThresholdWakeupSelect;
+                                      type:select;
+                                      label:Received Data FIFO Threshold Wake Up Control;
+                                      data:0;
+                                      default:0;
+                                      helper:To use this function, you must set the UART clock source as LXT.(The maximum baud rate is 9600 bps);
+                                      enum:[0,1];
+                                      optionLabels:[Disable,Enable];
+                                      dependencies:UART3RS485WakeUpCheckbox;
+                                      dependenciesOption:1;
+                                      groupId:UART3WakeUp;
+                                      groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_WKTOUT_EN    (<!id:UART3RS485TimeoutWakeupSelect;
+                                      type:select;
+                                      label:Received Data FIFO Threshold Time Out Wake Up Control;
+                                      helper:To use this function, you must set the 'Timeout Count Value'.;
+                                      data:0;
+                                      default:0;
+                                      enum:[0,1];
+                                      optionLabels:[Disable,Enable];
+                                      dependencies:UART3RS485ThresholdWakeupSelect;
+                                      dependenciesOption:1;
+                                      groupId:UART3WakeUp;
+                                      groupName:Wake Up Configuration;!>)
+
+#if (NUCODEGEN_UART3_WAKEUP_INT_EN == 1)
+  #define NUCODEGEN_UART3_RS485_INT_CONFIG_MASK   NUCODEGEN_UART3_RS485_INT_MASK | UART_INTEN_WKIEN_Msk
+#else
+  #define NUCODEGEN_UART3_RS485_INT_CONFIG_MASK   NUCODEGEN_UART3_RS485_INT_MASK
+#endif
+
+#elif (NUCODEGEN_UART3_FUNCSEL_SEL == NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE)
+#define NUCODEGEN_UART3_SW_BAUD         <!id:UART3SWBaudrateinteger;
+                                        type:integer;
+                                        label:UART3 Single-wire Baud Rate ( 2400 bps ~ 1000000 bps );
+                                        data:115200;
+                                        default:115200;
+                                        helper:Enter your UART3 Single-wire baud rate.If the "data wake-up" function is enabled, the baud rate setting is invalid,
+                                               and it will be set to a defined value.;
+                                        sort:false;
+                                        minimum:2400;
+                                        maximum:1000000;
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE;
+                                        groupId:UART3Basic;
+                                        groupName:Basic Configuration;!>
+
+#define NUCODEGEN_UART3_ABRD_EN          <!id:UART3SWAutoBaudrateCheckbox;
+                                        type:checkbox;
+                                        label:Automatic Baud Rate Detection;
+                                        data:0;
+                                        default:0;
+                                        helper: The input pattern shall be 0x01.;
+                                        enum:[1];
+                                        optionLabels:[Enable Automatic Baud Rate Detection];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE;
+                                        groupId:UART3AutoBaudRate;
+                                        groupName:Auto Baud Rate Configuration;!>
+
+#define NUCODEGEN_UART3_ABRDINT_EN      (<!id:UART3SWAutoBaudRateDetectINTSelect;
+                                        type:select;
+                                        label:Automatic Baud Rate Detection Interrupt;
+                                        data:0;
+                                        default:0;
+                                        helper:Vector:UART3_IRQHandler;
+                                        enum:[0,1];
+                                        optionLabels:[Disable Interrupt, Enable Interrupt];
+                                        dependencies:UART3SWAutoBaudrateCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3AutoBaudRate;
+                                        groupName:Auto Baud Rate Configuration;!>)
+
+#define NUCODEGEN_UART3_PDMA_EN          <!id:UART3SWPDMACheckbox;
+                                        type:checkbox;
+                                        label:PDMA Channel Control;
+                                        data:0;
+                                        default:0;
+                                        sort:false;
+                                        enum:[1];
+                                        optionLabels:[Enable PDMA Channel];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE;
+                                        groupId:UART3PDMA;
+                                        groupName:PDMA Configuration;!>
+                                        
+                                        
+#define NUCODEGEN_UART3_PDMAEN_MASK     <!id:UART3SWPDMASelectCheckbox;
+                                        type:select;
+                                        label:Channel Select;
+                                        data:0;
+                                        default:0;
+                                        helper:This setting only enables the UART to support the PDMA function. It is still necessary to set the required functions for the PDMA.;
+                                        sort:false;
+                                        enum:[UART_INTEN_TXPDMAEN_Msk,UART_INTEN_RXPDMAEN_Msk];
+                                        optionLabels:[Enable TX PDMA,Enable RX PDMA];
+                                        dependencies:UART3SWPDMACheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3PDMA;    
+                                        groupName:PDMA Configuration;!>
+                                        
+#define NUCODEGEN_UART3_SW_INT_EN       <!id:UART3SWIntCheckbox;
+                                        type:checkbox;
+                                        label:UART3 Single-wire Interrupt Control;
+                                        data:0;
+                                        default:0;
+                                        enum:[1];
+                                        optionLabels:[Enable UART3 Single-wire Interrupt];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART3_SW_INT_MASK     <!id:UART3SWINT1MASKMultipleSelect;
+                                        type:multipleselect;
+                                        label:Select Interrupts;
+                                        size:5;
+                                        data:0;
+                                        default:0;
+                                        helper:If you would like to use the ' Transmit Holding Register Empty ' or ' Transmitter Empty ' Interrupt function ,you can add in code.
+                                               Vector:UART3_IRQHandler;
+                                        sort:false;
+                                        enum:[UART_INTEN_RDAIEN_Msk, UART_INTEN_RLSIEN_Msk, UART_INTEN_RXTOIEN_Msk, UART_INTEN_BUFERRIEN_Msk,UART_INTEN_SWBEIEN_Msk];
+                                        optionLabels:[Receive Data Available, Receive Line Status, RX Time-Out, Buffer Error, Single-wire Bit Error Detection];
+                                        dependencies:UART3SWIntCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>
+
+#define NUCODEGEN_UART3_TOCNT_EN         (<!id:UART3SWTimeoutCounterCheckbox;
+                                        type:checkbox;
+                                        label:Receive Buffer Timeout Control;
+                                        data:0;
+                                        default:0;
+                                        sort:false;
+                                        enum:[1];
+                                        optionLabels:[Enable Receive Buffer Timeout];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define  NUCODEGEN_UART3_TOCNT          (<!id:UART3SWTimeoutCountInteger;
+                                        type:integer;
+                                        label:Timeout Count Value Setting;
+                                        data:40;
+                                        default:40;
+                                        helper:Enter your UART3 Timeout Interrupt Comparator(The counting clock is baud rate).
+                                               In order to avoid receiver time-out interrupt generation immediately during one character is being received, Timeout count value should be set between 40 and 255.;
+                                        minimum:40;
+                                        maximum:255;
+                                        dependencies:(UART3SWTimeoutCounterCheckbox | UART3SWTimeoutWakeupSelect);
+                                        dependenciesOption:{"UART3SWTimeoutCounterCheckbox" : "1",
+                                                            "UART3SWTimeoutWakeupSelect" : "1"};
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_RFITL           (<!id:UART3SWRxFifoLevelSelect;
+                                        type:select;
+                                        label:RX FIFO Threshold Interrupt;
+                                        data:UART_FIFO_RFITL_1BYTE;
+                                        default:UART_FIFO_RFITL_1BYTE;
+                                        helper:;
+                                        sort:false;
+                                        enum:[UART_FIFO_RFITL_1BYTE, UART_FIFO_RFITL_4BYTES, UART_FIFO_RFITL_8BYTES, UART_FIFO_RFITL_14BYTES];
+                                        optionLabels:[1 byte, 4 bytes, 8 bytes, 14 bytes];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE;
+                                        groupId:UART3Interrupt;
+                                        groupName:Interrupt Configuration;!>)
+
+#define NUCODEGEN_UART3_WAKEUP_EN       (<!id:UART3SWWakeUpCheckbox;
+                                        type:checkbox;
+                                        label:Wake-up Function Control;
+                                        data:0;
+                                        default:0;
+                                        helper:;
+                                        enum:[1];
+                                        optionLabels:[Enable Wake-up function];
+                                        dependencies:UART3FunctionRadio;
+                                        dependenciesOption:NUCODEGEN_UART3_FUNCSEL_SINGLE_WIRE;
+                                        groupId:UART3WakeUp;
+                                        groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_WAKEUP_INT_EN   (<!id:UART3SWWakeUpINTSelect;
+                                        type:select;
+                                        label:Wake-up interrupt Control;
+                                        data:0;
+                                        default:0;
+                                        helper:Vector:UART3_IRQHandler;
+                                        enum:[0,1];
+                                        optionLabels:[Disable Interrupt, Enable Interrupt];
+                                        dependencies:UART3SWWakeUpCheckbox;
+                                        dependenciesOption:1;
+                                        groupId:UART3WakeUp;
+                                        groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_DATA_WAKEUP_SEL   (<!id:UART3SWDataWakeupTypeSelect;
+                                          type:select;
+                                          label:UART3 Data Wake Up Select;
+                                          data:NUCODEGEN_UART3_DISABLE_DATA_WAKEUP;
+                                          default:NUCODEGEN_UART3_DISABLE_DATA_WAKEUP;
+                                          helper:To use the "Incoming data wake-up" function, you must set the UART clock source as HIRC.(If HIRC is 48000000 hz, the wake-up time will take 10.67 us.)
+                                          To use the "FIFO threshold wake-up" function, you must set the UART clock source as LXT.(The maximum baud rate is 9600 bps.);
+                                          enum:[NUCODEGEN_UART3_DISABLE_DATA_WAKEUP,NUCODEGEN_UART3_INCOMING_DATA_WAKEUP,NUCODEGEN_UART3_FIFO_THRESHOLD_WAKEUP];
+                                          optionLabels:[Disable Data Wake-up,Incoming Data Wake-up ,FIFO Threshold Wake-up];
+                                          dependencies:UART3SWWakeUpCheckbox;
+                                          dependenciesOption:1;
+                                          groupId:UART3WakeUp;
+                                          groupName:Wake Up Configuration;!>)
+
+#define NUCODEGEN_UART3_WKTOUT_EN    (<!id:UART3SWTimeoutWakeupSelect;
+                                      type:select;
+                                      label:Received Data FIFO Threshold Time Out Wake Up Control;
+                                      helper:To use this function, you must set the 'Timeout Count Value'.;
+                                      data:0;
+                                      default:0;
+                                      enum:[0,1];
+                                      optionLabels:[Disable,Enable];
+                                      dependencies:UART3SWDataWakeupTypeSelect;
+                                      dependenciesOption:NUCODEGEN_UART3_FIFO_THRESHOLD_WAKEUP;
+                                      groupId:UART3WakeUp;
+                                      groupName:Wake Up Configuration;!>)
+
+#if ( NUCODEGEN_UART3_ABRDINT_EN == 1 && NUCODEGEN_UART3_WAKEUP_INT_EN == 1  )
+  #define NUCODEGEN_UART3_SW_INT_CONFIG_MASK   NUCODEGEN_UART3_SW_INT_MASK | UART_INTEN_ABRIEN_Msk | UART_INTEN_WKIEN_Msk
+#elif( NUCODEGEN_UART3_ABRDINT_EN == 1 && NUCODEGEN_UART3_WAKEUP_INT_EN == 0  )
+  #define NUCODEGEN_UART3_SW_INT_CONFIG_MASK   NUCODEGEN_UART3_SW_INT_MASK | UART_INTEN_ABRIEN_Msk 
+#elif( NUCODEGEN_UART3_ABRDINT_EN == 0 && NUCODEGEN_UART3_WAKEUP_INT_EN == 1  )
+  #define NUCODEGEN_UART3_SW_INT_CONFIG_MASK   NUCODEGEN_UART3_SW_INT_MASK | UART_INTEN_WKIEN_Msk
+#else
+  #define NUCODEGEN_UART3_SW_INT_CONFIG_MASK   NUCODEGEN_UART3_SW_INT_MASK
+#endif
+
+#endif
+
+
+
