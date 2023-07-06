@@ -57,7 +57,7 @@ NUTOOL_PER.g_cfg_chips = [
 ];
 
 //FULL: Exclude the file if file name full match
-//SUBSTRING:¡@Exclude the file if file name just partial match
+//SUBSTRING:ï¿½@Exclude the file if file name just partial match
 NUTOOL_PER.g_cfg_unusedPerFunctions = {
     "M032_I": {},
     "M032_G": {},
@@ -179,7 +179,7 @@ NUTOOL_PER.g_cfg_perFunctions = [
 'BPWM1.txt',
 'CLK.txt',
 'CRC.txt',
-'DAC.txt',
+// 'DAC.txt',
 'HDIV.txt',
 'EBI_BANK0.txt',
 'EBI_BANK1.txt',
