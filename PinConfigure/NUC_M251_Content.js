@@ -71,6 +71,8 @@ NUTOOL_PIN.g_cfg_chips = [
     { name: "M258KG6AE", pkg: "LQFP128" }
 ];
 
+NUTOOL_PIN.g_cfg_OrCAD = {};
+
 NUTOOL_PIN.g_cfg_pkgs = {
 	"TSSOP20(4.4*6.5)(C_QSPI)": [
 		'VSS', 'LDO_CAP', 'VDD', 'PB.14', 'PB.13',
@@ -721,6 +723,8 @@ NUTOOL_PIN.g_cfg_unusedGPIO = {
 		"ALL": ["USB"],
 	}
 };
+NUTOOL_PIN.g_cfg_WPPin = [];
+NUTOOL_PIN.g_cfg_Tooltip_Pin = [];
 
 NUTOOL_PIN.decidepackageNumber = function (given_partNumber_package) {
 	var partNumber_package,

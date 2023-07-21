@@ -79,6 +79,11 @@ var NUTOOL_PER = {};
 				g_bCheckNodesBasedOnConfigFile = false;
 			}
 			showPeripheralConfigure();
+			
+			if(g_bWebVersion){
+				return;
+			}
+			
 			// construct the selects of chip type and MCU.
 			buildChipTypeSelect();
 			// construct trees
@@ -2629,6 +2634,12 @@ var NUTOOL_PER = {};
 	}
 
 	function decideNuToolSetup() {
+		// [Workaround]
+		g_Dialog_Width = 893; // when dpi is 100%
+		g_Dialog_Height = 590;
+		g_NUC_TreeView_Height = g_Dialog_Height - 16;
+		g_NUC_TreeView_Width = 230;
+		return;
 		// determine the dialog's size
 		var recordedDialogSize = $.ajax({ url: "NuToolSetup.txt", async: false }).responseText;
 
@@ -3533,7 +3544,8 @@ var NUTOOL_PER = {};
 		else {
 			readConfigFilePath = 'file:///' + NUTOOL_PER.g_readConfigFilePath;
 		}
-		saved_newReadConfigFile = newReadConfigFile = $.ajax({ url: readConfigFilePath, async: false }).responseText;
+		// [Workaround]
+		// saved_newReadConfigFile = newReadConfigFile = $.ajax({ url: readConfigFilePath, async: false }).responseText;
 		// the read config file is empty or undefined. Restore to the default case.
 		if (!newReadConfigFile || (/^\s*$/.test(newReadConfigFile))) {
 			// default setting
@@ -3712,6 +3724,9 @@ var NUTOOL_PER = {};
 	}
 
 	function decideUIlanguage() {
+		// [Workaround]
+		g_userSelectUIlanguage = "English";
+		return;
 		var recordedUIlanguage = $.ajax({ url: "NuToolSetup.txt", async: false }).responseText;
 
 		if (typeof (recordedUIlanguage) !== 'undefined' && recordedUIlanguage.indexOf('UIlanguage:') !== -1) {
@@ -5925,6 +5940,10 @@ var NUTOOL_PER = {};
 		},
 		getg_module_snippet_code: function () {
 			return g_module_snippet_code;
+		},
+		// CodeGen need
+		setg_variables : function (target, newValue) {
+			eval(`${target}  =  newValue`);
 		},
 		g_bFunctionalTesting: false,
 		g_postRender_f1: {},

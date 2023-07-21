@@ -13,57 +13,7 @@ NUTOOL_PIN.g_cfg_chips = [
 	{ name: "M031GGC1AE", pkg: "QFN24" },
 	{ name: "M031GTD2AE", pkg: "QFN33" },
 	{ name: "M031GTC2AE", pkg: "QFN33" },
-	{ name: "M031GTC1AE", pkg: "QFN33" },
-	// M031
-	{ name: "M031FB0AE", pkg: "TSSOP20" },
-	{ name: "M031FC1AE", pkg: "TSSOP20" },
-	{ name: "M031EB0AE", pkg: "TSSOP28" },
-	{ name: "M031EC1AE", pkg: "TSSOP28" },
-	{ name: "M031TB0AE", pkg: "QFN33" },
-	{ name: "M031TC1AE", pkg: "QFN33" },
-	{ name: "M031TD2AE", pkg: "QFN33" },
-	{ name: "M031TE3AE", pkg: "QFN33" },
-	{ name: "M031LC2AE", pkg: "LQFP48" },
-	{ name: "M031LD2AE", pkg: "LQFP48" },
-	{ name: "M031LE3AE", pkg: "LQFP48" },
-	{ name: "M032LE3AE", pkg: "LQFP48" },
-	{ name: "M031SC2AE", pkg: "LQFP64" },
-	{ name: "M031SD2AE", pkg: "LQFP64" },
-	{ name: "M031SE3AE", pkg: "LQFP64" },
-	{ name: "M032SE3AE", pkg: "LQFP64" },
-	// M031G
-	{ name: "M031LG6AE", pkg: "LQFP48" },
-	{ name: "M031SG6AE", pkg: "LQFP64" },
-	{ name: "M031KG6AE", pkg: "LQFP128" },
-	{ name: "M031LG8AE", pkg: "LQFP48" },
-	{ name: "M031SG8AE", pkg: "LQFP64" },
-	{ name: "M031KG8AE", pkg: "LQFP128" },
-	{ name: "M032LG6AE", pkg: "LQFP48" },
-	{ name: "M032SG6AE", pkg: "LQFP64" },
-	{ name: "M032KG6AE", pkg: "LQFP128" },
-	{ name: "M032LG8AE", pkg: "LQFP48" },
-	{ name: "M032SG8AE", pkg: "LQFP64" },
-	{ name: "M032KG8AE", pkg: "LQFP128" },
-	{ name: "M032BTAG8AN", pkg: "QFN68" },
-	// M031I
-	{ name: "M031SIAAE", pkg: "LQFP64" },
-	{ name: "M031KIAAE", pkg: "LQFP128" },
-	{ name: "M032SIAAE", pkg: "LQFP64" },
-	{ name: "M032KIAAE", pkg: "LQFP128" },
-	{ name: "M032BTAIAAN", pkg: "QFN68" },
-	// M031KM
-	{ name: "M030FD2AE", pkg: "TSSOP20" },
-	{ name: "M030TD2AE", pkg: "QFN33" },
-	{ name: "M030LD2AE", pkg: "LQFP48" },
-	{ name: "M032FC1AE", pkg: "TSSOP20" },
-	{ name: "M032EC1AE", pkg: "TSSOP28" },
-	{ name: "M032TC1AE", pkg: "QFN33" },
-	{ name: "M032TD2AE", pkg: "QFN33" },
-	{ name: "M032LC2AE", pkg: "LQFP48" },
-	{ name: "M032LD2AE", pkg: "LQFP48" },
-	// M031BT
-	{ name: "M031BTYD2AN", pkg: "QFN48" },
-	{ name: "M031BTYE3AN", pkg: "QFN48" }
+	{ name: "M031GTC1AE", pkg: "QFN33" }
 ];
 
 NUTOOL_PIN.g_cfg_pkgs = {
@@ -80,6 +30,8 @@ NUTOOL_PIN.g_cfg_pkgs = {
 		'PB.3', 'PB.2', 'PC.1', 'PB.1', 'PA.14', 'PA.12', 'PA.13', 'PB.0'
 	]
 };
+
+NUTOOL_PIN.g_cfg_OrCAD = {};
 
 NUTOOL_PIN.g_cfg_gpios = [
 	{ f: ['PA.0:0', 'DAC0_OUT:1', 'SPI0_MOSI:4', 'UART0_RXD:7', 'BPWM1_CH0:12', 'BPWM1_CH4:15']},
@@ -318,6 +270,7 @@ NUTOOL_PIN.g_cfg_unusedGPIO = {
 		return this["M031GGD2AE(QFN24)"];
 	}
 };
+NUTOOL_PIN.g_cfg_WPPin = [];
 
 NUTOOL_PIN.decidepackageNumber = function (given_partNumber_package) {
 	var partNumber_package;

@@ -1,16 +1,63 @@
-input {outline: none;}
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
 
-.tooltip{
+.navbar {
+	width: 100%;
+	overflow: auto;
+	background-color: #FFFFFF;
+}
+
+.active {
+	background-color: #04AA6D;
+}
+
+@media screen and (max-width: 500px) {
+	.navbar a {
+		float: none;
+		display: block;
+	}
+}
+
+input {
+	outline: none;
+}
+
+.tooltip {
 	position: absolute;
 	top: 0;
 	left: 0;
 	z-index: 3;
-	color: #0C00FF;
-	background-color: #FFFA3E;
+	color: #FFFFFF;
+	background-color: #000000;
 }
 
 .generateCodeByModule {
-	float:left;
+	float: left;
 	display: inline-block;
 	margin-top: 1em;
+}
+
+.hidden {
+	display: none
+}
+
+button {
+	padding: 3px;
+	margin: 2px;
+	border: 2px solid #FFFFFF;
+	background-color: #FFFFFF;
+}
+
+button:hover {
+	border: 2px solid #66b7dd;
+}
+
+.btnimage {
+	width: 32px;
+	height: 32px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	background-color: #FFFFFF;
 }

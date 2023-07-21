@@ -1,0 +1,11 @@
+Please do not modify this file. Otherwise, it may not be loaded successfully.
+DialogSize:X_792Y_590
+UIlanguage:Traditional Chinese
+DisplayTooltip:Yes
+CheckCriteriaPin:Yes
+CheckCriteriaModule:No
+CheckCriteriaGPIO:No
+CheckModularizeCode:No
+ProjectName:test
+ProjectLocation:C:\+
+ProjectLocationHistory:C:\+>

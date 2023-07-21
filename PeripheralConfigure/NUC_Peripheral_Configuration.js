@@ -79,6 +79,11 @@ var NUTOOL_PER = {};
 				g_bCheckNodesBasedOnConfigFile = false;
 			}
 			showPeripheralConfigure();
+			
+			if(g_bWebVersion){
+				return;
+			}
+			
 			// construct the selects of chip type and MCU.
 			buildChipTypeSelect();
 			// construct trees
@@ -5935,6 +5940,10 @@ var NUTOOL_PER = {};
 		},
 		getg_module_snippet_code: function () {
 			return g_module_snippet_code;
+		},
+		// CodeGen need
+		setg_variables : function (target, newValue) {
+			eval(`${target}  =  newValue`);
 		},
 		g_bFunctionalTesting: false,
 		g_postRender_f1: {},

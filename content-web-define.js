@@ -40,7 +40,7 @@ var //
     // g_currentSnippetFilePath = "",
     // g_currentSnippetLayoutath = "",                      No use
     // g_lastCheckedSnippetNode = "",
-    // g_currentTool = "PeripheralConfigure",
+    g_currentTool = "PeripheralConfigure",
     g_groupIds = {},
     g_recordedIds = {},
     g_perControls = {},
@@ -79,4 +79,5 @@ var //
 
 
 // Only web version use!!!
+var g_bWebVersion = true;
 var g_snippetName = "";

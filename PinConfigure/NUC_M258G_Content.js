@@ -150,6 +150,7 @@ NUTOOL_PIN.g_cfg_pkgs = {
     ]
 };
 
+NUTOOL_PIN.g_cfg_OrCAD = {};
 
 NUTOOL_PIN.g_cfg_gpios = [
     { f: ['PA.0:0', 'SPI0_MOSI:4', 'TK_TK6:5', 'SC0_CLK:6', 'UART0_RXD:7', 'UART1_nRTS:8', 'BPWM0_CH0:12', 'DAC0_ST:15']},
@@ -586,6 +587,7 @@ NUTOOL_PIN.g_cfg_unusedGPIO = {
         "ALL": ["USB"],
     }
 };
+NUTOOL_PIN.g_cfg_WPPin = [];
 
 NUTOOL_PIN.decidepackageNumber = function (given_partNumber_package) {
     var partNumber_package,

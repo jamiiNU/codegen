@@ -1,19 +1,5 @@
 //chip content
 NUTOOL_PIN.g_cfg_chips = [
-	// M030G
-	{ name: "M030GGC0AE", pkg: "QFN24" },
-	{ name: "M030GGD1AE", pkg: "QFN24" },
-	{ name: "M030GGC1AE", pkg: "QFN24" },
-	{ name: "M030GTC1AE", pkg: "QFN33" },
-	{ name: "M030GTC0AE", pkg: "QFN33" },
-	{ name: "M030GTD1AE", pkg: "QFN33" },
-	// M030G_31G
-	{ name: "M031GGD2AE", pkg: "QFN24" },
-	{ name: "M031GGC2AE", pkg: "QFN24" },
-	{ name: "M031GGC1AE", pkg: "QFN24" },
-	{ name: "M031GTD2AE", pkg: "QFN33" },
-	{ name: "M031GTC2AE", pkg: "QFN33" },
-	{ name: "M031GTC1AE", pkg: "QFN33" },
 	// M031
 	{ name: "M031FB0AE", pkg: "TSSOP20" },
 	{ name: "M031FC1AE", pkg: "TSSOP20" },
@@ -65,6 +51,8 @@ NUTOOL_PIN.g_cfg_chips = [
 	{ name: "M031BTYD2AN", pkg: "QFN48" },
 	{ name: "M031BTYE3AN", pkg: "QFN48" }
 ];
+
+NUTOOL_PIN.g_cfg_OrCAD = {};
 
 NUTOOL_PIN.g_cfg_pkgs = {
 	"LQFP64": [
@@ -640,6 +628,7 @@ NUTOOL_PIN.g_cfg_unusedGPIO = {
 		"ALL": ["EBI", "INT5", "SPI0"]
 	}
 };
+NUTOOL_PIN.g_cfg_WPPin = [];
 
 NUTOOL_PIN.decidepackageNumber = function (given_partNumber_package) {
 	var partNumber_package,

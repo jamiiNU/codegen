@@ -61,7 +61,7 @@ NUTOOL_PIN.g_cfg_chips = [
 	// NUC1261
 	{ name: "NUC1261LG4AE", pkg: "LQFP48" },
 	{ name: "NUC1261LE4AE", pkg: "LQFP48" },
-	{ name: "NUC1261NE4AE", pkg: "LQFP48" },
+	{ name: "NUC1261NE4AE", pkg: "QFN48" },
 	{ name: "NUC1261SG4AE", pkg: "LQFP64" },
 	{ name: "NUC1261SE4AE", pkg: "LQFP64" },
 	// NUC1262
@@ -118,6 +118,8 @@ NUTOOL_PIN.g_cfg_pkgs = {
 		'NC', 'PB.11', 'PB.10', 'PB.9', 'PB.8', 'PB.7'
 	]
 };
+
+NUTOOL_PIN.g_cfg_OrCAD = {};
 
 NUTOOL_PIN.g_cfg_gpios = [
 	{ f: ['PA.0:0', 'SPI0_MOSI:4', 'UART0_RXD:7', 'UART1_nRTS:8', 'LLSI7_OUT:10', 'BPWM0_CH0:12', 'BPWM2_CH5:13']},
@@ -395,6 +397,7 @@ NUTOOL_PIN.g_cfg_gpioMatrix = [];
 NUTOOL_PIN.g_cfg_shareBits = [];
 NUTOOL_PIN.g_cfg_addGPIO = {};
 NUTOOL_PIN.g_cfg_unusedGPIO = {};
+NUTOOL_PIN.g_cfg_WPPin = [];
 
 NUTOOL_PIN.decidepackageNumber = function (given_partNumber_package) {
 	var partNumber_package,
