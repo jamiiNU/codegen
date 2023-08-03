@@ -14996,51 +14996,51 @@ var NUTOOL_PIN = {};
     }
 
     function initListeners() {
-        $('#ID_BUTTON_SHOW_REGISTERS').off('click').on('click', function () {
+        $('#ID_BUTTON_SHOW_REGISTERS').on('click', function () {
             showRegisters();
         });
-        $('#ID_BUTTON_LOAD').off('click').on('click', function () {
+        $('#ID_BUTTON_LOAD').on('click', function () {
             loadConfigByBrowser();
         });
-        $('#loadConfiguration').off('click').on('change', loadConfiguration);
-        $('#ID_BUTTON_SAVE').off('click').on('click', function () {
+        $('#loadConfiguration').on('change', loadConfiguration);
+        $('#ID_BUTTON_SAVE').on('click', function () {
             saveConfig();
         });
-        $('#ID_BUTTON_GENERATE_CODE').off('click').on('click', function () {
+        $('#ID_BUTTON_GENERATE_CODE').on('click', function () {
             generateCode();
         });
-        $('#ID_BUTTON_CONNECT_TO_TARGET').off('click').on('click', function () {
+        $('#ID_BUTTON_CONNECT_TO_TARGET').on('click', function () {
             connectToChip();
         });
-        $('#ID_BUTTON_PRINT_REPORT').off('click').on('click', function () {
+        $('#ID_BUTTON_PRINT_REPORT').on('click', function () {
             printReport();
         });
-        $('#ID_BUTTON_GENERATE_PIN_DESCRIPTIONS').off('click').on('click', function () {
+        $('#ID_BUTTON_GENERATE_PIN_DESCRIPTIONS').on('click', function () {
             generatePinDescriptions();
         });
-        $('#ID_BUTTON_RUN_NUCAD').off('click').on('click', function () {
+        $('#ID_BUTTON_RUN_NUCAD').on('click', function () {
             runAnotherTool();   // TODO: web版本需取消
         });
-        $('#ID_BUTTON_SHOW_PIN_DESCRIPTIONS').off('click').on('click', function () {
+        $('#ID_BUTTON_SHOW_PIN_DESCRIPTIONS').on('click', function () {
             showPinDescriptions();
         });
-        $('#ID_BUTTON_ZOOM_IN').off('click').on('click', function () {
+        $('#ID_BUTTON_ZOOM_IN').on('click', function () {
             zoomIn();
         });
-        $('#ID_BUTTON_BEST_FIT').off('click').on('click', function () {
+        $('#ID_BUTTON_BEST_FIT').on('click', function () {
             bestFit();
         });
-        $('#ID_BUTTON_ZOOM_OUT').off('click').on('click', function () {
+        $('#ID_BUTTON_ZOOM_OUT').on('click', function () {
             zoomOut();
         });
-        $('#ID_BUTTON_DISABLE').off('click').on('click', function () {
+        $('#ID_BUTTON_DISABLE').on('click', function () {
             uncheckAllNodes();
         });
-        $('#ID_BUTTON_LANGUAGE').off('click').on('click', function () {
+        $('#ID_BUTTON_LANGUAGE').on('click', function () {
             // No ProjectLocation and ProjectLocationHistory
             settings();
         });
-        $('#ID_BUTTON_INSTRUCTION').off('click').on('click', function () {
+        $('#ID_BUTTON_INSTRUCTION').on('click', function () {
             window.location.href = 'https://www.nuvoton.com/export/resource-files/UM_NuTool-PinConfigure_EN_Rev1.24.pdf';
             // TODO: 改成直接顯示不要下載/目前只有開UM，沒有support chips
         });
@@ -15235,8 +15235,8 @@ var NUTOOL_PIN = {};
         return false;
     }
 
-    function parsingPartNumID() {
-        var PartNumID = $.ajax({ url: './src/PartNumID.cpp', async: false }).responseText;
+    function parsingPartNumID(url='./src/PartNumID.cpp') {
+        var PartNumID = $.ajax({ url: url, async: false }).responseText;
         PartNumID.split(/\r\n|\n/).filter(function (line) {
             var reg = new RegExp('.*[^\/]\{.*0x.*[PROJ].*\}');
             return reg.test(line);
@@ -15249,6 +15249,16 @@ var NUTOOL_PIN = {};
                 completePIDList.push(pid + '-' + regValue + '-' + projName);
             }
         });
+    }
+
+    // Refer window.onload
+    function switchToPinConfig() {
+        parsingPartNumID('./PinConfigure/PartNumID.cpp');
+
+        if (window.Worker) {
+            worker = new Worker('./PinConfigure/worker/webusb.worker-bundle.js');
+            setWorkerListener();
+        }
     }
 
     //////////////////////////////////////////////////////public API/////////////////////////////////////////////////////////////
@@ -15308,6 +15318,13 @@ var NUTOOL_PIN = {};
         setg_selectedPartNoValue: function (newPartNoValue) {
             g_selectedPartNoValue = newPartNoValue;
         },
+		////for react web version////
+		setg_variables : function (target, newValue) {
+			eval(`${target}  =  newValue`);
+		},
+		getg_variables : function (target) {
+			return eval(`${target}`);
+		},
         setReviewReportTable: setReviewReportTable,
         loadPinConfigureTool: loadPinConfigureTool,
         loadPinConfigureTool_fromSelectionGuide: loadPinConfigureTool_fromSelectionGuide,
@@ -15327,6 +15344,7 @@ var NUTOOL_PIN = {};
         triggerSearch: triggerSearch,
         showRegisters: showRegisters,
         loadConfig_core: loadConfig_core,
+        replaceJsFile: replaceJsFile,
         saveConfig: saveConfig,
         generateCode: generateCode,
         connectToTarget: connectToTarget,
@@ -15351,7 +15369,10 @@ var NUTOOL_PIN = {};
         g_pinFunctionString: "", // for DISPATCH_PROPERTYPUT
         g_bFunctionalTesting: false,
         g_bModuleTreeLoaded: false,
-        initListeners: initListeners,
+        ////for react web version////
+        switchToPinConfig: switchToPinConfig,
+        connectToChip: connectToChip,
+
     };
 }());
 // timer code

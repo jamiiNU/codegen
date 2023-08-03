@@ -46,7 +46,7 @@ var //
     g_perControls = {},
     // g_enabledThirdPartyLibNodes = [],
     // g_enabledPeripheralFunctionNodes = [],
-    // g_enabledPeripheralFunctionData = {},
+    g_enabledPeripheralFunctionData = {},
     // g_field1SubDIVs = [],
     // g_field1SubDIVsCache = {},
     // g_module_snippet = [],

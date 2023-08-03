@@ -13779,6 +13779,12 @@ var NUTOOL_CLOCK = {};
 		setg_selectedPartNoValue: function (newPartNoValue) {
 			g_selectedPartNoValue = newPartNoValue;
 		},
+		setg_variables : function (target, newValue) {
+			eval(`${target}  =  newValue`);
+		},
+		getg_variables : function (target) {
+			return eval(`${target}`);
+		},
 		loadClockConfigureTool: loadClockConfigureTool,
 		loadClockConfigureTool_fromSelectionGuide: loadClockConfigureTool_fromSelectionGuide,
 		getGeneratedClockStatus: getGeneratedClockStatus,

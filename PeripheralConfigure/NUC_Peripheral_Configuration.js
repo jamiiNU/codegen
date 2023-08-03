@@ -356,14 +356,8 @@ var NUTOOL_PER = {};
 		}
 
 		// find chip type
-		g_partNumber_type = "";
-		for (i = 0, max = NUTOOL_PER.g_cfg_chips.length; i < max; i += 1) {
-			if (NUTOOL_PER.g_cfg_chips[i].name + '(' + NUTOOL_PER.g_cfg_chips[i].pkg + ')' === g_partNumber_package &&
-				typeof NUTOOL_PER.g_cfg_chips[i].type !== 'undefined') {
-				g_partNumber_type = NUTOOL_PER.g_cfg_chips[i].type;
-				break;
-			}
-		}
+		g_partNumber_type = decideNewPartNumberType(g_partNumber_package);
+
 		// determine supported GPIO pins
 		if (typeof NUTOOL_PIN !== 'undefined') {
 			g_supportedGPIOPins = {};
@@ -3204,6 +3198,19 @@ var NUTOOL_PER = {};
 		return newChipType;
 	}
 
+	function decideNewPartNumberType(newPartNumber_package) {
+		var newPartNumberType = "";
+
+		for (i = 0, max = NUTOOL_PER.g_cfg_chips.length; i < max; i += 1) {
+			if (NUTOOL_PER.g_cfg_chips[i].name + '(' + NUTOOL_PER.g_cfg_chips[i].pkg + ')' === newPartNumber_package &&
+				typeof NUTOOL_PER.g_cfg_chips[i].type !== 'undefined') {
+					newPartNumberType = NUTOOL_PER.g_cfg_chips[i].type;
+				break;
+			}
+		}
+		return newPartNumberType;
+	}
+
 	function chipSeriesToChipType(chipSeries) {
 		var stringChipType;
 		stringChipType = chipSeries;
@@ -3594,6 +3601,9 @@ var NUTOOL_PER = {};
 		g_readConfigFile = newReadConfigFile;
 		// get g_chipType
 		g_chipType = newChipType;
+		// update ChipTypeSelect
+		$("#ChipTypeSelect_Peripheral").val(chipTypeToChipSeries(g_chipType));
+
 		// get g_partNumber_package
 		g_partNumber_package = newPartNumber_package;
 
@@ -3658,6 +3668,7 @@ var NUTOOL_PER = {};
 
 	function refresh() {
 		buildThirdPartyLibTree();
+		buildMCUselect();
 		buildPerFunctionTree();
 		buildControlContainer();
 	}
@@ -5941,9 +5952,12 @@ var NUTOOL_PER = {};
 		getg_module_snippet_code: function () {
 			return g_module_snippet_code;
 		},
-		// CodeGen need
+		////for react web version////
 		setg_variables : function (target, newValue) {
 			eval(`${target}  =  newValue`);
+		},
+		getg_variables : function (target) {
+			return eval(`${target}`);
 		},
 		g_bFunctionalTesting: false,
 		g_postRender_f1: {},
@@ -5951,6 +5965,7 @@ var NUTOOL_PER = {};
 		/////////////////////////////////////////////////////////////////////////////////////
 		checkAlpacaReady: checkAlpacaReady,
 		decideNewChipType: decideNewChipType,
+		decideNewPartNumberType: decideNewPartNumberType,
 		chipTypeToChipSeries: chipTypeToChipSeries,
 		showPinConfigure: showPinConfigure,
 		showClockConfigure: showClockConfigure,
@@ -5962,6 +5977,7 @@ var NUTOOL_PER = {};
 		concatenate_generated_code: concatenate_generated_code,
 		loadConfig: loadConfig,
 		loadConfig_core: loadConfig_core,
+		readTreeContent: readTreeContent,
 		saveConfig: saveConfig,
 		recordConfig: recordConfig,
 		closeAPP: closeAPP,
