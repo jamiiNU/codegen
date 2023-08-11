@@ -79,11 +79,6 @@ var NUTOOL_PER = {};
 				g_bCheckNodesBasedOnConfigFile = false;
 			}
 			showPeripheralConfigure();
-			
-			if(g_bWebVersion){
-				return;
-			}
-			
 			// construct the selects of chip type and MCU.
 			buildChipTypeSelect();
 			// construct trees
@@ -356,8 +351,14 @@ var NUTOOL_PER = {};
 		}
 
 		// find chip type
-		g_partNumber_type = decideNewPartNumberType(g_partNumber_package);
-
+		g_partNumber_type = "";
+		for (i = 0, max = NUTOOL_PER.g_cfg_chips.length; i < max; i += 1) {
+			if (NUTOOL_PER.g_cfg_chips[i].name + '(' + NUTOOL_PER.g_cfg_chips[i].pkg + ')' === g_partNumber_package &&
+				typeof NUTOOL_PER.g_cfg_chips[i].type !== 'undefined') {
+				g_partNumber_type = NUTOOL_PER.g_cfg_chips[i].type;
+				break;
+			}
+		}
 		// determine supported GPIO pins
 		if (typeof NUTOOL_PIN !== 'undefined') {
 			g_supportedGPIOPins = {};
@@ -2628,12 +2629,6 @@ var NUTOOL_PER = {};
 	}
 
 	function decideNuToolSetup() {
-		// [Workaround]
-		g_Dialog_Width = 893; // when dpi is 100%
-		g_Dialog_Height = 590;
-		g_NUC_TreeView_Height = g_Dialog_Height - 16;
-		g_NUC_TreeView_Width = 230;
-		return;
 		// determine the dialog's size
 		var recordedDialogSize = $.ajax({ url: "NuToolSetup.txt", async: false }).responseText;
 
@@ -3198,19 +3193,6 @@ var NUTOOL_PER = {};
 		return newChipType;
 	}
 
-	function decideNewPartNumberType(newPartNumber_package) {
-		var newPartNumberType = "";
-
-		for (i = 0, max = NUTOOL_PER.g_cfg_chips.length; i < max; i += 1) {
-			if (NUTOOL_PER.g_cfg_chips[i].name + '(' + NUTOOL_PER.g_cfg_chips[i].pkg + ')' === newPartNumber_package &&
-				typeof NUTOOL_PER.g_cfg_chips[i].type !== 'undefined') {
-					newPartNumberType = NUTOOL_PER.g_cfg_chips[i].type;
-				break;
-			}
-		}
-		return newPartNumberType;
-	}
-
 	function chipSeriesToChipType(chipSeries) {
 		var stringChipType;
 		stringChipType = chipSeries;
@@ -3551,8 +3533,7 @@ var NUTOOL_PER = {};
 		else {
 			readConfigFilePath = 'file:///' + NUTOOL_PER.g_readConfigFilePath;
 		}
-		// [Workaround]
-		// saved_newReadConfigFile = newReadConfigFile = $.ajax({ url: readConfigFilePath, async: false }).responseText;
+		saved_newReadConfigFile = newReadConfigFile = $.ajax({ url: readConfigFilePath, async: false }).responseText;
 		// the read config file is empty or undefined. Restore to the default case.
 		if (!newReadConfigFile || (/^\s*$/.test(newReadConfigFile))) {
 			// default setting
@@ -3601,9 +3582,6 @@ var NUTOOL_PER = {};
 		g_readConfigFile = newReadConfigFile;
 		// get g_chipType
 		g_chipType = newChipType;
-		// update ChipTypeSelect
-		$("#ChipTypeSelect_Peripheral").val(chipTypeToChipSeries(g_chipType));
-
 		// get g_partNumber_package
 		g_partNumber_package = newPartNumber_package;
 
@@ -3734,9 +3712,6 @@ var NUTOOL_PER = {};
 	}
 
 	function decideUIlanguage() {
-		// [Workaround]
-		g_userSelectUIlanguage = "English";
-		return;
 		var recordedUIlanguage = $.ajax({ url: "NuToolSetup.txt", async: false }).responseText;
 
 		if (typeof (recordedUIlanguage) !== 'undefined' && recordedUIlanguage.indexOf('UIlanguage:') !== -1) {
@@ -5951,20 +5926,12 @@ var NUTOOL_PER = {};
 		getg_module_snippet_code: function () {
 			return g_module_snippet_code;
 		},
-		////for react web version////
-		setg_variables : function (target, newValue) {
-			eval(`${target}  =  newValue`);
-		},
-		getg_variables : function (target) {
-			return eval(`${target}`);
-		},
 		g_bFunctionalTesting: false,
 		g_postRender_f1: {},
 		g_postRender_control: {},
 		/////////////////////////////////////////////////////////////////////////////////////
 		checkAlpacaReady: checkAlpacaReady,
 		decideNewChipType: decideNewChipType,
-		decideNewPartNumberType: decideNewPartNumberType,
 		chipTypeToChipSeries: chipTypeToChipSeries,
 		showPinConfigure: showPinConfigure,
 		showClockConfigure: showClockConfigure,

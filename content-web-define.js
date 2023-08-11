@@ -81,3 +81,4 @@ var //
 // Only web version use!!!
 var g_bWebVersion = true;
 var g_snippetName = "";
+var g_perControlsFilter = {}

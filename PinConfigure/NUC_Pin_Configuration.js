@@ -15318,13 +15318,6 @@ var NUTOOL_PIN = {};
         setg_selectedPartNoValue: function (newPartNoValue) {
             g_selectedPartNoValue = newPartNoValue;
         },
-		////for react web version////
-		setg_variables : function (target, newValue) {
-			eval(`${target}  =  newValue`);
-		},
-		getg_variables : function (target) {
-			return eval(`${target}`);
-		},
         setReviewReportTable: setReviewReportTable,
         loadPinConfigureTool: loadPinConfigureTool,
         loadPinConfigureTool_fromSelectionGuide: loadPinConfigureTool_fromSelectionGuide,
