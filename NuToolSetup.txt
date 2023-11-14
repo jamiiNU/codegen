@@ -1,0 +1,13 @@
+Please do not modify this file. Otherwise, it may not be loaded successfully.
+DialogSize:X_1488Y_1035
+UIlanguage:
+CheckBSPCompatibility:
+CheckProjfile:
+CheckCppcmd:
+CheckRename:
+CheckAStyle:
+CheckModularizeCode:
+DevelopingTool:
+ProjectName:
+ProjectLocation:
+ProjectLocationHistory:

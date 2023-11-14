@@ -4603,7 +4603,7 @@ var NUTOOL_PIN = {};
 
                     replacejscssfile(oldfilename, newfilename, 'js');
                 }
-                g_partNumber_package = "M251EB2AE(TSSOP28)";
+                g_partNumber_package = "M251EC2AE(TSSOP28)";
                 g_chipType = 'M251';
             }
             return bCorrectpartNumber_package;
@@ -4683,7 +4683,7 @@ var NUTOOL_PIN = {};
                     }
                 }
                 else {
-                    saved_g_partNumber_package = "M251EB2AE(TSSOP28)";
+                    saved_g_partNumber_package = "M251EC2AE(TSSOP28)";
                     g_chipType = 'M251';
                 }
             }
@@ -4866,7 +4866,7 @@ var NUTOOL_PIN = {};
                 }
             }
             else {
-                g_partNumber_package = "M251EB2AE(TSSOP28)";
+                g_partNumber_package = "M251EC2AE(TSSOP28)";
             }
         }
         else if (bMismatchedMissing) {
@@ -7848,6 +7848,9 @@ var NUTOOL_PIN = {};
             bReturn;
 
         var reocrdedPorjectName = localStorage.getItem("ProjectName");
+        // [Workaround] Electron get undefined from localStorage.
+        reocrdedPorjectName ||= document.getElementById("inputText_projectName").value;
+
         gpio_MFPsArrayCheck = function (gpio_MFPsArrayInput, usedModuleName, usedModulesElement) {
             bReturn = false;
             // 只要有以下任一情況出現即為合法字串
@@ -10534,7 +10537,7 @@ var NUTOOL_PIN = {};
                 fileref.setAttribute("src", filename);
             }
             else {
-                fileref.setAttribute("href", `./src/${filename}`);
+                fileref.setAttribute("src", `./src/${filename}`);
             }
         }
         else if (filetype === "css") { //if filename is an external CSS file

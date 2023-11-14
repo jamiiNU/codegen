@@ -1,0 +1,201 @@
+<! clock: {"ALL" : "USCI0" }; !>
+<! pin:   {"ALL" : ["USCI0_DAT0","USCI0_CLK"]};!>
+
+#define NUCODEGEN_UI2C0_CLOCK (<!id:ui2c0_frequency; type:integer; 
+                             label:UI2C0 bus clock rate (Hz); 
+                             data:100000; default:100000; 
+                             helper:Enter UI2C0 bus clock rate, the value could be  100000 ~ 400000; 
+                             minimum:100000; maximum:400000; 
+                             groupId:Group_UI2C0_Common_config;!>)
+
+#define NUCODEGEN_UI2C0_10BIT_FORMAT_EN <!id:ui2c0_10bit_dataformat; 
+                                        type:radio; 
+                                        label:UI2C0 data format; 
+                                        data:0; 
+                                        default:0; 
+                                        helper:; 
+                                        sort:false; enum:[0, 1]; 
+                                        optionLabels:[7-bit, 10-bit]; 
+                                        vertical:true; 
+                                        groupId:Group_UI2C0_Common_config;!>
+
+#define NUCODEGEN_UI2C0_INT_EN (<!id:ui2c0_interrupt_enable; type:checkbox; 
+                                label:Enable UI2C0 interrupt and NVIC; 
+                                data:0; default:0; 
+                                helper:; 
+                                sort:false; enum:[1]; 
+                                optionLabels:[]; 
+                                groupId:Group_UI2C_Interrupt;
+                                groupName:Interrupt;!>)
+
+#define NUCODEGEN_UI2C0_WAKEUP_EN (<!id:ui2c0_wakeup_enable_0; type:checkbox; 
+                                    label:Enable UI2C0 wake-up function; 
+                                    data:0; default:0; 
+                                    helper:; 
+                                    sort:false; enum:[1]; 
+                                    optionLabels:[]; 
+                                    dependencies:ui2c0_interrupt_enable; 
+                                    dependenciesOption:1;
+                                    groupId:Group_UI2C_Interrupt;!>)
+
+#define NUCODEGEN_UI2C0_WAKEUP_SEL  <!id:ui2c0_wakeup_sel_radio; 
+                                        type:radio; 
+                                        label:Select UI2C0 wake-up mode; 
+                                        data:UI2C_ADDR_MATCH_WK; 
+                                        default:UI2C_ADDR_MATCH_WK; 
+                                        helper:; 
+                                        sort:false; enum:[UI2C_ADDR_MATCH_WK, UI2C_DATA_TOGGLE_WK]; 
+                                        optionLabels:[Address match, Toggle ]; 
+                                        vertical:true; 
+                                        dependencies:ui2c0_wakeup_enable_0; 
+                                        dependenciesOption:1;
+                                        groupId:Group_UI2C_Interrupt;!>
+
+#define NUCODEGEN_UI2C0_TIMEOUT_EN (<!id:ui2c0_timeout_enable_0; type:checkbox; 
+                                label:Enable UI2C0 timeout; 
+                                data:0; default:0; 
+                                helper:; 
+                                sort:false; enum:[1]; 
+                                optionLabels:[]; 
+                                dependencies:ui2c0_interrupt_enable; 
+                                dependenciesOption:1;
+                                groupId:Group_UI2C_Interrupt;!>)
+
+#if NUCODEGEN_UI2C0_TIMEOUT_EN
+#define NUCODEGEN_UI2C0_TIMEOUT_CNT (<!id:ui2c0_timeout_cnt; type:integer; 
+                              label:Input timeout value; data:0; 
+                              default:0; 
+                              helper: Timeout counter. Valid values are between 0 ~ 1023; 
+                              minimum:0; 
+                              maximum:1023; 
+                              dependencies:ui2c0_timeout_enable_0; 
+                              dependenciesOption:1;
+                              groupId:Group_UI2C_Interrupt;!>)
+#endif /* NUCODEGEN_UI2C0_TIMEOUT_EN */
+
+#define NUCODEGEN_UI2C0_ADDR0_EN (<!id:ui2c0_address_enable_0; type:checkbox; 
+                                label:Enable UI2C0 Address 0; 
+                                data:0; default:0; 
+                                helper:; 
+                                sort:false; enum:[1]; 
+                                optionLabels:[]; 
+                                groupId:Group_UI2C_address0;
+                                groupName:ADDRESS0;!>)
+                                
+#if NUCODEGEN_UI2C0_ADDR0_EN
+#define NUCODEGEN_UI2C0_ADDR0 (<!id:ui2c0_addr0_10bit; type:hextext; 
+                              label:UI2C0 address 0(10-bit)(hex); data:0x0; 
+                              default:0x0; 
+                              helper:; 
+                              minimum:0x0; 
+                              maximum:0x3ff; 
+                              dependencies:[ui2c0_address_enable_0, ui2c0_10bit_dataformat]; 
+                              dependenciesDefault:false;
+                              dependenciesOption:{"ui2c0_address_enable_0":"1","ui2c0_10bit_dataformat":"1"};
+                              groupId:Group_UI2C_address0;!><!id:ui2c0_addr0_7bit; type:hextext; 
+                              label:UI2C0 address 0(7-bit)(hex); data:0x0; 
+                              default:0x0; 
+                              helper:; 
+                              minimum:0x0; 
+                              maximum:0x7f; 
+                              dependencies:[ui2c0_address_enable_0, ui2c0_10bit_dataformat]; 
+                              dependenciesDefault:false;
+                              dependenciesOption:{"ui2c0_address_enable_0":"1","ui2c0_10bit_dataformat":"0"};
+                              groupId:Group_UI2C_address0;!>)
+
+#define NUCODEGEN_UI2C0_ADDRMSK0 (<!id:ui2c0_address0_mask_10bit; 
+                                type:hextext; 
+                                label:UI2C0 address0 mask(10-bit)(hex); 
+                                data:0x0; default:0x0; 
+                                helper:; 
+                                minimum:0x0; maximum:0x3ff; 
+                                dependencies:[ui2c0_address_enable_0, ui2c0_10bit_dataformat]; 
+                                dependenciesDefault:false;
+                                dependenciesOption:{"ui2c0_address_enable_0":"1","ui2c0_10bit_dataformat":"1"};
+                                groupId:Group_UI2C_address0;!><!id:ui2c0_address0_mask_7bit; 
+                                type:hextext; 
+                                label:UI2C0 address0 mask(7-bit)(hex); 
+                                data:0x0; default:0x0; 
+                                helper:; 
+                                minimum:0x0; maximum:0x7f; 
+                                dependencies:[ui2c0_address_enable_0, ui2c0_10bit_dataformat]; 
+                                dependenciesDefault:false;
+                                dependenciesOption:{"ui2c0_address_enable_0":"1","ui2c0_10bit_dataformat":"0"};
+                                groupId:Group_UI2C_address0;!>)
+
+#define NUCODEGEN_UI2C0_ADDR0_GC_SEL (<!id:ui2c_address0_gc_enable; 
+                                type:radio; label:Address 0 general call (GC) mode; 
+                                data:UI2C_GCMODE_DISABLE; default:UI2C_GCMODE_DISABLE; 
+                                helper:; 
+                                sort:false; enum:[UI2C_GCMODE_ENABLE, UI2C_GCMODE_DISABLE]; 
+                                optionLabels:[enable, disable]; 
+                                vertical:true;
+                                dependencies:ui2c0_address_enable_0; 
+                                dependenciesOption:1;
+                                groupId:Group_UI2C_address0;!>)
+
+#endif /*NUCODEGEN_UI2C0_ADDR0_EN*/
+
+
+#define NUCODEGEN_UI2C0_ADDR1_EN (<!id:ui2c0_address_enable_1; type:checkbox; 
+                                label:Enable UI2C0 Address 1; 
+                                data:0; default:0; 
+                                helper:; 
+                                sort:false; enum:[1]; 
+                                optionLabels:[]; 
+                                groupId:Group_UI2C_address1;
+                                groupName:ADDRESS1;!>)
+
+#if NUCODEGEN_UI2C0_ADDR1_EN
+#define NUCODEGEN_UI2C0_ADDR1 (<!id:ui2c0_addr1_10bit; type:hextext; 
+                          label:UI2C0 address 1 (10-bit)(hex); data:0x0; 
+                          default:0x0; 
+                          helper:; 
+                          minimum:0x0; 
+                          maximum:0x3ff; 
+                          dependencies:[ui2c0_address_enable_1, ui2c0_10bit_dataformat]; 
+                          dependenciesDefault:false;
+                          dependenciesOption:{"ui2c0_address_enable_1":"1","ui2c0_10bit_dataformat":"1"};
+                          groupId:Group_UI2C_address1;!><!id:ui2c0_addr1_7bit; type:hextext; 
+                          label:UI2C0 address 1 (7-bit)(hex); data:0x0; 
+                          default:0x0; 
+                          helper:; 
+                          minimum:0x0; 
+                          maximum:0x7f; 
+                          dependencies:[ui2c0_address_enable_1, ui2c0_10bit_dataformat]; 
+                          dependenciesDefault:false;
+                          dependenciesOption:{"ui2c0_address_enable_1":"1","ui2c0_10bit_dataformat":"0"};
+                          groupId:Group_UI2C_address1;!>)
+
+#define NUCODEGEN_UI2C0_ADDRMSK1 (<!id:ui2c0_address1_mask_10bit; 
+                                type:hextext; 
+                                label:UI2C0 address1 mask(10-bit)(hex); 
+                                data:0x0; default:0x0; 
+                                helper:; 
+                                minimum:0x0; maximum:0x3ff; 
+                                dependencies:[ui2c0_address_enable_1, ui2c0_10bit_dataformat]; 
+                                dependenciesDefault:false;
+                                dependenciesOption:{"ui2c0_address_enable_1":"1","ui2c0_10bit_dataformat":"1"};
+                                groupId:Group_UI2C_address1;!><!id:ui2c0_addres1_mask_7bit; 
+                                type:hextext; 
+                                label:UI2C0 address1 mask(7-bit)(hex); 
+                                data:0x0; default:0x0; 
+                                helper:; 
+                                minimum:0x0; maximum:0x7f; 
+                                dependencies:[ui2c0_address_enable_1, ui2c0_10bit_dataformat]; 
+                                dependenciesDefault:false;
+                                dependenciesOption:{"ui2c0_address_enable_1":"1","ui2c0_10bit_dataformat":"0"};
+                                groupId:Group_UI2C_address1;!>)
+
+#define NUCODEGEN_UI2C0_ADDR1_GC_SEL (<!id:ui2c_address1_gc_enable; 
+                                    type:radio; label:UI2C0 address 1 general call (GC) mode; 
+                                    data:UI2C_GCMODE_DISABLE; default:UI2C_GCMODE_DISABLE; 
+                                    helper:; 
+                                    sort:false; enum:[UI2C_GCMODE_ENABLE, UI2C_GCMODE_DISABLE]; 
+                                    optionLabels:[enable,disable]; 
+                                    vertical:true;
+                                    dependencies:ui2c0_address_enable_1; 
+                                    dependenciesOption:1;
+                                    groupId:Group_UI2C_address1;!>)
+
+#endif /*NUCODEGEN_UI2C0_ADDR1_EN*/

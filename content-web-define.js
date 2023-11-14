@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // main code of NuTool - IpConfigure
 // the sole global variable denoted by capital letters
 var NUTOOL_PIN = {};
@@ -25,18 +26,18 @@ var //
     // g_NUC_TreeView_Width = 0,
     // g_Dialog_Width,
     // g_Dialog_Height,
-    g_chipTypes = ["M251", "M253", "M031", "NUC100"],
+    g_chipTypes = ["M251", "M253", "M031", "NUC100", "M2003C"],
     // g_chipTypesDeveloping = ["M030G", "DEMO"],
-    g_chipType = "",
+    g_chipType = "", // "M251",
     // g_updatedSnippetFile = "",
     // g_selectedPartNoValue = "",
-    g_partNumber_package = "",
+    g_partNumber_package = "", // = "M251EC2AE(TSSOP28)",
     g_partNumber_type = "",
     g_supportedGPIOPins = {},
     // g_userHeader = "",
-    // g_generatedCodeFromPerString = "",
-    // g_enabledThirdPartyLibString = "",
-    // g_enabledPeripheralFunctionString = "",
+    g_generatedCodeFromPerString = "",
+    g_enabledThirdPartyLibString = "",
+    g_enabledPeripheralFunctionString = "",
     // g_currentSnippetFilePath = "",
     // g_currentSnippetLayoutath = "",                      No use
     // g_lastCheckedSnippetNode = "",
@@ -49,10 +50,10 @@ var //
     g_enabledPeripheralFunctionData = {},
     // g_field1SubDIVs = [],
     // g_field1SubDIVsCache = {},
-    // g_module_snippet = [],
-    // g_module_snippet_primitive = [],
+    g_module_snippet = [],
+    g_module_snippet_primitive = [],
     // g_module_snippet_buttonId = [],
-    // g_module_snippet_code = [],
+    g_module_snippet_code = [],
     // g_module_snippet_header = [],
     // g_module_snippet_pin = [],
     // g_module_snippet_clock = [],
@@ -79,6 +80,26 @@ var //
 
 
 // Only web version use!!!
-var g_bWebVersion = true;
+
+// the sole global variable denoted by capital letters
+var EXPORT_REACT = {};
+
+var g_bWebVersion = "v1.5"; // v1.5: electron, v2.0: Web
 var g_snippetName = "";
 var g_perControlsFilter = {}
+var g_cfg_projectLoaction = "";
+var g_toolVersion = "";
+var g_cfg_perFunctions = [];
+var g_module_snippet_txt = [];
+
+var PATH = {
+    // Folder
+    ///result: "\\..\\..\\result\\",
+    result : "\\PeripheralConfigure\\FunctionalTesting\\result\\",
+    AutoTest : "\\PeripheralConfigure\\FunctionalTesting\\AutoTest\\",
+
+    // File
+    execKeil: "C:\\Keil_v5\\UV4\\UV4.exe",
+    execIar: "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\common\\bin\\IarBuild.exe",
+    execGcc: "C:\\Program Files (x86)\\Nuvoton Tools\\NuEclipse\\V1.02.019\\NuEclipse\\eclipse\\eclipsec.exe",
+};

@@ -58,7 +58,7 @@ var NUTOOL_PER = {};
 		g_readConfigFile,
 		g_userSelectUIlanguage,
 		g_bReadyForRelease = true, // should be true For Release
-		g_bDevelopingTool = true,  // should be false For Release
+		g_bDevelopingTool = false,  // should be false For Release
 		g_bPressEnter = false,
 		g_bInvokedByCDHtmlDialog = true,
 		g_bAlpacaValidationResult = true,
@@ -5323,6 +5323,28 @@ var NUTOOL_PER = {};
 			}
 			downloadBSPCommitID = NUTOOL_PER.g_cfg_downloadBSP.commitID[downloadBSPCommitID];
 			try { external.downloadBSPFromJS(NUTOOL_PER.g_toolVersion, BSPManager, NUTOOL_PER.g_cfg_downloadBSP.repository, downloadBSPCommitID, recordedUIlanguage); } catch (err) { }
+
+			// [Workaround]
+			if(g_bWebVersion) {
+				numicroLowerCaseBSP = ["NUC1262BSP"];
+				numicroM23FamilyBSP = ["M2351BSP", "M2354BSP", "M251BSP", "M261BSP", "NUC1262BSP"];
+				numicroM4FamilyBSP  = ["M451BSP",  "M4521BSP", "M471BSP", "M480BSP", "M472_442BSP", "NUC505BSP"];
+				var urlToOpen = "https://" + BSPManager.toLowerCase() + ".com/OpenNuvoton/";
+				var repository = NUTOOL_PER.g_cfg_downloadBSP.repository.toUpperCase();
+				if(BSPManager.toLowerCase() === "gitlab"){
+					if(numicroM23FamilyBSP.includes(repository)){
+						urlToOpen += "NuMicro-M23-Family/";
+					}
+					else if(numicroM4FamilyBSP.includes(repository)){
+						urlToOpen += "NuMicro-M4-Family/";
+					}
+					else {
+						urlToOpen += "NuMicro-M0-Family/";
+					}
+				}
+				urlToOpen += (repository + "/tree/" + downloadBSPCommitID);
+				window.open(urlToOpen);
+			};
 		};
 
 		// return unless alpaca finished building
@@ -5585,6 +5607,11 @@ var NUTOOL_PER = {};
 				$("#generateCodeDialogInput").val(NUTOOL_PER.g_perFunctionString);
 			}
 			$("#generateCodeDialog").focus();
+
+			// [Workaround]
+			if(g_bWebVersion) {
+				$('#bspForGenCode').trigger('click');
+			}
 		});
 		$("#generateCodeDialogSelect").change(function () {
 			if ($("#generateCodeDialogSelect").val() !== "default") {
@@ -5959,6 +5986,8 @@ var NUTOOL_PER = {};
 		getg_variables : function (target) {
 			return eval(`${target}`);
 		},
+		replaceTag: replaceTag,
+		removeAllTags: removeAllTags,
 		g_bFunctionalTesting: false,
 		g_postRender_f1: {},
 		g_postRender_control: {},

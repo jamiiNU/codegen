@@ -1,0 +1,99 @@
+
+#if (NUCODEGEN_USCI0_SPI)
+void USCI0_SPI_Init(void)
+{
+#if (NUCODEGEN_USPI0_MASTER_SLAVE == NUCODEGEN_USPI0_MASTER_MODE)
+	
+    /* Init USCI_SPI0 */
+    USPI_Open(USPI0, USPI_MASTER, NUCODEGEN_USPI0_TIME_MODE, NUCODEGEN_USPI0_DATAWIDTH, NUCODEGEN_USPI0_BUSCLOCK);
+    
+#else
+
+    /* Init USCI_SPI0 */
+    USPI_Open(USPI0, USPI_SLAVE, NUCODEGEN_USPI0_TIME_MODE, NUCODEGEN_USPI0_DATAWIDTH, NUCODEGEN_USPI0_BUSCLOCK);
+
+#endif /* NUCODEGEN_USPI0_MASTER_SLAVE */    
+
+#if (NUCODEGEN_USPI0_HALF_DUPLEX_EN)
+
+    /* Enable half- duplex function */
+    USPI0->PROTCTL = (USPI0->PROTCTL & ~USPI_PROTCTL_TSMSEL_Msk) | (0x4<<USPI_PROTCTL_TSMSEL_Pos);
+
+#if (NUCODEGEN_USPI0_DATA_DIR)
+
+    /* Set data direction as output */
+    USPI0->TXDAT = USPI0->TXDAT & ~USPI_TXDAT_PORTDIR_Msk ;
+
+#else
+
+    /* Set data direction as input */
+    USPI0->TXDAT = USPI0->TXDAT | USPI_TXDAT_PORTDIR_Msk ;
+
+#endif /* NUCODEGEN_USPI0_DATA_DIR */
+
+#endif /* NUCODEGEN_USPI0_HALF_DUPLEX_EN */
+
+#if (NUCODEGEN_USPI0_AUTOSS_EN)
+
+#if (NUCODEGEN_USPI0_MASTER_SS_LEVEL == 0)
+
+    /* Enable auto SS function */
+    USPI_EnableAutoSS(USPI0, 0, USPI_SS_ACTIVE_HIGH);
+    
+#else
+
+    /* Enable auto SS function */
+    USPI_EnableAutoSS(USPI0, 0, USPI_SS_ACTIVE_LOW);
+
+#endif /* NUCODEGEN_USPI0_MASTER_SS_LEVEL */
+    
+#endif /* NUCODEGEN_USPI_AUTOSS_EN */
+
+#if (NUCODEGEN_USPI0_MASTER_SLAVE == NUCODEGEN_USPI0_MASTER_MODE)
+
+    /* Master SS active level */
+    USPI0->LINECTL = (USPI0->LINECTL & ~USPI_LINECTL_CTLOINV_Msk) | (NUCODEGEN_USPI0_MASTER_SS_LEVEL<<USPI_LINECTL_CTLOINV_Pos);
+
+#else
+#if (NUCODEGEN_USPI0_3WIRE_EN)
+
+    /* Enable 3 wire mode */
+    USPI_ENABLE_3WIRE_MODE(USPI0);
+    
+#else
+
+    /* Slave SS active level */
+    USPI0->CTLIN0 = ( USPI0->CTLIN0 & ~USPI_CTLIN0_ININV_Msk) | (NUCODEGEN_USPI0_SLAVE_SS_LEVEL<<USPI_CTLIN0_ININV_Pos);
+        
+#endif /* NUCODEGEN_USPI_3WIRE_EN */   
+#endif /* NUCODEGEN_USPI0_MASTER_SLAVE */    
+       
+#if (NUCODEGEN_USPI0_ORDER)
+    /* Set transfer sequence as MSB */
+    USPI_SET_MSB_FIRST(USPI0);
+#else
+    /* Set transfer sequence as LSB */
+    USPI_SET_LSB_FIRST(USPI0);
+#endif /* NUCODEGEN_USPI_ORDER */
+
+#if (NUCODEGEN_USPI0_WAKE_UP_EN)
+    /* Enable wake up function */
+    USPI_EnableWakeup(USPI0);
+#endif /* NUCODEGEN_USPI_WAKE_UP_EN */
+
+#if (NUCODEGEN_USPI0_INT_EN)
+    /* Enable USPI Interrupt Function */
+    USPI_EnableInt(USPI0, NUCODEGEN_USPI0_INT_SEL);
+
+    /* Enable USCI0 NVIC */
+    NVIC_EnableIRQ(USCI0_IRQn);
+#endif /* NUCODEGEN_USPI0_INT_EN */
+
+#if (NUCODEGEN_USPI0_SS_EN)
+
+    /* Enable SS function */
+    USPI0->PROTCTL |= USPI_PROTCTL_SS_Msk;
+
+#endif /* NUCODEGEN_USPI_SS_EN */
+}
+#endif /* NUCODEGEN_USCI0_SPI*/

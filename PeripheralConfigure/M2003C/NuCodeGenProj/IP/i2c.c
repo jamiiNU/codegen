@@ -1,0 +1,49 @@
+#if (NUCODEGEN_I2C0)
+void I2C0_Init()
+{
+    I2C_Open(I2C0, NUCODEGEN_I2C0_BUSCLOCK);
+
+#if (NUCODEGEN_I2C0_ADDR0_EN)
+    I2C_SetSlaveAddr(I2C0, 0, NUCODEGEN_I2C0_ADDR0, NUCODEGEN_I2C0_ADDR0_GC_SEL);
+    I2C_SetSlaveAddrMask(I2C0, 0, NUCODEGEN_I2C0_ADDRMSK0);
+#endif
+#if (NUCODEGEN_I2C0_ADDR1_EN)
+    I2C_SetSlaveAddr(I2C0, 1, NUCODEGEN_I2C0_ADDR1, NUCODEGEN_I2C0_ADDR1_GC_SEL);
+    I2C_SetSlaveAddrMask(I2C0, 1, NUCODEGEN_I2C0_ADDRMSK1);
+#endif
+#if (NUCODEGEN_I2C0_ADDR2_EN)
+    I2C_SetSlaveAddr(I2C0, 2, NUCODEGEN_I2C0_ADDR2, NUCODEGEN_I2C0_ADDR2_GC_SEL);
+    I2C_SetSlaveAddrMask(I2C0, 2, NUCODEGEN_I2C0_ADDRMSK2);
+#endif
+
+#if (NUCODEGEN_I2C0_ADDR3_EN)
+    I2C_SetSlaveAddr(I2C0, 3, NUCODEGEN_I2C0_ADDR3, NUCODEGEN_I2C0_ADDR3_GC_SEL);
+    I2C_SetSlaveAddrMask(I2C0, 3, NUCODEGEN_I2C0_ADDRMSK3);
+#endif
+
+#if (NUCODEGEN_I2C0_TIMEOUT_EN)
+    I2C_EnableTimeout(I2C0, I2C0_TIMEOUT_SEL);
+#endif
+
+#if NUCODEGEN_I2C0_WAKEUP_EN
+    /* Enable I2C wake-up */
+    I2C_EnableWakeup(I2C0);
+#endif /*NUCODEGEN_I2C0_WAKEUP_EN*/
+
+#if NUCODEGEN_I2C0_INT_EN
+
+    I2C_EnableInt(I2C0);
+    NVIC_EnableIRQ(I2C0_IRQn);
+#endif
+
+#if NUCODEGEN_I2C0_TWO_BUFFER_EN
+
+    /* Enable I2C two buffer mode and set data phase bit count */
+    I2C_EnableTwoBufferMode(I2C0, I2C0_DATA_PHASE_SEL);
+
+    /* I2C enter no address SLV mode */
+    I2C_SET_CONTROL_REG(I2C0, I2C_CTL_SI_AA);
+#endif
+}
+
+#endif /*NUCODEGEN_I2C0*/

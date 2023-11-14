@@ -194,7 +194,7 @@
 #define NUCODEGEN_ADC_CHANNEL   (<!id:ADCChannel;
                                 type:multipleselect;
                                 label:"Select A/D converter channel";
-                                data:0;
+                                data:[];
                                 default:[];
                                 helper:"The following A/D converter channels can be multi-selected.";
                                 sort:none;
