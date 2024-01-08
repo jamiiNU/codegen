@@ -4283,7 +4283,7 @@ var NUTOOL_PIN = {};
         else if (newPartNumber_package.indexOf('M2L31') === 0) {
             newChipType = 'M2L31';
         }
-        else if (newPartNumber_package.indexOf('M2003C') === 0) {
+        else if (newPartNumber_package.indexOf('M2003') === 0) {
             newChipType = 'M2003C';
         }
         else if (newPartNumber_package.indexOf('M029G') === 0) {

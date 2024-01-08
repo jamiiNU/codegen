@@ -3735,18 +3735,16 @@ var NUTOOL_PER = {};
 	}
 
 	function decideUIlanguage() {
-		// [Workaround]
-		g_userSelectUIlanguage = "English";
-		return;
-		var recordedUIlanguage = $.ajax({ url: "NuToolSetup.txt", async: false }).responseText;
+		// [Workaround] - Start
+		var recordedUIlanguage = localStorage.getItem("UIlanguage");
 
-		if (typeof (recordedUIlanguage) !== 'undefined' && recordedUIlanguage.indexOf('UIlanguage:') !== -1) {
-			g_userSelectUIlanguage = recordedUIlanguage.sliceAfterX('UIlanguage:');
-			g_userSelectUIlanguage = g_userSelectUIlanguage.slicePriorToX('\r');
-		}
-		else {
-			g_userSelectUIlanguage = "English";
-		}
+        if (typeof (recordedUIlanguage) == 'undefined' || recordedUIlanguage == null) {
+            g_userSelectUIlanguage = "English";
+        } else {
+            g_userSelectUIlanguage = recordedUIlanguage;
+        }
+        recordedUIlanguage = null;
+		// [Workaround] - End
 	}
 
 	function generateCodeFunctionByJS(snippetName, mode) {
@@ -4492,11 +4490,9 @@ var NUTOOL_PER = {};
 			snippetArray = [],
 			toastHeading = "",
 			warningArray = [],
-			recordedUIlanguage = $.ajax({ url: "NuToolSetup.txt", async: false }).responseText;
+			recordedUIlanguage = localStorage.getItem("UIlanguage");
 
-		if (typeof (recordedUIlanguage) !== 'undefined' && recordedUIlanguage.indexOf('UIlanguage:') !== -1) {
-			recordedUIlanguage = recordedUIlanguage.sliceAfterX('UIlanguage:');
-			recordedUIlanguage = recordedUIlanguage.slicePriorToX('\r');
+		if (typeof (recordedUIlanguage) !== 'undefined' || recordedUIlanguage == null) {
 			if (recordedUIlanguage === "Simplified Chinese") {
 				toastHeading = "需检查的模块于";
 			}
@@ -4596,7 +4592,8 @@ var NUTOOL_PER = {};
 					}
 				}
 			}
-			concatenate_generated_cfg();
+			// [Workaround]
+			NUTOOL_PER.concatenate_generated_cfg();
 			currentStateArray = g_enabledPeripheralFunctionString.split('/');
 			warningArray = [];
 			for (snippetName in g_module_snippet_peripheral) {
@@ -5368,15 +5365,9 @@ var NUTOOL_PER = {};
 		}
 		// entry
 		if (typeof (recordedUIlanguage) !== 'undefined' && recordedUIlanguage.indexOf('UIlanguage:') !== -1) {
-			reocrdedPorjectName = recordedUIlanguage.sliceAfterX('ProjectName:');
-			reocrdedPorjectName = reocrdedPorjectName.slicePriorToX('\r');
-
-			recordedProjectLocation = recordedUIlanguage.sliceAfterX('ProjectLocation:');
-			recordedProjectLocation = recordedProjectLocation.slicePriorToX('\r');
-
-			recordedProjectLocationHistory = recordedUIlanguage.sliceAfterX('ProjectLocationHistory:');
-			recordedProjectLocationHistory = recordedProjectLocationHistory.slicePriorToX('\r');
-
+			reocrdedPorjectName = localStorage.getItem('ProjectName') || "";
+			recordedProjectLocation = localStorage.getItem('ProjectLocation') || "";
+			recordedProjectLocationHistory = localStorage.getItem('ProjectLocationHistory') || "";
 			recordedCheckBSPCompatibility = recordedUIlanguage.sliceAfterX('CheckBSPCompatibility:');
 			recordedCheckBSPCompatibility = recordedCheckBSPCompatibility.slicePriorToX('\r');
 			if (recordedCheckBSPCompatibility === "Yes") {
@@ -5413,8 +5404,7 @@ var NUTOOL_PER = {};
 				checkbox_ModularizeCodeChecked = "";
 			}
 
-			recordedUIlanguage = recordedUIlanguage.sliceAfterX('UIlanguage:');
-			recordedUIlanguage = recordedUIlanguage.slicePriorToX('\r');
+			recordedUIlanguage = localStorage.getItem("UIlanguage");
 			if (recordedUIlanguage === "Simplified Chinese") {
 				title = "产生程式码";
 				projectName = '工程名称';
@@ -5536,7 +5526,7 @@ var NUTOOL_PER = {};
 			dialogContent = '<div id="generateCodeDialogMainPart_div"><label>' + projectName + ': <input type="text" id="inputText_projectName" value="' + reocrdedPorjectName + '" style="width:250px;height:30px;"></label><br /><br /><label><p>' + content + '</p></label><label><input id="generateCodeDialogInput" type="text" style="width:370px;height:30px;" value="' + recordedProjectLocation + '"><button id="generateCodeDialogBrowseFolder" style="width:80px;height:30px;">' + projectBrowseButtonText + '</button></label>' + projectLocationHistorySelect + '<br /><br /><p>' + content2 + '</p><label><input type="checkbox" id="checkbox_ModularizeCode" ' + checkbox_ModularizeCodeChecked + '/> ' + checkboxModularize + '</label><input type="text" size="1" style="position:relative;top:-5000px;"/></div>';
 		}
 		$('<div id="generateCodeDialog">' + dialogContent + '</div>').dialog({
-			modal: false,
+			modal: true,
 			resizable: false,
 			title: title,
 			width: 500,
@@ -5991,6 +5981,7 @@ var NUTOOL_PER = {};
 		g_bFunctionalTesting: false,
 		g_postRender_f1: {},
 		g_postRender_control: {},
+		showModulesNeedChecking: showModulesNeedChecking,
 		/////////////////////////////////////////////////////////////////////////////////////
 		checkAlpacaReady: checkAlpacaReady,
 		decideNewChipType: decideNewChipType,

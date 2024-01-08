@@ -15,7 +15,7 @@ Number.method('toHzString', function() {
 	else if (this < 1000000 && this >= 1000) {
 		returnHzString = (this / 1000 % 1 === 0) ? (this / 1000).toFixed(0) + 'kHz' : parseFloat((this / 1000).toFixed(4)) + 'kHz';
 	}
-	else if (this == 0) {
+	else if (this === 0) {
 		returnHzString = 'Disabled';
 	}
 	else { // Hz
@@ -51,7 +51,7 @@ String.method('toEquivalent', function () {
 
 String.method('slicePriorToX', function (xChar) {
 	var returnValue;
-	if (this.indexOf(xChar) > 0) {
+	if (this.indexOf(xChar) !== -1) {
 		returnValue = this.slice(0, this.indexOf(xChar));
 	}
 	else {
@@ -96,7 +96,6 @@ String.method('sliceBetweenXandX', function (xChar, xChar1) {
 
 	return returnValue; // Note: the type of returned result will be Object, not String.
 });
-
 // since jstree's selector does not recognize the special character, such as '.' and '+',
 // we must replace them with other suitable one
 String.method('replaceSpecialCharacters', function () {
@@ -139,11 +138,10 @@ String.method('restorePinTreeNodeName', function () {
 
 	return returnValue; // Note: the type of returned result will be Object, not String
 });
-
 // attach the .compare method to Array's prototype to call it on any array
 Array.method('compare', function(array) {
 	var i, l;
-	// if the other array is a falsy value, return
+	// if the other array is a false value, return
 	if (!array) {
 		return false;
 	}
@@ -170,7 +168,7 @@ Array.method('compare', function(array) {
 });
 // attach the .equals method to Array's prototype to call it on any array
 Array.method('equals', function(array) {
-	// if the other array is a falsy value, return
+	// if the other array is a false value, return
 	if (!array) { return false; }
 
 	// compare lengths - can save a lot of time
@@ -189,10 +187,9 @@ Array.method('equals', function(array) {
 	}
 	return true;
 });
-
 // for IE8 compatibility
 if(typeof String.prototype.trim !== 'function') {
 	String.prototype.trim = function() {
 		return this.replace(/^\s+|\s+$/g, '');
-	}
+	};
 }

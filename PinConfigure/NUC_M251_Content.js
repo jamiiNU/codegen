@@ -35,8 +35,11 @@ NUTOOL_PIN.g_cfg_chips = [
 	{ name: "M252KG6AE", pkg: "LQFP128" },
 	//M253
     { name: "M253ZE3AE", pkg: "QFN33" },
+    { name: "M253ZE3BE", pkg: "QFN33" },
     { name: "M253LD3AE", pkg: "LQFP48" },
+    { name: "M253LD3BE", pkg: "LQFP48" },
     { name: "M253LE3AE", pkg: "LQFP48" },
+    { name: "M253LE3BE", pkg: "LQFP48" },
 	//M256D
 	{ name: "M254MD2AE", pkg: "LQFP44" },
 	{ name: "M256MD2AE", pkg: "LQFP44" },

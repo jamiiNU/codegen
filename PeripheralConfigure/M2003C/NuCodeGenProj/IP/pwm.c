@@ -346,30 +346,6 @@ void PWM0_Init()
     /* Configure PWM capture and get the nearest unit time */
     PWM_ConfigCaptureChannel(PWM0, 0, NUCODEGEN_PWM0_CH0_1_CAP_UNITTIME, 0);
 
-#if 0
-#if NUCODEGEN_PWM0_CH0_1_CAP_PDMA_ENABLE
-
-#if ((NUCODEGEN_PWM0_CH0_CAP_ADVANCED == 1) && (NUCODEGEN_PWM0_CH1_CAP_ADVANCED == 0))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM0, 0, NUCODEGEN_PWM0_CH0_1_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM0_CH0_1_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM0_CH0_CAP_ADVANCED == 0) && (NUCODEGEN_PWM0_CH1_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM0, 1, NUCODEGEN_PWM0_CH0_1_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM0_CH0_1_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM0_CH0_CAP_ADVANCED == 1) && (NUCODEGEN_PWM0_CH1_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM0, NUCODEGEN_PWM0_CH0_1_CAP_PDMA_CH_SEL, NUCODEGEN_PWM0_CH0_1_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM0_CH0_1_CAP_PDMA_DATA_SEL);
-
-#endif /*NUCODEGEN_PWM0_CH0_CAP_ADVANCED*/
-
-#endif /*NUCODEGEN_PWM0_CH0_1_CAP_PDMA_ENABLE*/
-#endif
-
-
 #if NUCODEGEN_PWM0_CH0_CAP_ENABLE
 
     /* Set Reload Mode */
@@ -678,30 +654,6 @@ void PWM0_Init()
     /* Configure PWM capture and get the nearest unit time */
     PWM_ConfigCaptureChannel(PWM0, 2, NUCODEGEN_PWM0_CH2_3_CAP_UNITTIME, 0);
 
-#if 0
-#if NUCODEGEN_PWM0_CH2_3_CAP_PDMA_ENABLE
-
-#if ((NUCODEGEN_PWM0_CH2_CAP_ADVANCED == 1) && (NUCODEGEN_PWM0_CH3_CAP_ADVANCED == 0))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM0, 2, NUCODEGEN_PWM0_CH2_3_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM0_CH2_3_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM0_CH2_CAP_ADVANCED == 0) && (NUCODEGEN_PWM0_CH3_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM0, 3, NUCODEGEN_PWM0_CH2_3_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM0_CH2_3_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM0_CH2_CAP_ADVANCED == 1) && (NUCODEGEN_PWM0_CH3_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM0, NUCODEGEN_PWM0_CH2_3_CAP_PDMA_CH_SEL, NUCODEGEN_PWM0_CH2_3_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM0_CH2_3_CAP_PDMA_DATA_SEL);
-
-#endif /*NUCODEGEN_PWM0_CH2_CAP_ADVANCED*/
-
-#endif /*NUCODEGEN_PWM0_CH2_3_CAP_PDMA_ENABLE*/
-#endif
-
-
 #if NUCODEGEN_PWM0_CH2_CAP_ENABLE
 
     /* Set Reload Mode */
@@ -1008,30 +960,6 @@ void PWM0_Init()
 
     /* Configure PWM capture and get the nearest unit time */
     PWM_ConfigCaptureChannel(PWM0, 4, NUCODEGEN_PWM0_CH4_5_CAP_UNITTIME, 0);
-
-##if 0
-#if NUCODEGEN_PWM0_CH4_5_CAP_PDMA_ENABLE
-
-#if ((NUCODEGEN_PWM0_CH4_CAP_ADVANCED == 1) && (NUCODEGEN_PWM0_CH5_CAP_ADVANCED == 0))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM0, 4, NUCODEGEN_PWM0_CH4_5_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM0_CH4_5_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM0_CH4_CAP_ADVANCED == 0) && (NUCODEGEN_PWM0_CH5_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM0, 5, NUCODEGEN_PWM0_CH4_5_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM0_CH4_5_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM0_CH4_CAP_ADVANCED == 1) && (NUCODEGEN_PWM0_CH5_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM0, NUCODEGEN_PWM0_CH4_5_CAP_PDMA_CH_SEL, NUCODEGEN_PWM0_CH4_5_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM0_CH4_5_CAP_PDMA_DATA_SEL);
-
-#endif /*NUCODEGEN_PWM0_CH4_CAP_ADVANCED*/
-
-#endif /*NUCODEGEN_PWM0_CH4_5_CAP_PDMA_ENABLE*/
-#endif
-
 
 #if NUCODEGEN_PWM0_CH4_CAP_ENABLE
 
@@ -1400,29 +1328,6 @@ void PWM1_Init()
     /* Configure PWM capture and get the nearest unit time */
     PWM_ConfigCaptureChannel(PWM1, 0, NUCODEGEN_PWM1_CH0_1_CAP_UNITTIME, 0);
 
-#if 0
-#if NUCODEGEN_PWM1_CH0_1_CAP_PDMA_ENABLE
-
-#if ((NUCODEGEN_PWM1_CH0_CAP_ADVANCED == 1) && (NUCODEGEN_PWM1_CH1_CAP_ADVANCED == 0))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM1, 0, NUCODEGEN_PWM1_CH0_1_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM1_CH0_1_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM1_CH0_CAP_ADVANCED == 0) && (NUCODEGEN_PWM1_CH1_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM1, 1, NUCODEGEN_PWM1_CH0_1_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM1_CH0_1_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM1_CH0_CAP_ADVANCED == 1) && (NUCODEGEN_PWM1_CH1_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM1, NUCODEGEN_PWM1_CH0_1_CAP_PDMA_CH_SEL, NUCODEGEN_PWM1_CH0_1_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM1_CH0_1_CAP_PDMA_DATA_SEL);
-
-#endif /*NUCODEGEN_PWM1_CH0_CAP_ADVANCED*/
-
-#endif /*NUCODEGEN_PWM1_CH0_1_CAP_PDMA_ENABLE*/
-#endif
-
 #if NUCODEGEN_PWM1_CH0_CAP_ENABLE
 
     /* Set Reload Mode */
@@ -1729,30 +1634,6 @@ void PWM1_Init()
 
     /* Configure PWM capture and get the nearest unit time */
     PWM_ConfigCaptureChannel(PWM1, 2, NUCODEGEN_PWM1_CH2_3_CAP_UNITTIME, 0);
-
-#if 0
-#if NUCODEGEN_PWM1_CH2_3_CAP_PDMA_ENABLE
-
-#if ((NUCODEGEN_PWM1_CH2_CAP_ADVANCED == 1) && (NUCODEGEN_PWM1_CH3_CAP_ADVANCED == 0))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM1, 2, NUCODEGEN_PWM1_CH2_3_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM1_CH2_3_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM1_CH2_CAP_ADVANCED == 0) && (NUCODEGEN_PWM1_CH3_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM1, 3, NUCODEGEN_PWM1_CH2_3_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM1_CH2_3_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM1_CH2_CAP_ADVANCED == 1) && (NUCODEGEN_PWM1_CH3_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM1, NUCODEGEN_PWM1_CH2_3_CAP_PDMA_CH_SEL, NUCODEGEN_PWM1_CH2_3_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM1_CH2_3_CAP_PDMA_DATA_SEL);
-
-#endif /*NUCODEGEN_PWM1_CH2_CAP_ADVANCED*/
-
-#endif /*NUCODEGEN_PWM1_CH2_3_CAP_PDMA_ENABLE*/
-#endif
-
 
 #if NUCODEGEN_PWM1_CH2_CAP_ENABLE
 
@@ -2061,30 +1942,6 @@ void PWM1_Init()
 
     /* Configure PWM capture and get the nearest unit time */
     PWM_ConfigCaptureChannel(PWM1, 4, NUCODEGEN_PWM1_CH4_5_CAP_UNITTIME, 0);
-
-#if 0
-#if NUCODEGEN_PWM1_CH4_5_CAP_PDMA_ENABLE
-
-#if ((NUCODEGEN_PWM1_CH4_CAP_ADVANCED == 1) && (NUCODEGEN_PWM1_CH5_CAP_ADVANCED == 0))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM1, 4, NUCODEGEN_PWM1_CH4_5_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM1_CH4_5_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM1_CH4_CAP_ADVANCED == 0) && (NUCODEGEN_PWM1_CH5_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM1, 5, NUCODEGEN_PWM1_CH4_5_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM1_CH4_5_CAP_PDMA_DATA_SEL);
-
-#elif ((NUCODEGEN_PWM1_CH4_CAP_ADVANCED == 1) && (NUCODEGEN_PWM1_CH5_CAP_ADVANCED == 1))
-
-    /* Enables PDMA transfer of selected channel for PWM capture */
-    PWM_EnablePDMA(PWM1, NUCODEGEN_PWM1_CH4_5_CAP_PDMA_CH_SEL, NUCODEGEN_PWM1_CH4_5_CAP_PDMA_FIRST_SEL, NUCODEGEN_PWM1_CH4_5_CAP_PDMA_DATA_SEL);
-
-#endif /*NUCODEGEN_PWM1_CH4_CAP_ADVANCED*/
-
-#endif /*NUCODEGEN_PWM1_CH4_5_CAP_PDMA_ENABLE*/
-#endif
-
 
 #if NUCODEGEN_PWM1_CH4_CAP_ENABLE
 

@@ -22,9 +22,9 @@ NUTOOL_PER.g_cfg_perFuncMutex = [];
 // if you want to dynamically load .txt files, keep this array empty.
 NUTOOL_PER.g_cfg_perFunctions = [
 'BPWM0.txt',
+'CANFD0.txt',
 'CLK.txt',
 'CRC.txt',
-'CANFD0.txt',
 'EADC.txt',
 'FMC.txt',
 'GPIO_DB.txt',

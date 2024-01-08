@@ -35,4 +35,14 @@ NUTOOL_PER.g_cfg_perFuncMutex = ["USCI0"];
 NUTOOL_PER.g_cfg_perFunctions = [
 'FMC.txt',
 'I2C0.txt',
+'PWM0_CH0CH1.txt',
+'PWM0_CH2CH3.txt',
+'PWM0_CH4CH5.txt',
+'UART0.txt',
+'UART1.txt',
+'USCI0_I2C.txt',
+'USCI0_SPI.txt',
+'USCI0_UART.txt',
+'WDT.txt',
+'WWDT.txt'
 ];

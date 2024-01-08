@@ -6,7 +6,6 @@
 #include "IP\gpio.c"
 #include "IP\i2c.c"
 #include "IP\pwm.c"
-#include "IP\rtc.c"
 #include "IP\sys.c"
 #include "IP\timer.c"
 #include "IP\uart.c"
@@ -45,10 +44,6 @@ void Periph_Init(void)
 #if NUCODEGEN_PWM0
     PWM0_Init();
 #endif
-
-////#if NUCODEGEN_RTC
-////    RTC_Init();
-////#endif
 
 #if NUCODEGEN_SYS
     SYS_Init();

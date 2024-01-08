@@ -8,7 +8,7 @@ var NUTOOL_CLOCK = {};
 		g_NUC_TreeView_Height,
 		g_Dialog_Width,
 		g_Dialog_Height,
-		g_chipTypes = ["NUC400", "NUC505", "M451", "M480", "KM1M7", "M2351", "M251", "M261", "NUC100", "NUC200", "NUC029", "M030G", "M031", "M051", "M0518", "M0519", "M0564", "MINI51", "NANO100", "NM1200", "NM1500"],
+		g_chipTypes = ["NUC400", "NUC505", "M451", "M480", "KM1M7", "M2351", "M251", "M261", "NUC100", "NUC200", "NUC029", "M030G", "M031", "M051", "M0518", "M0519", "M0564", "M2003C", "MINI51", "NANO100", "NM1200", "NM1500"],
 		g_chipType = "",
 		g_selectedPartNoValue = "",
 		g_partNumber_package = "",
@@ -8427,7 +8427,8 @@ var NUTOOL_CLOCK = {};
 		return fileref;
 	}
 
-	function replacejscssfile(oldfilename, newfilename, filetype) {
+	// [Workaround] Use callback
+	function replacejscssfile(oldfilename, newfilename, filetype, callback) {
 		var i,
 			targetelement = (filetype === "js") ? "script" : (filetype === "css") ? "link" : "none", //determine element type to create nodelist using
 			targetattr = (filetype === "js") ? "src" : (filetype === "css") ? "href" : "none", //determine corresponding attribute to test for
@@ -8440,6 +8441,11 @@ var NUTOOL_CLOCK = {};
 			newfilename = "ClockConfigure/" + newfilename;
 		}
 		newelement = createjscssfile(newfilename, filetype);
+		if (typeof callback === 'function') {
+			newelement.onload = function () {
+				callback();
+			}
+		};
 
 		if (!g_bReadyForRelease && window.console) { window.console.log("In replacejscssfile, oldfilename:" + oldfilename + " / newfilename:" + newfilename); }
 
@@ -8512,11 +8518,26 @@ var NUTOOL_CLOCK = {};
 		else if (chipSeries === "NUC029") {
 			stringChipType = "NUC029AE";
 		}
+		else if (chipSeries === "M460") {
+			stringChipType = "M460HD";
+		}
 		else if (chipSeries === "M480") {
 			stringChipType = "M480MD";
 		}
-		else if (chipSeries === "KM1M7") {
+		else if (chipSeries === "KM1M4BF") {
+			stringChipType = "KM1M4BF";
+		}
+		else if (chipSeries === "KM1M7AF") {
 			stringChipType = "KM1M7AF";
+		}
+		else if (chipSeries === "KM1M7BF") {
+			stringChipType = "KM1M7BF";
+		}
+		else if (chipSeries === "KM1M7CF") {
+			stringChipType = "KM1M7CF";
+		}
+		else if (chipSeries === "M2003") {
+			stringChipType = "M2003C";
 		}
 
 		return stringChipType;
@@ -8607,11 +8628,26 @@ var NUTOOL_CLOCK = {};
 		else if (chipType.indexOf("M25") === 0) {
 			stringChipSeries = "M251";
 		}
+        else if (chipType.indexOf("M460") === 0) {
+            stringChipSeries = "M460";
+        }
 		else if (chipType.indexOf("M480") === 0) {
 			stringChipSeries = "M480";
 		}
-		else if (chipType.indexOf("KM1M7") === 0) {
-			stringChipSeries = "KM1M7";
+		else if (chipType.indexOf("KM1M4BF") === 0) {
+			stringChipSeries = "KM1M4BF";
+		}
+		else if (chipType.indexOf("KM1M7AF") === 0) {
+			stringChipSeries = "KM1M7AF";
+		}
+		else if (chipType.indexOf("KM1M7BF") === 0) {
+			stringChipSeries = "KM1M7BF";
+		}
+		else if (chipType.indexOf("KM1M7CF") === 0) {
+			stringChipSeries = "KM1M7CF";
+		}
+		else if (chipType.indexOf("M2003") === 0) {
+			stringChipSeries = "M2003C";
 		}
 
 		return stringChipSeries;
@@ -9027,6 +9063,9 @@ var NUTOOL_CLOCK = {};
 		else if (newPartNumber_package.indexOf('I93') === 0) {
 			newChipType = 'ISD9300';
 		}
+		else if (newPartNumber_package.indexOf('M2003') === 0) {
+			newChipType = 'M2003C';
+		}
 		else {
 			newChipType = 'NUC400';
 		}//alert(newChipType);
@@ -9069,7 +9108,8 @@ var NUTOOL_CLOCK = {};
 				}
 				newChipType = decideNewChipType(g_partNumber_package);
 				newfilename = 'NUC_' + newChipType + '_Content.js';
-				replacejscssfile(oldfilename, newfilename, 'js');
+				// [Workaround]
+				replacejscssfile(oldfilename, newfilename, 'js', decideClockRegsNamesAndContent);
 
 				decideClockRegsNamesAndContent();
 			};
@@ -9265,7 +9305,8 @@ var NUTOOL_CLOCK = {};
 
 	function decideDialogSize() {
 		// determine the dialog's size
-		var recordedDialogSize = $.ajax({ url: "NuToolSetup.txt", async: false }).responseText;
+		// [Workaround]
+		var recordedDialogSize = undefined; // $.ajax({ url: "NuToolSetup.txt", async: false }).responseText;
 
 		if (typeof (recordedDialogSize) !== 'undefined' && recordedDialogSize.indexOf('DialogSize:') !== -1) {
 			recordedDialogSize = recordedDialogSize.sliceAfterX('DialogSize:X_');
@@ -10882,15 +10923,16 @@ var NUTOOL_CLOCK = {};
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function decideUIlanguage() {
-		var recordedUIlanguage = $.ajax({ url: "NuToolSetup.txt", async: false }).responseText;
+		// [Workaround] - Start
+		var recordedUIlanguage = localStorage.getItem("UIlanguage");
 
-		if (typeof (recordedUIlanguage) !== 'undefined' && recordedUIlanguage.indexOf('UIlanguage:') !== -1) {
-			g_userSelectUIlanguage = recordedUIlanguage.sliceAfterX('UIlanguage:');
-			g_userSelectUIlanguage = g_userSelectUIlanguage.slicePriorToX('\r');
-		}
-		else {
-			g_userSelectUIlanguage = "English";
-		}
+        if (typeof (recordedUIlanguage) == 'undefined' || recordedUIlanguage == null) {
+            g_userSelectUIlanguage = "English";
+        } else {
+            g_userSelectUIlanguage = recordedUIlanguage;
+        }
+        recordedUIlanguage = null;
+		// [Workaround] - End
 	}
 
 	function concatenate_generated_code_begin(command) {
@@ -11254,6 +11296,14 @@ var NUTOOL_CLOCK = {};
 				else if (g_chipType === "M2354") {
 					// nothing
 				}
+				else if (g_chipType === "M2003C") {
+					tempValue = readValueFromClockRegs(sPCLK0SEL);
+					theCode += '    CLK->PCLKDIV = (CLK_PCLKDIV_APB0DIV_DIV' + Math.pow(2, tempValue) + ' | ';
+					tempValue = readValueFromClockRegs(sPCLK1SEL);
+					theCode += '    CLK->PCLKDIV = (CLK_PCLKDIV_APB1DIV_DIV' + Math.pow(2, tempValue) + ' | ';
+					tempValue = readValueFromClockRegs(sPCLK2SEL);
+					theCode += 'CLK_PCLKDIV_APB2DIV_DIV' + Math.pow(2, tempValue) + ');\n\n';
+				}
 				else {
 					if (NUTOOL_CLOCK.g_CLKSEL[sPCLK0SEL].length <= 2) {
 						if (isFieldBe1(sPCLK0SEL)) {
@@ -11603,6 +11653,15 @@ var NUTOOL_CLOCK = {};
 			// BSP is not stable.
 			beginningClockRegs = [sPWRCON, sPLLCON];
 			sIncludeHeaderFile = '#include "MT500Series.h"';
+			enableFieldDefines = [];
+			statusFieldDefines = [];
+
+			g_bHasBSPtoSupport = false;
+		}
+		else if (g_chipType === "M2003C") {
+			// BSP is not stable.
+			beginningClockRegs = [sPWRCON];
+			sIncludeHeaderFile = '#include "M2003C.h"';
 			enableFieldDefines = [];
 			statusFieldDefines = [];
 
@@ -13719,19 +13778,20 @@ var NUTOOL_CLOCK = {};
 			oldChipType = g_chipType;
 			g_chipType = decideNewChipType(g_selectedPartNoValue);
 			// reload Content Js file to get the primitive NUTOOL_CLOCK.g_cfg_gpios in case that it was modified
-			replacejscssfile('NUC_' + oldChipType + '_Content.js', 'NUC_' + g_chipType + '_Content.js', 'js');
-
-			g_partNumber_package = g_selectedPartNoValue;
-			initializeAll();
-			NUTOOL_CLOCK.g_readConfigFilePath = 'dummyPath';
-			decideClockRegsNamesAndContent();
-			if (typeof NUTOOL_CLOCK.g_register_map['PLLCON'.toEquivalent()] !== 'undefined') {
-				g_finalStep = 4;
-			}
-			else {
-				g_finalStep = 3;
-			}
-			refresh();
+			// [Workaround]
+			replacejscssfile('NUC_' + oldChipType + '_Content.js', 'NUC_' + g_chipType + '_Content.js', 'js', () => {
+				g_partNumber_package = g_selectedPartNoValue;
+				initializeAll();
+				NUTOOL_CLOCK.g_readConfigFilePath = 'dummyPath';
+				decideClockRegsNamesAndContent();
+				if (typeof NUTOOL_CLOCK.g_register_map['PLLCON'.toEquivalent()] !== 'undefined') {
+					g_finalStep = 4;
+				}
+				else {
+					g_finalStep = 3;
+				}
+				refresh();
+			});
 		}
 		constrainMouseClick();
 		$("#tabs")[0].style.visibility = 'hidden';

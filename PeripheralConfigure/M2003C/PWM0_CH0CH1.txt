@@ -11,7 +11,7 @@
 #define NUCODEGEN_PWM0_CH0_1_FUNC_SEL						(<!id:PWM0CH01FuncSelect;
 															type:radio;
 															label:Select PWM0 CH0 and CH1 function;
-															data:1;
+															data:0;
 															default:0;
 															helper:;
 															enum:[0, 1];
@@ -23,11 +23,11 @@
 #define NUCODEGEN_PWM0_CH0_1_CAP_UNITTIME					(<!id:PWM0CH01CapUnitTimeInterger;
 															type:integer;
 															label:The unit time of counter(ns). ;
-															data:2000;
+															data:1000;
 															default:1000;
 															helper: It is limited by clock source.;
 															minimum:10;
-															maximum:85000;
+															maximum:170000;
 															dependencies:UsePWM0CH0ENCapBoolean|UsePWM0CH1ENCapBoolean;
 															dependenciesOption:{"UsePWM0CH0ENCapBoolean":"true","UsePWM0CH1ENCapBoolean":"true"};
 															groupId:GroupPWM0Cap01;
@@ -211,9 +211,9 @@
 															label:The PWM0 CH0 and CH1 frequency(Hz);
 															data:1000;
 															default:1000;
-															helper:Enter frequency between 1~PCLK or 1~PLL_CLK;
+															helper:Enter PWM output frequency between 1~12,000,000;
 															minimum:1;
-															maximum:24000000;
+															maximum:12000000;
 															dependencies:PWM0CH01OutputFuncSetmode&(UsePWM0CH0ENBoolean|UsePWM0CH1ENBoolean);
 															dependenciesOption:{"PWM0CH01OutputFuncSetmode":"0","UsePWM0CH0ENBoolean":"true","UsePWM0CH1ENBoolean":"true"};
 															groupId:GroupPWM0Output01;
@@ -372,7 +372,7 @@
 #define NUCODEGEN_PWM0_CH0_1_BRAKE_DETECT_TYPE				(<!id:PWM0CH01BrakedetecttypeSelect;
 															type:radio;
 															label:Select PWM0 CH0 and CH1 brake detect type.;
-															data:PWM_FB_LEVEL;
+															data:PWM_FB_EDGE;
 															default:PWM_FB_EDGE;
 															helper:;
 															sort:false;
@@ -467,7 +467,7 @@
 #define NUCODEGEN_PWM0_CH0_ENABLE           				(<!id:UsePWM0CH0ENBoolean;
 															type:checkbox;
 															label:Enable PWM0 CH0.;
-															data:0;
+															data:true;
 															default:false;
 															dependencies:PWM0CH01FuncSelect;
 															dependenciesOption:0;
@@ -638,7 +638,7 @@
 															type:multipleselect;
 															label:Select PWM0 CH0 interrupt ;
 															data:0;
-															default:;
+															default:0;
 															helper:;
 															sort:false;
 															enum:[1, 2, 4, 8, 16];
@@ -822,7 +822,7 @@
 															type:multipleselect;
 															label:Select PWM0 CH1 interrupt ;
 															data:0;
-															default:;
+															default:0;
 															helper:;
 															sort:false;
 															enum:[4, 8, 16];

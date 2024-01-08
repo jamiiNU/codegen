@@ -15,7 +15,6 @@
 #include "IP\gpio_int.c"
 #include "IP\i2c_int.c"
 #include "IP\pwm_int.c"
-//#include "IP\rtc_int.c"
 #include "IP\sys_int.c"
 #include "IP\timer_int.c"
 #include "IP\uart_int.c"
@@ -23,9 +22,6 @@
 #include "IP\usci_spi_int.c"
 #include "IP\usci_uart_int.c"
 #include "IP\wdt_int.c"
-#if NUCODEGEN_USBD
-#include "USBD\usbd_int.c"
-#endif
 
 
 

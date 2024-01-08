@@ -350,18 +350,17 @@
 										groupId:UART0Basic;    
 										groupName:Basic Configuration;!>
 										
-#define NUCODEGEN_UART0_PDMAEN		   <!id:UART0SWPDMACheckbox;
+#define NUCODEGEN_UART0_SW_INTEN		<!id:UART0SWIntCheckbox;
 										type:checkbox;
-										label:PDMA Channel Control;
+										label:UART0 Single-wire Interrupt Control;
 										data:0;
 										default:0;
-										sort:false;
 										enum:[1];
-										optionLabels:[Enable PDMA Channel];
+										optionLabels:[Enable UART0 Single-wire Interrupt];
 										dependencies:UART0FunctionRadio;
 										dependenciesOption:NUCODEGEN_UART0_FUNCSEL_SINGLE_WIRE;
-										groupId:UART0PDMA;    
-										groupName:PDMA Configuration;!>	
+										groupId:UART0Interrupt;    
+										groupName:Interrupt Configuration;!>
 
 #define NUCODEGEN_UART0_SW_INT_MASK		<!id:UART0SWINTMASKMultipleSelect;
 										type:multipleselect;

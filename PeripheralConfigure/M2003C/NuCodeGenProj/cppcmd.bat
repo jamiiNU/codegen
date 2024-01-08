@@ -14,8 +14,6 @@ set exe_dir=%1
  "IP\adc_int.c"^
  "IP\ecap.c"^
  "IP\ecap_int.c"^
- "IP\rtc.c"^
- "IP\rtc_int.c"^
  "IP\usci_spi.c"^
  "IP\usci_spi_int.c"^
  "IP\usci_uart.c"^

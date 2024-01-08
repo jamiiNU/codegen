@@ -36,6 +36,7 @@ external.generateCodeFromJS = function(userProject1, userInput1, userCheckbox1, 
 	var agendaPath;
 
 	g_chipType =  NUTOOL_PER.getg_chipType();
+	// "\\NuCodeGenProj"
 	g_cfg_projectLoaction = NUTOOL_PER.getg_cfg_projectLoaction();
 	g_cfg_thidrPartyLibLoaction = NUTOOL_PER.getg_cfg_thidrPartyLibLoaction();
 	// g_generatedCodeFromPerString = NUTOOL_PER.getg_generatedCodeFromPerString();
@@ -72,25 +73,28 @@ external.generateCodeFromJS = function(userProject1, userInput1, userCheckbox1, 
 		convertedCString1 = userInput;
 	}
 
-	new Promise(resolve => { resolve() })
-		.then(() => {
-			// $("#generateCodeDialog_buttonOk").button("disable");
-			console.log("[Generate code] Start...");
-			EXPORT_REACT.mask();
+	new Promise(resolve => {
+			resolve(`[Generate Code] Start to create "${userProject1}".`)
+			EXPORT_REACT.mask(EXPORT_REACT.BTN_GENERATE_CODE);
 		})
 		.then(x => {
-			return new Promise(resolve => {
+			console.log(x);
+			return new Promise((resolve, reject) => {
 				// do Create
 				// EX: ~\BSP\...\SampleCode\NuCodeGen
 				agendaPath = convertedCString1 + "\\NuCodeGen";
-				ensureDir(agendaPath).then(() => {
-					resolve("[ensureDir success]" + agendaPath);
+				ensureDir(agendaPath)
+				.then(() => {
+					resolve(`[ensureDir] ${agendaPath}`);
+				})
+				.catch(err => {
+					reject(err);
 				});
 			});
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				// do project check
 				if (userCheckbox.includes("renameCheckbox:true")){
 					// EX: ~\BSP\...\SampleCode\NuCodeGen\MyProject
@@ -98,171 +102,189 @@ external.generateCodeFromJS = function(userProject1, userInput1, userCheckbox1, 
 				}
 				else {
 					// EX: ~\BSP\...\SampleCode\NuCodeGen\NuCodeGenProj
-					agendaPath = agendaPath + '\\' + g_cfg_projectLoaction;
+					agendaPath = agendaPath + g_cfg_projectLoaction;
 				}
 				// do Delete
-				emptydir(agendaPath).then(() => {
-					resolve("[emptydir success]" + agendaPath);
+				emptydir(agendaPath)
+				.then(() => {
+					resolve(`[emptydir] ${agendaPath}`);
+				})
+				.catch(err => {
+					reject(err);
 				});
 			});
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				// do Duplicate
 				// EX: ~\public\PeripheralConfigure\M251\NuCodeGen
 				convertedCString2 = m_appPathCString + "\\PeripheralConfigure\\" + g_chipType + "\\NuCodeGen";
-				emptydir(convertedCString2).then(() => {
-					resolve("[emptydir success]" + convertedCString2);
+				emptydir(convertedCString2)
+				.then(() => {
+					resolve(`[emptydir] ${convertedCString2}`);
+				})
+				.catch(err => {
+					reject(err);
 				});
 			})
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				// EX: ~\public\PeripheralConfigure\M251\NuCodeGen\NuCodeGenProj
-				agendaPath = convertedCString2 + "\\" + g_cfg_projectLoaction;
-				ensureDir(agendaPath).then(() => {
-					resolve("[ensureDir success]" + agendaPath);
+				agendaPath = convertedCString2 + g_cfg_projectLoaction;
+				ensureDir(agendaPath)
+				.then(() => {
+					resolve(`[ensureDir] ${agendaPath}`);
+				})
+				.catch(err => {
+					reject(err);
 				});
 			})
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				// From ~\public\PeripheralConfigure\M251\NuCodeGenProj
 				// To   ~\public\PeripheralConfigure\M251\NuCodeGen\NuCodeGenProj
-				copy(convertedCString, agendaPath).then(() => {
-					resolve("[copy success]\n\t" + convertedCString + "\n => " + agendaPath);
+				copy(convertedCString, agendaPath)
+				.then(() => {
+					resolve("[copy]\n\t" + convertedCString + "\n => " + agendaPath);
+				})
+				.catch(err => {
+					reject(err);
 				});
 			});
 		})
 		.then(x => {
 			console.log(x);
 			return new Promise(resolve => {
-				NUTOOL_PER.concatenate_generated_code(resolve);
+				NUTOOL_PER.concatenate_generated_code(
+					resolve("NUTOOL_PER.concatenate_generated_code()")
+				);
 			});
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				//////////////////////////////////////////// PeripheralConfigure //////////////////////////////////////////
 				// write the new perFunctionString to js file
 				var perHText = external.generatePer_h();
-				var perHPath = convertedCString2 + "\\" + g_cfg_projectLoaction + "\\periph_conf.h"; 
-				outputFile(perHPath, perHText).then(() => {
-					resolve("[outputFile periph_conf.h success]");
+				var perHPath = convertedCString2 + g_cfg_projectLoaction + "\\periph_conf.h"; 
+				outputFile(perHPath, perHText)
+				.then(() => {
+					resolve(`[outputFile] ${perHPath}`);
+				})
+				.catch(err => {
+					reject(err);
 				});
 			});
 		})
-		.then(x => {
+		.then(async x => {
 			console.log(x);
 			//////////////////////////////////////////// PinConfigure /////////////////////////////////////////////////
 			var pinCText = external.generatePin_c(bModularizeCode);
-			var pinCPath = convertedCString2 + "\\" + g_cfg_projectLoaction + "\\pin_conf.c"; 
-			outputFile(pinCPath, pinCText, function(err){
-				if (err) return console.error(err);
-				console.log("[outputFile pin_conf.c success]");
-			});
+			var pinCPath = convertedCString2 + g_cfg_projectLoaction + "\\pin_conf.c"; 
+			await outputFile(pinCPath, pinCText);
+			console.log(`[outputFile] ${pinCPath}`);
 
 			if(bModularizeCode) {
 				var pinHText = external.generatePin_h();
-				var pinHPath = convertedCString2 + "\\" + g_cfg_projectLoaction + "\\pin_conf.h"; 
-				outputFile(pinHPath, pinHText, function(err){
-					if (err) return console.error(err);
-					console.log("[outputFile pin_conf.h success]");
-				});
+				var pinHPath = convertedCString2 + g_cfg_projectLoaction + "\\pin_conf.h"; 
+				await outputFile(pinHPath, pinHText);
+				console.log(`[outputFile] ${pinHPath}`);
 			}
 		})
-		.then(() => {
+		.then(async () => {
 			//////////////////////////////////////////// ClockConfigure ///////////////////////////////////////////////
 			var clkCText = external.generateClk_c(bModularizeCode);
-			var clkCPath = convertedCString2 + "\\" + g_cfg_projectLoaction + "\\clk_conf.c"; 
-			outputFile(clkCPath, clkCText, function(err){
-				if (err) return console.error(err);
-				console.log("[outputFile clk_conf.c success]");
-			});
+			var clkCPath = convertedCString2 + g_cfg_projectLoaction + "\\clk_conf.c"; 
+			await outputFile(clkCPath, clkCText);
+			console.log(`[outputFile] ${clkCPath}`);
 
 			if(bModularizeCode) {
 				var clkHText = external.generateClk_h();
-				var clkHPath = convertedCString2 + "\\" + g_cfg_projectLoaction + "\\clk_conf.h"; 
-				outputFile(clkHPath, clkHText, function(err){
-					if (err) return console.error(err);
-					console.log("[outputFile clk_conf.h success]");
-				});
+				var clkHPath = convertedCString2 + g_cfg_projectLoaction + "\\clk_conf.h"; 
+				await outputFile(clkHPath, clkHText);
+				console.log(`[outputFile] ${clkHPath}`);
 			}
 		})
-		.then(() => {
-			// [Workaround] Timeout 1 sec."
-			return new Promise(resolve => {
-				setTimeout(() => {
-					resolve("[Workaround] Delayed for 2 sec.");
-				}, 2000);
-			});
-		})
+		// .then(() => {
+		// 	// [Workaround] Timeout 1 sec."
+		// 	return new Promise(resolve => {
+		// 		setTimeout(() => {
+		// 			resolve("[Workaround] Delayed for 2 sec.");
+		// 		}, 2000);
+		// 	});
+		// })
 		.then(x => {
-			console.log(x);
+			// console.log(x);
 			//////////////////////////////////////////// post-processing //////////////////////////////////////////////
 			console.log("[Post-processing] Start");
 
 			var fileString;
 			var parametersString;
-			return new Promise(resolve => { // [Workaround] Debug mode will failed.
+			return new Promise((resolve, reject) => { // [Workaround] Debug mode will failed.
 				if (userCheckbox.includes("projfileCheckbox:true")) {
 					// run projfile
 					fileString = standardArgv(m_appPathCString + "\\projfile.exe");
 					parametersString =
-						standardArgv(convertedCString2 + "\\" + g_cfg_projectLoaction)
+						standardArgv(convertedCString2 + g_cfg_projectLoaction)
 						+ NUTOOL_CLOCK.getg_clockRegsString1();
 					exec(fileString + parametersString, (err, stdout, stderr) => {
 						if (err) {
-							console.error("[projfile.exe] " + err);
+							reject("[exec] projfile.exe\n" + err);
 							//return;
 						}
-						resolve("[projfile.exe] Finish. " + stdout);
+						else {
+							resolve(`[exec] projfile.exe ${parametersString}\n===>\n${stdout}`);
+						}
 					});
 				}
 				else {
-					resolve("[projfile.exe] Skip.");
+					resolve("[Skip] projfile.exe");
 				}
 			});
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				if (userCheckbox.includes("cppcmdCheckbox:true")) {
 					// run cppcmd
-					fileString =  standardArgv(convertedCString2 + "\\" + g_cfg_projectLoaction + "\\cppcmd.bat");
+					fileString =  standardArgv(convertedCString2 + g_cfg_projectLoaction + "\\cppcmd.bat");
 					parametersString = standardArgv(m_appPathCString);
-					directoryString = convertedCString2 + "\\" + g_cfg_projectLoaction;
+					directoryString = convertedCString2 + g_cfg_projectLoaction;
 					exec(fileString + parametersString, { cwd: directoryString }, (err, stdout, stderr) => {
 						if (err) {
-							console.error("[cppcmd.bat] " + err);
-							//return;
+							reject("[exec] cppcmd.bat\n" + err);
 						}
-						resolve("[cppcmd.bat] Finish. " + stdout);
-						
+						else {
+							resolve(`[exec] cppcmd.bat ${parametersString}\n===>\n${stdout}`);
+						}
 					})
 				}
 				else {
-					resolve("[cppcmd.bat] Skip.");
+					resolve("[Skip] cppcmd.bat");
 				}
 			});
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
-				remove(convertedCString2 + "\\" + g_cfg_projectLoaction + "\\IP", function(err){
-					if (err) {
-						console.error("[remove \\IP] " + err);
-					}
-					resolve( "[remove \\IP] Finish.")
+			return new Promise((resolve, reject) => {
+				agendaPath = convertedCString2 + g_cfg_projectLoaction + "\\IP";
+				remove(agendaPath)
+				.then(() => {
+					resolve(`[remove] ${agendaPath}`);
+				})
+				.catch(err => {
+					reject(err);
 				});
 			})
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				if (userCheckbox.includes("astyleCheckbox:true")) {
 					// run astyle
 					fileString = standardArgv(m_appPathCString + "\\AStyle.exe");
@@ -270,24 +292,25 @@ external.generateCodeFromJS = function(userProject1, userInput1, userCheckbox1, 
 						"--options="
 						+ standardArgv(m_appPathCString + "\\AStyle_BSP.txt")
 						+ "--ascii --recursive "
-						+ standardArgv(convertedCString2 + "\\" + g_cfg_projectLoaction + "\\*.c,*.h");
+						+ standardArgv(convertedCString2 + g_cfg_projectLoaction + "\\*.c,*.h");
 
 					exec(fileString + parametersString,(err, stdout, stderr) => {
 						if (err) {
-							console.error("[AStyle.exe] " + err);
-							//return;
+							reject("[exec] AStyle.exe\n" + err);
 						}
-						resolve("[AStyle.exe] Finish. " + stdout);
+						else {
+							resolve(`[exec] AStyle.exe ${parametersString}\n===>\n${stdout}`);
+						}
 					})
 				}
 				else {
-					resolve("[AStyle.exe] Skip.");
+					resolve("[Skip] AStyle.exe");
 				}
 			});
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				if (userCheckbox.includes("renameCheckbox:true")) {
 					// run rename
 					fileString = standardArgv(m_appPathCString + "\\rename.exe");
@@ -300,53 +323,84 @@ external.generateCodeFromJS = function(userProject1, userInput1, userCheckbox1, 
 						+ standardArgv("-1");
 					exec(fileString + parametersString, (err, stdout, stderr) => {
 						if (err) {
-							console.error("[rename.exe] " + err);
+							reject("[exec] rename.exe\n" + err);
 						}
-						resolve("[rename.exe] Finish. " + stdout);
+						else {
+							resolve(`[exec] rename.exe ${parametersString}\n===>\n${stdout}`);
+						}
 					})
 				}
 				else {
-					userProject = g_cfg_projectLoaction;
-					resolve("[rename.exe] Skip.");
+					userProject = g_cfg_projectLoaction.substr(1);
+					resolve("[Skip] rename.exe");
 				}
 			});
 		})
 		.then(x => {
 			console.log(x);
 			console.log("[Post-processing] End");
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				///////////////////////////////////// move the project to the specified path //////////////////////////////
 				convertedCString = m_appPathCString + "\\PeripheralConfigure\\" + g_chipType + "\\NuCodeGen\\" + userProject;
 				agendaPath = convertedCString1 + "\\NuCodeGen\\" + userProject;
-				//emptydir(agendaPath).then(() => {
-				move(convertedCString, agendaPath, { overwrite: true }).then(() => {
-					resolve("[copy success]\n\t" + convertedCString + "\n => " + agendaPath);
+				move(convertedCString, agendaPath, { overwrite: true })
+				.then(() => {
+					resolve("[move]\n\t" + convertedCString + "\n => " + agendaPath);
+				})
+				.catch(err => {
+					reject(err);
 				});
-				//});
 			});
 		})
 		.then(x => {
 			console.log(x);
-			return new Promise(resolve => {
+			return new Promise((resolve, reject) => {
 				//////////////////////////////////////////// save a config file ///////////////////////////////////////////
 				var ncfgText = external.generatePackage_ncfg();
 				var ncfgPath = userInput + "\\NuCodeGen\\" + userProject + "\\" + userProject + ".ncfg";
-				outputFile(ncfgPath, ncfgText).then(() => {
-					resolve("[outputFile .ncfg success]");
+				outputFile(ncfgPath, ncfgText)
+				.then(() => {
+					resolve(`[outputFile] ${ncfgPath}`);
+				})
+				.catch(err => {
+					reject(err);
 				});
 			})
 		})
 		.then(x => {
 			console.log(x);
 			document.getElementsByClassName("ui-icon-closethick")[0].click();
-			EXPORT_REACT.notification_success("[Generate code]", "Done.");
+			EXPORT_REACT.notification_success(EXPORT_REACT.BTN_GENERATE_CODE, `Finish project ${userProject1}.`);
+
+			localStorage.setItem("ProjectName", userProject1);
+			localStorage.setItem("ProjectLocation", userInput1);
+			let historyAry = (localStorage.getItem("ProjectLocationHistory") || "").replace(userInput1+">", "").split(">");
+			if(historyAry.length > 6){
+				historyAry.splice(5, 1);
+			}
+			historyAry.unshift(userInput1);
+			localStorage.setItem("ProjectLocationHistory", historyAry.join(">"));
 		})
-		.catch( err => {
+		.then(() => {
+			// EX: Delete ~\public\PeripheralConfigure\M251\NuCodeGen;
+			return new Promise((resolve, reject) => {
+				agendaPath = m_appPathCString + "\\PeripheralConfigure\\" + g_chipType + "\\NuCodeGen"
+				remove(agendaPath)
+				.then(() => {
+					resolve(`[remove] ${agendaPath}`);
+				})
+				.catch(err => {
+					reject(err);
+				});
+			})
+		})
+		.catch(err => {
 			console.error(err)
-			EXPORT_REACT.notification_error("[Generate code]", err);
+			EXPORT_REACT.notification_error(EXPORT_REACT.BTN_GENERATE_CODE, err);
 		})
 		.finally(() => {
 			EXPORT_REACT.unmask();
+			console.log("[Generate Code] End.");
 		});
 };
 
@@ -520,7 +574,7 @@ external.generatePin_c = function(bModularizeCode){
 		}
 		text += `********************/\n\n`;
 		text += `${g_includeHeadFileString}`;
-		text += `#include \"pin_conf.h\"\n\n`;
+		text += `#include "pin_conf.h"\n\n`;
 		if (!!g_userDefinedPinString)
 		{
 			text += `${g_userDefinedPinString}\n`;
@@ -547,7 +601,7 @@ external.generatePin_h = function(){
 	+ `*****************************************************************************/\n\n`
 	+ `#ifndef __PIN_CONF_H__\n`
 	+ `#define __PIN_CONF_H__\n\n`
-	+ `#ifdef __cplusplus\nextern \"C\"\n{\n#endif\n`
+	+ `#ifdef __cplusplus\nextern "C"\n{\n#endif\n`
 	+ `${g_gpio_MFPsString}`
 	+ `#ifdef __cplusplus\n}\n#endif\n`
 	+ `#endif /*__PIN_CONF_H__*/\n\n`
@@ -603,7 +657,7 @@ external.generateClk_h = function(){
 	+ `*****************************************************************************/\n\n`
 	+ `#ifndef __CLK_CONF_H__\n`
 	+ `#define __CLK_CONF_H__\n\n`
-	+ `#ifdef __cplusplus\nextern \"C\"\n{\n#endif\n`
+	+ `#ifdef __cplusplus\nextern "C"\n{\n#endif\n`
 	+ `${g_clockRegsString2}`
 	+ `#ifdef __cplusplus\n}\n#endif\n`
 	+ `#endif /*__CLK_CONF_H__*/\n\n`

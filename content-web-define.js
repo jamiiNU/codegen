@@ -55,11 +55,11 @@ var //
     // g_module_snippet_buttonId = [],
     g_module_snippet_code = [],
     // g_module_snippet_header = [],
-    // g_module_snippet_pin = [],
-    // g_module_snippet_clock = [],
+    g_module_snippet_pin = [],
+    g_module_snippet_clock = [],
     // g_module_snippet_peripheral = [],
     // g_alpacaFormRepository = [],
-    // g_object = {},
+    g_object = {},
     // g_toast_pin,
     // g_toast_clock,
     // g_toast_peripheral,
@@ -68,8 +68,8 @@ var //
     // g_thirdPartyLibTreeHeight = 0,
     // g_readConfigFile,
     // g_userSelectUIlanguage,
-    g_bReadyForRelease = true; // should be true For Release
-    // g_bDevelopingTool = true,  // should be false For Release
+    g_bReadyForRelease = true, // should be true For Release
+    g_bDevelopingTool = false;  // should be false For Release
     // g_bPressEnter = false,
     // g_bInvokedByCDHtmlDialog = true,
     // g_bAlpacaValidationResult = true,
@@ -84,22 +84,31 @@ var //
 // the sole global variable denoted by capital letters
 var EXPORT_REACT = {};
 
-var g_bWebVersion = "v1.5"; // v1.5: electron, v2.0: Web
+var g_bWebVersion = "v1.0"; // v1.0: electron, v2.0: Web
 var g_snippetName = "";
+var g_perControlsAutoTest = {}; // For autoTest, it need default value. 
 var g_perControlsFilter = {}
 var g_cfg_projectLoaction = "";
 var g_toolVersion = "";
 var g_cfg_perFunctions = [];
-var g_module_snippet_txt = [];
+var g_module_snippet_txt = {};
+
+var g_perControls_pin = {}; // store localPin
+var g_perControls_clock = {}; // store localClock
+
+var g_basic_test_mode = null; // Easy to debug
 
 var PATH = {
     // Folder
-    ///result: "\\..\\..\\result\\",
+    // result: "\\..\\..\\result\\",
     result : "\\PeripheralConfigure\\FunctionalTesting\\result\\",
     AutoTest : "\\PeripheralConfigure\\FunctionalTesting\\AutoTest\\",
 
     // File
-    execKeil: "C:\\Keil_v5\\UV4\\UV4.exe",
-    execIar: "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\common\\bin\\IarBuild.exe",
-    execGcc: "C:\\Program Files (x86)\\Nuvoton Tools\\NuEclipse\\V1.02.019\\NuEclipse\\eclipse\\eclipsec.exe",
+    Keil_exe: "C:\\Keil_v5\\UV4\\UV4.exe",
+    // Iar_exe: "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\common\\bin\\IarBuild.exe",
+    Iar_exe: "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.2\\common\\bin\\IarBuild.exe",
+    // Gcc_exe: "C:\\Program Files (x86)\\Nuvoton Tools\\NuEclipse\\V1.02.024r\\NuEclipse\\eclipse\\eclipsec.exe",
+    Gcc_exe: "C:\\Program Files (x86)\\Nuvoton Tools\\NuEclipse\\V1.02.025a\\NuEclipse\\eclipse\\eclipsec.exe",
+    NuLink_exe: "C:\\Program Files (x86)\\Nuvoton Tools\\NuLink Command Tool\\NuLink.exe",
 };

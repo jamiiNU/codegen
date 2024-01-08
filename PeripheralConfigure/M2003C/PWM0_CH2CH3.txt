@@ -28,7 +28,7 @@
 															default:1000;
 															helper: It is limited by clock source.;
 															minimum:10;
-															maximum:85000;
+															maximum:170000;
 															dependencies:UsePWM0CH2ENCapBoolean|UsePWM0CH3ENCapBoolean;
 															dependenciesOption:{"UsePWM0CH2ENCapBoolean":"true","UsePWM0CH3ENCapBoolean":"true"};
 															groupId:GroupPWM0Cap23;
@@ -208,9 +208,9 @@
 															label:The PWM0 CH2 and CH3 frequency(Hz);
 															data:5000;
 															default:1000;
-															helper:Enter frequency between 1~PCLK or 1~PLL_CLK;
+															helper:Enter PWM output frequency between 1~12,000,000;
 															minimum:1;
-															maximum:24000000;
+															maximum:12000000;
 															dependencies:PWM0CH23OutputFuncSetmode&(UsePWM0CH2ENBoolean|UsePWM0CH3ENBoolean);
 															dependenciesOption:{"PWM0CH23OutputFuncSetmode":"0","UsePWM0CH2ENBoolean":"true","UsePWM0CH3ENBoolean":"true"};
 															groupId:GroupPWM0Output23;
@@ -635,7 +635,7 @@
 															type:multipleselect;
 															label:Select PWM0 CH2 interrupt ;
 															data:0;
-															default:;
+															default:0;
 															helper:;
 															sort:false;
 															enum:[1, 2, 4, 8, 16];
@@ -819,7 +819,7 @@
 															type:multipleselect;
 															label:Select PWM0 CH3 interrupt ;
 															data:0;
-															default:;
+															default:0;
 															helper:;
 															sort:false;
 															enum:[4, 8, 16];

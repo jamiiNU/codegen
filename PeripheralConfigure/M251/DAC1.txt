@@ -164,10 +164,7 @@
                                            dependencies:UseDAC1EnRadio;
                                            dependenciesOption:1;
                                            groupId:DAC1Config;
-                                           groupName:DAC Configuration;!>
-
-
-                                          <!id:UseDACMsgTextOnly;
+                                           groupName:DAC Configuration;!><!id:UseDACMsgTextOnly;
                                           type:textonly;
                                           label:Chip Reference Voltage Setting Source Tip :;
                                           data:In SYS function,dafault reference voltage is external, when internal reference voltage enable, support several steps internal voltage.;
